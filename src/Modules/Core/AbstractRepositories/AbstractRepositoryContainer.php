@@ -16,10 +16,10 @@ abstract class AbstractRepositoryContainer implements RepositoryContainerInterfa
      */
 	public function __call($name, $arguments)
     {
-        dd(\Request::header());
     	foreach ($this->getRepoNameSpace() as $repoNameSpace) 
     	{
-    		$class = rtrim($repoNameSpace, '\\') . '\\' . ucfirst(str_singular($name)) . 'Repository';
+            $apiVersion = \Request::header('api-version') ?: 1;
+            $class      = rtrim($repoNameSpace, '\\') . '\\V' . $apiVersion .'\\' . ucfirst(str_singular($name)) . 'Repository';
     		if (class_exists($class)) 
     		{
         		return \App::make($class);

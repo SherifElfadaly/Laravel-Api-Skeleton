@@ -12,7 +12,9 @@
 */
 
 Route::group(['prefix' => 'notifications'], function() {
+	
+	$apiVersion = \Request::header('api-version') ?: 1;
 	Route::controllers([
-		'notifications' => 'NotificationsController',
+		'notifications' => 'V' . $apiVersion . '\NotificationsController',
 		]);
 });

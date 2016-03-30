@@ -13,7 +13,8 @@
 
 Route::group(['prefix' => 'core'], function() {
 	
+	$apiVersion = \Request::header('api-version') ?: 1;
 	Route::controllers([
-		'settings' => 'SettingsController'
+		'settings' => 'V' . $apiVersion . '\SettingsController'
 		]);
 });

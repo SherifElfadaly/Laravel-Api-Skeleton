@@ -11,10 +11,10 @@
 |
 */
 
-Route::group(['prefix' => 'logging'], function() {
+Route::group(['prefix' => 'reporting'], function() {
 	
 	$apiVersion = \Request::header('api-version') ?: 1;
 	Route::controllers([
-		'logs' => 'V' . $apiVersion . '\LogsController',
+		'reports' => 'V' . $apiVersion . '\ReportingController',
 		]);
 });

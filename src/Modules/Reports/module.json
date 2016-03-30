@@ -1,8 +1,0 @@
-{
-	"name": "Reports",
-	"slug": "reports",
-	"version": "1.0",
-	"description": "This is the description for the Reports module.",
-	"enabled": true,
-	"order" : 100000
-}
