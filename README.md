@@ -57,5 +57,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-scrutinizer]: https://scrutinizer-ci.com/g/SherifElfadaly/api_skeleton/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/SherifElfadaly/api_skeleton
 [link-downloads]: https://packagist.org/packages/SherifElfadaly/api_skeleton
-[link-author]: https://github.com/:SherifElfadaly
+[link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors
