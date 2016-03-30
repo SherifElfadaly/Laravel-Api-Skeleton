@@ -14,15 +14,24 @@ PSRs you support to avoid any confusion with users and contributors.
 
 Via Composer
 
+add this line to composer.json:
 ``` bash
-$ composer require api_skeleton/api_skeleton
+"ApiSkeleton/ApiSkeleton": "^1.0@dev"
 ```
 Then add the service provider in config/app.php:
 
 ``` bash
-'api_skeleton\api_skeleton\ApiSkeletonServiceProvider',
+ApiSkeleton\ApiSkeleton\ApiSkeletonServiceProvider::class,
+Caffeinated\Modules\ModulesServiceProvider::class,
 ```
+add the aliases config/app.php
 
+``` bash
+'Core'         => App\Modules\Core\Facades\Core::class,
+'ErrorHandler' => App\Modules\Core\Facades\ErrorHandler::class,
+'CoreConfig'   => App\Modules\Core\Facades\CoreConfig::class,
+'Module'       => Caffeinated\Modules\Facades\Module::class,
+```
 ## Usage
 
 ``` php
@@ -50,17 +59,17 @@ If you discover any security related issues, please email sh.elfadaly@gmail.com 
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/api_skeleton/api_skeleton.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/ApiSkeleton/ApiSkeleton.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/api_skeleton/api_skeleton/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/api_skeleton/api_skeleton.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/api_skeleton/api_skeleton.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/api_skeleton/api_skeleton.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/ApiSkeleton/ApiSkeleton/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/ApiSkeleton/ApiSkeleton.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/ApiSkeleton/ApiSkeleton.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/ApiSkeleton/ApiSkeleton.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/api_skeleton/api_skeleton
-[link-travis]: https://travis-ci.org/api_skeleton/api_skeleton
-[link-scrutinizer]: https://scrutinizer-ci.com/g/api_skeleton/api_skeleton/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/api_skeleton/api_skeleton
-[link-downloads]: https://packagist.org/packages/api_skeleton/api_skeleton
+[link-packagist]: https://packagist.org/packages/ApiSkeleton/ApiSkeleton
+[link-travis]: https://travis-ci.org/ApiSkeleton/ApiSkeleton
+[link-scrutinizer]: https://scrutinizer-ci.com/g/ApiSkeleton/ApiSkeleton/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/ApiSkeleton/ApiSkeleton
+[link-downloads]: https://packagist.org/packages/ApiSkeleton/ApiSkeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors

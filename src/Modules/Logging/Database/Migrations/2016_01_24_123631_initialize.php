@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Report extends Migration
+class Initialize extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -12,64 +12,80 @@ class Report extends Migration
 	 */
 	public function up()
 	{
-		/**
+        /**
+         * Delete previous permissions.
+         */
+		DB::table('permissions')->whereIn('model', ['logs'])->delete();
+
+		 /**
          * Insert the permissions related to this module.
          */
         DB::table('permissions')->insert(
         	[
         		/**
-        		 * Reports model permissions.
+        		 * Logs model permissions.
         		 */
 	        	[
 	        	'name'       => 'find',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'search',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'list',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'findby',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'first',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginate',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginateby',
-	        	'model'      => 'reports',
+	        	'model'      => 'logs',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
-	        	[
-	        	'name'       => 'admin_count',
-	        	'model'      => 'reports',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	]
         	]
         );
+
+        /**
+		 * Assign the permissions to the admin group.
+		 */
+		$permissionIds = DB::table('permissions')->whereIn('model', ['logs'])->select('id')->lists('id');
+		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
+		foreach ($permissionIds as $permissionId) 
+		{
+			DB::table('groups_permissions')->insert(
+				[
+				'permission_id' => $permissionId,
+				'group_id'      => $adminGroupId,
+				'created_at'    => \DB::raw('NOW()'),
+				'updated_at'    => \DB::raw('NOW()')
+				]
+			);
+		}
 	}
 
 	/**
@@ -79,6 +95,10 @@ class Report extends Migration
 	 */
 	public function down()
 	{
-		//
+		$adminGroupId = DB::table('groups')->where('name', 'Admin')->first()->id;
+		$adminUserId  = DB::table('users')->where('email', 'admin@user.com')->first()->id;
+
+		DB::table('permissions')->whereIn('model', ['logs'])->delete();
+		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
 	}
 }

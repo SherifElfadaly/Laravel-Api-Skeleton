@@ -1,3 +1,3 @@
 # Changelog
 
-All Notable changes to `api_skeleton` will be documented in this file.
+All Notable changes to `ApiSkeleton` will be documented in this file.

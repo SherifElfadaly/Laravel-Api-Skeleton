@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Notification extends Migration
+class Initialize extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -12,70 +12,86 @@ class Notification extends Migration
 	 */
 	public function up()
 	{
+        /**
+         * Delete previous permissions.
+         */
+		DB::table('permissions')->whereIn('model', ['reports'])->delete();
+
 		/**
          * Insert the permissions related to this module.
          */
         DB::table('permissions')->insert(
         	[
         		/**
-        		 * Logs model permissions.
+        		 * Reports model permissions.
         		 */
 	        	[
 	        	'name'       => 'find',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'search',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'list',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'findby',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'first',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginate',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginateby',
-	        	'model'      => 'notifications',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'notified',
-	        	'model'      => 'notifications',
+	        	'name'       => 'admin_count',
+	        	'model'      => 'reports',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'notifyall',
-	        	'model'      => 'notifications',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
+	        	]
         	]
         );
+
+        /**
+		 * Assign the permissions to the admin group.
+		 */
+		$permissionIds = DB::table('permissions')->whereIn('model', ['reports'])->select('id')->lists('id');
+		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
+		foreach ($permissionIds as $permissionId) 
+		{
+			DB::table('groups_permissions')->insert(
+				[
+				'permission_id' => $permissionId,
+				'group_id'      => $adminGroupId,
+				'created_at'    => \DB::raw('NOW()'),
+				'updated_at'    => \DB::raw('NOW()')
+				]
+			);
+		}
 	}
 
 	/**
@@ -85,6 +101,10 @@ class Notification extends Migration
 	 */
 	public function down()
 	{
-		//
+		$adminGroupId = DB::table('groups')->where('name', 'Admin')->first()->id;
+		$adminUserId  = DB::table('users')->where('email', 'admin@user.com')->first()->id;
+
+		DB::table('permissions')->whereIn('model', ['reports'])->delete();
+		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
 	}
 }

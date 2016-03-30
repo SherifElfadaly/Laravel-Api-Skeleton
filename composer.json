@@ -1,12 +1,12 @@
 {
-    "name": "api_skeleton/api_skeleton",
+    "name": "ApiSkeleton/ApiSkeleton",
     "type": "library",
     "description": "skeleton app for developing restful apis",
     "keywords": [
-        "api_skeleton",
-        "api_skeleton"
+        "ApiSkeleton",
+        "ApiSkeleton"
     ],
-    "homepage": "https://github.com/SherifElfadaly/api_skeleton",
+    "homepage": "https://github.com/SherifElfadaly/ApiSkeleton",
     "license": "MIT",
     "authors": [
         {
@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "api_skeleton\\api_skeleton\\": "src"
+            "ApiSkeleton\\ApiSkeleton\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            ":api_skeleton\\api_skeleton\\": "tests"
+            ":ApiSkeleton\\ApiSkeleton\\": "tests"
         }
     },
     "scripts": {

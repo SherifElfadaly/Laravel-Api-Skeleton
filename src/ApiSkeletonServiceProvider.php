@@ -1,6 +1,6 @@
 <?php
 
-namespace api_skeleton\api_skeleton;
+namespace ApiSkeleton\ApiSkeleton;
 
 use Illuminate\Support\ServiceProvider;
 
