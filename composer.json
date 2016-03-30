@@ -3,15 +3,15 @@
     "type": "library",
     "description": "skeleton app for developing restful apis",
     "keywords": [
-        ":vendor",
-        ":package_name"
+        "api_skeleton",
+        "api_skeleton"
     ],
     "homepage": "https://github.com/SherifElfadaly/api_skeleton",
     "license": "MIT",
     "authors": [
         {
             "name": ":Sherif Elfadaly",
-            "email": ":sh.elfadaly@gmail.com",
+            "email": "sh.elfadaly@gmail.com",
             "homepage": "",
             "role": "Developer"
         }
