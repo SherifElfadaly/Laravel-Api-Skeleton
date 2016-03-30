@@ -24,7 +24,7 @@ Then add the service provider in config/app.php:
 ApiSkeleton\ApiSkeleton\ApiSkeletonServiceProvider::class,
 Caffeinated\Modules\ModulesServiceProvider::class,
 ```
-add the aliases config/app.php
+add the aliases in config/app.php
 
 ``` bash
 'Core'         => App\Modules\Core\Facades\Core::class,
