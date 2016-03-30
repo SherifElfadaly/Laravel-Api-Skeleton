@@ -67,7 +67,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-downloads]: https://img.shields.io/packagist/dt/api-skeleton/api-skeleton.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/api-skeleton/api-skeleton
-[link-travis]: https://travis-ci.org/api-skeleton/api-skeleton
+[link-travis]: https://travis-ci.org/SherifElfadaly/Laravel-Api-Skeleton
 [link-scrutinizer]: https://scrutinizer-ci.com/g/api-skeleton/api-skeleton/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/api-skeleton/api-skeleton
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
