@@ -1,6 +1,6 @@
 <?php
 
-namespace SherifElfadaly\api_skeleton;
+namespace api_skeleton\api_skeleton;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -17,7 +17,7 @@ class api_skeletonServiceProvider extends ServiceProvider
         __DIR__.'/Exceptions'    => app_path('Exceptions'),
         __DIR__.'/Modules'       => app_path('Modules'),
         __DIR__.'/notifications' => app_path('notifications'),
-        __DIR__.'/Kernel.php'    => app_path('Http/'),
+        __DIR__.'/Kernel.php'    => app_path('Http/Kernel.php'),
 
         ]);
 

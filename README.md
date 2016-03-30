@@ -15,7 +15,7 @@ PSRs you support to avoid any confusion with users and contributors.
 Via Composer
 
 ``` bash
-$ composer require SherifElfadaly/api_skeleton
+$ composer require api_skeleton/api_skeleton
 ```
 
 ## Usage
@@ -45,17 +45,17 @@ If you discover any security related issues, please email sh.elfadaly@gmail.com 
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/SherifElfadaly/api_skeleton.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/api_skeleton/api_skeleton.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/SherifElfadaly/api_skeleton/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/SherifElfadaly/api_skeleton.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/SherifElfadaly/api_skeleton.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/SherifElfadaly/api_skeleton.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/api_skeleton/api_skeleton/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/api_skeleton/api_skeleton.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/api_skeleton/api_skeleton.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/api_skeleton/api_skeleton.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/SherifElfadaly/api_skeleton
-[link-travis]: https://travis-ci.org/SherifElfadaly/api_skeleton
-[link-scrutinizer]: https://scrutinizer-ci.com/g/SherifElfadaly/api_skeleton/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/SherifElfadaly/api_skeleton
-[link-downloads]: https://packagist.org/packages/SherifElfadaly/api_skeleton
+[link-packagist]: https://packagist.org/packages/api_skeleton/api_skeleton
+[link-travis]: https://travis-ci.org/api_skeleton/api_skeleton
+[link-scrutinizer]: https://scrutinizer-ci.com/g/api_skeleton/api_skeleton/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/api_skeleton/api_skeleton
+[link-downloads]: https://packagist.org/packages/api_skeleton/api_skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors
