@@ -4,7 +4,7 @@ namespace api_skeleton\api_skeleton;
 
 use Illuminate\Support\ServiceProvider;
 
-class api_skeletonServiceProvider extends ServiceProvider
+class ApiSkeletonServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.

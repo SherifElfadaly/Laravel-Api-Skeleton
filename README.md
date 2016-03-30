@@ -17,6 +17,11 @@ Via Composer
 ``` bash
 $ composer require api_skeleton/api_skeleton
 ```
+Then add the service provider in config/app.php:
+
+``` bash
+'api_skeleton\api_skeleton\ApiSkeletonServiceProvider',
+```
 
 ## Usage
 
