@@ -1,5 +1,5 @@
 {
-    "name": "ApiSkeleton/ApiSkeleton",
+    "name": "api-skeleton/api-skeleton",
     "type": "library",
     "description": "skeleton app for developing restful apis",
     "keywords": [

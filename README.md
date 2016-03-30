@@ -16,7 +16,7 @@ Via Composer
 
 add this line to composer.json:
 ``` bash
-"ApiSkeleton/ApiSkeleton": "^1.0@dev"
+"api-skeleton/api-skeleton": "^1.0@dev"
 ```
 Then add the service provider in config/app.php:
 
@@ -59,17 +59,17 @@ If you discover any security related issues, please email sh.elfadaly@gmail.com 
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/ApiSkeleton/ApiSkeleton.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/api-skeleton/api-skeleton.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/ApiSkeleton/ApiSkeleton/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/ApiSkeleton/ApiSkeleton.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/ApiSkeleton/ApiSkeleton.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/ApiSkeleton/ApiSkeleton.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/api-skeleton/api-skeleton/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/api-skeleton/api-skeleton.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/api-skeleton/api-skeleton.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/api-skeleton/api-skeleton.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/ApiSkeleton/ApiSkeleton
-[link-travis]: https://travis-ci.org/ApiSkeleton/ApiSkeleton
-[link-scrutinizer]: https://scrutinizer-ci.com/g/ApiSkeleton/ApiSkeleton/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/ApiSkeleton/ApiSkeleton
-[link-downloads]: https://packagist.org/packages/ApiSkeleton/ApiSkeleton
+[link-packagist]: https://packagist.org/packages/api-skeleton/api-skeleton
+[link-travis]: https://travis-ci.org/api-skeleton/api-skeleton
+[link-scrutinizer]: https://scrutinizer-ci.com/g/api-skeleton/api-skeleton/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/api-skeleton/api-skeleton
+[link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors
