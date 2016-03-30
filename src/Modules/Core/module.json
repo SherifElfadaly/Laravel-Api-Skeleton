@@ -1,0 +1,7 @@
+{
+	"name": "Core",
+	"slug": "core",
+	"version": "1.0",
+	"description": "This is the description for the Core module.",
+	"enabled": true
+}

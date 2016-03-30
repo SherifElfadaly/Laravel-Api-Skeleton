@@ -1,0 +1,9 @@
+{
+	"name": "Initializer",
+	"slug": "initializer",
+	"namespace": "Initializer",
+	"version": "1.0",
+	"description": "This is the description for the Initializer module.",
+	"enabled": true,
+	"order":1000000000000
+}
