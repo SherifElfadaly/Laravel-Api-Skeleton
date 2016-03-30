@@ -61,7 +61,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [ico-version]: https://img.shields.io/packagist/v/api-skeleton/api-skeleton.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/api-skeleton/api-skeleton/master.svg?style=flat-square
+[ico-travis]: https://travis-ci.org/SherifElfadaly/Laravel-Api-Skeleton.svg?branch=master
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/api-skeleton/api-skeleton.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/api-skeleton/api-skeleton.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/api-skeleton/api-skeleton.svg?style=flat-square
