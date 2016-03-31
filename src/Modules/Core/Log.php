@@ -12,7 +12,7 @@ class Log
 	    		'item_name'   => $item_name,
 	    		'item_type'   => $item_type,
 	    		'item_id'     => $item_id,
-	    		'user_id'     => \Auth::user()->id,
+	    		'user_id'     => \JWTAuth::parseToken()->authenticate()->id,
 	    		], false, false);
     	}
     }

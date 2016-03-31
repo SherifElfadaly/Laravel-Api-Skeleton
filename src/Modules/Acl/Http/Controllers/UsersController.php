@@ -46,7 +46,7 @@ class UsersController extends BaseApiController
     public function getAccount()
     {
        $relations = $this->relations && $this->relations['find'] ? $this->relations['find'] : [];
-       return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find(\Auth::id(), $relations), 200);
+       return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find(\JWTAuth::parseToken()->authenticate()->id, $relations), 200);
     }
 
     /**
@@ -56,7 +56,7 @@ class UsersController extends BaseApiController
      */
     public function getLogout()
     {
-        return \Response::json(\Auth::logout(), 200);
+        return \Response::json(\JWTAuth::invalidate(\JWTAuth::getToken()), 200);
     }
 
     /**
@@ -67,9 +67,11 @@ class UsersController extends BaseApiController
      */
     public function postRegister(Request $request)
     {
-        $this->validate($request, ['email' => 'required|email|unique:users,email,{id}','password' => 'required|min:6']);
+        $this->validate($request, ['email' => 'required|email|unique:users,email,{id}', 'password' => 'required|min:6']);
 
-        return \Response::json(\Auth::loginUsingId(\Core::users()->create($request->all())->id), 200);
+        $credentials = $request->only('email', 'password');
+        $token       = \JWTAuth::fromUser(\Core::users()->model->create($credentials));
+        return \Response::json($token, 200);
     }
 
     /**
@@ -80,10 +82,12 @@ class UsersController extends BaseApiController
      */
     public function postLogin(Request $request)
     {
-        if (\Auth::attempt($request->all())) 
+        $credentials = $request->only('email', 'password');
+
+        if ($token = \JWTAuth::attempt($credentials))
         {
             $relations = $this->relations && $this->relations['find'] ? $this->relations['find'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find(\Auth::id(), $relations), 200);
+            return \Response::json($token, 200);
         }
         else
         {

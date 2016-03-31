@@ -50,14 +50,37 @@ class Handler extends ExceptionHandler
         {
             if ($e instanceof \Illuminate\Database\QueryException) 
             {
-                return \Response::json('Please check the given inputes', '400');
+                $error = \ErrorHandler::dbQueryError();
+                return \Response::json($error['message'], $error['status']);
             }
             else if ($e instanceof \predis\connection\connectionexception) 
             {
-                return \Response::json('Your redis notification server isn\'t running', '400');
+                $error = \ErrorHandler::redisNotRunning();
+                return \Response::json($error['message'], $error['status']);
             }
-            
-            return \Response::json($e->getMessage(), $e->getStatusCode());
+            else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
+            {
+                $error = \ErrorHandler::tokenExpired();
+                return \Response::json($error['message'], $error['status']);
+            } 
+            else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
+            {
+                $error = \ErrorHandler::noPermissions();
+                return \Response::json($error['message'], $error['status']);
+            }
+            else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
+            {
+                $error = \ErrorHandler::unAuthorized();
+                return \Response::json($error['message'], $error['status']);
+            }
+            else if ($e instanceof HttpException) 
+            {
+                return \Response::json($e->getMessage(), $e->getStatusCode());   
+            }
+            else
+            {
+                return parent::render($request, $e);
+            }
         }
 
         return parent::render($request, $e);

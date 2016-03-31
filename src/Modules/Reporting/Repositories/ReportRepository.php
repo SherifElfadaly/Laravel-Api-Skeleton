@@ -27,17 +27,18 @@ class ReportRepository extends AbstractRepository
     {
 		$report = call_user_func_array("{$this->getModel()}::with", array($relations))->find($id, $columns);
 
+        if ( ! $report) 
+        {
+            $error = $this->errorHandler->notFound('report');
+            abort($error['status'], $error['message']);
+        }
+
         if ( ! \Core::users()->can($report->view_name, 'reports'))
         {
             $error = $this->errorHandler->noPermissions();
             abort($error['status'], $error['message']);
         }
 
-		if ( ! $report) 
-		{
-			$error = $this->errorHandler->notFound('report');
-			abort($error['status'], $error['message']);
-		}
         return \DB::table($report->view_name)->get();
     }
 
@@ -55,16 +56,18 @@ class ReportRepository extends AbstractRepository
 		$conditions = $this->constructConditions($conditions);
 		$report     = call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->first($columns);
         
+        if ( ! $report) 
+        {
+            $error = $this->errorHandler->notFound('report');
+            abort($error['status'], $error['message']);
+        }
+        
         if ( ! \Core::users()->can($report->view_name, 'reports'))
         {
             $error = $this->errorHandler->noPermissions();
             abort($error['status'], $error['message']);
         }
-		if ( ! $report) 
-		{
-			$error = $this->errorHandler->notFound('report');
-			abort($error['status'], $error['message']);
-		}
+		
         return \DB::table($report->view_name)->get();  
     }
 }

@@ -235,13 +235,8 @@ class BaseApiController extends Controller
         }
         else if ( ! in_array($permission, $this->skipLoginCheck)) 
         {
-            if ( ! \Auth::check()) 
-            {
-                $error = $this->errorHandler->unAuthorized();
-                abort($error['status'], $error['message']);
-            }
-            else if ( ! in_array($permission, $this->skipPermissionCheck) && 
-                      ! \Core::users()->can($permission, $this->model))
+            \JWTAuth::parseToken()->authenticate();
+            if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))
             {
                 $error = $this->errorHandler->noPermissions();
                 abort($error['status'], $error['message']);

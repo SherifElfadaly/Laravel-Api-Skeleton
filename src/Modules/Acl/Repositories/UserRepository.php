@@ -25,7 +25,7 @@ class UserRepository extends AbstractRepository
 	 */
 	public function can($nameOfPermission, $model, $user = false )
 	{		
-		$user        = $user ?: \Auth::user();
+		$user        = $user ?: \JWTAuth::parseToken()->authenticate();
 		$permissions = [];
 		\Core::users()->find($user->id, ['groups.permissions'])->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
 			$permissions = array_merge($permissions, $permission->where('model', $model)->lists('name')->toArray()); 
@@ -42,7 +42,7 @@ class UserRepository extends AbstractRepository
 	 */
 	public function hasGroup($groupName)
 	{
-		$groups = \Core::users()->find(\Auth::user()->id)->groups;
+		$groups = \Core::users()->find(\JWTAuth::parseToken()->authenticate()->id)->groups;
 		return $groups->lists('name')->search($groupName, true);
 	}
 

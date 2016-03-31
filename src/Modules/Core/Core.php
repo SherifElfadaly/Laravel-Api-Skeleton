@@ -14,7 +14,7 @@ class Core extends AbstractRepositoryContainer
 		return [
 		'App\Modules\Acl\Repositories',
 		'App\Modules\Logging\Repositories',
-		'App\Modules\Reports\Repositories',
+		'App\Modules\Reporting\Repositories',
 		'App\Modules\Notifications\Repositories',
 		'App\Modules\Core\Repositories',
 		];

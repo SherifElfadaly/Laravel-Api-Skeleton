@@ -80,7 +80,7 @@ class InitializeAcl extends Migration
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'assigngroup',
+	        	'name'       => 'assigngroups',
 	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')

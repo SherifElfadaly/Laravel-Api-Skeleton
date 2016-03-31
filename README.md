@@ -24,6 +24,7 @@ Then add the service provider in config/app.php:
 ``` bash
 ApiSkeleton\ApiSkeleton\ApiSkeletonServiceProvider::class,
 Caffeinated\Modules\ModulesServiceProvider::class,
+Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 ```
 add the aliases in config/app.php
 
@@ -32,7 +33,21 @@ add the aliases in config/app.php
 'ErrorHandler' => App\Modules\Core\Facades\ErrorHandler::class,
 'CoreConfig'   => App\Modules\Core\Facades\CoreConfig::class,
 'Module'       => Caffeinated\Modules\Facades\Module::class,
+'JWTAuth'      => Tymon\JWTAuth\Facades\JWTAuth::class
+'JWTFactory'   => Tymon\JWTAuth\Facades\JWTFactory::class
 ```
+publish files
+
+``` bash
+php artisan vendor:publish --force
+```
+
+ set a secret key in the config file
+
+``` bash
+php artisan jwt:generate
+```
+
 ## Usage
 
 ``` php
