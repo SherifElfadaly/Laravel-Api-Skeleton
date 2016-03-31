@@ -1,8 +1,8 @@
-<?php namespace App\Modules\Acl\Repositories\V1;
+<?php namespace App\Modules\Core\Repositories;
 
 use App\Modules\Core\AbstractRepositories\AbstractRepository;
 
-class PermissionRepository extends AbstractRepository
+class SettingRepository extends AbstractRepository
 {
 	/**
 	 * Return the model full namespace.
@@ -11,6 +11,6 @@ class PermissionRepository extends AbstractRepository
 	 */
 	protected function getModel()
 	{
-		return 'App\Modules\Acl\AclPermission';
+		return 'App\Modules\Core\Settings';
 	}
 }

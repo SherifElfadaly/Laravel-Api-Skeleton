@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "tymon/jwt-auth": "0.5.*",
         "caffeinated/modules": "~2.0",
         "predis/predis": "^1.0",
         "illuminate/support": "~5.1",

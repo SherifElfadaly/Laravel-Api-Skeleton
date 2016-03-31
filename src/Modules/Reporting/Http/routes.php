@@ -13,8 +13,8 @@
 
 Route::group(['prefix' => 'reporting'], function() {
 	
-	$apiVersion = \Request::header('api-version') ?: 1;
 	Route::controllers([
-		'reports' => 'V' . $apiVersion . '\ReportingController',
+		'reports' => 'ReportsController',
 		]);
+	
 });

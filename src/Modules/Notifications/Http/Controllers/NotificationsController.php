@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Notifications\Http\Controllers\V1;
+namespace App\Modules\Notifications\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;

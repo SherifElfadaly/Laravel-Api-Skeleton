@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Logging\Repositories\V1;
+<?php namespace App\Modules\Logging\Repositories;
 
 use App\Modules\Core\AbstractRepositories\AbstractRepository;
 

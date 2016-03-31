@@ -38,6 +38,7 @@ class BaseApiController extends Controller
     public function __construct(ErrorHandler $errorHandler, CoreConfig $config)
     {
         \Session::set('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);
+        
         $this->errorHandler        = $errorHandler;
         $this->config              = $config->getConfig();
         

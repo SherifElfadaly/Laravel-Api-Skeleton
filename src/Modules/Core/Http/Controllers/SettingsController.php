@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Core\Http\Controllers\V1;
+namespace App\Modules\Core\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Modules\Core\Http\Controllers\BaseApiController;

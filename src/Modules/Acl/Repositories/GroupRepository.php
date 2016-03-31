@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Acl\Repositories\V1;
+<?php namespace App\Modules\Acl\Repositories;
 
 use App\Modules\Core\AbstractRepositories\AbstractRepository;
 

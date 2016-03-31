@@ -1,11 +1,11 @@
 <?php
-namespace App\Modules\Reporting\Http\Controllers\V1;
+namespace App\Modules\Reporting\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Controllers\BaseApiController;
 
-class ReportingController extends BaseApiController
+class ReportsController extends BaseApiController
 {
 	/**
      * The name of the model that is used by the base api controller 

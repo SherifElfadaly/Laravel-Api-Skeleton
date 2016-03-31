@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Notifications\Repositories\V1;
+<?php namespace App\Modules\Notifications\Repositories;
 
 use App\Modules\Core\AbstractRepositories\AbstractRepository;
 
