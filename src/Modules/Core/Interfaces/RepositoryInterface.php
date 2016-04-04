@@ -66,7 +66,7 @@ interface RepositoryInterface
      * Insert multiple records to the storage.
      * 
      * @param  array   $data
-     * @return object
+     * @return array
      */
     public function saveMany(array $data);
 

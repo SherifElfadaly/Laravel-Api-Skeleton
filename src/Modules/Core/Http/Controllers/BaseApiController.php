@@ -13,6 +13,13 @@ class BaseApiController extends Controller
      */
     protected $model;
 
+    /**
+     * The config implementation.
+     * 
+     * @var config
+     */
+    protected $config;
+
     public function __construct()
     {
         \Session::set('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);

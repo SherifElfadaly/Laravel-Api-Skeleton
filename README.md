@@ -1,11 +1,10 @@
 This package is under development
-<!-- # Api Skeleton
+# Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
+[![Build Status][ico-scrutinizer-build]][ico-scrutinizer-build]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
@@ -123,15 +122,13 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [ico-version]: https://img.shields.io/packagist/v/api-skeleton/api-skeleton.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://travis-ci.org/SherifElfadaly/Laravel-Api-Skeleton.svg?branch=master
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/api-skeleton/api-skeleton.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/api-skeleton/api-skeleton.svg?style=flat-square
+[ico-scrutinizer-build]: https://scrutinizer-ci.com/g/SherifElfadaly/Laravel-Api-Skeleton/badges/build.png?b=master
+[ico-scrutinizer]: https://scrutinizer-ci.com/g/SherifElfadaly/Laravel-Api-Skeleton/badges/quality-score.png?b=master
 [ico-downloads]: https://img.shields.io/packagist/dt/api-skeleton/api-skeleton.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/api-skeleton/api-skeleton
-[link-travis]: https://travis-ci.org/SherifElfadaly/Laravel-Api-Skeleton
-[link-scrutinizer]: https://scrutinizer-ci.com/g/api-skeleton/api-skeleton/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/api-skeleton/api-skeleton
+[link-scrutinizer-build]: https://scrutinizer-ci.com/g/SherifElfadaly/Laravel-Api-Skeleton/
+[link-scrutinizer]: https://scrutinizer-ci.com/g/SherifElfadaly/Laravel-Api-Skeleton/code-structure
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors

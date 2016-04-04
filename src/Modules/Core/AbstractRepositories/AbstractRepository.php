@@ -12,6 +12,13 @@ abstract class AbstractRepository implements RepositoryInterface
     public $model;
     
     /**
+     * The config implementation.
+     * 
+     * @var config
+     */
+    protected $config;
+    
+    /**
      * Create new AbstractRepository instance.
      */
     public function __construct()
@@ -70,9 +77,9 @@ abstract class AbstractRepository implements RepositoryInterface
 
                             $subConditionColumns = \Core::$relation()->model->getFillable();
                             $q->where(\DB::raw('LOWER(CAST(' . array_shift($subConditionColumns) . ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
-                            foreach ($subConditionColumns as $column)
+                            foreach ($subConditionColumns as $subConditionColumn)
                             {
-                                $q->orWhere(\DB::raw('LOWER(CAST(' . $column . ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
+                                $q->orWhere(\DB::raw('LOWER(CAST(' . $subConditionColumn . ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
                             } 
                         });
 
@@ -278,7 +285,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * Save the given models to the storage.
      * 
      * @param  array   $data
-     * @return object
+     * @return array
      */
     public function saveMany(array $data)
     {
@@ -296,7 +303,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * Update record in the storage based on the given
      * condition.
      * 
-     * @param  [type] $value condition value
+     * @param  var $value condition value
      * @param  array $data
      * @param  string $attribute condition column name
      * @return void
@@ -319,7 +326,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * Delete record from the storage based on the given
      * condition.
      * 
-     * @param  [type] $value condition value
+     * @param  var $value condition value
      * @param  string $attribute condition column name
      * @return void
      */
@@ -382,7 +389,7 @@ abstract class AbstractRepository implements RepositoryInterface
      *
      * @param  array   $conditions array of conditions
      * @param  array   $relations
-     * @param  array   $colunmns
+     * @param  array   $columns
      * @return object
      */
     public function first($conditions, $relations = [], $columns = array('*'))
