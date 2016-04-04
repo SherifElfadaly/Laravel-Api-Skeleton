@@ -30,20 +30,6 @@ class Settings extends Model{
     public static function boot()
     {
         parent::boot();
-
-        Settings::creating(function($setting)
-        {
-            $error = \ErrorHandler::cannotCreateSetting();
-            abort($error['status'], $error['message']);
-        });
-
-        Settings::updating(function($setting)
-        {
-            if ($setting->original['key'] !== $setting->key) 
-            {
-                $error = \ErrorHandler::cannotUpdateSettingKey();
-                abort($error['status'], $error['message']);
-            }
-        });
+        parent::observe(\App::make('App\Modules\Core\ModelObservers\SettingsObserver'));
     }
 }

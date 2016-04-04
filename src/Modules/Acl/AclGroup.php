@@ -40,12 +40,6 @@ class AclGroup extends Model{
     public static function boot()
     {
         parent::boot();
-
-        AclGroup::deleting(function($group)
-        {
-            \DB::table('groups_permissions')
-            ->where('group_id', $group->id)
-            ->update(array('deleted_at' => \DB::raw('NOW()')));
-        });
+        parent::observe(\App::make('App\Modules\Acl\ModelObservers\AclGroupObserver'));
     }
 }

@@ -66,14 +66,6 @@ class AclUser extends User {
     public static function boot()
     {
         parent::boot();
-        
-        AclUser::deleting(function($user)
-        {
-            \DB::table('users_groups')
-            ->where('user_id', $user->id)
-            ->update(array('deleted_at' => \DB::raw('NOW()')));
-
-            $user->logs()->delete();
-        });
+        parent::observe(\App::make('App\Modules\Acl\ModelObservers\AclUserObserver'));
     }
 }

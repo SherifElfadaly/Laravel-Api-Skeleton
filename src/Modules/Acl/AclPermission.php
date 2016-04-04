@@ -35,12 +35,6 @@ class AclPermission extends Model {
     public static function boot()
     {
         parent::boot();
-
-        AclPermission::deleting(function($permission)
-        {
-            \DB::table('groups_permissions')
-            ->where('permission_id', $permission->id)
-            ->update(array('deleted_at' => \DB::raw('NOW()')));
-        });
+        parent::observe(\App::make('App\Modules\Acl\ModelObservers\AclPermissionObserver'));
     }
 }

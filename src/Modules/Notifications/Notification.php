@@ -35,10 +35,6 @@ class Notification extends Model{
     public static function boot()
     {
         parent::boot();
-
-        Notification::created(function($notification)
-        {
-            \Redis::publish('notification', json_encode($notification->toArray()));
-        });
+        parent::observe(\App::make('App\Modules\Notifications\ModelObservers\NotificationObserver'));
     }
 }

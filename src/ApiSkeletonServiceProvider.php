@@ -15,7 +15,6 @@ class ApiSkeletonServiceProvider extends ServiceProvider
     {
      $this->publishes([
         __DIR__.'/Modules' => app_path('Modules'),
-
         ]);
 
     }
