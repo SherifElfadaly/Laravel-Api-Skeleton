@@ -18,7 +18,7 @@ abstract class AbstractRepositoryContainer implements RepositoryContainerInterfa
     {
     	foreach ($this->getRepoNameSpace() as $repoNameSpace) 
     	{
-            $class      = rtrim($repoNameSpace, '\\') . '\\' . ucfirst(str_singular($name)) . 'Repository';
+            $class = rtrim($repoNameSpace, '\\') . '\\' . ucfirst(str_singular($name)) . 'Repository';
     		if (class_exists($class)) 
     		{
         		return \App::make($class);

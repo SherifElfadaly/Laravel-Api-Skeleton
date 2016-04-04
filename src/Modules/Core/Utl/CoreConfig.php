@@ -1,4 +1,5 @@
-<?php namespace App\Modules\Core;
+<?php namespace App\Modules\Core\Utl;
+use \App\Modules\Core\Settings;
 
 class CoreConfig
 {

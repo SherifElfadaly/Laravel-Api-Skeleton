@@ -30,13 +30,19 @@ class CoreServiceProvider extends ServiceProvider
 		//Bind ErrorHandler Facade to the IoC Container
 		\App::bind('ErrorHandler', function()
 		{
-			return new \App\Modules\Core\ErrorHandler;
+			return new \App\Modules\Core\Utl\ErrorHandler;
 		});
 
 		//Bind CoreConfig Facade to the IoC Container
 		\App::bind('CoreConfig', function()
 		{
-			return new \App\Modules\Core\CoreConfig;
+			return new \App\Modules\Core\Utl\CoreConfig;
+		});
+
+		//Bind Logging Facade to the IoC Container
+		\App::bind('Logging', function()
+		{
+			return new \App\Modules\Core\Utl\Logging;
 		});
 		
 		$this->registerNamespaces();

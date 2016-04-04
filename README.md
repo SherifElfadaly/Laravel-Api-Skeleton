@@ -1,5 +1,4 @@
-This package is under development
-<!-- # Api Skeleton
+# Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -32,16 +31,62 @@ add the aliases in config/app.php
 'Core'         => App\Modules\Core\Facades\Core::class,
 'ErrorHandler' => App\Modules\Core\Facades\ErrorHandler::class,
 'CoreConfig'   => App\Modules\Core\Facades\CoreConfig::class,
+'Logging'      => App\Modules\Core\Facades\Logging::class,
 'Module'       => Caffeinated\Modules\Facades\Module::class,
 'JWTAuth'      => Tymon\JWTAuth\Facades\JWTAuth::class
 'JWTFactory'   => Tymon\JWTAuth\Facades\JWTFactory::class
 ```
+
+add the following code in Exception/Handler.php
+
+``` bash
+if ($request->wantsJson())
+{
+	if ($e instanceof \Illuminate\Database\QueryException) 
+	{
+		$error = \ErrorHandler::dbQueryError();
+		return \Response::json($error['message'], $error['status']);
+	}
+	else if ($e instanceof \predis\connection\connectionexception) 
+	{
+		$error = \ErrorHandler::redisNotRunning();
+		return \Response::json($error['message'], $error['status']);
+	}
+	else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
+	{
+		$error = \ErrorHandler::tokenExpired();
+		return \Response::json($error['message'], $error['status']);
+	} 
+	else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
+	{
+		$error = \ErrorHandler::noPermissions();
+		return \Response::json($error['message'], $error['status']);
+	}
+	else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
+	{
+		$error = \ErrorHandler::unAuthorized();
+		return \Response::json($error['message'], $error['status']);
+	}
+	else if ($e instanceof HttpException) 
+	{
+		return \Response::json($e->getMessage(), $e->getStatusCode());   
+	}
+	else
+	{
+		return parent::render($request, $e);
+	}
+}
+```
+commit the csrf check in App\Http\Kernel.php
+
+``` bash
+//\App\Http\Middleware\VerifyCsrfToken::class,
+```
 publish files
 
 ``` bash
-php artisan vendor:publish --force
+php artisan vendor:publish
 ```
-
  set a secret key in the config file
 
 ``` bash
@@ -89,4 +134,3 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors
- -->

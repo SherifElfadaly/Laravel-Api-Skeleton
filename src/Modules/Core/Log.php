@@ -1,19 +1,44 @@
 <?php namespace App\Modules\Core;
 
-class Log
-{
-    public function saveLog($action, $item_name, $item_type, $item_id, $model = false)
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Log extends Model{
+
+    use SoftDeletes;
+    protected $table    = 'logs';
+    protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
+    protected $hidden   = ['deleted_at', 'item_type'];
+    protected $guarded  = ['id'];
+    protected $fillable = ['action', 'item_name', 'item_type', 'item_id', 'user_id'];
+
+    public function getCreatedAtAttribute($value)
     {
-    	if (\Core::logs() && $item_name !== 'Log')
-    	{
-            $item_name = $item_name;
-    		\Core::logs()->save([
-	    		'action'      => $action,
-	    		'item_name'   => $item_name,
-	    		'item_type'   => $item_type,
-	    		'item_id'     => $item_id,
-	    		'user_id'     => \JWTAuth::parseToken()->authenticate()->id,
-	    		], false, false);
-    	}
+        return \Carbon\Carbon::parse($value)->addHours(\Session::get('timeZoneDiff'))->toDateTimeString();
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->addHours(\Session::get('timeZoneDiff'))->toDateTimeString();
+    }
+
+    public function getDeletedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->addHours(\Session::get('timeZoneDiff'))->toDateTimeString();
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo('App\Modules\Acl\AclUser');
+    }
+
+    public function item()
+    {
+        return $this->morphTo();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
     }
 }

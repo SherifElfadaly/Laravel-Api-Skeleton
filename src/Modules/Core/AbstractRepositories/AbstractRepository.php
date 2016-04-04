@@ -1,9 +1,6 @@
 <?php namespace App\Modules\Core\AbstractRepositories;
 
 use App\Modules\Core\Interfaces\RepositoryInterface;
-use App\Modules\Core\ErrorHandler;
-use App\Modules\Core\CoreConfig;
-use App\Modules\Core\Log;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
@@ -13,37 +10,14 @@ abstract class AbstractRepository implements RepositoryInterface
      * @var model
      */
     public $model;
-
-    /**
-     * The errorHandler implementation.
-     * 
-     * @var errorHandler
-     */
-    protected $errorHandler;
-
-    /**
-     * The logs implementation.
-     * 
-     * @var logs
-     */
-    protected $logs;
-
-    /**
-     * The config implementation.
-     * 
-     * @var config
-     */
-    protected $config;
     
     /**
      * Create new AbstractRepository instance.
      */
-    public function __construct(ErrorHandler $errorHandler, CoreConfig $config, Log $logs)
+    public function __construct()
     {   
-        $this->errorHandler = $errorHandler;
-        $this->config       = $config->getConfig();
-        $this->logs         = $logs;
-        $this->model        = \App::make($this->getModel());
+        $this->config = \CoreConfig::getConfig();
+        $this->model  = \App::make($this->getModel());
     }
 
     /**
@@ -169,7 +143,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $model = array_key_exists('id', $data) ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
             if ( ! $model) 
             {
-                $error = $this->errorHandler->notFound(class_basename($modelClass) . ' with id : ' . $data['id']);
+                $error = \ErrorHandler::notFound(class_basename($modelClass) . ' with id : ' . $data['id']);
                 abort($error['status'], $error['message']);
             }
 
@@ -201,7 +175,7 @@ abstract class AbstractRepository implements RepositoryInterface
                                 $relationModel = array_key_exists('id', $val) ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
                                 if ( ! $relationModel) 
                                 {
-                                    $error = $this->errorHandler->notFound(class_basename($relationBaseModel) . ' with id : ' . $val['id']);
+                                    $error = \ErrorHandler::notFound(class_basename($relationBaseModel) . ' with id : ' . $val['id']);
                                     abort($error['status'], $error['message']);
                                 }
 
@@ -221,7 +195,7 @@ abstract class AbstractRepository implements RepositoryInterface
                                     $relationModel = array_key_exists('id', $value) ? $relationBaseModel->lockForUpdate()->find($value['id']) : new $relationBaseModel;
                                     if ( ! $relationModel) 
                                     {
-                                        $error = $this->errorHandler->notFound(class_basename($relationBaseModel) . ' with id : ' . $value['id']);
+                                        $error = \ErrorHandler::notFound(class_basename($relationBaseModel) . ' with id : ' . $value['id']);
                                         abort($error['status'], $error['message']);
                                     }
 
@@ -292,7 +266,7 @@ abstract class AbstractRepository implements RepositoryInterface
                     }
                 }
             }
-            $saveLog ? $this->logs->saveLog(array_key_exists('id', $data) ? 'update' : 'create', class_basename($modelClass), $this->getModel(), $model->id, $model) : false;
+            $saveLog ? \Logging::saveLog(array_key_exists('id', $data) ? 'update' : 'create', class_basename($modelClass), $this->getModel(), $model->id, $model) : false;
         });
         
         $this->afterSave($model, $relations);
@@ -333,11 +307,11 @@ abstract class AbstractRepository implements RepositoryInterface
         {
             $model = $this->model->lockForUpdate()->find($value);
             $model ? $model->update($data) : 0;
-            $saveLog ? $this->logs->saveLog('update', class_basename($this->model), $this->getModel(), $value, $model) : false;
+            $saveLog ? \Logging::saveLog('update', class_basename($this->model), $this->getModel(), $value, $model) : false;
         }
     	call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data, $saveLog){
             $model->update($data);
-            $saveLog ? $this->logs->saveLog('update', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
+            $saveLog ? \Logging::saveLog('update', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
         });
     }
     
@@ -356,7 +330,7 @@ abstract class AbstractRepository implements RepositoryInterface
             \DB::transaction(function () use ($value, $attribute, &$result, $saveLog) {
                 $model = $this->model->lockForUpdate()->find($value);
                 $model->delete();
-                $saveLog ? $this->logs->saveLog('delete', class_basename($this->model), $this->getModel(), $value, $model) : false;
+                $saveLog ? \Logging::saveLog('delete', class_basename($this->model), $this->getModel(), $value, $model) : false;
             });
     	}
         else
@@ -364,7 +338,7 @@ abstract class AbstractRepository implements RepositoryInterface
             \DB::transaction(function () use ($value, $attribute, &$result, $saveLog) {
                 call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model){
                     $model->delete();
-                    $saveLog ? $this->logs->saveLog('delete', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
+                    $saveLog ? \Logging::saveLog('delete', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
                 });
             });   
         }

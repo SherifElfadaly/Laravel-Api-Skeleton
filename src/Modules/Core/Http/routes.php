@@ -14,7 +14,8 @@
 Route::group(['prefix' => 'core'], function() {
 	
 	Route::controllers([
-		'settings' => 'SettingsController'
+		'settings' => 'SettingsController',
+		'logs'     => 'LogsController'
 		]);
 	
 });

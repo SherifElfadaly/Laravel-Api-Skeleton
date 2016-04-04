@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Logging\Repositories;
+<?php namespace App\Modules\Core\Repositories;
 
 use App\Modules\Core\AbstractRepositories\AbstractRepository;
 
@@ -11,6 +11,6 @@ class LogRepository extends AbstractRepository
 	 */
 	protected function getModel()
 	{
-		return 'App\Modules\Logging\Log';
+		return 'App\Modules\Core\Log';
 	}
 }

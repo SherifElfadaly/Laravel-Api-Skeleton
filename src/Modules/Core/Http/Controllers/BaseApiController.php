@@ -3,26 +3,9 @@ namespace App\Modules\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Modules\Core\ErrorHandler;
-use App\Modules\Core\CoreConfig;
-
 
 class BaseApiController extends Controller
 {
-    /**
-     * The errorHandler implementation.
-     * 
-     * @var errorHandler
-     */
-    protected $errorHandler;
-
-    /**
-     * The config implementation.
-     * 
-     * @var config
-     */
-    protected $config;
-
     /**
      * The model implementation.
      * 
@@ -30,23 +13,15 @@ class BaseApiController extends Controller
      */
     protected $model;
 
-    /**
-     * Create new BaseApiController instance.
-     * 
-     * @param errorHandler
-     */
-    public function __construct(ErrorHandler $errorHandler, CoreConfig $config)
+    public function __construct()
     {
         \Session::set('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);
         
-        $this->errorHandler        = $errorHandler;
-        $this->config              = $config->getConfig();
-        
+        $this->config              = \CoreConfig::getConfig();
         $this->model               = property_exists($this, 'model') ? $this->model : false;
         $this->validationRules     = property_exists($this, 'validationRules') ? $this->validationRules : false;
         $this->skipPermissionCheck = property_exists($this, 'skipPermissionCheck') ? $this->skipPermissionCheck : [];
         $this->skipLoginCheck      = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
-        
         $this->relations           = array_key_exists($this->model, $this->config['relations']) ? $this->config['relations'][$this->model] : false;
         $route                     = explode('@',\Route::currentRouteAction())[1];
         $this->checkPermission(explode('_', snake_case($route))[1]);
@@ -230,7 +205,7 @@ class BaseApiController extends Controller
         $permission = $permission !== 'index' ? $permission : 'list';
         if ($permission == 'method') 
         {
-            $error = $this->errorHandler->notFound('method');
+            $error = \ErrorHandler::notFound('method');
             abort($error['status'], $error['message']);
         }
         else if ( ! in_array($permission, $this->skipLoginCheck)) 
@@ -238,7 +213,7 @@ class BaseApiController extends Controller
             \JWTAuth::parseToken()->authenticate();
             if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))
             {
-                $error = $this->errorHandler->noPermissions();
+                $error = \ErrorHandler::noPermissions();
                 abort($error['status'], $error['message']);
             }
         }

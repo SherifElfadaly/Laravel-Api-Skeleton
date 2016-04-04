@@ -29,13 +29,13 @@ class ReportRepository extends AbstractRepository
 
         if ( ! $report) 
         {
-            $error = $this->errorHandler->notFound('report');
+            $error = \ErrorHandler::notFound('report');
             abort($error['status'], $error['message']);
         }
 
         if ( ! \Core::users()->can($report->view_name, 'reports'))
         {
-            $error = $this->errorHandler->noPermissions();
+            $error = \ErrorHandler::noPermissions();
             abort($error['status'], $error['message']);
         }
 
@@ -58,13 +58,13 @@ class ReportRepository extends AbstractRepository
         
         if ( ! $report) 
         {
-            $error = $this->errorHandler->notFound('report');
+            $error = \ErrorHandler::notFound('report');
             abort($error['status'], $error['message']);
         }
         
         if ( ! \Core::users()->can($report->view_name, 'reports'))
         {
-            $error = $this->errorHandler->noPermissions();
+            $error = \ErrorHandler::noPermissions();
             abort($error['status'], $error['message']);
         }
 		

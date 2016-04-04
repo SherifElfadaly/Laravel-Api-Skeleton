@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Core;
+<?php namespace App\Modules\Core\Utl;
 
 class ErrorHandler
 {

@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Logging\Http\Controllers;
+namespace App\Modules\Core\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;

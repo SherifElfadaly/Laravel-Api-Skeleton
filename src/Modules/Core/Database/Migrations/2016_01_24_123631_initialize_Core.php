@@ -76,10 +76,68 @@ class InitializeCore extends Migration
         	]
         );
 
+         /**
+         * Delete previous permissions.
+         */
+		DB::table('permissions')->whereIn('model', ['logs'])->delete();
+
+		 /**
+         * Insert the permissions related to this module.
+         */
+        DB::table('permissions')->insert(
+        	[
+        		/**
+        		 * Logs model permissions.
+        		 */
+	        	[
+	        	'name'       => 'find',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'search',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'list',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'findby',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'first',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'paginate',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'paginateby',
+	        	'model'      => 'logs',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+        	]
+        );
+
         /**
 		 * Assign the permissions to the admin group.
 		 */
-		$permissionIds = DB::table('permissions')->whereIn('model', ['settings'])->select('id')->lists('id');
+		$permissionIds = DB::table('permissions')->whereIn('model', ['settings', 'logs'])->select('id')->lists('id');
 		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
 		foreach ($permissionIds as $permissionId) 
 		{

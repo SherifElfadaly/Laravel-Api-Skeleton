@@ -1,7 +1,0 @@
-{
-	"name": "Logging",
-	"slug": "logging",
-	"version": "1.0",
-	"description": "This is the description for the Logging module.",
-	"enabled": true
-}

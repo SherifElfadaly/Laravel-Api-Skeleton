@@ -91,7 +91,7 @@ class UsersController extends BaseApiController
         }
         else
         {
-            $error = $this->errorHandler->loginFailed();
+            $error = \ErrorHandler::loginFailed();
             abort($error['status'], $error['message']);
         }
     }
