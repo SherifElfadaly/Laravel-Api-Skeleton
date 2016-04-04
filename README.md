@@ -1,9 +1,9 @@
 This package is under development
-# Api Skeleton
+<!-- # Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-scrutinizer-build]][ico-scrutinizer-build]
+[![Build Status][ico-scrutinizer-build]][link-scrutinizer-build]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 [![Total Downloads][ico-downloads]][link-downloads]
 
@@ -131,5 +131,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-scrutinizer]: https://scrutinizer-ci.com/g/SherifElfadaly/Laravel-Api-Skeleton/code-structure
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
-[link-contributors]: ../../contributors
- -->
+[link-contributors]: ../../contributors -->
