@@ -13,9 +13,7 @@ class ApiSkeletonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-     $this->publishes([
-        __DIR__.'/Modules' => app_path('Modules'),
-        ]);
+     $this->publishes([__DIR__.'/Modules' => app_path('Modules')]);
 
     }
 

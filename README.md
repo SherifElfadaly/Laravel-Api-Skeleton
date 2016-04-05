@@ -28,10 +28,10 @@ Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 add the aliases in config/app.php
 
 ``` bash
-'Core'         => App\Modules\Core\Facades\Core::class,
-'ErrorHandler' => App\Modules\Core\Facades\ErrorHandler::class,
-'CoreConfig'   => App\Modules\Core\Facades\CoreConfig::class,
-'Logging'      => App\Modules\Core\Facades\Logging::class,
+'Core'         => App\Modules\V1\Core\Facades\Core::class,
+'ErrorHandler' => App\Modules\V1\Core\Facades\ErrorHandler::class,
+'CoreConfig'   => App\Modules\V1\Core\Facades\CoreConfig::class,
+'Logging'      => App\Modules\V1\Core\Facades\Logging::class,
 'Module'       => Caffeinated\Modules\Facades\Module::class,
 'JWTAuth'      => Tymon\JWTAuth\Facades\JWTAuth::class
 'JWTFactory'   => Tymon\JWTAuth\Facades\JWTFactory::class
@@ -42,39 +42,34 @@ add the following code in Exception/Handler.php
 ``` bash
 if ($request->wantsJson())
 {
-	if ($e instanceof \Illuminate\Database\QueryException) 
-	{
-		$error = \ErrorHandler::dbQueryError();
-		return \Response::json($error['message'], $error['status']);
-	}
-	else if ($e instanceof \predis\connection\connectionexception) 
-	{
-		$error = \ErrorHandler::redisNotRunning();
-		return \Response::json($error['message'], $error['status']);
-	}
-	else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
-	{
-		$error = \ErrorHandler::tokenExpired();
-		return \Response::json($error['message'], $error['status']);
-	} 
-	else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
-	{
-		$error = \ErrorHandler::noPermissions();
-		return \Response::json($error['message'], $error['status']);
-	}
-	else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
-	{
-		$error = \ErrorHandler::unAuthorized();
-		return \Response::json($error['message'], $error['status']);
-	}
-	else if ($e instanceof HttpException) 
-	{
-		return \Response::json($e->getMessage(), $e->getStatusCode());   
-	}
-	else
-	{
-		return parent::render($request, $e);
-	}
+    if ($e instanceof \Illuminate\Database\QueryException) 
+    {
+        \ErrorHandler::dbQueryError();
+    }
+    else if ($e instanceof \predis\connection\connectionexception) 
+    {
+        \ErrorHandler::redisNotRunning();
+    }
+    else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
+    {
+        \ErrorHandler::tokenExpired();
+    } 
+    else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
+    {
+        \ErrorHandler::tokenExpired();
+    }
+    else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
+    {
+        \ErrorHandler::unAuthorized();
+    }
+    else if ($e instanceof HttpException) 
+    {
+        return \Response::json($e->getMessage(), $e->getStatusCode());   
+    }
+    else
+    {
+        return parent::render($request, $e);
+    }
 }
 ```
 commit the csrf check in App\Http\Kernel.php
@@ -91,6 +86,12 @@ php artisan vendor:publish
 
 ``` bash
 php artisan jwt:generate
+```
+Update the namespace and path in modules.php config
+
+``` bash
+'path'      => app_path('Modules/V1'),
+'namespace' => 'App\Modules\V1\\',
 ```
 
 ## Usage
