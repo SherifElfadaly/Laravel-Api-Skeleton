@@ -11,7 +11,7 @@ class AclUser extends User {
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden   = ['password', 'remember_token','deleted_at'];
     protected $guarded  = ['id'];
-    protected $fillable = ['first_name', 'last_name', 'user_name', 'address', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password'];
     protected $appends  = ['permissions'];
     
     public function getCreatedAtAttribute($value)

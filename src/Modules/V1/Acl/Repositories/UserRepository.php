@@ -178,4 +178,58 @@ class UserRepository extends AbstractRepository
         
         return $this->save($profile);
     }
+
+    /**
+     * Send a reset link to the given user.
+     *
+     * @param  string  $email
+     * @return void
+     */
+    public function sendReset($email)
+    {
+        $response = \Password::sendResetLink($email, function (\Illuminate\Mail\Message $message) {
+            $message->subject('Your Password Reset Link');
+        });
+
+        switch ($response) 
+        {
+            case \Password::INVALID_USER:
+                \ErrorHandler::notFound('email');
+        }
+    }
+
+    /**
+     * Reset the given user's password.
+     *
+     * @param  array  $credentials
+     * @return integer
+     */
+    public function resetPassword($credentials)
+    {
+        $token    = false;
+        $response = \Password::reset($credentials, function ($user, $password) use (&$token) {
+            $user->password = $password;
+            $user->save();
+
+            $token = \JWTAuth::fromUser($user);
+        });
+
+
+        switch ($response) {
+            case \Password::PASSWORD_RESET:
+                return $token;
+                
+            case \Password::INVALID_TOKEN:
+                \ErrorHandler::invalidResetToken('token');
+
+            case \Password::INVALID_PASSWORD:
+                \ErrorHandler::invalidResetPassword('email');
+
+            case \Password::INVALID_USER:
+                \ErrorHandler::notFound('user');
+
+            default:
+                \ErrorHandler::generalError();
+        }
+    }
 }

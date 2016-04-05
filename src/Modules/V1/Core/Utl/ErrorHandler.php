@@ -10,13 +10,13 @@ class ErrorHandler
 
     public function tokenExpired()
     {
-        $error = ['status' => 401, 'message' => 'Login token expired'];
+        $error = ['status' => 403, 'message' => 'Login token expired'];
         abort($error['status'], $error['message']);
     }
 
      public function noPermissions()
     {
-        $error = ['status' => 401, 'message' => 'No permissions'];
+        $error = ['status' => 403, 'message' => 'No permissions'];
         abort($error['status'], $error['message']);
     }
 
@@ -52,13 +52,31 @@ class ErrorHandler
 
     public function userIsBlocked()
     {
-        $error = ['status' => 400, 'message' => 'You have been blocked'];
+        $error = ['status' => 403, 'message' => 'You have been blocked'];
+        abort($error['status'], $error['message']);
+    }
+
+    public function invalidResetToken()
+    {
+        $error = ['status' => 400, 'message' => 'Reset password token is invalid'];
+        abort($error['status'], $error['message']);
+    }
+
+    public function invalidResetPassword()
+    {
+        $error = ['status' => 400, 'message' => 'Reset password is invalid'];
         abort($error['status'], $error['message']);
     }
 
     public function notFound($text)
     {
         $error = ['status' => 404, 'message' => 'The requested ' . $text . ' not found'];
+        abort($error['status'], $error['message']);
+    }
+
+    public function generalError()
+    {
+        $error = ['status' => 404, 'message' => 'Something went wrong'];
         abort($error['status'], $error['message']);
     }
 }

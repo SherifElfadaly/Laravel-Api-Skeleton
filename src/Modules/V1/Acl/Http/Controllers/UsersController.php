@@ -19,14 +19,14 @@ class UsersController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['account', 'logout', 'block', 'unblock', 'editprofile'];
+    protected $skipPermissionCheck = ['account', 'logout', 'block', 'unblock', 'editprofile', 'sendreset'];
 
     /**
      * List of all route actions that the base api controller
      * will skip login check for them.
      * @var array
      */
-    protected $skipLoginCheck      = ['login', 'register'];
+    protected $skipLoginCheck      = ['login', 'register', 'sendreset', 'resetpassword'];
 
     /**
      * The validations rules used by the base api controller
@@ -90,11 +90,11 @@ class UsersController extends BaseApiController
     public function postRegister(Request $request)
     {
         $this->validate($request, [
-            'email'    => 'required|email|unique:users,email,{id}', 
-            'password' => 'required|min:6'
+            'email'    => 'email|unique:users,email,{id}', 
+            'password' => 'min:6'
             ]);
 
-        return \Response::json(\Core::users()->login($request->only('email', 'password')), 200);
+        return \Response::json(\Core::users()->register($request->only('email', 'password')), 200);
     }
 
     /**
@@ -138,5 +138,36 @@ class UsersController extends BaseApiController
     public function postEditprofile(Request $request)
     {
         return \Response::json(\Core::users()->editProfile($request->all()), 200);
+    }
+
+    /**
+     * Send a reset link to the given user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postSendreset(Request $request)
+    {
+        $this->validate($request, ['email' => 'required|email']);
+
+        return \Response::json(\Core::users()->sendReset($request->only('email')), 200);
+    }
+
+    /**
+     * Reset the given user's password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postResetpassword(Request $request)
+    {
+        $this->validate($request, [
+            'token'                 => 'required',
+            'email'                 => 'required|email',
+            'password'              => 'required|confirmed|min:6',
+            'password_confirmation' => 'required',
+        ]);
+
+        return \Response::json(\Core::users()->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')), 200);
     }
 }
