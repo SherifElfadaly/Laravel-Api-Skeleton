@@ -1,5 +1,5 @@
 This package is under development
-# Api Skeleton
+<!-- # Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -108,10 +108,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
 
-## Security
-
-If you discover any security related issues, please email sh.elfadaly@gmail.com instead of using the issue tracker.
-
 ## Credits
 
 - [Sherif Elfadaly][link-author]
@@ -132,4 +128,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-scrutinizer]: https://scrutinizer-ci.com/g/SherifElfadaly/Laravel-Api-Skeleton/code-structure
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
-[link-contributors]: ../../contributors
+[link-contributors]: ../../contributors -->
