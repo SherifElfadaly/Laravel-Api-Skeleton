@@ -182,11 +182,16 @@ class UserRepository extends AbstractRepository
     /**
      * Send a reset link to the given user.
      *
+     * @param  string  $url
      * @param  string  $email
      * @return void
      */
-    public function sendReset($email)
+    public function sendReset($email, $url)
     {
+        view()->composer('auth.emails.password', function($view) use ($url) {
+            $view->with(['url' => $url]);
+        });
+
         $response = \Password::sendResetLink($email, function (\Illuminate\Mail\Message $message) {
             $message->subject('Your Password Reset Link');
         });

@@ -148,9 +148,9 @@ class UsersController extends BaseApiController
      */
     public function postSendreset(Request $request)
     {
-        $this->validate($request, ['email' => 'required|email']);
+        $this->validate($request, ['email' => 'required|email', 'url' => 'required|url']);
 
-        return \Response::json(\Core::users()->sendReset($request->only('email')), 200);
+        return \Response::json(\Core::users()->sendReset($request->only('email'), $request->get('url')), 200);
     }
 
     /**
