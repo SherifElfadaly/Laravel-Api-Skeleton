@@ -20,7 +20,7 @@ class NotificationsController extends BaseApiController
      * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function getNotified($id)
+    public function notified($id)
     {
         return \Response::json(\Core::notifications()->notified($id), 200);
     }
@@ -30,7 +30,7 @@ class NotificationsController extends BaseApiController
      * 
      * @return \Illuminate\Http\Response
      */
-    public function getNotifyall()
+    public function notifyall()
     {
         return \Response::json(\Core::notifications()->notifyAll(), 200);
     }

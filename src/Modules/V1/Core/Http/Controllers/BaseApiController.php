@@ -31,7 +31,7 @@ class BaseApiController extends Controller
         $this->skipLoginCheck      = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
         $this->relations           = array_key_exists($this->model, $this->config['relations']) ? $this->config['relations'][$this->model] : false;
         $route                     = explode('@',\Route::currentRouteAction())[1];
-        $this->checkPermission(explode('_', snake_case($route))[1]);
+        $this->checkPermission($route);
     }
 
     /**
@@ -39,7 +39,7 @@ class BaseApiController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function getIndex() 
+    public function index() 
     {
         if ($this->model)
         {
@@ -54,7 +54,7 @@ class BaseApiController extends Controller
      * @param  integer $id
      * @return \Illuminate\Http\Response
      */
-    public function getFind($id) 
+    public function find($id) 
     {
         if ($this->model) 
         {
@@ -73,7 +73,7 @@ class BaseApiController extends Controller
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function getSearch($query = '', $perPage = 15, $sortBy = 'created_at', $desc = 1) 
+    public function search($query = '', $perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
         if ($this->model) 
         {
@@ -91,7 +91,7 @@ class BaseApiController extends Controller
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function postFindby(Request $request, $sortBy = 'created_at', $desc = 1) 
+    public function findby(Request $request, $sortBy = 'created_at', $desc = 1) 
     {
         if ($this->model) 
         {
@@ -107,7 +107,7 @@ class BaseApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postFirst(Request $request) 
+    public function first(Request $request) 
     {
         if ($this->model) 
         {
@@ -124,7 +124,7 @@ class BaseApiController extends Controller
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function getPaginate($perPage = 15, $sortBy = 'created_at', $desc = 1) 
+    public function paginate($perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
         if ($this->model) 
         {
@@ -143,7 +143,7 @@ class BaseApiController extends Controller
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function postPaginateby(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
+    public function paginateby(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
         if ($this->model) 
         {
@@ -158,7 +158,7 @@ class BaseApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postSave(Request $request) 
+    public function save(Request $request) 
     {
         foreach ($this->validationRules as &$rule) 
         {
@@ -191,7 +191,7 @@ class BaseApiController extends Controller
      * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function getDelete($id) 
+    public function delete($id) 
     {
         if ($this->model) 
         {
@@ -208,11 +208,7 @@ class BaseApiController extends Controller
     private function checkPermission($permission)
     {
         $permission = $permission !== 'index' ? $permission : 'list';
-        if ($permission == 'method') 
-        {
-            \ErrorHandler::notFound('method');
-        }
-        else if ( ! in_array($permission, $this->skipLoginCheck)) 
+        if ( ! in_array($permission, $this->skipLoginCheck)) 
         {
             \JWTAuth::parseToken()->authenticate();
             if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))

@@ -41,9 +41,9 @@ class UsersController extends BaseApiController
     /**
      * Return the logged in user account.
      * 
-     * @return object
+     * @return \Illuminate\Http\Response
      */
-    public function getAccount()
+    public function account()
     {
        $relations = $this->relations && $this->relations['find'] ? $this->relations['find'] : [];
        return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find(\JWTAuth::parseToken()->authenticate()->id, $relations), 200);
@@ -52,31 +52,31 @@ class UsersController extends BaseApiController
     /**
      * Block the user.
      *
-     * @param  integer  $user_id
-     * @return void
+     * @param  integer  $id
+     * @return \Illuminate\Http\Response
      */
-    public function getBlock($user_id)
+    public function block($id)
     {
-        return \Response::json(\Core::users()->block($user_id), 200);
+        return \Response::json(\Core::users()->block($id), 200);
     }
 
     /**
      * Unblock the user.
      *
-     * @param  integer  $user_id
-     * @return void
+     * @param  integer  $id
+     * @return \Illuminate\Http\Response
      */
-    public function getUnblock($user_id)
+    public function unblock($id)
     {
-        return \Response::json(\Core::users()->unblock($user_id), 200);
+        return \Response::json(\Core::users()->unblock($id), 200);
     }
 
     /**
      * Logout the user.
      * 
-     * @return void
+     * @return \Illuminate\Http\Response
      */
-    public function getLogout()
+    public function logout()
     {
         return \Response::json(\Core::users()->logout(), 200);
     }
@@ -87,7 +87,7 @@ class UsersController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postRegister(Request $request)
+    public function register(Request $request)
     {
         $this->validate($request, [
             'email'    => 'email|unique:users,email,{id}', 
@@ -103,7 +103,7 @@ class UsersController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postLogin(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request, [
             'email'    => 'required|email', 
@@ -120,7 +120,7 @@ class UsersController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postAssigngroups(Request $request)
+    public function assigngroups(Request $request)
     {
         $this->validate($request, [
             'group_ids' => 'required|exists:groups,id', 
@@ -136,7 +136,7 @@ class UsersController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postEditprofile(Request $request)
+    public function editprofile(Request $request)
     {
         return \Response::json(\Core::users()->editProfile($request->all()), 200);
     }
@@ -147,7 +147,7 @@ class UsersController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postSendreset(Request $request)
+    public function sendreset(Request $request)
     {
         $this->validate($request, ['email' => 'required|email', 'url' => 'required|url']);
 
@@ -160,7 +160,7 @@ class UsersController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postResetpassword(Request $request)
+    public function resetpassword(Request $request)
     {
         $this->validate($request, [
             'token'                 => 'required',

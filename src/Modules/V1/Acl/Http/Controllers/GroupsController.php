@@ -30,7 +30,7 @@ class GroupsController extends BaseApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postAssignpermissions(Request $request)
+    public function assignpermissions(Request $request)
     {
         $this->validate($request, [
             'permission_ids' => 'required|exists:permissions,id', 
