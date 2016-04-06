@@ -68,14 +68,14 @@ abstract class AbstractRepository implements RepositoryInterface
             /**
              * Use the first element in the model columns to construct the first condition.
              */
-            $q->where(\DB::raw('LOWER(CAST(' .array_shift($conditionColumns). ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
+            $q->where(\DB::raw('LOWER(' . array_shift($conditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
 
             /**
              * Loop through the rest of the columns to construct or where conditions.
              */
             foreach ($conditionColumns as $column) 
             {
-                $q->orWhere(\DB::raw('LOWER(CAST(' . $column . ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
+                $q->orWhere(\DB::raw('LOWER(' . $column . ')'), 'LIKE', '%' . strtolower($query) . '%');
             }
 
             /**
@@ -108,14 +108,14 @@ abstract class AbstractRepository implements RepositoryInterface
                             /**
                              * Use the first element in the relation model columns to construct the first condition.
                              */
-                            $q->where(\DB::raw('LOWER(CAST(' . array_shift($subConditionColumns) . ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
+                            $q->where(\DB::raw('LOWER(' . array_shift($subConditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
 
                             /**
                              * Loop through the rest of the columns to construct or where conditions.
                              */
                             foreach ($subConditionColumns as $subConditionColumn)
                             {
-                                $q->orWhere(\DB::raw('LOWER(CAST(' . $subConditionColumn . ' AS TEXT))'), 'LIKE', '%' . strtolower($query) . '%');
+                                $q->orWhere(\DB::raw('LOWER(' . $subConditionColumn . ')'), 'LIKE', '%' . strtolower($query) . '%');
                             } 
                         });
 
