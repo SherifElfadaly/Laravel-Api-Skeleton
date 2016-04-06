@@ -101,7 +101,6 @@ interface RepositoryInterface
      * condition.
      * 
      * @param  array   $conditions array of conditions
-     * @param  var     $value condition value
      * @param  array   $relations
      * @param  array   $columns
      * @return object

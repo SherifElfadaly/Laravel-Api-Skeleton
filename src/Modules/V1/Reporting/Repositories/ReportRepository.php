@@ -11,7 +11,6 @@ class ReportRepository extends AbstractRepository
 	 */
 	protected function getModel()
 	{
-        $apiVersion = \Request::header('api-version') ?: 1;
 		return 'App\Modules\V1\Reporting\Report';
 	}
 

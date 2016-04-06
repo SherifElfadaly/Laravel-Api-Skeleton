@@ -37,8 +37,6 @@ class BaseApiController extends Controller
     /**
      * Fetch all records with relations from model repository.
      * 
-     * @param  string  $sortBy
-     * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
     public function getIndex() 
