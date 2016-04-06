@@ -6,8 +6,8 @@ interface RepositoryInterface
      * Fetch all records with relations from the storage.
      * 
      * @param  array  $relations
-     * @param  array   $sortBy
-     * @param  array   $desc
+     * @param  array  $sortBy
+     * @param  array  $desc
      * @param  array  $columns
      * @return collection
      */
@@ -61,32 +61,13 @@ interface RepositoryInterface
      * @return object
      */
     public function save(array $data, $saveLog = true);
- 	
-    /**
-     * Insert multiple records to the storage.
-     * 
-     * @param  array   $data
-     * @return array
-     */
-    public function saveMany(array $data);
 
-	/**
-     * Update record in the storage based on the given
-     * condition.
-     * 
-     * @param  [type] $value condition value
-     * @param  array $data
-     * @param  string $attribute condition column name
-     * @return integer affected rows
-     */
-    public function update($value, array $data, $attribute = 'id');
- 	
 	/**
      * Delete record from the storage based on the given
      * condition.
      * 
-     * @param  [type] $value condition value
-     * @param  string $attribute condition column name
+     * @param  var     $value condition value
+     * @param  string  $attribute condition column name
      * @return integer affected rows
      */
     public function delete($value, $attribute = 'id');
@@ -120,7 +101,7 @@ interface RepositoryInterface
      * condition.
      * 
      * @param  array   $conditions array of conditions
-     * @param  [type]  $value condition value
+     * @param  var     $value condition value
      * @param  array   $relations
      * @param  array   $columns
      * @return object

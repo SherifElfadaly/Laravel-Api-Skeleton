@@ -67,12 +67,25 @@ class UserRepository extends AbstractRepository
     /**
      * Handle a login request to the application.
      * 
-     * @param  array $credentials    
+     * @param  array   $credentials    
+     * @param  boolean $adminLogin
      * @return string
      */
-    public function login($credentials)
+    public function login($credentials, $adminLogin = false)
     {
-        if ($this->isBlocked($credentials['email'])) 
+        if ( ! $user = \Core::users()->first(['email' => $credentials['email']])) 
+        {
+            \ErrorHandler::loginFailed();
+        }
+        else if ($adminLogin && $user->groups->lists('name')->search('Admin', true) === false) 
+        {
+            \ErrorHandler::loginFailed();
+        }
+        else if ( ! $adminLogin && $user->groups->lists('name')->search('Admin', true) !== false) 
+        {
+            \ErrorHandler::loginFailed();
+        }
+        else if ($user->blocked)
         {
             \ErrorHandler::userIsBlocked();
         }
@@ -115,12 +128,23 @@ class UserRepository extends AbstractRepository
      */
     public function block($user_id)
     {
+        if ( ! $user = \Core::users()->find($user_id)) 
+        {
+            \ErrorHandler::notFound('user');
+        }
         if ( ! $this->hasGroup('Admin'))
         {
             \ErrorHandler::noPermissions();
         }
+        else if (\JWTAuth::parseToken()->authenticate()->id == $user_id)
+        {
+            \ErrorHandler::noPermissions();
+        }
+        else if ($user->groups->lists('name')->search('Admin', true) !== false) 
+        {
+            \ErrorHandler::noPermissions();
+        }
 
-        $user          = \Core::users()->find($user_id);
         $user->blocked = 1;
         $user->save();
         
@@ -145,23 +169,6 @@ class UserRepository extends AbstractRepository
         $user->save();
 
         return $user;
-    }
-
-    /**
-     * Check if the user blocked or not.
-     *
-     * @param  string $email
-     * @return boolean
-     */
-    public function isBlocked($email)
-    {
-        $user = \Core::users()->first(['email' => $email]);
-        if ( ! $user) 
-        {
-            \ErrorHandler::notFound('email or password');
-        }
-
-        return $user->blocked;
     }
 
     /**
@@ -213,7 +220,7 @@ class UserRepository extends AbstractRepository
     {
         $token    = false;
         $response = \Password::reset($credentials, function ($user, $password) use (&$token) {
-            $user->password = $password;
+            $user->password = bcrypt($password);
             $user->save();
 
             $token = \JWTAuth::fromUser($user);

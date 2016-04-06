@@ -98,7 +98,7 @@ class UsersController extends BaseApiController
     }
 
     /**
-     * Handle a login request to the application.
+     * Handle a login request of the none admin to the application.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -107,10 +107,11 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, [
             'email'    => 'required|email', 
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
+            'admin'    => 'boolean'
             ]);
 
-        return \Response::json(\Core::users()->login($request->only('email', 'password')), 200);
+        return \Response::json(\Core::users()->login($request->only('email', 'password'), $request->get('admin')), 200);
     }
 
     /**

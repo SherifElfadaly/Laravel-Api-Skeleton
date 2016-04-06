@@ -39,7 +39,7 @@ class SettingsObserver {
      */
     public function updating($model)
     {
-        if ($model->original['key'] !== $model->key) 
+        if ($model->getOriginal()['key'] !== $model->key) 
         {
             \ErrorHandler::cannotUpdateSettingKey();
         }
