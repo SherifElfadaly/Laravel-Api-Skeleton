@@ -23,7 +23,7 @@ class InitializeNotifications extends Migration
         DB::table('permissions')->insert(
         	[
         		/**
-        		 * Logs model permissions.
+        		 * notifications model permissions.
         		 */
 	        	[
 	        	'name'       => 'find',
@@ -76,6 +76,63 @@ class InitializeNotifications extends Migration
 	        	[
 	        	'name'       => 'notifyall',
 	        	'model'      => 'notifications',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	/**
+        		 * pushNotificationsDevices model permissions.
+        		 */
+	        	[
+	        	'name'       => 'find',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'search',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'list',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'findby',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'first',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'paginate',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'paginateby',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'save',
+	        	'model'      => 'pushNotificationsDevices',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'delete',
+	        	'model'      => 'pushNotificationsDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
