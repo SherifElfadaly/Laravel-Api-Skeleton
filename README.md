@@ -24,17 +24,19 @@ Then add the service provider in config/app.php:
 ApiSkeleton\ApiSkeleton\ApiSkeletonServiceProvider::class,
 Caffeinated\Modules\ModulesServiceProvider::class,
 Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider::class,
 ```
 add the aliases in config/app.php
 
 ``` bash
-'Core'         => App\Modules\V1\Core\Facades\Core::class,
-'ErrorHandler' => App\Modules\V1\Core\Facades\ErrorHandler::class,
-'CoreConfig'   => App\Modules\V1\Core\Facades\CoreConfig::class,
-'Logging'      => App\Modules\V1\Core\Facades\Logging::class,
-'Module'       => Caffeinated\Modules\Facades\Module::class,
-'JWTAuth'      => Tymon\JWTAuth\Facades\JWTAuth::class
-'JWTFactory'   => Tymon\JWTAuth\Facades\JWTFactory::class
+'Core'             => App\Modules\V1\Core\Facades\Core::class,
+'ErrorHandler'     => App\Modules\V1\Core\Facades\ErrorHandler::class,
+'CoreConfig'       => App\Modules\V1\Core\Facades\CoreConfig::class,
+'Logging'          => App\Modules\V1\Core\Facades\Logging::class,
+'Module'           => Caffeinated\Modules\Facades\Module::class,
+'JWTAuth'          => Tymon\JWTAuth\Facades\JWTAuth::class,
+'JWTFactory'       => Tymon\JWTAuth\Facades\JWTFactory::class,
+'PushNotification' => Davibennun\LaravelPushNotification\Facades\PushNotification::class,
 ```
 
 add the following code in Exception/Handler.php
