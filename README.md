@@ -95,7 +95,7 @@ Update the namespace and path in modules.php config
 ```
 
 ## Usage
-Check [Wiki][link-contributors]
+Check [wiki][link-wiki]
 
 ## Change log
 
