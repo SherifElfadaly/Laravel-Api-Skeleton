@@ -1,5 +1,5 @@
 This package is under development
-# Api Skeleton
+<!-- # Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -95,7 +95,7 @@ Update the namespace and path in modules.php config
 ```
 
 ## Usage
-Check [wiki][link-wiki]
+Check the [wiki][link-wiki].
 
 ## Change log
 
@@ -126,4 +126,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors 
-[link-wiki]: https://github.com/SherifElfadaly/Laravel-Api-Skeleton/wiki
+[link-wiki]: https://github.com/SherifElfadaly/Laravel-Api-Skeleton/wiki -->
