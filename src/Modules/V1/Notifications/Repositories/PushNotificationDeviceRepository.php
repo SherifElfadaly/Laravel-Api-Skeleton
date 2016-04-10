@@ -4,57 +4,65 @@ use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
 
 class PushNotificationDeviceRepository extends AbstractRepository
 {
- /**
-  * Return the model full namespace.
-  * 
-  * @return string
-  */
- protected function getModel()
- {
-  return 'App\Modules\V1\Notifications\PushNotificationDevice';
- }
+      /**
+      * Return the model full namespace.
+      * 
+      * @return string
+      */
+      protected function getModel()
+      {
+          return 'App\Modules\V1\Notifications\PushNotificationDevice';
+      }
 
     /**
-     * Set the notification notified to all.
+     * Fetch the given users devices and broadcast the given
+     * message to all of them.
      *
-     * @param  array  $users_ids
-     * @param  string $messageText
+     * @param  array   $users_ids
+     * @param  string  $messageText
+     * @param  boolean $activeOnly
      * @return void
      */
-    public function broadcast($users_ids, $messageText)
+    public function broadcast($users_ids, $messageText, $activeOnly = false)
     {
-		$devicesArray = [];
-		$devices      = \Core::notifications()->model->whereIn('user_id', $users_ids);
-    	foreach ($devices as $device) 
-    	{
-    		$devicesArray[$device->deivce_type] = \PushNotification::Device($device->device_token, array('badge' => 5));
-    	}
-    	
-		$androidDevices = \PushNotification::DeviceCollection($devicesArray['ios']);
-		$iosDevices     = \PushNotification::DeviceCollection($devicesArray['android']);
-		$message        = constructMessage($messageText);
+        $devicesArray = [];
+        $devices      = $this->model->whereIn('user_id', $users_ids);
+        $devices      = $activeOnly ? $device->where('active', 1)->get() : $devices->get();
+        foreach ($devices as $device) 
+        {
+            $devicesArray[$device->device_type][] = \PushNotification::Device($device->device_token, array('badge' => 5));
+        }
+        
+        $message = $this->constructMessage($messageText);
+        if (array_key_exists('ios', $devicesArray)) 
+        {
+            $iosDevices = \PushNotification::DeviceCollection($devicesArray['ios']);
+            $this->push('ios', $iosDevices, $message);
+        }
 
-		$this->push('android', $androidDevices, $message);
-		$this->push('ios', $iosDevices, $message);
+        if (array_key_exists('android', $devicesArray)) 
+        {
+            $androidDevices = \PushNotification::DeviceCollection($devicesArray['android']);
+            $this->push('android', $androidDevices, $message);
+        }
     }
 
 
- 	/**
-     * Set the notification notified to true.
+    /**
+     * Push the given message to the given devices.
      *
      * @param  string    $type
      * @param  colletion $devices
      * @param  string    $message
-     * @return object
+     * @return void
      */
     public function push($type, $devices, $message)
     {
-		$collection = \PushNotification::app($type)->to($devices)->send($message);
-    	foreach ($collection->pushManager as $push) 
-    	{
-    		$response[] = $push->getAdapter()->getResponse();
-    	}
-    	dd($response);
+        $collection = \PushNotification::app($type)->to($devices)->send($message);
+        foreach ($collection->pushManager as $push) 
+        {
+            $response[] = $push->getAdapter()->getResponse();
+        }
     }
 
     /**
@@ -66,6 +74,6 @@ class PushNotificationDeviceRepository extends AbstractRepository
      */
     protected function constructMessage($messageText, $options = [])
     {
-    	$message = \PushNotification::Message($messageText, $options);
+        return \PushNotification::Message($messageText, $options);
     }
 }

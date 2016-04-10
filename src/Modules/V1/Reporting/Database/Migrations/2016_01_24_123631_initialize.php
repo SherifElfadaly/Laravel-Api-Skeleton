@@ -101,10 +101,8 @@ class Initialize extends Migration
 	 */
 	public function down()
 	{
-		$adminGroupId = DB::table('groups')->where('name', 'Admin')->first()->id;
-		$adminUserId  = DB::table('users')->where('email', 'admin@user.com')->first()->id;
-
-		DB::table('permissions')->whereIn('model', ['reports'])->delete();
-		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
+		$permissions  = DB::table('permissions')->whereIn('model', ['reports']);
+		DB::table('groups_permissions')->whereIn('permission_id', $permissions->lists('id'))->delete();
+		$permissions->delete();
 	}
 }

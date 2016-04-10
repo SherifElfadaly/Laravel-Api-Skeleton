@@ -80,59 +80,59 @@ class InitializeNotifications extends Migration
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	/**
-        		 * pushNotificationsDevices model permissions.
+        		 * pushNotificationDevices model permissions.
         		 */
 	        	[
 	        	'name'       => 'find',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'search',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'list',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'findby',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'first',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginate',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginateby',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'save',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'delete',
-	        	'model'      => 'pushNotificationsDevices',
+	        	'model'      => 'pushNotificationDevices',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
@@ -142,7 +142,7 @@ class InitializeNotifications extends Migration
         /**
 		 * Assign the permissions to the admin group.
 		 */
-		$permissionIds = DB::table('permissions')->whereIn('model', ['notifications'])->select('id')->lists('id');
+		$permissionIds = DB::table('permissions')->whereIn('model', ['notifications', 'pushNotificationDevices'])->select('id')->lists('id');
 		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
 		foreach ($permissionIds as $permissionId) 
 		{
@@ -164,10 +164,8 @@ class InitializeNotifications extends Migration
 	 */
 	public function down()
 	{
-		$adminGroupId = DB::table('groups')->where('name', 'Admin')->first()->id;
-		$adminUserId  = DB::table('users')->where('email', 'admin@user.com')->first()->id;
-
-		DB::table('permissions')->whereIn('model', ['notifications'])->delete();
-		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
+		$permissions  = DB::table('permissions')->whereIn('model', ['notifications', 'pushNotificationDevices']);
+		DB::table('groups_permissions')->whereIn('permission_id', $permissions->lists('id'))->delete();
+		$permissions->delete();
 	}
 }

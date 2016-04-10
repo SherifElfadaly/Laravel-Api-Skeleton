@@ -7,12 +7,12 @@ use App\Modules\V1\Core\Http\Controllers\BaseApiController;
 
 class PushNotificationsDevicesController extends BaseApiController
 {
-	/**
+    /**
      * The name of the model that is used by the base api controller 
      * to preform actions like (add, edit ... etc).
      * @var string
      */
-    protected $model            = 'notifications';
+    protected $model            = 'pushNotificationDevices';
 
     /**
      * The validations rules used by the base api controller
@@ -20,9 +20,9 @@ class PushNotificationsDevicesController extends BaseApiController
      * @var array
      */
     protected $validationRules  = [
-    'device_token'   => 'required|string|max:100',
-    'device_type' => 'required|in:androind,ios',
-    'user_id'     => 'required|exists:users,id',
-    'active'      => 'boolean'
+    'device_token' => 'required|string|max:255',
+    'device_type'  => 'required|in:android,ios',
+    'user_id'      => 'required|exists:users,id',
+    'active'       => 'boolean'
     ];
 }

@@ -273,9 +273,12 @@ class InitializeAcl extends Migration
 	{
 		$adminGroupId = DB::table('groups')->where('name', 'Admin')->first()->id;
 		$adminUserId  = DB::table('users')->where('email', 'admin@user.com')->first()->id;
+		$permissions  = DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups']);
 
-		DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups'])->delete();
+		DB::table('groups_permissions')->whereIn('permission_id', $permissions->lists('id'))->delete();
 		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
+		
+		$permissions->delete();
 		DB::table('users')->where('email', 'admin@user.com')->delete();
 		DB::table('groups')->where('name', 'admin')->delete();
 	}
