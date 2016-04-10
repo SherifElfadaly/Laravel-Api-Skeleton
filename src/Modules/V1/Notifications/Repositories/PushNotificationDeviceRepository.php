@@ -15,33 +15,31 @@ class PushNotificationDeviceRepository extends AbstractRepository
       }
 
     /**
-     * Fetch the given users devices and broadcast the given
-     * message to all of them.
+     * Set the notification notified to all.
      *
-     * @param  array   $users_ids
-     * @param  string  $messageText
-     * @param  boolean $activeOnly
+     * @param  array  $users_ids
+     * @param  string $messageText
      * @return void
      */
-    public function broadcast($users_ids, $messageText, $activeOnly = false)
+    public function broadcast($users_ids, $messageText)
     {
         $devicesArray = [];
-        $devices      = $this->model->whereIn('user_id', $users_ids);
-        $devices      = $activeOnly ? $device->where('active', 1)->get() : $devices->get();
+        $devices      = $this->model->whereIn('user_id', $users_ids)->get();
         foreach ($devices as $device) 
         {
-            $devicesArray[$device->device_type][] = \PushNotification::Device($device->device_token, array('badge' => 5));
+            $devicesArray[$device->device_type][] = \PushNotification::Device($device->device_token);
         }
         
-        $message = $this->constructMessage($messageText);
         if (array_key_exists('ios', $devicesArray)) 
         {
+            $message = $this->constructMessage($messageText, [ 'badge' => 15, 'sound' => 'default' ]);
             $iosDevices = \PushNotification::DeviceCollection($devicesArray['ios']);
             $this->push('ios', $iosDevices, $message);
         }
 
         if (array_key_exists('android', $devicesArray)) 
         {
+            $message = $this->constructMessage($messageText);
             $androidDevices = \PushNotification::DeviceCollection($devicesArray['android']);
             $this->push('android', $androidDevices, $message);
         }
@@ -49,12 +47,12 @@ class PushNotificationDeviceRepository extends AbstractRepository
 
 
     /**
-     * Push the given message to the given devices.
+     * Set the notification notified to true.
      *
      * @param  string    $type
      * @param  colletion $devices
      * @param  string    $message
-     * @return void
+     * @return object
      */
     public function push($type, $devices, $message)
     {
@@ -63,6 +61,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
         {
             $response[] = $push->getAdapter()->getResponse();
         }
+        dd($response);
     }
 
     /**

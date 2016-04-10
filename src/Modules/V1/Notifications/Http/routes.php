@@ -40,7 +40,7 @@ Route::group(['prefix' => 'api/v1/notifications'], function() {
 		Route::get('find/{id}', 'PushNotificationsDevicesController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginate');
-		Route::get('notified/{id}', 'PushNotificationsDevicesController@delete');
+		Route::get('delete/{id}', 'PushNotificationsDevicesController@delete');
 
 		/**
 		 * Post requests.
