@@ -85,14 +85,15 @@ php artisan vendor:publish
 ```
  set a secret key in the config file
 
-``` bash
-php artisan jwt:generate
-```
 Update the namespace and path in modules.php config
 
 ``` bash
 'path'      => app_path('Modules/V1'),
 'namespace' => 'App\Modules\V1\\',
+```
+
+``` bash
+php artisan jwt:generate
 ```
 
 ## Usage
