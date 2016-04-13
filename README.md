@@ -96,6 +96,16 @@ Update the namespace and path in modules.php config
 php artisan jwt:generate
 ```
 
+Run this command
+``` bash
+php artisan module:cache
+```
+
+Run database migrations
+``` bash
+php artisan module:migrate
+```
+
 ## Usage
 Check the [wiki][link-wiki].
 
