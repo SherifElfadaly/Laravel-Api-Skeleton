@@ -1,4 +1,3 @@
-This package is under development
 # Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
@@ -39,7 +38,7 @@ add the aliases in config/app.php
 'PushNotification' => Davibennun\LaravelPushNotification\Facades\PushNotification::class,
 ```
 
-add the following code in Exception/Handler.php
+add the following code in Exception/Handler.php in render function before the return
 
 ``` bash
 if ($request->wantsJson())
