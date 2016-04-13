@@ -17,7 +17,7 @@ add this line to composer.json:
 ``` bash
 composer require api-skeleton/api-skeleton
 ```
-Then add the service provider in config/app.php:
+then add the service provider in config/app.php:
 
 ``` bash
 ApiSkeleton\ApiSkeleton\ApiSkeletonServiceProvider::class,
@@ -83,25 +83,25 @@ publish files
 ``` bash
 php artisan vendor:publish
 ```
- set a secret key in the config file
 
-Update the namespace and path in modules.php config
+update the namespace and path in modules.php config
 
 ``` bash
 'path'      => app_path('Modules/V1'),
 'namespace' => 'App\Modules\V1\\',
 ```
 
+set a secret key in the config file
 ``` bash
 php artisan jwt:generate
 ```
 
-Run this command
+run this command
 ``` bash
 php artisan module:cache
 ```
 
-Run database migrations
+run database migrations
 ``` bash
 php artisan module:migrate
 ```
