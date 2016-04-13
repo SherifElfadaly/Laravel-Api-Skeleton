@@ -1,5 +1,5 @@
 This package is under development
-<!-- # Api Skeleton
+# Api Skeleton
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -16,7 +16,7 @@ Via Composer
 
 add this line to composer.json:
 ``` bash
-"api-skeleton/api-skeleton": "^1.0@dev"
+composer require api-skeleton/api-skeleton
 ```
 Then add the service provider in config/app.php:
 
@@ -128,4 +128,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors 
-[link-wiki]: https://github.com/SherifElfadaly/Laravel-Api-Skeleton/wiki -->
+[link-wiki]: https://github.com/SherifElfadaly/Laravel-Api-Skeleton/wiki

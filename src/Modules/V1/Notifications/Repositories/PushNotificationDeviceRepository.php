@@ -32,7 +32,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
         
         if (array_key_exists('ios', $devicesArray)) 
         {
-            $message = $this->constructMessage($messageText, [ 'badge' => 15, 'sound' => 'default' ]);
+            $message = $this->constructMessage($messageText, [ 'badge' => 15, 'sound' => 'default', 'content-available' => 1 ]);
             $iosDevices = \PushNotification::DeviceCollection($devicesArray['ios']);
             $this->push('ios', $iosDevices, $message);
         }
