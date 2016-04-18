@@ -35,15 +35,9 @@ class AclPermissionObserver {
         //
     }
 
-    /**
-     * Soft delete the associated groups to the deleted permission.
-     * 
-     * @param  object $model the delted model.
-     * @return void
-     */
     public function deleting($model)
     {
-        \DB::table('groups_permissions')->where('permission_id', $model->id)->update(array('deleted_at' => \DB::raw('NOW()')));
+        //
     }
 
     public function deleted($model)

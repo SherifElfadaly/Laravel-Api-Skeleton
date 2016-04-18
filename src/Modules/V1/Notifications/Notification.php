@@ -11,6 +11,7 @@ class Notification extends Model{
     protected $hidden   = ['deleted_at', 'item_type'];
     protected $guarded  = ['id'];
     protected $fillable = ['name', 'description', 'item_name', 'item_type', 'item_id', 'notified'];
+    public $searchable  = ['name', 'description', 'item_name', 'item_type'];
 
     public function getCreatedAtAttribute($value)
     {

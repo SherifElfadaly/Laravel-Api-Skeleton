@@ -11,6 +11,7 @@ class AclGroup extends Model{
     protected $hidden   = ['deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['name'];
+    public $searchable  = ['name'];
 
     public function getCreatedAtAttribute($value)
     {

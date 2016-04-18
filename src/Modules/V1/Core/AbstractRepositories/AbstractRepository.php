@@ -57,7 +57,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function search($query, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = array('*'))
     {
         $model            = call_user_func_array("{$this->getModel()}::with", array($relations));
-        $conditionColumns = $this->model->getFillable();
+        $conditionColumns = $this->model->searchable;
         $sort             = $desc ? 'desc' : 'asc';
 
         /**
@@ -65,10 +65,13 @@ abstract class AbstractRepository implements RepositoryInterface
          */
         $model->where(function ($q) use ($query, $conditionColumns, $relations){
 
-            /**
-             * Use the first element in the model columns to construct the first condition.
-             */
-            $q->where(\DB::raw('LOWER(' . array_shift($conditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
+            if (count($conditionColumns)) 
+            {
+                /**
+                 * Use the first element in the model columns to construct the first condition.
+                 */
+                $q->where(\DB::raw('LOWER(' . array_shift($conditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
+            }
 
             /**
              * Loop through the rest of the columns to construct or where conditions.
@@ -103,12 +106,15 @@ abstract class AbstractRepository implements RepositoryInterface
                             /**
                              * Get columns of the relation.
                              */
-                            $subConditionColumns = \Core::$relation()->model->getFillable();
+                            $subConditionColumns = \Core::$relation()->model->searchable;
 
-                            /**
-                             * Use the first element in the relation model columns to construct the first condition.
-                             */
-                            $q->where(\DB::raw('LOWER(' . array_shift($subConditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
+                            if (count($subConditionColumns)) 
+                            {
+                                /**
+                                * Use the first element in the relation model columns to construct the first condition.
+                                 */
+                                $q->where(\DB::raw('LOWER(' . array_shift($subConditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
+                            }
 
                             /**
                              * Loop through the rest of the columns to construct or where conditions.
@@ -175,9 +181,8 @@ abstract class AbstractRepository implements RepositoryInterface
         $model      = false;
         $modelClass = $this->model;
         $relations  = [];
-        $with       = [];
 
-        \DB::transaction(function () use (&$model, &$relations, &$with, $data, $saveLog, $modelClass) {
+        \DB::transaction(function () use (&$model, &$relations, $data, $saveLog, $modelClass) {
             /**
              * If the id is present in the data then select the model for updating,
              * else create new model.
@@ -202,10 +207,6 @@ abstract class AbstractRepository implements RepositoryInterface
                 $relation = camel_case($key);
                 if (method_exists($model, $relation))
                 {
-                    /**
-                     * Add the relation to the with array to eager load the created model with the relations.
-                     */
-                    $with[] = $relation;
 
                     /**
                      * Check if the relation is a collection.
@@ -316,7 +317,7 @@ abstract class AbstractRepository implements RepositoryInterface
              * Save the model.
              */
             $model->save();
-            
+
             /**
              * Loop through the relations array.
              */
@@ -410,7 +411,7 @@ abstract class AbstractRepository implements RepositoryInterface
         /**
          * return the saved mdel with the given relations.
          */
-        return $this->find($model->id, $with);
+        return $model;
     }
     
     /**

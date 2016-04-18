@@ -22,6 +22,7 @@ class CoreConfig
 					'paginate'   => [],
 					'paginateBy' => [],
 					'first'      => [],
+					'search'     => [],
 				],
 				'permissions' => [
 					'all'        => ['groups'],
@@ -30,6 +31,7 @@ class CoreConfig
 					'paginate'   => ['groups'],
 					'paginateBy' => ['groups'],
 					'first'      => ['groups'],
+					'search'     => ['groups'],
 				],
 				'groups' => [
 					'all'        => ['users'],
@@ -38,6 +40,7 @@ class CoreConfig
 					'paginate'   => ['users'],
 					'paginateBy' => ['users'],
 					'first'      => ['users'],
+					'search'     => ['users'],
 				],
 				'logs' => [
 					'all'        => ['user', 'item'],
@@ -46,6 +49,7 @@ class CoreConfig
 					'paginate'   => ['user', 'item'],
 					'paginateBy' => ['user', 'item'],
 					'first'      => ['user', 'item'],
+					'search'     => ['user', 'item'],
 				],
 				'notifications' => [
 					'all'        => ['item'],
@@ -54,6 +58,7 @@ class CoreConfig
 					'paginate'   => ['item'],
 					'paginateBy' => ['item'],
 					'first'      => ['item'],
+					'search'     => ['item'],
 				],
 			]
 		]);

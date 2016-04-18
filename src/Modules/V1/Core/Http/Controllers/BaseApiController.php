@@ -77,7 +77,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['paginate'] ? $this->relations['paginate'] : [];
+            $relations = $this->relations && $this->relations['search'] ? $this->relations['search'] : [];
             return \Response::json(call_user_func_array("\Core::{$this->model}", [])->search($query, $perPage, $relations, $sortBy, $desc), 200);
         }
     }

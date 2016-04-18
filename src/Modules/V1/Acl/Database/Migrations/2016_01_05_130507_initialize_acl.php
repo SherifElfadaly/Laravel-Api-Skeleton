@@ -85,6 +85,18 @@ class InitializeAcl extends Migration
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
+	        	[
+	        	'name'       => 'block',
+	        	'model'      => 'users',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'unblock',
+	        	'model'      => 'users',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
 
 	        	/**
         		 * Permissions model permissions.
@@ -203,11 +215,11 @@ class InitializeAcl extends Migration
 		 */
 		$adminGroup   = DB::table('groups')->where('name', 'Admin')->first();
 		$adminUser    = DB::table('users')->where('email', 'admin@user.com')->first();
-		$adminGroupId = $adminGroup ? DB::table('groups')->where('name', 'Admin')->first()->id : 0;
-		$adminUserId  = $adminUser ? DB::table('users')->where('email', 'admin@user.com')->first()->id : 0;
+		$adminGroupId = $adminGroup ? $adminGroup->id : 0;
+		$adminUserId  = $adminUser ? $adminUser->id : 0;
 		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
 		DB::table('users')->where('email', 'admin@user.com')->delete();
-		DB::table('groups')->where('name', 'admin')->delete();
+		DB::table('groups')->where('name', 'Admin')->delete();
 
 		/**
 		 * Create Default groups.
@@ -250,7 +262,6 @@ class InitializeAcl extends Migration
 		 * Assign the permissions to the admin group.
 		 */
 		$permissionIds = DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups'])->select('id')->lists('id');
-		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
 		foreach ($permissionIds as $permissionId) 
 		{
 			DB::table('groups_permissions')->insert(

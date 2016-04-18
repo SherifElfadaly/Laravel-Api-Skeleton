@@ -11,6 +11,7 @@ class Log extends Model{
     protected $hidden   = ['deleted_at', 'item_type'];
     protected $guarded  = ['id'];
     protected $fillable = ['action', 'item_name', 'item_type', 'item_id', 'user_id'];
+    public $searchable  = ['action', 'item_name', 'item_type'];
 
     public function getCreatedAtAttribute($value)
     {

@@ -45,8 +45,7 @@ class AclGroupObserver {
     }
 
     /**
-     * Soft delete the associated permissions to the deleted group
-     * and prevent deleting the admin group.
+     * Prevent deleting the admin group.
      * 
      * @param  object $model the delted model.
      * @return void
@@ -57,8 +56,6 @@ class AclGroupObserver {
         {
             \ErrorHandler::noPermissions();
         }
-
-        \DB::table('groups_permissions')->where('group_id', $model->id)->update(array('deleted_at' => \DB::raw('NOW()')));
     }
 
     public function deleted($model)

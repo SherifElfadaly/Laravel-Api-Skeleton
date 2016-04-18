@@ -13,6 +13,7 @@ class AclUser extends User {
     protected $guarded  = ['id'];
     protected $fillable = ['name', 'email', 'password'];
     protected $appends  = ['permissions'];
+    public $searchable  = ['name', 'email'];
     
     public function getCreatedAtAttribute($value)
     {
@@ -42,7 +43,7 @@ class AclUser extends User {
 
     public function logs()
     {
-        return $this->hasMany('App\Modules\V1\Logging\Log', 'user_id');
+        return $this->hasMany('App\Modules\V1\Core\Log', 'user_id');
     }
 
     public function groups()

@@ -11,6 +11,7 @@ class Settings extends Model{
     protected $hidden   = ['deleted_at'];
     protected $guarded  = ['id', 'key'];
     protected $fillable = ['name','value'];
+    public $searchable  = ['name', 'value', 'key'];
     
     public function getCreatedAtAttribute($value)
     {

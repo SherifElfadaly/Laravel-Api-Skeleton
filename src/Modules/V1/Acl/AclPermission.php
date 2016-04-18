@@ -11,6 +11,7 @@ class AclPermission extends Model {
     protected $hidden   = ['deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['name', 'model'];
+    public $searchable  = ['name', 'model'];
 
     public function getCreatedAtAttribute($value)
     {

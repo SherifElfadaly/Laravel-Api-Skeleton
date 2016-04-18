@@ -19,7 +19,7 @@ class UsersController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['account', 'logout', 'block', 'unblock', 'editprofile', 'sendreset'];
+    protected $skipPermissionCheck = ['account', 'logout', 'sendreset'];
 
     /**
      * List of all route actions that the base api controller
@@ -90,8 +90,8 @@ class UsersController extends BaseApiController
     public function register(Request $request)
     {
         $this->validate($request, [
-            'email'    => 'email|unique:users,email,{id}', 
-            'password' => 'min:6'
+            'email'    => 'required|email|unique:users,email,{id}', 
+            'password' => 'required|min:6'
             ]);
 
         return \Response::json(\Core::users()->register($request->only('email', 'password')), 200);
@@ -128,17 +128,6 @@ class UsersController extends BaseApiController
             ]);
 
         return \Response::json(\Core::users()->assignGroups($request->get('user_id'), $request->get('group_ids')), 200);
-    }
-
-    /**
-     * Handle the editing of the user profile.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function editprofile(Request $request)
-    {
-        return \Response::json(\Core::users()->editProfile($request->all()), 200);
     }
 
     /**

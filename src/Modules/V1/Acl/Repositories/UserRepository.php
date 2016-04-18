@@ -91,7 +91,7 @@ class UserRepository extends AbstractRepository
         }
         else if ($token = \JWTAuth::attempt($credentials))
         {
-            return $token;
+            return ['token' => $token];
         }
         else
         {
@@ -107,7 +107,10 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        return \JWTAuth::fromUser(\Core::users()->model->create($credentials));
+        $user = \Core::users()->model->create($credentials);
+        $this->assignGroups($user->id, \Core::groups()->model->where('name', 'User')->select('id')->lists('id')->toArray());
+
+        return ['token' => \JWTAuth::fromUser($user)];
     }
 
     /**
@@ -169,21 +172,6 @@ class UserRepository extends AbstractRepository
         $user->save();
 
         return $user;
-    }
-
-    /**
-     * Handle the editing of the user profile.
-     * 
-     * @param  array $profile
-     * @return object
-     */
-    public function editProfile($profile)
-    {
-        unset($profile['email']);
-        unset($profile['password']);
-        $profile['id'] = \JWTAuth::parseToken()->authenticate()->id;
-        
-        return $this->save($profile);
     }
 
     /**
