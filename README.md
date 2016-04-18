@@ -13,9 +13,9 @@ PSRs you support to avoid any confusion with users and contributors.
 
 Via Composer
 
-add this line to require-dev in composer.json:
+Run this command:
 ``` bash
-"api-skeleton/api-skeleton": "^1.0@dev"
+composer require api-skeleton/api-skeleton
 ```
 then add the service provider in config/app.php:
 
