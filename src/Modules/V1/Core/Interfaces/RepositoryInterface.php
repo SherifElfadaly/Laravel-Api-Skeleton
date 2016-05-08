@@ -2,7 +2,7 @@
 
 interface RepositoryInterface
 {
-	/**
+    /**
      * Fetch all records with relations from the storage.
      * 
      * @param  array  $relations
@@ -11,8 +11,8 @@ interface RepositoryInterface
      * @param  array  $columns
      * @return collection
      */
-	public function all($relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
- 	
+    public function all($relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
+    
     /**
      * Fetch all records with relations from storage in pages 
      * that matche the given query.
@@ -27,7 +27,7 @@ interface RepositoryInterface
      */
     public function search($query, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
 
-	/**
+    /**
      * Fetch all records with relations from storage in pages.
      * 
      * @param  integer $perPage
@@ -38,8 +38,8 @@ interface RepositoryInterface
      * @return collection
      */
     public function paginate($perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
- 	
-	/**
+    
+    /**
      * Fetch all records with relations based on
      * the given condition from storage in pages.
      * 
@@ -62,7 +62,18 @@ interface RepositoryInterface
      */
     public function save(array $data, $saveLog = true);
 
-	/**
+    /**
+     * Update record in the storage based on the given
+     * condition.
+     * 
+     * @param  var     $value condition value
+     * @param  array   $data
+     * @param  string  $attribute condition column name
+     * @return integer affected rows
+     */
+    public function update($value, array $data, $attribute = 'id');
+
+    /**
      * Delete record from the storage based on the given
      * condition.
      * 
@@ -71,8 +82,8 @@ interface RepositoryInterface
      * @return integer affected rows
      */
     public function delete($value, $attribute = 'id');
- 	
-	/**
+    
+    /**
      * Fetch records from the storage based on the given
      * id.
      * 
@@ -82,8 +93,8 @@ interface RepositoryInterface
      * @return object
      */
     public function find($id, $relations = [], $columns = array('*'));
- 	
-	/**
+    
+    /**
      * Fetch records from the storage based on the given
      * condition.
      * 

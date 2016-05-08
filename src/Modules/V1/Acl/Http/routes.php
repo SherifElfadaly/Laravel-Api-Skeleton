@@ -36,6 +36,7 @@ Route::group(['prefix' => 'api/v1/acl'], function() {
 		Route::post('save', 'UsersController@save');
 		Route::post('register', 'UsersController@register');
 		Route::post('login', 'UsersController@login');
+		Route::post('login/social', 'UsersController@loginSocial');
 		Route::post('assigngroups', 'UsersController@assigngroups');
 		Route::post('sendreset', 'UsersController@sendreset');
 		Route::post('resetpassword', 'UsersController@resetpassword');

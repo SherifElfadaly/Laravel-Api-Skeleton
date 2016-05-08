@@ -32,6 +32,6 @@ class NotificationRepository extends AbstractRepository
      */
     public function notifyAll()
     {
-        \Core::notifications()->update(false, ['notified' => 1], 'notified');
+        $this->update(false, ['notified' => 1], 'notified');
     }
 }

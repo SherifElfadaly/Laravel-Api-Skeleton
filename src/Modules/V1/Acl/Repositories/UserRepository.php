@@ -27,7 +27,7 @@ class UserRepository extends AbstractRepository
     {       
         $user        = $user ?: \JWTAuth::parseToken()->authenticate();
         $permissions = [];
-        \Core::users()->find($user->id, ['groups.permissions'])->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
+        $this->find($user->id, ['groups.permissions'])->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
             $permissions = array_merge($permissions, $permission->where('model', $model)->lists('name')->toArray()); 
         });
         
@@ -42,7 +42,7 @@ class UserRepository extends AbstractRepository
      */
     public function hasGroup($groupName)
     {
-        $groups = \Core::users()->find(\JWTAuth::parseToken()->authenticate()->id)->groups;
+        $groups = $this->find(\JWTAuth::parseToken()->authenticate()->id)->groups;
         return $groups->lists('name')->search($groupName, true) === false ? false : true;
     }
 
@@ -56,12 +56,12 @@ class UserRepository extends AbstractRepository
     public function assignGroups($user_id, $group_ids)
     {
         \DB::transaction(function () use ($user_id, $group_ids) {
-            $user = \Core::users()->find($user_id);
+            $user = $this->find($user_id);
             $user->groups()->detach();
             $user->groups()->attach($group_ids);
         });
 
-        return \Core::users()->find($user_id);
+        return $this->find($user_id);
     }
 
     /**
@@ -73,7 +73,7 @@ class UserRepository extends AbstractRepository
      */
     public function login($credentials, $adminLogin = false)
     {
-        if ( ! $user = \Core::users()->first(['email' => $credentials['email']])) 
+        if ( ! $user = $this->first(['email' => $credentials['email']])) 
         {
             \ErrorHandler::loginFailed();
         }
@@ -100,6 +100,44 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * Handle a social login request of the none admin to the application.
+     * 
+     * @param  array   $credentials
+     * @return string
+     */
+    public function loginSocial($credentials)
+    {
+        if ( ! $user = $this->model->where('email', $credentials['email'])->first()) 
+        {
+            $data = ['email' => $credentials['email'], 'password' => $credentials['access_token']];
+            return $this->register($data);
+        }
+        else
+        {
+            if ($credentials['old_access_token']) 
+            {
+                $data = ['email' => $credentials['email'], 'password' => $credentials['old_access_token']];
+                if ( ! \Auth::once($data)) 
+                {
+                    \ErrorHandler::oldAccessTokenInValid();
+                }
+
+                $user->password = $credentials['access_token'];
+                $user->save();
+
+                return ['token' => \JWTAuth::fromUser($user)];
+            }
+            else
+            {
+                $email    = $credentials['email'];
+                $password = $credentials['access_token'];
+                return $this->login(['email' => $email, 'password' => $password], false);       
+            }
+        }
+        
+    }
+    
+    /**
      * Handle a registration request.
      * 
      * @param  array $credentials
@@ -107,10 +145,7 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        $user = \Core::users()->model->create($credentials);
-        $this->assignGroups($user->id, \Core::groups()->model->where('name', 'User')->select('id')->lists('id')->toArray());
-
-        return ['token' => \JWTAuth::fromUser($user)];
+        return ['token' => \JWTAuth::fromUser($this->model->create($credentials))];
     }
 
     /**
@@ -131,7 +166,7 @@ class UserRepository extends AbstractRepository
      */
     public function block($user_id)
     {
-        if ( ! $user = \Core::users()->find($user_id)) 
+        if ( ! $user = $this->find($user_id)) 
         {
             \ErrorHandler::notFound('user');
         }
@@ -167,7 +202,7 @@ class UserRepository extends AbstractRepository
             \ErrorHandler::noPermissions();
         }
 
-        $user          = \Core::users()->find($user_id);
+        $user          = $this->find($user_id);
         $user->blocked = 0;
         $user->save();
 

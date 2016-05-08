@@ -26,7 +26,7 @@ class UsersController extends BaseApiController
      * will skip login check for them.
      * @var array
      */
-    protected $skipLoginCheck      = ['login', 'register', 'sendreset', 'resetpassword'];
+    protected $skipLoginCheck      = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword'];
 
     /**
      * The validations rules used by the base api controller
@@ -112,6 +112,22 @@ class UsersController extends BaseApiController
             ]);
 
         return \Response::json(\Core::users()->login($request->only('email', 'password'), $request->get('admin')), 200);
+    }
+
+    /**
+     * Handle a social login request of the none admin to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function loginSocial(Request $request)
+    {
+        $this->validate($request, [
+            'email'        => 'required|email', 
+            'access_token' => 'required'
+            ]);
+
+        return \Response::json(\Core::users()->loginSocial($request->only('email', 'access_token', 'old_access_token')), 200);
     }
 
     /**

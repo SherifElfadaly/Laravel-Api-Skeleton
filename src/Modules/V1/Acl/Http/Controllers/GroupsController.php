@@ -34,7 +34,7 @@ class GroupsController extends BaseApiController
     {
         $this->validate($request, [
             'permission_ids' => 'required|exists:permissions,id', 
-            'group_id'       => 'required|exists:groups,id'
+            'group_id'       => 'required|array|exists:groups,id'
             ]);
 
         return \Response::json(\Core::groups()->assignPermissions($request->get('group_id'), $request->get('permission_ids')), 200);

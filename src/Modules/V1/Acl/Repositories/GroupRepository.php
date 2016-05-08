@@ -24,11 +24,11 @@ class GroupRepository extends AbstractRepository
 	public function assignPermissions($group_id, $permission_ids)
 	{
 		\DB::transaction(function () use ($group_id, $permission_ids) {
-			$group = \Core::groups()->find($group_id);
+			$group = $this->find($group_id);
 			$group->permissions()->detach();
 			$group->permissions()->attach($permission_ids);
 		});
 
-        return \Core::groups()->find($group_id);
+        return $this->find($group_id);
 	}
 }

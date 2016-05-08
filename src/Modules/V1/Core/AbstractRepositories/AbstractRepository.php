@@ -415,6 +415,32 @@ abstract class AbstractRepository implements RepositoryInterface
     }
     
     /**
+     * Update record in the storage based on the given
+     * condition.
+     * 
+     * @param  [type] $value condition value
+     * @param  array $data
+     * @param  string $attribute condition column name
+     * @return void
+     */
+    public function update($value, array $data, $attribute = 'id', $saveLog = true)
+    {
+        if ($attribute == 'id') 
+        {
+            $model = $this->model->lockForUpdate()->find($value);
+            $model ? $model->update($data) : 0;
+            $saveLog ? $this->logs->saveLog('update', class_basename($this->model), $this->getModel(), $value, $model) : false;
+        }
+        else
+        {
+            call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data, $saveLog){
+                $model->update($data);
+                $saveLog ? $this->logs->saveLog('update', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
+            });
+        }
+    }
+
+    /**
      * Delete record from the storage based on the given
      * condition.
      * 

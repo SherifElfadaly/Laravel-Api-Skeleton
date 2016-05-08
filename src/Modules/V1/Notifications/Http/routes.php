@@ -32,7 +32,7 @@ Route::group(['prefix' => 'api/v1/notifications'], function() {
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'NotificationsController@paginateby');
 	});
 
-	Route::group(['prefix' => 'push_notifications_device'], function() {
+	Route::group(['prefix' => 'push_notifications_devices'], function() {
 		/**
 		 * Get requests.
 		 */
