@@ -429,13 +429,13 @@ abstract class AbstractRepository implements RepositoryInterface
         {
             $model = $this->model->lockForUpdate()->find($value);
             $model ? $model->update($data) : 0;
-            $saveLog ? $this->logs->saveLog('update', class_basename($this->model), $this->getModel(), $value, $model) : false;
+            $saveLog ? \Logging::saveLog('update', class_basename($this->model), $this->getModel(), $value, $model) : false;
         }
         else
         {
             call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data, $saveLog){
                 $model->update($data);
-                $saveLog ? $this->logs->saveLog('update', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
+                $saveLog ? \Logging::saveLog('update', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
             });
         }
     }
