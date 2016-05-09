@@ -26,6 +26,18 @@ class ErrorHandler
         abort($error['status'], $error['message']);
     }
 
+    public function accessTokenInValid()
+    {
+        $error = ['status' => 400, 'message' => 'The access token is invalid'];
+        abort($error['status'], $error['message']);
+    }
+
+    public function noSocialEmail()
+    {
+        $error = ['status' => 400, 'message' => 'Couldn\'t retrieve email'];
+        abort($error['status'], $error['message']);
+    }
+    
     public function redisNotRunning()
     {
         $error = ['status' => 400, 'message' => 'Your redis notification server isn\'t running'];
@@ -76,7 +88,7 @@ class ErrorHandler
 
     public function generalError()
     {
-        $error = ['status' => 404, 'message' => 'Something went wrong'];
+        $error = ['status' => 400, 'message' => 'Something went wrong'];
         abort($error['status'], $error['message']);
     }
 }

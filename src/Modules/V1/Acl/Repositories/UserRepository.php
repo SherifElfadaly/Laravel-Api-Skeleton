@@ -107,34 +107,22 @@ class UserRepository extends AbstractRepository
      */
     public function loginSocial($credentials)
     {
-        if ( ! $user = $this->model->where('email', $credentials['email'])->first()) 
+        $user = \Socialite::driver($credentials['type'])->userFromToken($credentials['access_token']);
+
+        if ( ! $user->email)
         {
-            $data = ['email' => $credentials['email'], 'password' => $credentials['access_token']];
+            \ErrorHandler::noSocialEmail();
+        }
+
+        if ( ! $registeredUser = $this->model->where('email', $user->email)->first()) 
+        {
+            $data = ['email' => $user->email, 'password' => ''];
             return $this->register($data);
         }
         else
         {
-            if ($credentials['old_access_token']) 
-            {
-                $data = ['email' => $credentials['email'], 'password' => $credentials['old_access_token']];
-                if ( ! \Auth::once($data)) 
-                {
-                    \ErrorHandler::oldAccessTokenInValid();
-                }
-
-                $user->password = $credentials['access_token'];
-                $user->save();
-
-                return ['token' => \JWTAuth::fromUser($user)];
-            }
-            else
-            {
-                $email    = $credentials['email'];
-                $password = $credentials['access_token'];
-                return $this->login(['email' => $email, 'password' => $password], false);       
-            }
+            return $this->login(['email' => $registeredUser->email, 'password' => ''], false);
         }
-        
     }
     
     /**

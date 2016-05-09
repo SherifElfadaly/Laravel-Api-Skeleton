@@ -24,6 +24,7 @@ ApiSkeleton\ApiSkeleton\ApiSkeletonServiceProvider::class,
 Caffeinated\Modules\ModulesServiceProvider::class,
 Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider::class,
+Laravel\Socialite\SocialiteServiceProvider::class,
 ```
 add the aliases in config/app.php
 
@@ -36,6 +37,7 @@ add the aliases in config/app.php
 'JWTAuth'          => Tymon\JWTAuth\Facades\JWTAuth::class,
 'JWTFactory'       => Tymon\JWTAuth\Facades\JWTFactory::class,
 'PushNotification' => Davibennun\LaravelPushNotification\Facades\PushNotification::class,
+'Socialite'        => Laravel\Socialite\Facades\Socialite::class,
 ```
 
 add the following code in Exception/Handler.php in render function before the return
@@ -62,6 +64,10 @@ if ($request->wantsJson())
     else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
     {
         \ErrorHandler::unAuthorized();
+    }
+    else if ($e instanceof \GuzzleHttp\Exception\ClientException) 
+    {
+        \ErrorHandler::accessTokenInValid();    
     }
     else if ($e instanceof HttpException) 
     {

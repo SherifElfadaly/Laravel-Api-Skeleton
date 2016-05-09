@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "laravel/socialite": "2.0.*",
         "davibennun/laravel-push-notification": "dev-laravel5",
         "tymon/jwt-auth": "0.5.*",
         "caffeinated/modules": "~2.0",
