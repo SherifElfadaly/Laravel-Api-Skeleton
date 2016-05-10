@@ -26,9 +26,9 @@ class ErrorHandler
         abort($error['status'], $error['message']);
     }
 
-    public function authCodeInValid()
+    public function loginFailedSocial()
     {
-        $error = ['status' => 400, 'message' => 'The auth code is invalid'];
+        $error = ['status' => 400, 'message' => 'Wrong auth code or acces token'];
         abort($error['status'], $error['message']);
     }
 

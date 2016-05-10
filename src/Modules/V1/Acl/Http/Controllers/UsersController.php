@@ -123,11 +123,12 @@ class UsersController extends BaseApiController
     public function loginSocial(Request $request)
     {
         $this->validate($request, [
-            'auth_code' => 'required',
-            'type'      => 'required|in:facebook,google'
+            'auth_code'    => 'required_without:access_token',
+            'access_token' => 'string',
+            'type'         => 'required|in:facebook,google'
             ]);
 
-        return \Response::json(\Core::users()->loginSocial($request->only('auth_code', 'type')), 200);
+        return \Response::json(\Core::users()->loginSocial($request->only('auth_code', 'access_token', 'type')), 200);
     }
 
     /**
