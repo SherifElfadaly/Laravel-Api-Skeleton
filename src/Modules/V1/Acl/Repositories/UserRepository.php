@@ -107,7 +107,8 @@ class UserRepository extends AbstractRepository
      */
     public function loginSocial($credentials)
     {
-        $user = \Socialite::driver($credentials['type'])->userFromToken($credentials['access_token']);
+        $access_token = \Socialite::driver($credentials['type'])->getAccessToken($credentials['auth_code']);
+        $user         = \Socialite::driver($credentials['type'])->userFromToken($access_token);
 
         if ( ! $user->email)
         {

@@ -63,7 +63,7 @@ if ($request->wantsJson())
     }
     else if ($e instanceof \GuzzleHttp\Exception\ClientException) 
     {
-        \ErrorHandler::accessTokenInValid();    
+        \ErrorHandler::authCodeInValid();
     }
     else if ($e instanceof HttpException) 
     {

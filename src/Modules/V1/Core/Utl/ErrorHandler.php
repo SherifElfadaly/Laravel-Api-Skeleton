@@ -26,9 +26,9 @@ class ErrorHandler
         abort($error['status'], $error['message']);
     }
 
-    public function accessTokenInValid()
+    public function authCodeInValid()
     {
-        $error = ['status' => 400, 'message' => 'The access token is invalid'];
+        $error = ['status' => 400, 'message' => 'The auth code is invalid'];
         abort($error['status'], $error['message']);
     }
 
