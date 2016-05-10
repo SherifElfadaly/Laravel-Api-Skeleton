@@ -4,10 +4,10 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-scrutinizer-build]][link-scrutinizer-build]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Total Downloads][ico-downloads]][link-downloads]
+[![Total Downloads][ico-downloads]][link-downloads]<!-- 
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+PSRs you support to avoid any confusion with users and contributors. -->
 
 ## Install
 
