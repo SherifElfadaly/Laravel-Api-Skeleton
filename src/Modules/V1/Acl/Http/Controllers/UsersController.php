@@ -124,7 +124,7 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, [
             'auth_code'    => 'required_without:access_token',
-            'access_token' => 'string',
+            'access_token' => 'required_without:auth_code',
             'type'         => 'required|in:facebook,google'
             ]);
 
