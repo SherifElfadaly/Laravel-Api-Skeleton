@@ -256,4 +256,16 @@ class UserRepository extends AbstractRepository
                 \ErrorHandler::generalError();
         }
     }
+
+    /**
+     * Refresh the expired login token.
+     *
+     * @return string
+     */
+    public function refreshtoken()
+    {
+        $token = \JWTAuth::parseToken()->refresh();
+
+        return ['token' => $token];
+    }
 }

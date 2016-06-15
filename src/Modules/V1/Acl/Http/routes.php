@@ -26,6 +26,7 @@ Route::group(['prefix' => 'api/v1/acl'], function() {
 		Route::get('block/{id}', 'UsersController@block');
 		Route::get('unblock/{id}', 'UsersController@unblock');
 		Route::get('logout', 'UsersController@logout');
+		Route::get('refreshtoken', 'UsersController@refreshtoken');
 
 		/**
 		 * Post requests.

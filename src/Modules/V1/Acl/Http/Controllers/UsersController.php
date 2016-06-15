@@ -26,7 +26,7 @@ class UsersController extends BaseApiController
      * will skip login check for them.
      * @var array
      */
-    protected $skipLoginCheck      = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword'];
+    protected $skipLoginCheck      = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword', 'refreshtoken'];
 
     /**
      * The validations rules used by the base api controller
@@ -176,5 +176,15 @@ class UsersController extends BaseApiController
         ]);
 
         return \Response::json(\Core::users()->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')), 200);
+    }
+
+    /**
+     * Refresh the expired login token.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function refreshtoken()
+    {
+        return \Response::json(\Core::users()->refreshtoken(), 200);
     }
 }

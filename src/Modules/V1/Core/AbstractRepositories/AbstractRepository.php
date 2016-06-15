@@ -205,7 +205,7 @@ abstract class AbstractRepository implements RepositoryInterface
                  * If the attribute is a relation.
                  */
                 $relation = camel_case($key);
-                if (method_exists($model, $relation))
+                if (method_exists($model, $relation) && \Core::$relation())
                 {
 
                     /**
