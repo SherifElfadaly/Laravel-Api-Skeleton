@@ -2,10 +2,10 @@
 namespace App\Modules\V1\Acl\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Modules\V1\Core\Http\Controllers\BaseApiController;
+use App\Modules\V1\Acl\Http\Controllers\AclBaseController;
 use Illuminate\Http\Request;
 
-class UsersController extends BaseApiController
+class UsersController extends AclBaseController
 {
     /**
      * The name of the model that is used by the base api controller 

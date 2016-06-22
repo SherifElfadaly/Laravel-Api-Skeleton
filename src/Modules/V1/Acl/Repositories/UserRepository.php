@@ -24,12 +24,15 @@ class UserRepository extends AbstractRepository
      * @return boolean
      */
     public function can($nameOfPermission, $model, $user = false )
-    {       
+    {      
         $user        = $user ?: \JWTAuth::parseToken()->authenticate();
         $permissions = [];
+        $group       = \Session::get('group');
+        \Session::set('group', null);
         $this->find($user->id, ['groups.permissions'])->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
             $permissions = array_merge($permissions, $permission->where('model', $model)->lists('name')->toArray()); 
         });
+        \Session::set('group', $group);
         
         return in_array($nameOfPermission, $permissions);
     }
