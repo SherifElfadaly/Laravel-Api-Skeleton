@@ -174,7 +174,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * 
      * @param  array   $data
      * @param  boolean $saveLog
-     * @return object
+     * @return void
      */
     public function save(array $data, $saveLog = true)
     {
@@ -407,11 +407,6 @@ abstract class AbstractRepository implements RepositoryInterface
 
             $saveLog ? \Logging::saveLog(array_key_exists('id', $data) ? 'update' : 'create', class_basename($modelClass), $this->getModel(), $model->id, $model) : false;
         });
-    
-        /**
-         * return the saved mdel with the given relations.
-         */
-        return $model;
     }
     
     /**

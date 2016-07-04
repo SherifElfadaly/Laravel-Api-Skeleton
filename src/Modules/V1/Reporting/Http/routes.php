@@ -28,5 +28,6 @@ Route::group(['prefix' => 'api/v1/reporting'], function() {
 		Route::post('first', 'ReportsController@first');
 		Route::post('findby/{sortBy?}/{desc?}', 'ReportsController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@paginateby');
+		Route::post('get/{reportName}/{perPage?}', 'ReportsController@getReport');
 	});
 });

@@ -54,7 +54,7 @@ class AclUser extends User {
     public function getPermissionsAttribute()
     {
         $permissions = [];
-        foreach ($this->groups as $group)
+        foreach ($this->groups()->get() as $group)
         {
             $group->permissions->each(function ($permission) use (&$permissions){
                 $permissions[$permission->model][$permission->id] = $permission->name;

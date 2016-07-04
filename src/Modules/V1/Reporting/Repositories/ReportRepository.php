@@ -4,65 +4,66 @@ use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
 
 class ReportRepository extends AbstractRepository
 {
-	/**
-	 * Return the model full namespace.
-	 * 
-	 * @return string
-	 */
-	protected function getModel()
-	{
-		return 'App\Modules\V1\Reporting\Report';
-	}
-
-	/**
-     * Render the given report db view.
+    /**
+     * Return the model full namespace.
      * 
-     * @param  integer $id
-     * @param  array   $relations
-     * @param  array   $columns
-     * @return object
+     * @return string
      */
-    public function find($id, $relations = [], $columns = array('*'))
+    protected function getModel()
     {
-		$report = call_user_func_array("{$this->getModel()}::with", array($relations))->find($id, $columns);
-
-        if ( ! $report) 
-        {
-            \ErrorHandler::notFound('report');
-        }
-
-        if ( ! \Core::users()->can($report->view_name, 'reports'))
-        {
-            \ErrorHandler::noPermissions();
-        }
-
-        return \DB::table($report->view_name)->get();
+        return 'App\Modules\V1\Reporting\Report';
     }
 
     /**
      * Render the given report db view based on the given
      * condition.
      *
+     * @param  string  $reportName
      * @param  array   $conditions array of conditions
+     * @param  integer $perPage
      * @param  array   $relations
-     * @param  array   $colunmns
      * @return object
      */
-    public function first($conditions, $relations = [], $columns = array('*'))
+    public function getReport($reportName, $conditions = false, $perPage = 0, $relations = [])
     {
-		$conditions = $this->constructConditions($conditions);
-		$report     = call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->first($columns);
+        /**
+         * Fetch the report from db.
+         */
+        $reportConditions = $this->constructConditions(['report_name' => $reportName]);
+        $report           = call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($reportConditions['conditionString'], $reportConditions['conditionValues'])->first();
         
+        /**
+         * Check report existance and permission.
+         */
         if ( ! $report) 
         {
             \ErrorHandler::notFound('report');
         }
-        
-        if ( ! \Core::users()->can($report->view_name, 'reports'))
+        else if ( ! \Core::users()->can($report->view_name, 'reports'))
         {
             \ErrorHandler::noPermissions();
         }
-		
-        return \DB::table($report->view_name)->get();  
+
+        /**
+         * Fetch data from the report based on the given conditions.
+         */
+        $report = \DB::table($report->view_name);
+        unset($conditions['page']);
+        if (count($conditions))
+        {
+            $conditions = $this->constructConditions($conditions);
+            $report->whereRaw($conditions['conditionString'], $conditions['conditionValues']);   
+        }
+        /**
+         * Paginate or all data.
+         */
+        if ($perPage) 
+        {
+            return $report->paginate($perPage);
+        }
+        else
+        {
+            return $report->get();  
+        }
     }
 }
