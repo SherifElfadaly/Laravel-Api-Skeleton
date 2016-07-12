@@ -539,8 +539,37 @@ abstract class AbstractRepository implements RepositoryInterface
             }
             else
             {
-                $conditionString  .= $key . '=? {op} ';
-                $conditionValues[] = $value;
+                if (is_array($value)) 
+                {
+                    $operator = $value['op'];
+                    if (strtolower($operator) == 'between') 
+                    {
+                        $value1 = $value['val1'];
+                        $value2 = $value['val2'];
+                    }
+                    else
+                    {
+                        $value = $value['val'];
+                    }
+                }
+                else
+                {
+                    $operator = '=';
+                }
+                
+                if (strtolower($operator) == 'between') 
+                {
+                    $conditionString  .= $key . '>=? and ';
+                    $conditionValues[] = $value1;
+
+                    $conditionString  .= $key . '<=? {op} ';
+                    $conditionValues[] = $value2;
+                }
+                else
+                {
+                    $conditionString  .= $key . $operator . '? {op} ';
+                    $conditionValues[] = $value;
+                }
             }
         }
         $conditionString = '(' . rtrim($conditionString, '{op} ') . ')';
