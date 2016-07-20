@@ -27,12 +27,15 @@ class UserRepository extends AbstractRepository
     {      
         $user        = $user ?: \JWTAuth::parseToken()->authenticate();
         $permissions = [];
-        $group       = \Session::get('group');
-        \Session::set('group', null);
-        $this->find($user->id, ['groups.permissions'])->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
+
+        if ( ! $user = $this->find($user->id, ['groups.permissions'])) 
+        {
+            \ErrorHandler::tokenExpired();
+        }
+
+        $user->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
             $permissions = array_merge($permissions, $permission->where('model', $model)->lists('name')->toArray()); 
         });
-        \Session::set('group', $group);
         
         return in_array($nameOfPermission, $permissions);
     }
@@ -125,6 +128,10 @@ class UserRepository extends AbstractRepository
         }
         else
         {
+            if ( ! \Auth::attempt(['email' => $registeredUser->email, 'password' => '']))
+            {
+                \ErrorHandler::userAlreadyRegistered();
+            }
             return $this->login(['email' => $registeredUser->email, 'password' => ''], false);
         }
     }
@@ -247,10 +254,10 @@ class UserRepository extends AbstractRepository
                 return $token;
                 
             case \Password::INVALID_TOKEN:
-                \ErrorHandler::invalidResetToken('token');
+                \ErrorHandler::invalidResetToken();
 
             case \Password::INVALID_PASSWORD:
-                \ErrorHandler::invalidResetPassword('email');
+                \ErrorHandler::invalidResetPassword();
 
             case \Password::INVALID_USER:
                 \ErrorHandler::notFound('user');

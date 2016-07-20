@@ -23,6 +23,30 @@ class BaseApiController extends Controller
     public function __construct()
     {
         \Session::set('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);
+
+        $locale = \Request::header('locale');
+        switch ($locale) 
+        {
+            case 'en':
+            \App::setLocale('en');
+            \Session::set('locale', 'en');
+            break;
+
+            case 'ar':
+            \App::setLocale('ar');
+            \Session::set('locale', 'ar');
+            break;
+
+            case 'all':
+            \App::setLocale('en');
+            \Session::set('locale', 'all');
+            break;
+
+            default:
+            \App::setLocale('en');
+            \Session::set('locale', 'en');
+            break;
+        }
         
         $this->config              = \CoreConfig::getConfig();
         $this->model               = property_exists($this, 'model') ? $this->model : false;

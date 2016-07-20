@@ -10,7 +10,6 @@ class AclBaseController extends BaseApiController
 {
     public function __construct()
     {
-        \Session::set('group', ucfirst(strtolower(\Request::header('group'))));
         parent::__construct();
     }
 }
