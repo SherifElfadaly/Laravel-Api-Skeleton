@@ -106,7 +106,7 @@ php artisan jwt:generate
 
 run this command
 ``` bash
-php artisan module:cache
+php artisan module:optimize
 ```
 
 run database migrations
