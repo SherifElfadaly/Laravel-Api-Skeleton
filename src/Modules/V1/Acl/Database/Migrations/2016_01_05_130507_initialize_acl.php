@@ -262,7 +262,7 @@ class InitializeAcl extends Migration
         /**
 		 * Assign the permissions to the admin group.
 		 */
-		$permissionIds = DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups'])->select('id')->lists('id');
+		$permissionIds = DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups'])->select('id')->pluck('id');
 		foreach ($permissionIds as $permissionId) 
 		{
 			DB::table('groups_permissions')->insert(
@@ -287,7 +287,7 @@ class InitializeAcl extends Migration
 		$adminUserId  = DB::table('users')->where('email', 'admin@user.com')->first()->id;
 		$permissions  = DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups']);
 
-		DB::table('groups_permissions')->whereIn('permission_id', $permissions->lists('id'))->delete();
+		DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
 		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
 		
 		$permissions->delete();

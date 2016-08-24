@@ -74,7 +74,7 @@ class Initialize extends Migration
         /**
 		 * Assign the permissions to the admin group.
 		 */
-		$permissionIds = DB::table('permissions')->whereIn('model', ['reports'])->select('id')->lists('id');
+		$permissionIds = DB::table('permissions')->whereIn('model', ['reports'])->select('id')->pluck('id');
 		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
 		foreach ($permissionIds as $permissionId) 
 		{
@@ -97,7 +97,7 @@ class Initialize extends Migration
 	public function down()
 	{
 		$permissions  = DB::table('permissions')->whereIn('model', ['reports']);
-		DB::table('groups_permissions')->whereIn('permission_id', $permissions->lists('id'))->delete();
+		DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
 		$permissions->delete();
 	}
 }

@@ -14,10 +14,10 @@ class Users extends Migration
 	{
 		Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',100);
+            $table->string('name', 100)->default('');
             $table->string('email')->unique();
             $table->string('password', 60);
-            $table->boolean('blocked', 0);
+            $table->boolean('blocked')->default(0);
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

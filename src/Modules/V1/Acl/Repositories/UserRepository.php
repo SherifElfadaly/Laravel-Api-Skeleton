@@ -54,8 +54,8 @@ class UserRepository extends AbstractRepository
             \ErrorHandler::tokenExpired();
         }
 
-        $user->groups->lists('permissions')->each(function ($permission) use (&$permissions, $model){
-            $permissions = array_merge($permissions, $permission->where('model', $model)->lists('name')->toArray()); 
+        $user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model){
+            $permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray()); 
         });
         
         return in_array($nameOfPermission, $permissions);
@@ -70,7 +70,7 @@ class UserRepository extends AbstractRepository
     public function hasGroup($groupName)
     {
         $groups = $this->find(\JWTAuth::parseToken()->authenticate()->id)->groups;
-        return $groups->lists('name')->search($groupName, true) === false ? false : true;
+        return $groups->pluck('name')->search($groupName, true) === false ? false : true;
     }
 
     /**
@@ -104,11 +104,11 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::loginFailed();
         }
-        else if ($adminLogin && $user->groups->lists('name')->search('Admin', true) === false) 
+        else if ($adminLogin && $user->groups->pluck('name')->search('Admin', true) === false) 
         {
             \ErrorHandler::loginFailed();
         }
-        else if ( ! $adminLogin && $user->groups->lists('name')->search('Admin', true) !== false) 
+        else if ( ! $adminLogin && $user->groups->pluck('name')->search('Admin', true) !== false) 
         {
             \ErrorHandler::loginFailed();
         }
@@ -198,7 +198,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::noPermissions();
         }
-        else if ($user->groups->lists('name')->search('Admin', true) !== false) 
+        else if ($user->groups->pluck('name')->search('Admin', true) !== false) 
         {
             \ErrorHandler::noPermissions();
         }
