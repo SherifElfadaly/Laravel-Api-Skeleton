@@ -2,10 +2,10 @@
 namespace App\Modules\V1\Acl\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Modules\V1\Acl\Http\Controllers\AclBaseController;
+use App\Modules\V1\Core\Http\Controllers\BaseApiController;
 use Illuminate\Http\Request;
 
-class UsersController extends AclBaseController
+class UsersController extends BaseApiController
 {
     /**
      * The name of the model that is used by the base api controller 
@@ -45,8 +45,8 @@ class UsersController extends AclBaseController
      */
     public function account()
     {
-       $relations = $this->relations && $this->relations['find'] ? $this->relations['find'] : [];
-       return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find(\JWTAuth::parseToken()->authenticate()->id, $relations), 200);
+        $relations = $this->relations && $this->relations['account'] ? $this->relations['account'] : [];
+        return \Response::json(\Core::users()->account($relations), 200);
     }
 
     /**
@@ -176,6 +176,23 @@ class UsersController extends AclBaseController
         ]);
 
         return \Response::json(\Core::users()->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')), 200);
+    }
+
+    /**
+     * Change the logged in user password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(Request $request)
+    {
+        $this->validate($request, [
+            'old_password'          => 'required',
+            'password'              => 'required|confirmed|min:6',
+            'password_confirmation' => 'required',
+        ]);
+
+        return \Response::json(\Core::users()->changePassword($request->only('old_password', 'password', 'password_confirmation')), 200);
     }
 
     /**

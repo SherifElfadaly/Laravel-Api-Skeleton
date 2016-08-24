@@ -27,6 +27,11 @@ class Settings extends Model{
     {
         return \Carbon\Carbon::parse($value)->addHours(\Session::get('timeZoneDiff'))->toDateTimeString();
     }
+    
+    public function newCollection(array $models = [])
+    {
+        return parent::newCollection($models)->keyBy('key');
+    }
 
     public static function boot()
     {

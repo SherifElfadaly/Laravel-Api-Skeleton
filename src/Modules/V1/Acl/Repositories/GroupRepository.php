@@ -17,18 +17,36 @@ class GroupRepository extends AbstractRepository
 	/**
 	 * Assign the given permission ids to the given group.
 	 * 
-	 * @param  integer $group_id    
-	 * @param  array   $permission_ids
+	 * @param  integer $groupId    
+	 * @param  array   $permissionIds
 	 * @return object
 	 */
-	public function assignPermissions($group_id, $permission_ids)
+	public function assignPermissions($groupId, $permissionIds)
 	{
-		\DB::transaction(function () use ($group_id, $permission_ids) {
-			$group = $this->find($group_id);
+		\DB::transaction(function () use ($groupId, $permissionIds) {
+			$group = $this->find($groupId);
 			$group->permissions()->detach();
-			$group->permissions()->attach($permission_ids);
+			$group->permissions()->attach($permissionIds);
 		});
 
         return $this->find($group_id);
 	}
+
+	/**
+     *  Return the users in the given group in pages.
+     * 
+     * @param  integer $groupId
+     * @param  integer $perPage
+     * @param  array   $relations
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @return collection
+     */
+    public function users($groupId, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1)
+    {
+		$group = $this->find($groupId);
+		$sort  = $desc ? 'desc' : 'asc';
+
+        return $group->users()->with($relations)->orderBy($sortBy, $sort)->paginate($perPage);
+    }
 }

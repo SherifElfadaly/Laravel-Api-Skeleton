@@ -12,11 +12,6 @@ class InitializeCore extends Migration
 	 */
 	public function up()
 	{
-        /**
-         * Delete previous permissions.
-         */
-		DB::table('permissions')->whereIn('model', ['settings'])->delete();
-
 		/**
          * Insert the permissions related to this module.
          */

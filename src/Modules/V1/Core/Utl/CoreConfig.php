@@ -16,13 +16,14 @@ class CoreConfig
 			 */
 			'relations' => [
 				'users' => [
-					'all'        => ['group'],
-					'find'       => ['group'],
-					'findBy'     => ['group'],
-					'paginate'   => ['group'],
-					'paginateBy' => ['group'],
-					'first'      => ['group'],
-					'search'     => ['group'],
+					'all'        => [],
+					'find'       => ['groups'],
+					'findBy'     => [],
+					'paginate'   => ['groups'],
+					'paginateBy' => [],
+					'first'      => [],
+					'search'     => [],
+					'account'    => ['groups'],
 				],
 				'permissions' => [
 					'all'        => [],
@@ -41,6 +42,7 @@ class CoreConfig
 					'paginateBy' => [],
 					'first'      => ['permissions'],
 					'search'     => [],
+					'users' 	 => [],
 				],
 				'logs' => [
 					'all'        => ['user', 'item'],

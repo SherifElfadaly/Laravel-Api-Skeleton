@@ -43,7 +43,7 @@ class AclUserObserver {
      */
     public function deleting($model)
     {
-        if ($model->getOriginal()['id'] == \JWTAuth::parseToken()->authenticate()->id) 
+        if ($model->getOriginal('id') == \JWTAuth::parseToken()->authenticate()->id) 
         {
             \ErrorHandler::noPermissions();
         }

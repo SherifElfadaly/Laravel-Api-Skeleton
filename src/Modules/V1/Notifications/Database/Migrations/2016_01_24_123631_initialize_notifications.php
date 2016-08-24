@@ -12,11 +12,6 @@ class InitializeNotifications extends Migration
 	 */
 	public function up()
 	{
-        /**
-         * Delete previous permissions.
-         */
-		DB::table('permissions')->whereIn('model', ['notifications'])->delete();
-
 		/**
          * Insert the permissions related to this module.
          */

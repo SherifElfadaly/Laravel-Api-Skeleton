@@ -12,7 +12,6 @@ class AclUser extends User {
     protected $hidden   = ['password', 'remember_token','deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['name', 'email', 'password'];
-    protected $appends  = ['permissions'];
     public $searchable  = ['name', 'email'];
     
     public function getCreatedAtAttribute($value)
@@ -50,20 +49,7 @@ class AclUser extends User {
     {
         return $this->belongsToMany('\App\Modules\V1\Acl\AclGroup','users_groups','user_id','group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
     }
-
-    public function getPermissionsAttribute()
-    {
-        $permissions = [];
-        foreach ($this->groups()->get() as $group)
-        {
-            $group->permissions->each(function ($permission) use (&$permissions){
-                $permissions[$permission->model][$permission->id] = $permission->name;
-            });
-        }
-
-        return \Illuminate\Database\Eloquent\Collection::make($permissions);
-    }
-
+    
     public static function boot()
     {
         parent::boot();

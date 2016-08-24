@@ -15,6 +15,27 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * Return the logged in user account.
+     *
+     * @param  array   $relations
+     * @return boolean
+     */
+    public function account($relations = [])
+    {
+        $permissions = [];
+        $user        = \Core::users()->find(\JWTAuth::parseToken()->authenticate()->id, $relations);
+        foreach ($user->groups()->get() as $group)
+        {
+            $group->permissions->each(function ($permission) use (&$permissions){
+                $permissions[$permission->model][$permission->id] = $permission->name;
+            });
+        }
+        $user->permissions = $permissions;
+
+       return $user;
+    }
+
+    /**
      * Check if the logged in user or the given user 
      * has the given permissions on the given model.
      * 
@@ -75,7 +96,7 @@ class UserRepository extends AbstractRepository
      * 
      * @param  array   $credentials    
      * @param  boolean $adminLogin
-     * @return string
+     * @return array
      */
     public function login($credentials, $adminLogin = false)
     {
@@ -109,7 +130,7 @@ class UserRepository extends AbstractRepository
      * Handle a social login request of the none admin to the application.
      * 
      * @param  array   $credentials
-     * @return string
+     * @return array
      */
     public function loginSocial($credentials)
     {
@@ -140,7 +161,7 @@ class UserRepository extends AbstractRepository
      * Handle a registration request.
      * 
      * @param  array $credentials
-     * @return string
+     * @return array
      */
     public function register($credentials)
     {
@@ -236,7 +257,7 @@ class UserRepository extends AbstractRepository
      * Reset the given user's password.
      *
      * @param  array  $credentials
-     * @return integer
+     * @return array
      */
     public function resetPassword($credentials)
     {
@@ -248,16 +269,15 @@ class UserRepository extends AbstractRepository
             $token = \JWTAuth::fromUser($user);
         });
 
-
         switch ($response) {
             case \Password::PASSWORD_RESET:
-                return $token;
+                return ['token' => $token];
                 
             case \Password::INVALID_TOKEN:
-                \ErrorHandler::invalidResetToken();
+                \ErrorHandler::invalidResetToken('token');
 
             case \Password::INVALID_PASSWORD:
-                \ErrorHandler::invalidResetPassword();
+                \ErrorHandler::invalidResetPassword('email');
 
             case \Password::INVALID_USER:
                 \ErrorHandler::notFound('user');
@@ -268,9 +288,27 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * Change the logged in user password.
+     *
+     * @param  array  $credentials
+     * @return void
+     */
+    public function changePassword($credentials)
+    {
+        $user = $this->find(\JWTAuth::parseToken()->authenticate()->id, $relations);
+        if ( ! \Hash::check($credentials['old_password'], $user->password)) 
+        {
+            \ErrorHandler::invalidOldPassword();
+        }
+
+        $user->password = $credentials['password'];
+        $user->save();
+    }
+
+    /**
      * Refresh the expired login token.
      *
-     * @return string
+     * @return array
      */
     public function refreshtoken()
     {

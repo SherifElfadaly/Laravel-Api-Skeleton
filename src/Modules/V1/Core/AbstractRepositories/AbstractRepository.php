@@ -559,15 +559,15 @@ abstract class AbstractRepository implements RepositoryInterface
                 
                 if (strtolower($operator) == 'between') 
                 {
-                    $conditionString  .= $key . '>=? and ';
+                    $conditionString  .= $key . ' >= ? and ';
                     $conditionValues[] = $value1;
 
-                    $conditionString  .= $key . '<=? {op} ';
+                    $conditionString  .= $key . ' <= ? {op} ';
                     $conditionValues[] = $value2;
                 }
                 else
                 {
-                    $conditionString  .= $key . $operator . '? {op} ';
+                    $conditionString  .= $key . ' ' . $operator . ' ? {op} ';
                     $conditionValues[] = $value;
                 }
             }

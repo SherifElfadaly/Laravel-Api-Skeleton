@@ -41,6 +41,7 @@ Route::group(['prefix' => 'api/v1/acl'], function() {
 		Route::post('assigngroups', 'UsersController@assigngroups');
 		Route::post('sendreset', 'UsersController@sendreset');
 		Route::post('resetpassword', 'UsersController@resetpassword');
+		Route::post('changepassword', 'UsersController@changePassword');
 	});
 
 	Route::group(['prefix' => 'groups'], function() {
@@ -52,6 +53,7 @@ Route::group(['prefix' => 'api/v1/acl'], function() {
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@paginate');
 		Route::get('delete/{id}', 'GroupsController@delete');	
+		Route::get('users/{groupId}/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@users');
 
 		/**
 		 * Post requests.

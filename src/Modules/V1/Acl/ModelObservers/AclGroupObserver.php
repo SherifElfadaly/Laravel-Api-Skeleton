@@ -33,7 +33,7 @@ class AclGroupObserver {
      */
     public function updating($model)
     {
-        if ($model->getOriginal()['name'] == 'Admin') 
+        if ($model->getOriginal('name') == 'Admin') 
         {
             \ErrorHandler::noPermissions();
         }
@@ -52,7 +52,7 @@ class AclGroupObserver {
      */
     public function deleting($model)
     {
-        if ($model->getOriginal()['name'] == 'Admin') 
+        if ($model->getOriginal('name') == 'Admin') 
         {
             \ErrorHandler::noPermissions();
         }

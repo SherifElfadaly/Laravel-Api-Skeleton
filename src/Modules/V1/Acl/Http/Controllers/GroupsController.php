@@ -39,4 +39,22 @@ class GroupsController extends BaseApiController
 
         return \Response::json(\Core::groups()->assignPermissions($request->get('group_id'), $request->get('permission_ids')), 200);
     }
+
+     /**
+     *  Return the users in the given group in pages.
+     * 
+     * @param  integer $groupId
+     * @param  integer $perPage
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @return \Illuminate\Http\Response
+     */
+    public function users($groupId, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
+    {
+        if ($this->model) 
+        {
+            $relations = $this->relations && $this->relations['users'] ? $this->relations['users'] : [];
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->users($groupId, $perPage, $relations, $sortBy, $desc), 200);
+        }
+    }
 }

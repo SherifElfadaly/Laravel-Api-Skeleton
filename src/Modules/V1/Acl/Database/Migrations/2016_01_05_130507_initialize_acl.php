@@ -12,11 +12,6 @@ class InitializeAcl extends Migration
 	 */
 	public function up()
 	{
-        /**
-         * Delete previous permissions.
-         */
-		DB::table('permissions')->whereIn('model', ['users', 'permissions', 'groups'])->delete();
-
 		/**
          * Insert the permissions related to this module.
          */
@@ -203,6 +198,12 @@ class InitializeAcl extends Migration
 	        	],
 	        	[
 	        	'name'       => 'assignpermissions',
+	        	'model'      => 'groups',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'users',
 	        	'model'      => 'groups',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')

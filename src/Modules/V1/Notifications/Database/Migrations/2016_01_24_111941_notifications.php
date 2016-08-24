@@ -14,8 +14,8 @@ class Notifications extends Migration
 	{
 		Schema::create('notifications', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name',100);
-            $table->text('description')->nullable();
+			$table->string('key', 100);
+            $table->text('data');
 			$table->string('item_name',100);
 			$table->string('item_type',100);
 			$table->integer('item_id');
