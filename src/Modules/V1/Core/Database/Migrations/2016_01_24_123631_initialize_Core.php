@@ -67,21 +67,9 @@ class InitializeCore extends Migration
 	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
-	        	]
-        	]
-        );
+	        	],
 
-         /**
-         * Delete previous permissions.
-         */
-		DB::table('permissions')->whereIn('model', ['logs'])->delete();
-
-		 /**
-         * Insert the permissions related to this module.
-         */
-        DB::table('permissions')->insert(
-        	[
-        		/**
+	        	/**
         		 * Logs model permissions.
         		 */
 	        	[
@@ -128,7 +116,7 @@ class InitializeCore extends Migration
 	        	],
         	]
         );
-
+        
         /**
 		 * Assign the permissions to the admin group.
 		 */
@@ -154,7 +142,7 @@ class InitializeCore extends Migration
 	 */
 	public function down()
 	{
-		$permissions  = DB::table('permissions')->whereIn('model', ['settings']);
+		$permissions = DB::table('permissions')->whereIn('model', ['settings', 'logs']);
 		DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
 		$permissions->delete();
 	}

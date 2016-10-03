@@ -42,10 +42,10 @@ add the aliases in config/app.php
 'Socialite'        => Laravel\Socialite\Facades\Socialite::class,
 ```
 
-add the following code in Exception/Handler.php in render function before the return
+add the following code in Exception/Handler.php in render function
 
 ``` bash
- if ($request->wantsJson())
+if ($request->wantsJson())
 {
     if ($exception instanceof \Illuminate\Database\QueryException) 
     {
