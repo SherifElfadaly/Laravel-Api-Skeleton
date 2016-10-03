@@ -212,17 +212,6 @@ class InitializeAcl extends Migration
         );
 
 		/**
-		 * Delete previous data.
-		 */
-		$adminGroup   = DB::table('groups')->where('name', 'Admin')->first();
-		$adminUser    = DB::table('users')->where('email', 'admin@user.com')->first();
-		$adminGroupId = $adminGroup ? $adminGroup->id : 0;
-		$adminUserId  = $adminUser ? $adminUser->id : 0;
-		DB::table('users_groups')->where('user_id', $adminUserId)->where('group_id', $adminGroupId)->delete();
-		DB::table('users')->where('email', 'admin@user.com')->delete();
-		DB::table('groups')->where('name', 'Admin')->delete();
-
-		/**
 		 * Create Default groups.
 		 */
 		$adminGroupId = DB::table('groups')->insertGetId(
@@ -292,6 +281,6 @@ class InitializeAcl extends Migration
 		
 		$permissions->delete();
 		DB::table('users')->where('email', 'admin@user.com')->delete();
-		DB::table('groups')->where('name', 'admin')->delete();
+		DB::table('groups')->where('name', 'Admin')->delete();
 	}
 }

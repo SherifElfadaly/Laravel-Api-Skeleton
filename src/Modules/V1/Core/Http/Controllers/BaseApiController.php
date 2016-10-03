@@ -234,7 +234,12 @@ class BaseApiController extends Controller
         $permission = $permission !== 'index' ? $permission : 'list';
         if ( ! in_array($permission, $this->skipLoginCheck)) 
         {
-            \JWTAuth::parseToken()->authenticate();
+            $user = \Core::users()->find(\JWTAuth::parseToken()->authenticate()->id);
+            if ($user->blocked)
+            {
+                \ErrorHandler::userIsBlocked();
+            }
+            
             if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))
             {
                 \ErrorHandler::noPermissions();

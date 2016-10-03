@@ -27,7 +27,10 @@ class AclUserObserver {
 
     public function updating($model)
     {
-        //
+        if ($model->password) 
+        {
+            $model->last_change_password = \Carbon\Carbon::now()->toDateTimeString();
+        }
     }
 
     public function updated($model)

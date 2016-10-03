@@ -45,39 +45,43 @@ add the aliases in config/app.php
 add the following code in Exception/Handler.php in render function before the return
 
 ``` bash
-if ($request->wantsJson())
+ if ($request->wantsJson())
 {
-    if ($e instanceof \Illuminate\Database\QueryException) 
+    if ($exception instanceof \Illuminate\Database\QueryException) 
     {
         \ErrorHandler::dbQueryError();
     }
-    else if ($e instanceof \predis\connection\connectionexception) 
+    else if ($exception instanceof \predis\connection\connectionexception) 
     {
         \ErrorHandler::redisNotRunning();
     }
-    else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
+    else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
     {
         \ErrorHandler::tokenExpired();
     } 
-    else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
+    else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
     {
         \ErrorHandler::tokenExpired();
     }
-    else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
+    else if ($exception instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
     {
         \ErrorHandler::unAuthorized();
     }
-    else if ($e instanceof \GuzzleHttp\Exception\ClientException) 
+    else if ($exception instanceof \GuzzleHttp\Exception\ClientException) 
     {
         \ErrorHandler::loginFailedSocial();
     }
-    else if ($e instanceof HttpException) 
+    else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) 
     {
-        return \Response::json($e->getMessage(), $e->getStatusCode());   
+        return \Response::json($exception->getMessage(), $exception->getStatusCode());   
     }
-    else
+    else if ($exception instanceof \lluminate\Validation\ValidationException) 
     {
-        return parent::render($request, $e);
+        return \Response::json($exception->getMessage(), $exception->getStatusCode());   
+    }
+    else if ( ! $exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException)
+    {
+        return parent::render($request, $exception);
     }
 }
 ```
