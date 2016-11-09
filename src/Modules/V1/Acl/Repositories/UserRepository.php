@@ -316,4 +316,26 @@ class UserRepository extends AbstractRepository
 
         return ['token' => $token];
     }
+
+    /**
+     * Paginate all users in the given group.
+     * 
+     * @param  string  $groupName
+     * @param  array   $relations
+     * @param  integer $perPage
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @return \Illuminate\Http\Response
+     */
+    public function group($groupName, $relations, $perPage, $sortBy, $desc)
+    {   
+        $sort  = $desc ? 'desc' : 'asc';
+        $model = call_user_func_array("{$this->getModel()}::with", array($relations));
+
+        $model->whereHas('groups', function($q) use ($groupName){
+            $q->where('name', $groupName);
+        });
+
+        return $model->orderBy($sortBy, $sort)->paginate($perPage);
+    }
 }

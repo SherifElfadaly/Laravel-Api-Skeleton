@@ -92,6 +92,12 @@ class InitializeAcl extends Migration
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
+	        	[
+	        	'name'       => 'group',
+	        	'model'      => 'users',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
 
 	        	/**
         		 * Permissions model permissions.

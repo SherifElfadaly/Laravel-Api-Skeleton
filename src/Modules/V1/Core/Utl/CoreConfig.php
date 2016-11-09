@@ -24,6 +24,7 @@ class CoreConfig
 					'first'      => [],
 					'search'     => [],
 					'account'    => ['groups'],
+					'group'      => [],
 				],
 				'permissions' => [
 					'all'        => [],

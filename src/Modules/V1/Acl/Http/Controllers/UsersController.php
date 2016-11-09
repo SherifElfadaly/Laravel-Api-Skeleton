@@ -34,8 +34,11 @@ class UsersController extends BaseApiController
      * @var array
      */
     protected $validationRules     = [
-    'email'    => 'required|email|unique:users,email,{id}',
-    'password' => 'min:6'
+        'full_name'     => 'string|max:100', 
+        'user_name'     => 'string|unique:users,user_name,{id}', 
+        'email'         => 'required|email|unique:users,email,{id}', 
+        'mobile_number' => 'string|unique:users,mobile_number,{id}', 
+        'password'      => 'required|min:6'
     ];
 
     /**
@@ -90,8 +93,11 @@ class UsersController extends BaseApiController
     public function register(Request $request)
     {
         $this->validate($request, [
-            'email'    => 'required|email|unique:users,email,{id}', 
-            'password' => 'required|min:6'
+            'full_name'     => 'string|max:100', 
+            'user_name'     => 'string|unique:users,user_name,{id}', 
+            'email'         => 'required|email|unique:users,email,{id}', 
+            'mobile_number' => 'string|unique:users,mobile_number,{id}', 
+            'password'      => 'required|min:6'
             ]);
 
         return \Response::json(\Core::users()->register($request->only('email', 'password')), 200);
@@ -203,5 +209,20 @@ class UsersController extends BaseApiController
     public function refreshtoken()
     {
         return \Response::json(\Core::users()->refreshtoken(), 200);
+    }
+
+    /**
+     * Paginate all users with inthe given group.
+     * 
+     * @param  string $groupName
+     * @param  integer $perPage
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @return \Illuminate\Http\Response
+     */
+    public function group($groupName, $perPage = 15, $sortBy = 'created_at', $desc = 1)
+    {
+        $relations = $this->relations && $this->relations['group'] ? $this->relations['group'] : [];
+        return \Response::json(\Core::users()->group($groupName, $relations, $perPage, $sortBy, $desc), 200);
     }
 }

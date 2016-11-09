@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::get('unblock/{id}', 'UsersController@unblock');
 		Route::get('logout', 'UsersController@logout');
 		Route::get('refreshtoken', 'UsersController@refreshtoken');
+		Route::get('group/{groupName}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@group');
 
 		/**
 		 * Post requests.
