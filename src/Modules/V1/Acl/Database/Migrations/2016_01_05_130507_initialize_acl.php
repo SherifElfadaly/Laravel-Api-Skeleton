@@ -98,6 +98,18 @@ class InitializeAcl extends Migration
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
+                [
+                'name'       => 'deleted',
+                'model'      => 'users',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'restore',
+                'model'      => 'users',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
 
 	        	/**
         		 * Permissions model permissions.
@@ -214,6 +226,18 @@ class InitializeAcl extends Migration
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
+                [
+                'name'       => 'deleted',
+                'model'      => 'users',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'restore',
+                'model'      => 'users',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
         	]
         );
 

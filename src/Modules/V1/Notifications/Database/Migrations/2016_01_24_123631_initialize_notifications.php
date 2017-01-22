@@ -131,6 +131,18 @@ class InitializeNotifications extends Migration
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
+                [
+                'name'       => 'deleted',
+                'model'      => 'pushNotificationDevices',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'restore',
+                'model'      => 'pushNotificationDevices',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
         	]
         );
 
