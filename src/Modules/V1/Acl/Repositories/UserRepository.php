@@ -318,7 +318,7 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * Paginate all users in the given group.
+     * Paginate all users in the given group based on the given conditions.
      * 
      * @param  string  $groupName
      * @param  array   $relations
@@ -327,15 +327,17 @@ class UserRepository extends AbstractRepository
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function group($groupName, $relations, $perPage, $sortBy, $desc)
+    public function group($conditions, $groupName, $relations, $perPage, $sortBy, $desc)
     {   
-        $sort  = $desc ? 'desc' : 'asc';
-        $model = call_user_func_array("{$this->getModel()}::with", array($relations));
+        unset($conditions['page']);
+        $conditions = $this->constructConditions($conditions);
+        $sort       = $desc ? 'desc' : 'asc';
+        $model      = call_user_func_array("{$this->getModel()}::with", array($relations));
 
         $model->whereHas('groups', function($q) use ($groupName){
             $q->where('name', $groupName);
         });
 
-        return $model->orderBy($sortBy, $sort)->paginate($perPage);
+        return $model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage);
     }
 }

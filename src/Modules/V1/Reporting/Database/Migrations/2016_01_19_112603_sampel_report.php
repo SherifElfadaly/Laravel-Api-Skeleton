@@ -12,7 +12,6 @@ class SampelReport extends Migration
 	 */
 	public function up()
 	{
-		DB::statement( "DROP VIEW IF EXISTS admin_count");
 		DB::statement( "CREATE VIEW admin_count AS  
 			select count(u.id)
 			from users u, groups g ,users_groups ug
@@ -40,6 +39,6 @@ class SampelReport extends Migration
 	 */
 	public function down()
 	{
-		// 
+		DB::statement( "DROP VIEW IF EXISTS admin_count");
 	}
 }

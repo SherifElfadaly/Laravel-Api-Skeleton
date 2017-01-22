@@ -14,11 +14,11 @@ class Users extends Migration
 	{
 		Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 100)->default('');
+            $table->string('name', 100)->nullable();
             $table->string('email')->unique();
-            $table->string('password', 60);
+            $table->string('password', 60)->nullable();
             $table->boolean('blocked')->default(0);
-			$table->date('last_change_password')->nullable()->default(null);
+			$table->date('last_change_password')->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
@@ -32,6 +32,6 @@ class Users extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::dropIfExists('users');
 	}
 }

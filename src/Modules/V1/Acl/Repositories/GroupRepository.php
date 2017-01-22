@@ -31,22 +31,4 @@ class GroupRepository extends AbstractRepository
 
         return $this->find($group_id);
 	}
-
-	/**
-     *  Return the users in the given group in pages.
-     * 
-     * @param  integer $groupId
-     * @param  integer $perPage
-     * @param  array   $relations
-     * @param  string  $sortBy
-     * @param  boolean $desc
-     * @return collection
-     */
-    public function users($groupId, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1)
-    {
-		$group = $this->find($groupId);
-		$sort  = $desc ? 'desc' : 'asc';
-
-        return $group->users()->with($relations)->orderBy($sortBy, $sort)->paginate($perPage);
-    }
 }

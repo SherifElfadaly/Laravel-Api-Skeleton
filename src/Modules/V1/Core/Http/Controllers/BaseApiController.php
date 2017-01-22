@@ -224,6 +224,34 @@ class BaseApiController extends Controller
     }
 
     /**
+     * Return the deleted models in pages based on the given conditions.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  integer $perPage
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @return \Illuminate\Http\Response
+     */
+    public function deleted(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
+    {
+        return \Response::json(call_user_func_array("\Core::{$this->model}", [])->deleted($request->all(), $perPage, $sortBy, $desc), 200);
+    }
+
+    /**
+     * Restore the deleted model.
+     * 
+     * @param  integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id) 
+    {
+        if ($this->model) 
+        {
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->restore($id), 200);
+        }
+    }
+
+    /**
      * Check if the logged in user can do the given permission.
      * 
      * @param  string $permission

@@ -69,7 +69,7 @@ if ($request->wantsJson())
     }
     else if ($exception instanceof \GuzzleHttp\Exception\ClientException) 
     {
-        \ErrorHandler::loginFailedSocial();
+        \ErrorHandler::connectionError();
     }
     else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) 
     {
@@ -83,6 +83,10 @@ if ($request->wantsJson())
     {
         return parent::render($request, $exception);
     }
+}
+else
+{
+    return parent::render($request, $exception);
 }
 ```
 commit the csrf check in App\Http\Kernel.php
@@ -116,6 +120,13 @@ php artisan module:optimize
 run database migrations
 ``` bash
 php artisan module:migrate
+```
+
+api documentation
+``` bash
+install apidocjs http://apidocjs.com/
+edit apidoc.json in myapp/Modules
+run apidoc -i myapp/Modules -o apidoc/
 ```
 
 ## Usage

@@ -43,7 +43,6 @@ class CoreConfig
 					'paginateBy' => [],
 					'first'      => ['permissions'],
 					'search'     => [],
-					'users' 	 => [],
 				],
 				'logs' => [
 					'all'        => ['user', 'item'],

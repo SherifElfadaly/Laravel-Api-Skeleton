@@ -34,11 +34,9 @@ class UsersController extends BaseApiController
      * @var array
      */
     protected $validationRules     = [
-        'full_name'     => 'string|max:100', 
         'user_name'     => 'string|unique:users,user_name,{id}', 
         'email'         => 'required|email|unique:users,email,{id}', 
-        'mobile_number' => 'string|unique:users,mobile_number,{id}', 
-        'password'      => 'required|min:6'
+        'password'      => 'min:6'
     ];
 
     /**
@@ -93,10 +91,8 @@ class UsersController extends BaseApiController
     public function register(Request $request)
     {
         $this->validate($request, [
-            'full_name'     => 'string|max:100', 
             'user_name'     => 'string|unique:users,user_name,{id}', 
             'email'         => 'required|email|unique:users,email,{id}', 
-            'mobile_number' => 'string|unique:users,mobile_number,{id}', 
             'password'      => 'required|min:6'
             ]);
 
@@ -214,15 +210,16 @@ class UsersController extends BaseApiController
     /**
      * Paginate all users with inthe given group.
      * 
+     * @param  \Illuminate\Http\Request  $request
      * @param  string $groupName
      * @param  integer $perPage
      * @param  string  $sortBy
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function group($groupName, $perPage = 15, $sortBy = 'created_at', $desc = 1)
+    public function group(Request $request, $groupName, $perPage = 15, $sortBy = 'created_at', $desc = 1)
     {
         $relations = $this->relations && $this->relations['group'] ? $this->relations['group'] : [];
-        return \Response::json(\Core::users()->group($groupName, $relations, $perPage, $sortBy, $desc), 200);
+        return \Response::json(\Core::users()->group($request->all(), $groupName, $relations, $perPage, $sortBy, $desc), 200);
     }
 }

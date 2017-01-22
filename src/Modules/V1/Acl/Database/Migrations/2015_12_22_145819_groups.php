@@ -35,7 +35,7 @@ class Groups extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('groups');
-		Schema::drop('users_groups');
+		Schema::dropIfExists('groups');
+		Schema::dropIfExists('users_groups');
 	}
 }

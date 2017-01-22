@@ -207,7 +207,6 @@ abstract class AbstractRepository implements RepositoryInterface
                 $relation = camel_case($key);
                 if (method_exists($model, $relation) && \Core::$relation())
                 {
-
                     /**
                      * Check if the relation is a collection.
                      */
@@ -266,6 +265,7 @@ abstract class AbstractRepository implements RepositoryInterface
                                         $relationModel->$attr = $val;
                                     }
                                 }
+
                                 $relations[$relation][] = $relationModel;
                             }
                             /**
@@ -278,6 +278,7 @@ abstract class AbstractRepository implements RepositoryInterface
                                  */
                                 if (gettype($val) !== 'object' && gettype($val) !== 'array') 
                                 {
+
                                     /**
                                      * If the id is present in the data then select the relation model for updating,
                                      * else create new model.
@@ -292,14 +293,18 @@ abstract class AbstractRepository implements RepositoryInterface
                                         \ErrorHandler::notFound(class_basename($relationBaseModel) . ' with id : ' . $value['id']);
                                     }
 
-                                    /**
-                                     * Prevent attributes not in the fillable.
-                                     */
-                                    if (array_search($attr, $relationModel->getFillable(), true) !== false) 
+                                    foreach ($value as $relationAttribute => $relationValue) 
                                     {
-                                        $relationModel->$attr = $val;
-                                        $relations[$relation] = $relationModel;
+                                        /**
+                                         * Prevent attributes not in the fillable.
+                                         */
+                                        if (array_search($relationAttribute, $relationModel->getFillable(), true) !== false) 
+                                        {
+                                            $relationModel->$relationAttribute = $relationValue;
+                                        }
                                     }
+
+                                    $relations[$relation] = $relationModel;
                                 }
                             }
                         }
@@ -396,10 +401,11 @@ abstract class AbstractRepository implements RepositoryInterface
                         /**
                          * If the relation is one to many or one to one.
                          */
-                        case 'BelongsTo':
+                        case 'HasOne':
+
+                            $foreignKeyName         = explode('.', $model->$key()->getForeignKey())[1];
+                            $value->$foreignKeyName = $model->id;
                             $value->save();
-                            $model->$key()->associate($value);
-                            $model->save();
                             break;
                     }
                 }
@@ -514,6 +520,50 @@ abstract class AbstractRepository implements RepositoryInterface
     {
         $conditions = $this->constructConditions($conditions);
         return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->first($columns);  
+    }
+
+    /**
+     * Return the deleted models in pages based on the given conditions.
+     * 
+     * @param  array   $conditions array of conditions
+     * @param  integer $perPage
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @param  array   $columns
+     * @return collection
+     */
+    public function deleted($conditions, $perPage = 15, $sortBy = 'created_at', $desc = 1, $columns = array('*'))
+    {
+        unset($conditions['page']);
+        $conditions = $this->constructConditions($conditions);
+        $sort       = $desc ? 'desc' : 'asc';
+        $model      = $this->model->onlyTrashed();
+
+        if (count($conditions['conditionValues']))
+        {
+            $model->whereRaw($conditions['conditionString'], $conditions['conditionValues']);
+        }
+
+        return $model->orderBy($sortBy, $sort)->paginate($perPage, $columns);;
+    }
+
+    /**
+     * Restore the deleted model.
+     * 
+     * @param  integer $id
+     * @param  string  $attribute condition column name
+     * @return void
+     */
+    public function restore($id)
+    {
+        $model = $this->model->onlyTrashed()->find($id);
+
+        if ( ! $model) 
+        {
+            \ErrorHandler::notFound(class_basename($this->model) . ' with id : ' . $id);
+        }
+
+        $model->restore();
     }
 
     /**

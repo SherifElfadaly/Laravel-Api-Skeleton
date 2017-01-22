@@ -28,6 +28,6 @@ class Reports extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('reports');
+		Schema::dropIfExistsIfExists('reports');
 	}
 }

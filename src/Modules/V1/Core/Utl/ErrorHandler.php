@@ -26,6 +26,24 @@ class ErrorHandler
         abort($error['status'], $error['message']);
     }
 
+    public function noSocialEmail()
+    {
+        $error = ['status' => 400, 'message' => trans('errors.noSocialEmail')];
+        abort($error['status'], $error['message']);
+    }
+
+    public function userAlreadyRegistered()
+    {
+        $error = ['status' => 400, 'message' => trans('errors.userAlreadyRegistered')];
+        abort($error['status'], $error['message']);
+    }
+
+    public function connectionError()
+    {
+        $error = ['status' => 400, 'message' => trans('errors.connectionError')];
+        abort($error['status'], $error['message']);
+    }
+
     public function redisNotRunning()
     {
         $error = ['status' => 400, 'message' => trans('errors.redisNotRunning')];
