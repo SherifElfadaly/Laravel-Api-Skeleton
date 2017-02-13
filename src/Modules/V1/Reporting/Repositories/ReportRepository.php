@@ -29,7 +29,7 @@ class ReportRepository extends AbstractRepository
         /**
          * Fetch the report from db.
          */
-        $reportConditions = $this->constructConditions(['report_name' => $reportName]);
+        $reportConditions = $this->constructConditions(['report_name' => $reportName], $this->model);
         $report           = call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($reportConditions['conditionString'], $reportConditions['conditionValues'])->first();
         
         /**
@@ -51,7 +51,7 @@ class ReportRepository extends AbstractRepository
         unset($conditions['page']);
         if (count($conditions))
         {
-            $conditions = $this->constructConditions($conditions);
+            $conditions = $this->constructConditions($conditions, $this->model);
             $report->whereRaw($conditions['conditionString'], $conditions['conditionValues']);   
         }
         /**

@@ -295,7 +295,7 @@ class UserRepository extends AbstractRepository
      */
     public function changePassword($credentials)
     {
-        $user = $this->find(\JWTAuth::parseToken()->authenticate()->id, $relations);
+        $user = $this->find(\JWTAuth::parseToken()->authenticate()->id);
         if ( ! \Hash::check($credentials['old_password'], $user->password)) 
         {
             \ErrorHandler::invalidOldPassword();
@@ -330,7 +330,7 @@ class UserRepository extends AbstractRepository
     public function group($conditions, $groupName, $relations, $perPage, $sortBy, $desc)
     {   
         unset($conditions['page']);
-        $conditions = $this->constructConditions($conditions);
+        $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         $model      = call_user_func_array("{$this->getModel()}::with", array($relations));
 

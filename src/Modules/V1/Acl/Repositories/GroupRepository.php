@@ -29,6 +29,6 @@ class GroupRepository extends AbstractRepository
 			$group->permissions()->attach($permissionIds);
 		});
 
-        return $this->find($group_id);
+        return $this->find($groupId);
 	}
 }

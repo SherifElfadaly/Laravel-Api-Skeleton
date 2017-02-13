@@ -418,7 +418,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * Update record in the storage based on the given
      * condition.
      * 
-     * @param  [type] $value condition value
+     * @param  var $value condition value
      * @param  array $data
      * @param  string $attribute condition column name
      * @return void
@@ -466,7 +466,7 @@ abstract class AbstractRepository implements RepositoryInterface
         else
         {
             \DB::transaction(function () use ($value, $attribute, &$result, $saveLog) {
-                call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model){
+                call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($saveLog){
                     $model->delete();
                     $saveLog ? \Logging::saveLog('delete', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
                 });
@@ -550,7 +550,6 @@ abstract class AbstractRepository implements RepositoryInterface
      * Restore the deleted model.
      * 
      * @param  integer $id
-     * @param  string  $attribute condition column name
      * @return void
      */
     public function restore($id)
