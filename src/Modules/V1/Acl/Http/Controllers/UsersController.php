@@ -217,9 +217,42 @@ class UsersController extends BaseApiController
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function group(Request $request, $groupName, $perPage = 15, $sortBy = 'created_at', $desc = 1)
+    public function group(Request $request, $groupName, $perPage = false, $sortBy = 'created_at', $desc = 1)
     {
         $relations = $this->relations && $this->relations['group'] ? $this->relations['group'] : [];
         return \Response::json(\Core::users()->group($request->all(), $groupName, $relations, $perPage, $sortBy, $desc), 200);
+    }
+
+    /**
+     * Save the given data to the logged in user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveProfile(Request $request) 
+    {
+        foreach ($this->validationRules as &$rule) 
+        {
+            if (strpos($rule, 'exists') && ! strpos($rule, 'deleted_at,NULL')) 
+            {
+                $rule .= ',deleted_at,NULL';
+            }
+
+            if ($request->has('id')) 
+            {
+                $rule = str_replace('{id}', $request->get('id'), $rule);
+            }
+            else
+            {
+                $rule = str_replace(',{id}', '', $rule);
+            }
+        }
+
+        $this->validate($request, $this->validationRules);
+
+        if ($this->model)
+        {
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->saveProfile($request->all()), 200);
+        }
     }
 }

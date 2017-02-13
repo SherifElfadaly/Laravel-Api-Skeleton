@@ -33,7 +33,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} notifications List of notifications.
 		 * @apiSuccess {Number} notifications.id Id of the notification.
@@ -87,7 +86,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Find
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the notification.
 		 * @apiSuccess {String} key Unique key of the notification.
@@ -142,7 +140,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Search
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -221,7 +218,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Paginate
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -297,7 +293,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Notified
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -327,7 +322,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Notify all
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -358,7 +352,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName  Notifications/First
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the notification.
 		 * @apiSuccess {String} key Unique key of the notification.
@@ -412,7 +405,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Find by
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} notifications List of notifications.
 		 * @apiSuccess {Number} notifications.id Id of the notification.
@@ -470,7 +462,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Notifications/Pagiante by
 		 * @apiGroup Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -548,7 +539,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} devices List of devices.
 		 * @apiSuccess {Number} devices.id Id of the device.
@@ -591,7 +581,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Find
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the device.
 		 * @apiSuccess {String} device_token Token of the device.
@@ -635,7 +624,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Search
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -703,7 +691,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Paginate
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -768,7 +755,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Delete
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -799,7 +785,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Restore
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -830,7 +815,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/First
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the device.
 		 * @apiSuccess {String} device_token Token of the device.
@@ -873,7 +857,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Find by
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} devices List of devices.
 		 * @apiSuccess {Number} devices.id Id of the device.
@@ -920,7 +903,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Pagiante by
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -995,7 +977,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Save
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -1030,7 +1011,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *     }
 		 * @apiName Devices/Pagiante by
 		 * @apiGroup Push Notification
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.

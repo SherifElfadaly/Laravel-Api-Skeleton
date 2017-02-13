@@ -33,7 +33,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} reports List of reports.
 		 * @apiSuccess {Number} reports.id Id of the permission.
@@ -72,7 +71,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/Find
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the permission.
 		 * @apiSuccess {String} report_name Name of the report.
@@ -112,7 +110,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/Search
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -176,7 +173,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/Paginate
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -237,7 +233,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/First
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the permission.
 		 * @apiSuccess {String} report_name Name of the report.
@@ -276,7 +271,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/Find by
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} reports List of reports.
 		 * @apiSuccess {Number} reports.id Id of the permission.
@@ -319,7 +313,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/Pagiante by
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -381,7 +374,6 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *     }
 		 * @apiName Reports/Get
 		 * @apiGroup Report
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Admin count report:
 		 *     HTTP/1.1 200 OK

@@ -164,7 +164,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function paginateBy($conditions, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = array('*'))
     {
         unset($conditions['page']);
-        $conditions = $this->constructConditions($conditions);
+        $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage, $columns);
     }
@@ -354,7 +354,7 @@ abstract class AbstractRepository implements RepositoryInterface
                              * relations who's id isn't in the ids array.
                              */
                             case 'HasMany':
-                                $foreignKeyName       = explode('.', $model->$key()->getForeignKey())[1];
+                                $foreignKeyName       = $model->$key()->getForeignKeyName();
                                 $val->$foreignKeyName = $model->id;
                                 $val->save();
                                 $ids[] = $val->id;
@@ -402,8 +402,7 @@ abstract class AbstractRepository implements RepositoryInterface
                          * If the relation is one to many or one to one.
                          */
                         case 'HasOne':
-
-                            $foreignKeyName         = explode('.', $model->$key()->getForeignKey())[1];
+                            $foreignKeyName         = $model->$key()->getForeignKeyName();
                             $value->$foreignKeyName = $model->id;
                             $value->save();
                             break;
@@ -502,7 +501,7 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function findBy($conditions, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = array('*'))
     {
-        $conditions = $this->constructConditions($conditions);
+        $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         return call_user_func_array("{$this->getModel()}::with",  array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->get($columns);
     }
@@ -518,7 +517,7 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function first($conditions, $relations = [], $columns = array('*'))
     {
-        $conditions = $this->constructConditions($conditions);
+        $conditions = $this->constructConditions($conditions, $this->model);
         return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->first($columns);  
     }
 
@@ -535,7 +534,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function deleted($conditions, $perPage = 15, $sortBy = 'created_at', $desc = 1, $columns = array('*'))
     {
         unset($conditions['page']);
-        $conditions = $this->constructConditions($conditions);
+        $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         $model      = $this->model->onlyTrashed();
 
@@ -571,7 +570,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param  array $conditions
      * @return array
      */
-    protected function constructConditions($conditions)
+    protected function constructConditions($conditions, $model)
     {   
         $conditionString = '';
         $conditionValues = [];
@@ -579,13 +578,15 @@ abstract class AbstractRepository implements RepositoryInterface
         {
             if ($key == 'and') 
             {
-                $conditionString  .= str_replace('{op}', 'and', $this->constructConditions($value)['conditionString']) . ' {op} ';
-                $conditionValues   = array_merge($conditionValues, $this->constructConditions($value)['conditionValues']);
+                $conditions       = $this->constructConditions($value, $model);
+                $conditionString .= str_replace('{op}', 'and', $conditions['conditionString']) . ' {op} ';
+                $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
             }
             else if ($key == 'or')
             {
-                $conditionString  .= str_replace('{op}', 'or', $this->constructConditions($value)['conditionString']) . ' {op} ';
-                $conditionValues   = array_merge($conditionValues, $this->constructConditions($value)['conditionValues']);
+                $conditions       = $this->constructConditions($value, $model);
+                $conditionString .= str_replace('{op}', 'or', $conditions['conditionString']) . ' {op} ';
+                $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
             }
             else
             {
@@ -599,7 +600,7 @@ abstract class AbstractRepository implements RepositoryInterface
                     }
                     else
                     {
-                        $value = $value['val'];
+                        $value = array_key_exists('val', $value) ? $value['val'] : '';
                     }
                 }
                 else
@@ -614,6 +615,27 @@ abstract class AbstractRepository implements RepositoryInterface
 
                     $conditionString  .= $key . ' <= ? {op} ';
                     $conditionValues[] = $value2;
+                }
+                elseif (strtolower($operator) == 'in') 
+                {
+                    $conditionValues  = array_merge($conditionValues, $value);
+                    $inBindingsString = rtrim(str_repeat('?,', count($value)), ',');
+                    $conditionString .= $key . ' in (' . rtrim($inBindingsString, ',') . ') {op} ';
+                }
+                elseif (strtolower($operator) == 'null') 
+                {
+                    $conditionString .= $key . ' is null {op} ';
+                }
+                elseif (strtolower($operator) == 'not null') 
+                {
+                    $conditionString .= $key . ' is not null {op} ';
+                }
+                elseif (strtolower($operator) == 'has') 
+                {
+                    $sql              = $model->withTrashed()->has($key)->toSql();
+                    $conditions       = $this->constructConditions($value, $model->first()->$key);
+                    $conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')') . ' and ' . $conditions['conditionString'] . ')';
+                    $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
                 }
                 else
                 {

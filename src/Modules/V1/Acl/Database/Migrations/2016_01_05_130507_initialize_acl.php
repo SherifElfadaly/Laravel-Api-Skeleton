@@ -228,13 +228,13 @@ class InitializeAcl extends Migration
 	        	],
                 [
                 'name'       => 'deleted',
-                'model'      => 'users',
+                'model'      => 'groups',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'restore',
-                'model'      => 'users',
+                'model'      => 'groups',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],

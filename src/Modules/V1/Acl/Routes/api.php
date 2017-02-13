@@ -33,7 +33,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} users List of users.
 		 * @apiSuccess {Number} users.id Id of the User.
@@ -76,7 +75,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Find
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the User.
 		 * @apiSuccess {String} name Name of the User.
@@ -136,7 +134,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Search
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -204,7 +201,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Paginate
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -269,7 +265,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Delete
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -300,7 +295,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Restore
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -330,7 +324,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Account
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the User.
 		 * @apiSuccess {String} name Name of the User.
@@ -395,7 +388,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Block
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -426,7 +418,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Unblock
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -456,7 +447,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Logout
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -540,6 +530,30 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "val2": "2016-10-25"
 		 *       {
 		 *     }
+		 * @apiParamExample {json} user id in 1,2,3:
+		 *     {
+		 *       "id": {
+		 *       "op": "in",
+		 *       "val": [1, 2, 3]
+		 *     }
+		 * @apiParamExample {json} user name is null:
+		 *     {
+		 *       "name": {
+		 *       "op": "null"
+		 *     }
+		 * @apiParamExample {json} user name is not null:
+		 *     {
+		 *       "name": {
+		 *       "op": "not null"
+		 *     }
+		 * @apiParamExample {json} user has group admin:
+		 *     {
+		 *       "groups": {
+		 *       "op": "has",
+		 *       "val": {
+		 *       	"name": "Admin"
+		 *       }
+		 *     }
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
 		 * @apiHeader {String} locale The language of the returned data (ar, en, all).
@@ -553,7 +567,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/First
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the User.
 		 * @apiSuccess {String} name Name of the User.
@@ -630,6 +643,30 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "val2": "2016-10-25"
 		 *       {
 		 *     }
+		 * @apiParamExample {json} user id in 1,2,3:
+		 *     {
+		 *       "id": {
+		 *       "op": "in",
+		 *       "val": [1, 2, 3]
+		 *     }
+		 * @apiParamExample {json} user name is null:
+		 *     {
+		 *       "name": {
+		 *       "op": "null"
+		 *     }
+		 * @apiParamExample {json} user name is not null:
+		 *     {
+		 *       "name": {
+		 *       "op": "not null"
+		 *     }
+		 * @apiParamExample {json} user has group admin:
+		 *     {
+		 *       "groups": {
+		 *       "op": "has",
+		 *       "val": {
+		 *       	"name": "Admin"
+		 *       }
+		 *     }
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
 		 * @apiHeader {String} locale The language of the returned data (ar, en, all).
@@ -643,7 +680,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Find by
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} users List of users.
 		 * @apiSuccess {Number} users.id Id of the User.
@@ -717,6 +753,30 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "val2": "2016-10-25"
 		 *       {
 		 *     }
+		 * @apiParamExample {json} user id in 1,2,3:
+		 *     {
+		 *       "id": {
+		 *       "op": "in",
+		 *       "val": [1, 2, 3]
+		 *     }
+		 * @apiParamExample {json} user name is null:
+		 *     {
+		 *       "name": {
+		 *       "op": "null"
+		 *     }
+		 * @apiParamExample {json} user name is not null:
+		 *     {
+		 *       "name": {
+		 *       "op": "not null"
+		 *     }
+		 * @apiParamExample {json} user has group admin:
+		 *     {
+		 *       "groups": {
+		 *       "op": "has",
+		 *       "val": {
+		 *       	"name": "Admin"
+		 *       }
+		 *     }
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
 		 * @apiHeader {String} locale The language of the returned data (ar, en, all).
@@ -730,7 +790,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Pagiante by
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -821,7 +880,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Save
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -834,6 +892,45 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 * @apiError (Error 422) validationError There was a validation error in the given inputs.
 		 */
 		Route::post('save', 'UsersController@save');
+
+		/**
+		 * @api {post} /acl/users/profile/save Save Profile
+		 * @apiDescription Save the logged in user with the given data.
+		 * @apiParam {String{..100}} [name] Must be string.
+		 * @apiParam {String} email Must be email format and unique.
+		 * @apiParam {String{6..}} [password]
+		 * @apiParam {Object} [profile] Profile object associated with the client (see profile section for validations).
+		 * @apiParamExample {json} Request-Example:
+		 *     {
+		 *       "name": "John Doe",
+		 *       "email": "John@Doe.com",
+		 *       "password": "123456"
+		 *     }
+		 * @apiHeader {String} Accept The accept type.
+		 * @apiHeader {String} Content-Type The content type.
+		 * @apiHeader {String} locale The language of the returned data (ar, en, all).
+		 * @apiHeader {String} Authorization The login token.
+		 * @apiHeaderExample {json} Header-Example:
+		 *     {
+		 *       "Accept": "application-json"
+		 *       "Content-Type": "application-json"
+		 *       "locale": "en"
+		 *       "Authorization": "bearer token"
+		 *     }
+		 * @apiName Users/Save Client
+		 * @apiGroup User
+		 *
+		 * @apiSuccessExample {object} Success-Response:
+		 *     HTTP/1.1 200 OK
+		 *     {
+		 *     }
+		 * 
+		 * @apiError (Error 401) unAuthorized Authorization header token not sent.
+		 * @apiError (Error 401) tokenExpired Authorization header token expired.
+		 * @apiError (Error 403) noPermissions No permission to use this api.
+		 * @apiError (Error 422) validationError There was a validation error in the given inputs.
+		 */
+		Route::post('profile/save', 'UsersController@saveProfile');
 
 		/**
 		 * @api {post} /acl/users/deleted/:perPage/:sortBy/:desc?page=:pageNumber Deleted
@@ -883,6 +980,30 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "val2": "2016-10-25"
 		 *       {
 		 *     }
+		 * @apiParamExample {json} user id in 1,2,3:
+		 *     {
+		 *       "id": {
+		 *       "op": "in",
+		 *       "val": [1, 2, 3]
+		 *     }
+		 * @apiParamExample {json} user name is null:
+		 *     {
+		 *       "name": {
+		 *       "op": "null"
+		 *     }
+		 * @apiParamExample {json} user name is not null:
+		 *     {
+		 *       "name": {
+		 *       "op": "not null"
+		 *     }
+		 * @apiParamExample {json} user has group admin:
+		 *     {
+		 *       "groups": {
+		 *       "op": "has",
+		 *       "val": {
+		 *       	"name": "Admin"
+		 *       }
+		 *     }
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
 		 * @apiHeader {String} locale The language of the returned data (ar, en, all).
@@ -896,7 +1017,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Deleted
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -1071,7 +1191,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Assign groups
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the User.
 		 * @apiSuccess {String} name Full Name of the User.
@@ -1229,6 +1348,30 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "val2": "2016-10-25"
 		 *       {
 		 *     }
+		 * @apiParamExample {json} user id in 1,2,3:
+		 *     {
+		 *       "id": {
+		 *       "op": "in",
+		 *       "val": [1, 2, 3]
+		 *     }
+		 * @apiParamExample {json} user name is null:
+		 *     {
+		 *       "name": {
+		 *       "op": "null"
+		 *     }
+		 * @apiParamExample {json} user name is not null:
+		 *     {
+		 *       "name": {
+		 *       "op": "not null"
+		 *     }
+		 * @apiParamExample {json} user has group admin:
+		 *     {
+		 *       "groups": {
+		 *       "op": "has",
+		 *       "val": {
+		 *       	"name": "Admin"
+		 *       }
+		 *     }
 		 * @apiParam {Number} groupName Name of the group.
 		 * @apiParam {Number} [perPage] Number of rows returned per page.
 		 * @apiParam {String} [sortBy] The sort field .
@@ -1247,7 +1390,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Users/Group
 		 * @apiGroup User
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -1314,7 +1456,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} groups List of groups.
 		 * @apiSuccess {Number} groups.id Id of the User.
@@ -1351,7 +1492,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Find
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the group.
 		 * @apiSuccess {String} name Name of the group.
@@ -1397,7 +1537,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Search
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -1459,7 +1598,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Paginate
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -1518,7 +1656,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Delete
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -1549,7 +1686,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Restore
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -1580,7 +1716,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/First
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the group.
 		 * @apiSuccess {String} name Name of the group.
@@ -1623,7 +1758,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Find by
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} groups List of groups.
 		 * @apiSuccess {Number} groups.id Id of the group.
@@ -1664,7 +1798,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Pagiante by
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -1737,7 +1870,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Save
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -1771,7 +1903,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Deleted
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -1836,7 +1967,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Groups/Assign permissions
 		 * @apiGroup Group
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the group.
 		 * @apiSuccess {String} name Name of the group.
@@ -1872,7 +2002,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} permissions List of permissions.
 		 * @apiSuccess {Number} permissions.id Id of the permission.
@@ -1911,7 +2040,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions/Find
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the permission.
 		 * @apiSuccess {String} name Name of the permission.
@@ -1958,7 +2086,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions/Search
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -2022,7 +2149,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions/Paginate
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -2083,7 +2209,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions/First
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the permission.
 		 * @apiSuccess {String} name Name of the permission.
@@ -2127,7 +2252,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions/Find by
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} permissions List of permissions.
 		 * @apiSuccess {Number} permissions.id Id of the permission.
@@ -2170,7 +2294,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *     }
 		 * @apiName Permissions/Pagiante by
 		 * @apiGroup Permission
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.

@@ -134,7 +134,7 @@ class UserRepository extends AbstractRepository
      */
     public function loginSocial($credentials)
     {
-        $access_token = $credentials['auth_code'] ? \Socialite::driver($credentials['type'])->getAccessToken($credentials['auth_code']) : $credentials['access_token'];   
+        $access_token = $credentials['auth_code'] ? \Socialite::driver($credentials['type'])->getAccessToken($credentials['auth_code']) : $credentials['access_token'];
         $user         = \Socialite::driver($credentials['type'])->userFromToken($access_token);
 
         if ( ! $user->email)
@@ -338,6 +338,31 @@ class UserRepository extends AbstractRepository
             $q->where('name', $groupName);
         });
 
-        return $model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage);
+        
+        if (count($conditions['conditionValues']))
+        {
+            $model->whereRaw($conditions['conditionString'], $conditions['conditionValues']);
+        }
+
+        if ($perPage) 
+        {
+            return $model->orderBy($sortBy, $sort)->paginate($perPage);
+        }
+
+        return $model->orderBy($sortBy, $sort)->get();
+    }
+
+    /**
+     * Save the given data to the logged in user.
+     *
+     * @param  array $credentials
+     * @return object
+     */
+    public function saveProfile($credentials) 
+    {
+        $user = \JWTAuth::parseToken()->authenticate();
+        $user->save($credentials);
+
+        return $user;
     }
 }

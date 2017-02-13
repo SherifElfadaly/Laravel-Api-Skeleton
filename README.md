@@ -132,14 +132,6 @@ run apidoc -i myapp/Modules -o apidoc/
 ## Usage
 Check the [wiki][link-wiki].
 
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
-
 ## Credits
 
 - [Sherif Elfadaly][link-author]

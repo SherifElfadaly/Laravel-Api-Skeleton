@@ -33,7 +33,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} settings List of settings.
 		 * @apiSuccess {Number} settings.id Id of the setting.
@@ -74,7 +73,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Setting/Find
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the setting.
 		 * @apiSuccess {String} name Name of the setting.
@@ -116,7 +114,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings/Search
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -182,7 +179,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings/Paginate
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -245,7 +241,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings/First
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the setting.
 		 * @apiSuccess {String} name Name of the setting.
@@ -286,7 +281,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings/Find by
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} settings List of settings.
 		 * @apiSuccess {Number} settings.id Id of the setting.
@@ -331,7 +325,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings/Pagiante by
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -402,7 +395,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Settings/Save
 		 * @apiGroup Setting
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccessExample {object} Success-Response:
 		 *     HTTP/1.1 200 OK
@@ -437,7 +429,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} logs List of logs.
 		 * @apiSuccess {Number} logs.id Id of the log.
@@ -500,7 +491,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs/Find
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the log.
 		 * @apiSuccess {String} action The action that was preformed ex: create, delete etc.
@@ -564,7 +554,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs/Search
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -652,7 +641,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs/Paginate
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
@@ -737,7 +725,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs/First
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} id Id of the log.
 		 * @apiSuccess {String} action The action that was preformed ex: create, delete etc.
@@ -800,7 +787,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs/Find by
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Object[]} logs List of logs.
 		 * @apiSuccess {Number} logs.id Id of the log.
@@ -867,7 +853,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *     }
 		 * @apiName Logs/Pagiante by
 		 * @apiGroup Log
-		 * @apiPermission Admin
 		 *
 		 * @apiSuccess {Number} total Total number of results.
 		 * @apiSuccess {Number} per_page Number of results per page.
