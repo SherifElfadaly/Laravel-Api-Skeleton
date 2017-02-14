@@ -633,7 +633,7 @@ abstract class AbstractRepository implements RepositoryInterface
                 {
                     $sql              = $model->withTrashed()->has($key)->toSql();
                     $conditions       = $this->constructConditions($value, $model->first()->$key);
-                    $conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')') . ' and ' . $conditions['conditionString'] . ')';
+                    $conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')') . ' and ' . $conditions['conditionString'] . ') {op} ';
                     $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
                 }
                 else

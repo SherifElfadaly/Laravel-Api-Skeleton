@@ -14,16 +14,21 @@ abstract class AbstractRepositoryContainer implements RepositoryContainerInterfa
      * @param  array  $arguments the method arguments
      * @return object
      */
-	public function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
-    	foreach ($this->getRepoNameSpace() as $repoNameSpace) 
-    	{
+        foreach ($this->getRepoNameSpace() as $repoNameSpace) 
+        {
             $class = rtrim($repoNameSpace, '\\') . '\\' . ucfirst(str_singular($name)) . 'Repository';
-    		if (class_exists($class)) 
-    		{
-        		return \App::make($class);
-    		}
-    	}
+            if (class_exists($class)) 
+            {
+                \App::singleton($class, function ($app) use ($class) {
+
+                    return new \App\Modules\V1\Core\Decorators\CachingDecorator(new $class, $app['cache.store']);
+                });
+
+                return \App::make($class);
+            }
+        }
     }
 
      /**
