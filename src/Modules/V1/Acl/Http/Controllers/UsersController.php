@@ -19,7 +19,7 @@ class UsersController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['account', 'logout', 'sendreset'];
+    protected $skipPermissionCheck = ['account', 'logout', 'sendreset', 'changePassword'];
 
     /**
      * List of all route actions that the base api controller
@@ -34,9 +34,9 @@ class UsersController extends BaseApiController
      * @var array
      */
     protected $validationRules     = [
-        'user_name'     => 'string|unique:users,user_name,{id}', 
-        'email'         => 'required|email|unique:users,email,{id}', 
-        'password'      => 'min:6'
+        'name'     => 'nullable|string|unique:users,name,{id},id,name,NOT_NULL', 
+        'email'    => 'required|email|unique:users,email,{id},id,email,NOT_NULL', 
+        'password' => 'nullable|min:6'
     ];
 
     /**
@@ -91,9 +91,9 @@ class UsersController extends BaseApiController
     public function register(Request $request)
     {
         $this->validate($request, [
-            'user_name'     => 'string|unique:users,user_name,{id}', 
-            'email'         => 'required|email|unique:users,email,{id}', 
-            'password'      => 'required|min:6'
+            'name'     => 'nullable|string|unique:users,name,{id},id,name,NOT_NULL', 
+            'email'    => 'required|email|unique:users,email,{id},id,email,NOT_NULL', 
+            'password' => 'required|min:6'
             ]);
 
         return \Response::json(\Core::users()->register($request->only('email', 'password')), 200);

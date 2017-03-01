@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 	Route::group(['prefix' => 'reports'], function() {
 		
 		/**
-		 * @api {get} /acl/reports List
+		 * @api {get} /reporting/reports List
 		 * @apiDescription List all reports.
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
@@ -53,7 +53,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::get('/', 'ReportsController@index');
 
 		/**
-		 * @api {get} /acl/reports/find/:id Find
+		 * @api {get} /reporting/reports/find/:id Find
 		 * @apiDescription Find report with the given id.
 		 * @apiParam {Number} id Unique id of the report.
 		 * @apiHeader {String} Accept The accept type.
@@ -88,7 +88,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::get('find/{id}', 'ReportsController@find');
 
 		/**
-		 * @api {get} /acl/reports/search/:query/:perPage/:sortBy/:desc?page=:pageNUmber Search
+		 * @api {get} /reporting/reports/search/:query/:perPage/:sortBy/:desc?page=:pageNUmber Search
 		 * @apiDescription Search reports with the given query.
 		 * @apiParam {String} [query] The search text.
 		 * @apiParam {Number} [perPage] Number of rows returned per page.
@@ -128,8 +128,8 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *       "per_page": 50,
 		 *       "current_page": 1,
 		 *       "last_page": 2,
-		 *       "next_page_url": /acl/reports/search/:query/:perPage/:sortBy/:desc?page=2,
-		 *       "prev_page_url": /acl/reports/search/:query/:perPage/:sortBy/:desc
+		 *       "next_page_url": /reporting/reports/search/:query/:perPage/:sortBy/:desc?page=2,
+		 *       "prev_page_url": /reporting/reports/search/:query/:perPage/:sortBy/:desc
 		 *       "from": 1,
 		 *       "to": 50,
 		 *       "data": [
@@ -152,7 +152,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@search');
 
 		/**
-		 * @api {get} /acl/reports/paginate/:perPage/:sortBy/:desc?page=:pageNUmber Paginate
+		 * @api {get} /reporting/reports/paginate/:perPage/:sortBy/:desc?page=:pageNUmber Paginate
 		 * @apiDescription List all reports in pages.
 		 * @apiParam {Number} [perPage] Number of rows returned per page.
 		 * @apiParam {String} [sortBy] The sort field .
@@ -191,8 +191,8 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *       "per_page": 50,
 		 *       "current_page": 1,
 		 *       "last_page": 2,
-		 *       "next_page_url": /acl/reports/paginate/:perPage/:sortBy/:desc?page=2,
-		 *       "prev_page_url": /acl/reports/paginate/:perPage/:sortBy/:desc
+		 *       "next_page_url": /reporting/reports/paginate/:perPage/:sortBy/:desc?page=2,
+		 *       "prev_page_url": /reporting/reports/paginate/:perPage/:sortBy/:desc
 		 *       "from": 1,
 		 *       "to": 50,
 		 *       "data": [
@@ -215,7 +215,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@paginate');
 
 		/**
-		 * @api {post} /acl/reports/first First
+		 * @api {post} /reporting/reports/first First
 		 * @apiDescription Get the first result that match the given conditions.
 		 * @apiParam {object} conditions set of conditions used to fetch the data, for examples check User section.
 		 * @apiHeader {String} Accept The accept type.
@@ -250,7 +250,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::post('first', 'ReportsController@first');
 
 		/**
-		 * @api {post} /acl/reports/findby/:sortBy/:desc Find by
+		 * @api {post} /reporting/reports/findby/:sortBy/:desc Find by
 		 * @apiDescription Find reports that match the given conditions.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -291,7 +291,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::post('findby/{sortBy?}/{desc?}', 'ReportsController@findby');
 
 		/**
-		 * @api {post} /acl/reports/paginateby/:perPage/:sortBy/:desc?page=:pageNUmber Paginate by
+		 * @api {post} /reporting/reports/paginateby/:perPage/:sortBy/:desc?page=:pageNUmber Paginate by
 		 * @apiDescription Find reports that match the given conditions in pages.
 		 * @apiParam {Number} [perPage] Number of rows returned per page.
 		 * @apiParam {String} [sortBy] The sort field .
@@ -331,8 +331,8 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *       "per_page": 50,
 		 *       "current_page": 1,
 		 *       "last_page": 2,
-		 *       "next_page_url": /acl/reports/paginateby/:perPage/:sortBy/:desc?page=2,
-		 *       "prev_page_url": /acl/reports/paginateby/:perPage/:sortBy/:desc
+		 *       "next_page_url": /reporting/reports/paginateby/:perPage/:sortBy/:desc?page=2,
+		 *       "prev_page_url": /reporting/reports/paginateby/:perPage/:sortBy/:desc
 		 *       "from": 1,
 		 *       "to": 50,
 		 *       "data": [
@@ -355,7 +355,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@paginateby');
 
 		/**
-		 * @api {post} /acl/reports/get/:reportName/:perPage Get
+		 * @api {post} /reporting/reports/get/:reportName/:perPage Get
 		 * @apiDescription Get the report data in the given report, data returned from this api depend on the data stored in the requested report.
 		 * @apiParam {String} reportName Name of the report.
 		 * @apiParam {Number} [perPage] Number of rows returned per page if not sent all data will be returned.
