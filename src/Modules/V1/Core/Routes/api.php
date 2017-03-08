@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 	Route::group(['prefix' => 'settings'], function() {
 		
 		/**
-		 * @api {get} /core/settings List
+		 * @api {get} /core/settings/list List
 		 * @apiDescription List all settings.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Settings
+		 * @apiName Settings/List
 		 * @apiGroup Setting
 		 *
 		 * @apiSuccess {Object[]} settings List of settings.
@@ -54,7 +54,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'SettingsController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'SettingsController@index');
 
 		/**
 		 * @api {get} /core/settings/find/:id Find
@@ -414,7 +414,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 	Route::group(['prefix' => 'logs'], function() {
 
 		/**
-		 * @api {get} /core/logs List
+		 * @api {get} /core/logs/list List
 		 * @apiDescription List all logs.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -429,7 +429,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Logs
+		 * @apiName Logs/list
 		 * @apiGroup Log
 		 *
 		 * @apiSuccess {Object[]} logs List of logs.
@@ -474,7 +474,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'LogsController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'LogsController@index');
 
 		/**
 		 * @api {get} /core/logs/find/:id Find

@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 	Route::group(['prefix' => 'reports'], function() {
 		
 		/**
-		 * @api {get} /reporting/reports List
+		 * @api {get} /reporting/reports/list List
 		 * @apiDescription List all reports.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Reports
+		 * @apiName Reports/List
 		 * @apiGroup Report
 		 *
 		 * @apiSuccess {Object[]} reports List of reports.
@@ -52,7 +52,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'ReportsController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'ReportsController@index');
 
 		/**
 		 * @api {get} /reporting/reports/find/:id Find

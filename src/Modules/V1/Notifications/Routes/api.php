@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 	Route::group(['prefix' => 'notifications'], function() {
 		
 		/**
-		 * @api {get} /notifications/notifications List
+		 * @api {get} /notifications/notifications/list List
 		 * @apiDescription List all notifications.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Notifications
+		 * @apiName Notifications/List
 		 * @apiGroup Notification
 		 *
 		 * @apiSuccess {Object[]} notifications List of notifications.
@@ -67,7 +67,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'NotificationsController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'NotificationsController@index');
 
 		/**
 		 * @api {get} /notifications/notifications/find/:id Find
@@ -524,7 +524,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 	Route::group(['prefix' => 'push_notifications_devices'], function() {
 		
 		/**
-		 * @api {get} /notifications/push_notifications_devices List
+		 * @api {get} /notifications/push_notifications_devices/list List
 		 * @apiDescription List all devices.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -539,7 +539,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Devices
+		 * @apiName Devices/list
 		 * @apiGroup Push Notification
 		 *
 		 * @apiSuccess {Object[]} devices List of devices.
@@ -564,7 +564,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@index');
 
 		/**
 		 * @api {get} /notifications/push_notifications_devices/find/:id Find

@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 	Route::group(['prefix' => 'users'], function() {
 		
 		/**
-		 * @api {get} /acl/users List
+		 * @api {get} /acl/users/list List
 		 * @apiDescription List all users.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Users
+		 * @apiName Users/List
 		 * @apiGroup User
 		 *
 		 * @apiSuccess {Object[]} users List of users.
@@ -56,7 +56,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'UsersController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'UsersController@index');
 
 		/**
 		 * @api {get} /acl/users/find/:id Find
@@ -1441,7 +1441,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 	Route::group(['prefix' => 'groups'], function() {
 
 		/**
-		 * @api {get} /acl/groups List
+		 * @api {get} /acl/groups/list List
 		 * @apiDescription List all groups.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -1456,7 +1456,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Groups
+		 * @apiName Groups/List
 		 * @apiGroup Group
 		 *
 		 * @apiSuccess {Object[]} groups List of groups.
@@ -1475,7 +1475,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'GroupsController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'GroupsController@index');
 
 		/**
 		 * @api {get} /acl/groups/find/:id Find
@@ -1989,7 +1989,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 	Route::group(['prefix' => 'permissions'], function() {
 		
 		/**
-		 * @api {get} /acl/permissions List
+		 * @api {get} /acl/permissions/list List
 		 * @apiDescription List all permissions.
 		 * @apiParam {String} [sortBy] The sort field .
 		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
@@ -2004,7 +2004,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 *       "locale": "en"
 		 *       "Authorization": "bearer token"
 		 *     }
-		 * @apiName Permissions
+		 * @apiName Permissions/List
 		 * @apiGroup Permission
 		 *
 		 * @apiSuccess {Object[]} permissions List of permissions.
@@ -2025,7 +2025,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/{sortBy?}/{desc?}', 'PermissionsController@index');
+		Route::get('/list/{sortBy?}/{desc?}', 'PermissionsController@index');
 
 		/**
 		 * @api {get} /acl/permissions/find/:id Find
