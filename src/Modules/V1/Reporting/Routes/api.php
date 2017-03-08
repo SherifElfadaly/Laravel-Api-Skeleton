@@ -18,6 +18,8 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		/**
 		 * @api {get} /reporting/reports List
 		 * @apiDescription List all reports.
+		 * @apiParam {String} [sortBy] The sort field .
+		 * @apiParam {Boolean} [desc] Sort descinding or ascendig.
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
 		 * @apiHeader {String} locale The language of the returned data (ar, en, all).
@@ -50,7 +52,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 		 * @apiError (Error 401) tokenExpired Authorization header token expired.
 		 * @apiError (Error 403) noPermissions No permission to use this api.
 		 */
-		Route::get('/', 'ReportsController@index');
+		Route::get('/{sortBy?}/{desc?}', 'ReportsController@index');
 
 		/**
 		 * @api {get} /reporting/reports/find/:id Find

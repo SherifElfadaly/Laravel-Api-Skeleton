@@ -61,14 +61,16 @@ class BaseApiController extends Controller
     /**
      * Fetch all records with relations from model repository.
      * 
+     * @param  string  $sortBy
+     * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function index() 
+    public function index($sortBy = 'created_at', $desc = 1) 
     {
         if ($this->model)
         {
             $relations = $this->relations && $this->relations['all'] ? $this->relations['all'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->all($relations), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->all($relations, $sortBy, $desc), 200);
         }
     }
 
