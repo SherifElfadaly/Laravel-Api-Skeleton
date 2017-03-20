@@ -22,6 +22,6 @@ class SettingsController extends BaseApiController
      */
     protected $validationRules  = [
     'name'  => 'required|string|max:100',
-    'value' => 'required|string|max:100'
+    'value' => 'required|string'
     ];
 }

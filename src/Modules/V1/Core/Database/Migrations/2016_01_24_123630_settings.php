@@ -16,7 +16,7 @@ class Settings extends Migration
             $table->increments('id');
             $table->string('name',100);
             $table->string('key',100)->unique();
-            $table->string('value',100);
+            $table->text('value')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
