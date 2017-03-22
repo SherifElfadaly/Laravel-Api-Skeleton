@@ -7,7 +7,7 @@ abstract class AbstractRepository implements RepositoryInterface
     /**
      * The model implementation.
      * 
-     * @var string
+     * @var object
      */
     public $model;
     

@@ -19,7 +19,7 @@ class CachingDecorator
     /**
      * The model implementation.
      * 
-     * @var string
+     * @var object
      */
     public $model;
 
