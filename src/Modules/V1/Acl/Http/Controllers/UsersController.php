@@ -46,8 +46,7 @@ class UsersController extends BaseApiController
      */
     public function account()
     {
-        $relations = $this->relations && $this->relations['account'] ? $this->relations['account'] : [];
-        return \Response::json(\Core::users()->account($relations), 200);
+        return \Response::json(\Core::users()->account($this->relations), 200);
     }
 
     /**
@@ -219,8 +218,7 @@ class UsersController extends BaseApiController
      */
     public function group(Request $request, $groupName, $perPage = false, $sortBy = 'created_at', $desc = 1)
     {
-        $relations = $this->relations && $this->relations['group'] ? $this->relations['group'] : [];
-        return \Response::json(\Core::users()->group($request->all(), $groupName, $relations, $perPage, $sortBy, $desc), 200);
+        return \Response::json(\Core::users()->group($request->all(), $groupName, $this->relations, $perPage, $sortBy, $desc), 200);
     }
 
     /**

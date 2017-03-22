@@ -20,42 +20,25 @@ class BaseApiController extends Controller
      */
     protected $config;
 
+    /**
+     * The relations implementation.
+     * 
+     * @var relations
+     */
+    protected $relations;
+
     public function __construct()
-    {
-        \Session::put('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);
-
-        $locale = \Request::header('locale');
-        switch ($locale) 
-        {
-            case 'en':
-            \App::setLocale('en');
-            \Session::put('locale', 'en');
-            break;
-
-            case 'ar':
-            \App::setLocale('ar');
-            \Session::put('locale', 'ar');
-            break;
-
-            case 'all':
-            \App::setLocale('en');
-            \Session::put('locale', 'all');
-            break;
-
-            default:
-            \App::setLocale('en');
-            \Session::put('locale', 'en');
-            break;
-        }
-        
+    {        
         $this->config              = \CoreConfig::getConfig();
         $this->model               = property_exists($this, 'model') ? $this->model : false;
         $this->validationRules     = property_exists($this, 'validationRules') ? $this->validationRules : false;
         $this->skipPermissionCheck = property_exists($this, 'skipPermissionCheck') ? $this->skipPermissionCheck : [];
         $this->skipLoginCheck      = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
-        $this->relations           = array_key_exists($this->model, $this->config['relations']) ? $this->config['relations'][$this->model] : false;
         $route                     = explode('@',\Route::currentRouteAction())[1];
+
         $this->checkPermission($route);
+        $this->setRelations($route);
+        $this->setSessions();
     }
 
     /**
@@ -69,8 +52,7 @@ class BaseApiController extends Controller
     {
         if ($this->model)
         {
-            $relations = $this->relations && $this->relations['all'] ? $this->relations['all'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->all($relations, $sortBy, $desc), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->all($this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -84,8 +66,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['find'] ? $this->relations['find'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find($id, $relations), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find($id, $this->relations), 200);
         }
     }
 
@@ -103,8 +84,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['search'] ? $this->relations['search'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->search($query, $perPage, $relations, $sortBy, $desc), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->search($query, $perPage, $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -121,8 +101,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['findBy'] ? $this->relations['findBy'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->findBy($request->all(), $relations, $sortBy, $desc), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->findBy($request->all(), $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -137,8 +116,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['first'] ? $this->relations['first'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->first($request->all(), $relations), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->first($request->all(), $this->relations), 200);
         }
     }
 
@@ -154,8 +132,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['paginate'] ? $this->relations['paginate'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->paginate($perPage, $relations, $sortBy, $desc), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->paginate($perPage, $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -173,8 +150,7 @@ class BaseApiController extends Controller
     {
         if ($this->model) 
         {
-            $relations = $this->relations && $this->relations['paginateBy'] ? $this->relations['paginateBy'] : [];
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->paginateBy($request->all(), $perPage, $relations, $sortBy, $desc), 200);
+            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->paginateBy($request->all(), $perPage, $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -275,5 +251,52 @@ class BaseApiController extends Controller
                 \ErrorHandler::noPermissions();
             }
         }
+    }
+
+    /**
+     * Set sessions based on the given headers in the request.
+     * 
+     * @return void
+     */
+    private function setSessions()
+    {
+        \Session::put('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);
+
+        $locale = \Request::header('locale');
+        switch ($locale) 
+        {
+            case 'en':
+            \App::setLocale('en');
+            \Session::put('locale', 'en');
+            break;
+
+            case 'ar':
+            \App::setLocale('ar');
+            \Session::put('locale', 'ar');
+            break;
+
+            case 'all':
+            \App::setLocale('en');
+            \Session::put('locale', 'all');
+            break;
+
+            default:
+            \App::setLocale('en');
+            \Session::put('locale', 'en');
+            break;
+        }
+    }
+
+    /**
+     * Set relation based on the called api.
+     * 
+     * @param  string $route
+     * @return void
+     */
+    private function setRelations($route)
+    {
+        $route           = $route !== 'index' ? $route : 'list';
+        $relations       = array_key_exists($this->model, $this->config['relations']) ? $this->config['relations'][$this->model] : false;
+        $this->relations = $relations && $relations[$route] ? $relations[$route] : [];
     }
 }
