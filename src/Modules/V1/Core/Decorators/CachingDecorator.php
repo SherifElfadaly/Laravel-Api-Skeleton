@@ -5,28 +5,28 @@ class CachingDecorator
     /**
      * The repo implementation.
      * 
-     * @var repo
+     * @var string
      */
     protected $repo;
 
     /**
      * The cache implementation.
      * 
-     * @var cache
+     * @var object
      */
     protected $cache;
 
     /**
      * The model implementation.
      * 
-     * @var model
+     * @var string
      */
     public $model;
 
     /**
      * The cacheConfig implementation.
      * 
-     * @var cacheConfig
+     * @var array
      */
     public $cacheConfig;
     
@@ -56,7 +56,7 @@ class CachingDecorator
         {
             $page     = \Request::get('page') ?? '1';
             $cacheKey = $name . $page . serialize($arguments);
-            return $this->cache->tags([$this->model])->rememberForever($cacheKey, function() use ($arguments) {
+            return $this->cache->tags([$this->model])->rememberForever($cacheKey, function() use ($arguments, $name) {
                 return call_user_func_array([$this->repo, $name], $arguments);
             });
         }

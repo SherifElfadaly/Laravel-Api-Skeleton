@@ -9,21 +9,21 @@ class BaseApiController extends Controller
     /**
      * The model implementation.
      * 
-     * @var model
+     * @var string
      */
     protected $model;
 
     /**
      * The config implementation.
      * 
-     * @var config
+     * @var array
      */
     protected $config;
 
     /**
      * The relations implementation.
      * 
-     * @var relations
+     * @var array
      */
     protected $relations;
 
