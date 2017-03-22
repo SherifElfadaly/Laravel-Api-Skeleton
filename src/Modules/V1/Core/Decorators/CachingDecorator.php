@@ -50,7 +50,7 @@ class CachingDecorator
      */
     public function __call($name, $arguments)
     {
-        $this->setCacheConfig($name));
+        $this->setCacheConfig($name);
 
         if ($this->cacheConfig && $this->cacheConfig == 'cache') 
         {

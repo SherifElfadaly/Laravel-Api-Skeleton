@@ -62,7 +62,7 @@ class CoreConfig
 					'first'      => ['item'],
 					'search'     => ['item'],
 				],
-			]
+			],
 			/**
 			 * Specify caching config for each api.
 			 */
@@ -86,7 +86,7 @@ class CoreConfig
 						'register'     => ['users', 'groups'],
 						'assignGroups' => ['users', 'groups'],
 						'saveProfile'  => ['users', 'groups'],
-						'update'       => ['users', 'groups', 'permissions'],
+						'update'       => ['users', 'groups'],
 						'save'         => ['users', 'groups'],
 						'delete'       => ['users', 'groups'],
 						'restore'      => ['users', 'groups'],
