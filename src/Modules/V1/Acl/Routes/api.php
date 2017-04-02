@@ -1217,7 +1217,6 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		 * @api {post} /acl/users/sendreset Send Reset Password 
 		 * @apiDescription Send reset password email.
 		 * @apiParam {String} email Must be email format and unique.
-		 * @apiParam {String} url The url for change password form, mus be valid url.
 		 * @apiHeader {String} Accept The accept type.
 		 * @apiHeader {String} Content-Type The content type.
 		 * @apiHeader {String} locale The language of the returned data (ar, en, all).

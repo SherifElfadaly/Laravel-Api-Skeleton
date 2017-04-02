@@ -232,25 +232,22 @@ class UserRepository extends AbstractRepository
     /**
      * Send a reset link to the given user.
      *
-     * @param  string  $url
      * @param  string  $email
      * @return void
      */
-    public function sendReset($email, $url)
+    public function sendReset($email)
     {
-        view()->composer('auth.emails.password', function($view) use ($url) {
-            $view->with(['url' => $url]);
-        });
-
-        $response = \Password::sendResetLink($email, function (\Illuminate\Mail\Message $message) {
-            $message->subject('Your Password Reset Link');
-        });
-
-        switch ($response) 
+        if ( ! $user = $this->model->where('email', $email)->first())
         {
-            case \Password::INVALID_USER:
-                \ErrorHandler::notFound('email');
+            \ErrorHandler::notFound('email');
         }
+
+        $url   = $this->config['resetLink'];
+        $token = \Password::getRepository()->create($user);
+        
+        \Mail::send('auth.emails.password', ['user' => $user, 'url' => $url, 'token' => $token], function ($m) use ($user) {
+            $m->to($user->email, $user->name)->subject('Your Password Reset Link');
+        });
     }
 
     /**

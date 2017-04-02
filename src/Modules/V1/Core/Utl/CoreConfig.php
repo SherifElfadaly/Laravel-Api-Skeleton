@@ -11,6 +11,7 @@ class CoreConfig
     	});
 
         return array_merge($customSettings, [
+        	'resetLink' => '{{link_here}}',
 			/**
 			 * Specify what relations should be used for every model.
 			 */
