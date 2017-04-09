@@ -7,14 +7,14 @@ abstract class AbstractRepository implements RepositoryInterface
     /**
      * The model implementation.
      * 
-     * @var object
+     * @var model
      */
     public $model;
     
     /**
      * The config implementation.
      * 
-     * @var array
+     * @var config
      */
     protected $config;
     
@@ -412,6 +412,8 @@ abstract class AbstractRepository implements RepositoryInterface
 
             $saveLog ? \Logging::saveLog(array_key_exists('id', $data) ? 'update' : 'create', class_basename($modelClass), $this->getModel(), $model->id, $model) : false;
         });
+            
+        return $model->id;
     }
     
     /**
@@ -632,7 +634,7 @@ abstract class AbstractRepository implements RepositoryInterface
                 elseif (strtolower($operator) == 'has') 
                 {
                     $sql              = $model->withTrashed()->has($key)->toSql();
-                    $conditions       = $this->constructConditions($value, $model->first()->$key);
+                    $conditions       = $this->constructConditions($value, $model->$key()->getRelated());
                     $conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')') . ' and ' . $conditions['conditionString'] . ') {op} ';
                     $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
                 }
