@@ -1,19 +1,18 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Seeder;
 
-class InitializeReports extends Migration
+class ReportsTableSeeder extends Seeder
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		/**
-         * Insert the permissions related to this module.
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+    	/**
+         * Insert the permissions related to settings table.
          */
         DB::table('permissions')->insert(
         	[
@@ -70,34 +69,5 @@ class InitializeReports extends Migration
 	        	]
         	]
         );
-
-        /**
-		 * Assign the permissions to the admin group.
-		 */
-		$permissionIds = DB::table('permissions')->whereIn('model', ['reports'])->select('id')->pluck('id');
-		$adminGroupId  = DB::table('groups')->where('name', 'Admin')->first()->id;
-		foreach ($permissionIds as $permissionId) 
-		{
-			DB::table('groups_permissions')->insert(
-				[
-				'permission_id' => $permissionId,
-				'group_id'      => $adminGroupId,
-				'created_at'    => \DB::raw('NOW()'),
-				'updated_at'    => \DB::raw('NOW()')
-				]
-			);
-		}
-	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		$permissions  = DB::table('permissions')->whereIn('model', ['reports']);
-		DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
-		$permissions->delete();
-	}
+    }
 }
