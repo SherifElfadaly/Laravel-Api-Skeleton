@@ -42,10 +42,10 @@ class BaseApiController extends Controller
     }
 
     /**
-     * Fetch all records with relations from model repository.
+     * Fetch all records with relations from storage.
      * 
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  string  $sortBy The name of the column to sort by.
+     * @param  boolean $desc   Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function index($sortBy = 'created_at', $desc = 1) 
@@ -57,9 +57,9 @@ class BaseApiController extends Controller
     }
 
     /**
-     * Fetch the single object with relations from model repository.
+     * Fetch the single object with relations from storage.
      * 
-     * @param  integer $id
+     * @param  integer $id Id of the requested model.
      * @return \Illuminate\Http\Response
      */
     public function find($id) 
@@ -71,13 +71,13 @@ class BaseApiController extends Controller
     }
 
     /**
-     * Paginate all records with relations from model repository
+     * Paginate all records with relations from storage
      * that matche the given query.
      * 
-     * @param  string  $query
-     * @param  integer $perPage
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  string  $query   The search text.
+     * @param  integer $perPage Number of rows per page default 15.
+     * @param  string  $sortBy  The name of the column to sort by.
+     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function search($query = '', $perPage = 15, $sortBy = 'created_at', $desc = 1) 
@@ -93,8 +93,8 @@ class BaseApiController extends Controller
      * condition.
      * 
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  string  $sortBy The name of the column to sort by.
+     * @param  boolean $desc   Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function findby(Request $request, $sortBy = 'created_at', $desc = 1) 
@@ -121,11 +121,11 @@ class BaseApiController extends Controller
     }
 
     /**
-     * Paginate all records with relations from model repository.
+     * Paginate all records with relations from storage.
      * 
-     * @param  integer $perPage
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $perPage Number of rows per page default 15.
+     * @param  string  $sortBy  The name of the column to sort by.
+     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function paginate($perPage = 15, $sortBy = 'created_at', $desc = 1) 
@@ -141,9 +141,9 @@ class BaseApiController extends Controller
      * the given condition from storage in pages.
      * 
      * @param  \Illuminate\Http\Request  $request
-     * @param  integer $perPage
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $perPage Number of rows per page default 15.
+     * @param  string  $sortBy  The name of the column to sort by.
+     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function paginateby(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
@@ -155,7 +155,7 @@ class BaseApiController extends Controller
     }
 
     /**
-     * Save the given model to repository.
+     * Save the given model to storage.
      * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -188,9 +188,9 @@ class BaseApiController extends Controller
     }
 
     /**
-     * Delete by the given id from model repository.
+     * Delete by the given id from storage.
      * 
-     * @param  integer  $id
+     * @param  integer $id Id of the deleted model.
      * @return \Illuminate\Http\Response
      */
     public function delete($id) 
@@ -205,9 +205,9 @@ class BaseApiController extends Controller
      * Return the deleted models in pages based on the given conditions.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  integer $perPage
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $perPage Number of rows per page default 15.
+     * @param  string  $sortBy  The name of the column to sort by.
+     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function deleted(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
@@ -218,7 +218,7 @@ class BaseApiController extends Controller
     /**
      * Restore the deleted model.
      * 
-     * @param  integer  $id
+     * @param  integer $id Id of the restored model.
      * @return \Illuminate\Http\Response
      */
     public function restore($id) 

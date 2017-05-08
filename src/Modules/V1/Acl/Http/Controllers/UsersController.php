@@ -52,7 +52,7 @@ class UsersController extends BaseApiController
     /**
      * Block the user.
      *
-     * @param  integer  $id
+     * @param  integer  $id Id of the user.
      * @return \Illuminate\Http\Response
      */
     public function block($id)
@@ -63,7 +63,7 @@ class UsersController extends BaseApiController
     /**
      * Unblock the user.
      *
-     * @param  integer  $id
+     * @param  integer  $id Id of the user.
      * @return \Illuminate\Http\Response
      */
     public function unblock($id)
@@ -133,7 +133,7 @@ class UsersController extends BaseApiController
     }
 
     /**
-     * Handle an assign groups to user request.
+     * Assign the given groups to the given user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -210,10 +210,10 @@ class UsersController extends BaseApiController
      * Paginate all users with inthe given group.
      * 
      * @param  \Illuminate\Http\Request  $request
-     * @param  string $groupName
-     * @param  integer $perPage
-     * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  string $groupName The name of the requested group.
+     * @param  integer $perPage  Number of rows per page default 15.
+     * @param  string  $sortBy   The name of the column to sort by.
+     * @param  boolean $desc     Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
     public function group(Request $request, $groupName, $perPage = false, $sortBy = 'created_at', $desc = 1)

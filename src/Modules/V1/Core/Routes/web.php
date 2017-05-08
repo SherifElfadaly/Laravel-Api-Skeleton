@@ -11,3 +11,6 @@
 |
 */
 
+
+Route::get('/', 'ApiDocumentController@index');
+Route::post('/testApi', 'ApiDocumentController@testApi');

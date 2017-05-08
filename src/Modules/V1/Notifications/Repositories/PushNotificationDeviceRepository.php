@@ -15,7 +15,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
       }
 
     /**
-     * Set the notification notified to all.
+     * Broadcast the message to the given users devices.
      *
      * @param  array  $users_ids
      * @param  string $messageText
@@ -47,7 +47,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
 
 
     /**
-     * Set the notification notified to true.
+     * Push the given message to the given devices.
      *
      * @param  string    $type
      * @param  colletion $devices

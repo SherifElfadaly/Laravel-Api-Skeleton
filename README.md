@@ -123,10 +123,17 @@ php artisan module:migrate
 ```
 
 api documentation
+
+add this command to kernel.php
 ``` bash
-install apidocjs http://apidocjs.com/
-edit apidoc.json in myapp/Modules
-run apidoc -i myapp/Modules -o apidoc/
+use \App\Modules\V1\Core\Console\Commands\GenerateDoc as GenerateDoc;
+protected $commands = [
+    GenerateDoc::class
+];
+```
+then run 
+``` bash
+php artisan doc:generate
 ```
 
 ## Usage

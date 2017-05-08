@@ -77,15 +77,19 @@ class CachingDecorator
      */
     private function setCacheConfig($name)
     {
+        $strArr            = explode('\\', get_class($this->repo));
+        $repoName          = end($strArr);
+        $configKey         = str_plural(strtolower(substr($repoName, 0, strpos($repoName, 'Repository'))));
+        
         $config            = \CoreConfig::getConfig();
-        $cacheConfig       = array_key_exists($this->model, $config['cacheConfig']) ? $config['cacheConfig'][$this->model] : false;
+        $cacheConfig       = array_key_exists($configKey, $config['cacheConfig']) ? $config['cacheConfig'][$configKey] : false;
         $this->cacheConfig = false;
 
-        if (in_array($cacheConfig['cache'], $name))
+        if (in_array($name, $cacheConfig['cache']))
         {
             $this->cacheConfig = 'cache';
         }
-        else if (in_array($cacheConfig['clear'], $name))
+        else if (in_array($name, $cacheConfig['clear']))
         {
             $this->cacheConfig = $cacheConfig['clear'][$name];
         }

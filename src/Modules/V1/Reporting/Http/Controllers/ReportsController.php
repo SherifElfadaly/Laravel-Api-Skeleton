@@ -22,11 +22,11 @@ class ReportsController extends BaseApiController
     protected $skipPermissionCheck = ['getReport'];
 
     /**
-     * Render the total income report db view between the given two dates.
+     * Render the given report name with the given conditions.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $reportName
-     * @param  integer $perPage
+     * @param  string  $reportName Name of the requested report
+     * @param  integer $perPage    Number of rows per page default all data.
      * @return \Illuminate\Http\Response
      */
     public function getReport(Request $request, $reportName, $perPage = 0) 

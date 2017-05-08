@@ -17,7 +17,7 @@ class NotificationsController extends BaseApiController
     /**
      * Set the notification notified to true.
      * 
-     * @param  integer  $id
+     * @param  integer  $id Id of the notification.
      * @return \Illuminate\Http\Response
      */
     public function notified($id)

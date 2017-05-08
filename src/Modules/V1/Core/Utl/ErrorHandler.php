@@ -100,7 +100,7 @@ class ErrorHandler
 
     public function generalError()
     {
-        $error = ['status' => 404, 'message' => trans('errors.generalError')];
+        $error = ['status' => 400, 'message' => trans('errors.generalError')];
         abort($error['status'], $error['message']);
     }
 }
