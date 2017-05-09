@@ -7,7 +7,7 @@ class CachingDecorator
      * 
      * @var string
      */
-    protected $repo;
+    public $repo;
 
     /**
      * The cache implementation.

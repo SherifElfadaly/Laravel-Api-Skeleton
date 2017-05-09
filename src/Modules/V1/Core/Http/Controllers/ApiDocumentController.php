@@ -58,16 +58,4 @@ class ApiDocumentController extends Controller
 
 		return view('core::doc', ['baseUrl' => $baseUrl, 'modules' => $modules, 'errors' => $errors, 'conditions' => $conditions]);
 	}
-
-	public function testApi(Request $request)
-	{
-		$actoinArray     = explode('@', $request->get('action'));
-		$controller      = $actoinArray[0];
-		$method          = $actoinArray[1];
-		$method          = $method !== 'index' ? $method : 'all';
-		$reflectionClass = new \ReflectionClass($controller);
-		$classProperties = $reflectionClass->getDefaultProperties();
-		
-		return \Response::json(call_user_func_array("\Core::{$classProperties['model']}", [])->$method(), 200);;
-	}
 }

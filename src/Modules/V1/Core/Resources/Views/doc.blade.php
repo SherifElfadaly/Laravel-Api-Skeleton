@@ -217,13 +217,9 @@
                                         @endforeach
                                     </div>
                                     @endif
-                                    <button id="apiResponseBtn{{$moduleName}}_{{$modelName}}_{{$api['name']}}" type="button" class="btn btn-primary" onClick="testApi('{{addslashes(json_encode($api))}}', '{{$moduleName}}_{{$modelName}}_{{$api['name']}}')">View Response</button>
+                                    <!-- <a id="apiResponseShowHide{{$moduleName}}_{{$modelName}}_{{$api['name']}}" onClick="showHideResponse('{{$moduleName}}_{{$modelName}}_{{$api['name']}}')">Show/Hide Response</a>
+                                    <pre id="apiResponse{{$moduleName}}_{{$modelName}}_{{$api['name']}}" style="display: none"></pre> -->
 
-                                    <a id="apiResponseShowHide{{$moduleName}}_{{$modelName}}_{{$api['name']}}" onClick="showHideResponse('{{$moduleName}}_{{$modelName}}_{{$api['name']}}')" style="display: none">Show/Hide Response</a>
-
-                                    <i class="fa fa-spinner fa-spin" id="loading{{$moduleName}}_{{$modelName}}_{{$api['name']}}" style="font-size:24px;display: none"></i>
-
-                                    <pre id="apiResponse{{$moduleName}}_{{$modelName}}_{{$api['name']}}" style="display: none"></pre>
                                 </div>
                             </div>
                             @endforeach
@@ -274,24 +270,7 @@
     <script src="{{$baseUrl}}Resources/Assets/js/layout.min.js"></script>
     
     <script>
-      function testApi(route, selector){
-        route        = JSON.parse(route);
-        route._token = '{{csrf_token()}}';
-        $("#loading" + selector).show();
-          $.ajax({
-              type: 'POST',
-              url: "{{url('testApi')}}",
-              data: route,
-              success: function(response){
-                  $("#apiResponse" + selector).html(JSON.stringify(response, undefined, 2));
-                  $("#apiResponse" + selector).show();
-                  $("#apiResponseBtn" + selector).hide();
-                  $("#apiResponseShowHide" + selector).show();
-                  $("#loading" + selector).hide();
-              }
-          });
-      }
-      function showHideResponse(selector){
+    function showHideResponse(selector){
         $("#apiResponse" + selector).toggle();
       }
   </script>
