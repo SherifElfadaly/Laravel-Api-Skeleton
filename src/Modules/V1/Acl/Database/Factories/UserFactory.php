@@ -2,7 +2,7 @@
 
 $factory->define(App\Modules\V1\Acl\AclUser::class, function (Faker\Generator $faker) {
     return [
-		'id'         => $faker->unique()->randomDigitNotNull(),
+		'id'         => $faker->randomDigitNotNull(),
 		'name'       => $faker->name(),
 		'email'      => $faker->safeEmail(),
 		'password'   => bcrypt(str_random(10)),

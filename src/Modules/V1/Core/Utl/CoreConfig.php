@@ -17,7 +17,7 @@ class CoreConfig
 			 */
 			'relations' => [
 				'users' => [
-					'all'        => [],
+					'list'       => [],
 					'find'       => ['groups'],
 					'findby'     => [],
 					'paginate'   => ['groups'],
@@ -26,42 +26,77 @@ class CoreConfig
 					'search'     => [],
 					'account'    => ['groups'],
 					'group'      => [],
+					'deleted'    => [],
 				],
 				'permissions' => [
-					'all'        => [],
+					'list'       => [],
 					'find'       => ['groups'],
 					'findby'     => [],
 					'paginate'   => [],
 					'paginateby' => [],
 					'first'      => ['groups'],
 					'search'     => [],
+					'deleted'    => [],
 				],
 				'groups' => [
-					'all'        => [],
+					'list'       => [],
 					'find'       => ['permissions'],
 					'findby'     => [],
 					'paginate'   => [],
 					'paginateby' => [],
 					'first'      => ['permissions'],
 					'search'     => [],
+					'deleted'    => [],
 				],
 				'logs' => [
-					'all'        => ['user', 'item'],
+					'list'       => ['user', 'item'],
 					'find'       => ['user', 'item'],
 					'findby'     => ['user', 'item'],
 					'paginate'   => ['user', 'item'],
 					'paginateby' => ['user', 'item'],
 					'first'      => ['user', 'item'],
 					'search'     => ['user', 'item'],
+					'deleted'    => [],
 				],
 				'notifications' => [
-					'all'        => ['item'],
+					'list'       => ['item'],
 					'find'       => ['item'],
 					'findby'     => ['item'],
 					'paginate'   => ['item'],
 					'paginateby' => ['item'],
 					'first'      => ['item'],
 					'search'     => ['item'],
+					'deleted'    => [],
+				],
+				'pushNotificationDevices' => [
+					'list'       => ['user'],
+					'find'       => ['user'],
+					'findby'     => ['user'],
+					'paginate'   => ['user'],
+					'paginateby' => ['user'],
+					'first'      => ['user'],
+					'search'     => ['user'],
+					'deleted'    => [],
+				],
+				'reports' => [
+					'list'       => [],
+					'find'       => [],
+					'findby'     => [],
+					'paginate'   => [],
+					'paginateby' => [],
+					'first'      => [],
+					'search'     => [],
+					'deleted'    => [],
+				],
+				'settings' => [
+					'list'       => [],
+					'find'       => [],
+					'findby'     => [],
+					'paginate'   => [],
+					'paginateby' => [],
+					'first'      => [],
+					'search'     => [],
+					'deleted'    => [],
 				],
 			],
 			/**
@@ -70,7 +105,7 @@ class CoreConfig
 			'cacheConfig' => [
 				'users' => [
 					'cache' => [
-						'all',
+						'list',
 						'find',
 						'findBy',
 						'paginate',
@@ -95,7 +130,7 @@ class CoreConfig
 				],
 				'permissions' => [
 					'cache' => [
-						'all',
+						'list',
 						'find',
 						'findBy',
 						'paginate',
@@ -113,7 +148,7 @@ class CoreConfig
 				],
 				'groups' => [
 					'cache' => [
-						'all',
+						'list',
 						'find',
 						'findBy',
 						'paginate',
@@ -132,7 +167,7 @@ class CoreConfig
 				],
 				'settings' => [
 					'cache' => [
-						'all',
+						'list',
 						'find',
 						'findBy',
 						'paginate',

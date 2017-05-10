@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Api Documentation</title>
 
     <link href="{{$baseUrl}}Resources/Assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="{{$baseUrl}}Resources/Assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet">
@@ -93,6 +93,22 @@
                                 <span class="title">Errors</span>
                             </a>
                         </li>  
+                        <li class="nav-item ">
+                            <a href="#models" class="nav-link nav-toggle" data-toggle="collapse" data-target="#models" aria-expanded="false" class="nav-link nav-toggle ">
+                                <i class="icon-docs"></i>
+                                <span class="title">Models</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu" id="models" role="menu" aria-labelledby="models-1">
+                                @foreach ($models as $name => $value)
+                                <li class="nav-item ">
+                                    <a href="#model_{{$name}}" class="nav-link">
+                                        <span class="title">{{ucfirst($name)}}</span>
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </li>  
                     </ul>
                     <!-- END SIDEBAR MENU -->
                 </div>
@@ -159,6 +175,8 @@
                                                     {{$parametarName}}
                                                     @if(strpos($api['uri'], $parametarName . '?') !== false)
                                                     <span class="label label-default">Optional</span>
+                                                    @else
+                                                    <span class="label label-danger">Required</span>
                                                     @endif
                                                 </td> 
                                                 <td>{{$parametarDescription}}</td> 
@@ -184,6 +202,8 @@
                                                     {{$parametarName}}
                                                     @if(strpos($parametarRules, 'required') === false)
                                                     <span class="label label-default">Optional</span>
+                                                    @else
+                                                    <span class="label label-danger">Required</span>
                                                     @endif
                                                 </td> 
                                                 <td>{{$parametarRules}}</td>
@@ -217,9 +237,47 @@
                                         @endforeach
                                     </div>
                                     @endif
-                                    <!-- <a id="apiResponseShowHide{{$moduleName}}_{{$modelName}}_{{$api['name']}}" onClick="showHideResponse('{{$moduleName}}_{{$modelName}}_{{$api['name']}}')">Show/Hide Response</a>
-                                    <pre id="apiResponse{{$moduleName}}_{{$modelName}}_{{$api['name']}}" style="display: none"></pre> -->
-
+                                    @if($api['response'])
+                                    <span id="apiResponse{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
+                                        @foreach($api['response'] as $object => $relations)
+                                        @if(array_key_exists('parametars', $api) && array_key_exists('perPage', $api['parametars']))
+                                        <h4>Paginate Object</h4>
+                                        <pre>{{$paginateObject}}</pre>
+                                        @endif
+                                        <h4>Response</h4>
+                                        <table class="table table-bordered"> 
+                                            <thead> 
+                                                <tr> 
+                                                    <th>Model</th> 
+                                                    @if(count($relations))
+                                                    <th>Rlations</th> 
+                                                    @endif
+                                                </tr> 
+                                            </thead> 
+                                            <tbody> 
+                                                <tr> 
+                                                    <td>
+                                                        <a href="#model_{{$object}}">{{ucfirst(str_singular($object))}}</a>
+                                                    </td> 
+                                                    @if(count($relations))
+                                                    <td>
+                                                        @foreach ($relations as $relation)
+                                                        @if($relation == 'item')
+                                                        {{ucfirst($relation)}}: could be any model ex (User, Group....).
+                                                        @elseif(str_singular($relation) !== $relation)
+                                                        Array of <a href="#model_{{str_plural($relation)}}">{{ucfirst($relation)}}</a>
+                                                        @else
+                                                        <a href="#model_{{str_plural($relation)}}">{{ucfirst($relation)}}</a>
+                                                        @endif
+                                                        <br>
+                                                        @endforeach
+                                                    </td> 
+                                                    @endif
+                                                </tr> 
+                                            </tbody> 
+                                        </table>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -254,6 +312,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-12" id="models">
+                            <h1>Model Object Examples</h1>
+                            @foreach($models as $name => $value)
+                            <div class="panel panel-default" id="model_{{$name}}">
+                                <div class="panel-heading">{{ucfirst($name)}}</div>
+                                <div class="panel-body">
+                                    <pre>{{$value}}</pre>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,12 +337,6 @@
     <script src="{{$baseUrl}}Resources/Assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="{{$baseUrl}}Resources/Assets/js/app.min.js"></script>
     <script src="{{$baseUrl}}Resources/Assets/js/layout.min.js"></script>
-    
-    <script>
-    function showHideResponse(selector){
-        $("#apiResponse" + selector).toggle();
-      }
-  </script>
 </body>
 
 </html>

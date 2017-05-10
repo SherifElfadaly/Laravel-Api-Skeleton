@@ -37,22 +37,25 @@ class GenerateDoc extends Command
      */
     public function handle()
     {
-        $docData = [];
-        $routes  = $this->getRoutes();
+        $docData           = [];
+        $docData['models'] = [];
+        $routes            = $this->getRoutes();
         foreach ($routes as $route) 
         {
             if ($route) 
             {
-                $actoinArray      = explode('@', $route['action']);
-                $controller       = $actoinArray[0];
-                $method           = $actoinArray[1];
-                $route['name']    = $method !== 'index' ? $method : 'list';
+                $actoinArray       = explode('@', $route['action']);
+                $controller        = $actoinArray[0];
+                $method            = $actoinArray[1];
+                $route['name']     = $method !== 'index' ? $method : 'list';
                 
-                $reflectionClass  = new \ReflectionClass($controller);
-                $reflectionMethod = $reflectionClass->getMethod($method);
-                $classProperties  = $reflectionClass->getDefaultProperties();
-                $skipLoginCheck   = array_key_exists('skipLoginCheck', $classProperties) ? $classProperties['skipLoginCheck'] : false;
-                $validationRules  = array_key_exists('validationRules', $classProperties) ? $classProperties['validationRules'] : false;
+                $reflectionClass   = new \ReflectionClass($controller);
+                $reflectionMethod  = $reflectionClass->getMethod($method);
+                $classProperties   = $reflectionClass->getDefaultProperties();
+                $skipLoginCheck    = array_key_exists('skipLoginCheck', $classProperties) ? $classProperties['skipLoginCheck'] : false;
+                $validationRules   = array_key_exists('validationRules', $classProperties) ? $classProperties['validationRules'] : false;
+                
+                $route['response'] = $this->getResponseObject($classProperties['model'], $route['name']);
 
                 $this->processDocBlock($route, $reflectionMethod);
                 $this->getHeaders($route, $reflectionClass, $method, $skipLoginCheck);
@@ -61,8 +64,11 @@ class GenerateDoc extends Command
                 preg_match('/api\/v1\/([^#]+)\//iU', $route['uri'], $module);
                 preg_match('/api\/v1\/' . $module[1] . '\/([^#]+)\//iU', $route['uri'], $model);
                 $docData['modules'][$module[1]][$model[1]][] = $route;
+
+                $this->getModels($classProperties['model'], $docData);
             }
         }
+        
         $docData['errors'] = $this->getErrors();
         \File::put(app_path('Modules/V1/Core/Resources/api.json'), json_encode($docData));
     }
@@ -208,7 +214,7 @@ class GenerateDoc extends Command
     }
 
     /**
-     * Get the fiven method body code.
+     * Get the given method body code.
      * 
      * @param  object $reflectionMethod
      * @return string
@@ -224,5 +230,37 @@ class GenerateDoc extends Command
         $body       = trim(preg_replace('/\s+/', '', $body));
 
         return $body;
+    }
+
+    /**
+     * Get example object of all availble models.
+     * 
+     * @param  string $modelName
+     * @param  object $docData
+     * @return string
+     */
+    protected function getModels($modelName, &$docData)
+    {
+        if ( ! array_key_exists($modelName, $docData['models'])) 
+        {
+            $modelClass      = call_user_func_array("\Core::{$modelName}", [])->model;
+            $model           = factory($modelClass)->make();
+            $docData['models'][$modelName] = json_encode($model->toArray(), JSON_PRETTY_PRINT);
+        }
+    }
+
+    /**
+     * Get the route response object type.
+     * 
+     * @param  string $method
+     * @param  string $route
+     * @return array
+     */
+    protected function getResponseObject($modelName, $method)
+    {
+        $config    = \CoreConfig::getConfig();
+        $relations = array_key_exists($modelName, $config['relations']) ? array_key_exists($method, $config['relations'][$modelName]) ? $config['relations'][$modelName] : false : false;
+
+        return $relations ? [$modelName => $relations && $relations[$method] ? $relations[$method] : []] : false;
     }
 }
