@@ -17,43 +17,43 @@ class ApiDocumentController extends Controller
 		$conditions = [
 			[
 				'title'   => 'email equal John@Doe.com:',
-				'content' => '{\n  \'email\' =>\'John@Doe.com\'\n}'
+				'content' => ['email' => 'John@Doe.com']
 			],
 			[
 				'title'   => 'email equal John@Doe.com and user is blocked:',
-				'content' => '{\n  \'and\':{\n  \'email\' =>\'John@Doe.com\',\n  \'blocked\' =>1\n  }\n}'
+				'content' => ['and' => ['email' => 'John@Doe.com','blocked' => 1]]
 			],
 			[
 				'title'   => 'email equal John@Doe.com or user is blocked:',
-				'content' => '{\n  \'or\':{\n  \'email\' =>\'John@Doe.com\',\n  \'blocked\' =>1\n  {\n}'
+				'content' => ['or' => ['email' => 'John@Doe.com','blocked' => 1]]
 			],
 			[
 				'title'   => 'email contain John:',
-				'content' => '{\n  \'email\' =>{\n  \'op\' =>\'like\',\n  \'val\' =>\'%John%\'\n  }\n}'
+				'content' => ['email' => ['op' => 'like','val' => '%John%']]
 			],
 			[
 				'title'   => 'user created after 2016-10-25:',
-				'content' => '{\n  \'created_at\' =>{\n  \'op\' =>\'>\',\n  \'val\' =>\'2016-10-25\'\n  }\n}'
+				'content' => ['created_at' => ['op' => '>','val' => '2016-10-25']]
 			],
 			[
 				'title'   => 'user created between 2016-10-20 and 2016-10-25:',
-				'content' => '{\n  \'created_at\' =>{\n  \'op\' =>\'between\',\n  \'val1\' =>\'2016-10-20\',\n  \'val2\' =>\'2016-10-25\'\n  {\n}'
+				'content' => ['created_at' => ['op' => 'between','val1' => '2016-10-20','val2' => '2016-10-25']]
 			],
 			[
 				'title'   => 'user id in 1,2,3:',
-				'content' => '{\n  \'id\' =>{\n  \'op\' =>\'in\',\n  \'val\' =>[1, 2, 3]\n}'
+				'content' => ['id' => ['op' => 'in','val' => [1, 2, 3]]]
 			],
 			[
 				'title'   => 'user name is null:',
-				'content' => '{\n  \'name\' =>{\n  \'op\' =>\'null\'\n}'
+				'content' => ['name' => ['op' => 'null']]
 			],
 			[
 				'title'   => 'user name is not null:',
-				'content' => '{\n  \'name\' =>{\n  \'op\' =>\'not null\'\n}'
+				'content' => ['name' => ['op' => 'not null']]
 			],
 			[
 				'title'   => 'user has group admin:',
-				'content' => '{\n  \'groups\' =>{\n  \'op\' =>\'has\',\n  \'val\' =>{\n  \t\'name\' =>\'Admin\'\n  }\n}'
+				'content' => ['groups' => ['op' => 'has','val' => ['name' => 'Admin']]]
 			]
 		];
 

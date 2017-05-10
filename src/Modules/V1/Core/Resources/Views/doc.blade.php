@@ -232,7 +232,7 @@
                                         @else
                                         <div class="tab-pane {{$key}}">
                                         @endif
-                                            <pre>{{$condition['content']}}</pre>
+                                            <pre>{{json_encode($condition['content'], JSON_PRETTY_PRINT)}}</pre>
                                         </div>
                                         @endforeach
                                     </div>
