@@ -88,12 +88,7 @@ else
 {
     return parent::render($request, $exception);
 }
-```
-commit the csrf check in App\Http\Kernel.php
 
-``` bash
-//\App\Http\Middleware\VerifyCsrfToken::class,
-```
 publish files
 
 ``` bash

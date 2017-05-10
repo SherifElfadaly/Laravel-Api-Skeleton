@@ -15,6 +15,9 @@ class ModuleServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'core');
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'core');
+
+        $factory = app('Illuminate\Database\Eloquent\Factory');
+        $factory->load(__DIR__.'/../Database/Factories');
     }
 
     /**
