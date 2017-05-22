@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Modules\V1\Reporting\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
 class ReportsTableSeeder extends Seeder
@@ -14,7 +16,7 @@ class ReportsTableSeeder extends Seeder
     	/**
          * Insert the permissions related to settings table.
          */
-        DB::table('permissions')->insert(
+        \DB::table('permissions')->insert(
         	[
         		/**
         		 * Reporting model permissions.

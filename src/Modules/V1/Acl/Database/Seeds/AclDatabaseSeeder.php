@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Modules\V1\Acl\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class AclDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

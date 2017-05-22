@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Modules\V1\Acl\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class LogsTableSeeder extends Seeder
+class PermissionsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,52 +14,52 @@ class LogsTableSeeder extends Seeder
     public function run()
     {
     	/**
-         * Insert the permissions related to settings table.
+         * Insert the permissions related to permissions table.
          */
-        DB::table('permissions')->insert(
+        \DB::table('permissions')->insert(
         	[
         		/**
-        		 * Logs model permissions.
+        		 * Permissions model permissions.
         		 */
-	        	[
+        		[
 	        	'name'       => 'find',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'search',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'list',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'findby',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'first',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginate',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginateby',
-	        	'model'      => 'logs',
+	        	'model'      => 'permissions',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	]

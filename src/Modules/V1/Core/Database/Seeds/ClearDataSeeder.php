@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\V1\Reporting\Database\Seeds;
+namespace App\Modules\V1\Core\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 
@@ -13,7 +13,7 @@ class ClearDataSeeder extends Seeder
      */
     public function run()
     {
-        $permissions  = \DB::table('permissions')->whereIn('model', ['reports']);
+    	$permissions = \DB::table('permissions')->whereIn('model', ['settings', 'logs']);
         \DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
         $permissions->delete();
     }

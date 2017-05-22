@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Modules\V1\Notifications\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
 class ClearDataSeeder extends Seeder
@@ -11,8 +13,8 @@ class ClearDataSeeder extends Seeder
      */
     public function run()
     {
-        $permissions  = DB::table('permissions')->whereIn('model', ['notifications', 'pushNotificationDevices']);
-        DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
+        $permissions  = \DB::table('permissions')->whereIn('model', ['notifications', 'pushNotificationDevices']);
+        \DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
         $permissions->delete();
     }
 }

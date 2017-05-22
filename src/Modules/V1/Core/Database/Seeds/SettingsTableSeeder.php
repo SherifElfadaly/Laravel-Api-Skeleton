@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Modules\V1\Core\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class PermissionsTableSeeder extends Seeder
+class SettingsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,52 +14,58 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
     	/**
-         * Insert the permissions related to permissions table.
+         * Insert the permissions related to settings table.
          */
-        DB::table('permissions')->insert(
+        \DB::table('permissions')->insert(
         	[
         		/**
-        		 * Permissions model permissions.
+        		 * Settings model permissions.
         		 */
-        		[
+	        	[
+	        	'name'       => 'save',
+	        	'model'      => 'settings',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
 	        	'name'       => 'find',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'search',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'list',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'findby',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'first',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginate',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginateby',
-	        	'model'      => 'permissions',
+	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	]

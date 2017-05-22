@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Modules\V1\Reporting\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
 class AssignRelationsSeeder extends Seeder
@@ -14,9 +16,13 @@ class AssignRelationsSeeder extends Seeder
         /**
 		 * Assign the permissions to the admin group.
 		 */
-    	$adminGroupId = DB::table('groups')->whereIn('name', 'admin')->select('id')->first()->id;
-        DB::table('permissions')->whereIn('model', ['reports'])->each(function ($permission) use ($adminGroupId) {
-        	DB::table('groups_permissions')->insert(
+    	$adminGroupId = \DB::table('groups')->where('name', 'admin')->select('id')->first()->id;
+
+        /**
+         * Assign the permissions to the admin group.
+         */
+        \DB::table('permissions')->orderBy('created_at', 'asc')->whereIn('model', ['reports'])->each(function ($permission) use ($adminGroupId) {
+        	\DB::table('groups_permissions')->insert(
 				[
 				'permission_id' => $permission->id,
 				'group_id'      => $adminGroupId,

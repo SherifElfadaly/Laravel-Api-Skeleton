@@ -88,6 +88,7 @@ else
 {
     return parent::render($request, $exception);
 }
+```
 
 publish files
 
@@ -115,6 +116,11 @@ php artisan module:optimize
 run database migrations
 ``` bash
 php artisan module:migrate
+```
+
+run database seeds
+``` bash
+php artisan module:seed
 ```
 
 api documentation

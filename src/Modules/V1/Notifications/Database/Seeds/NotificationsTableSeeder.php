@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Modules\V1\Notifications\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
 class NotificationsTableSeeder extends Seeder
@@ -14,7 +16,7 @@ class NotificationsTableSeeder extends Seeder
     	/**
          * Insert the permissions related to settings table.
          */
-        DB::table('permissions')->insert(
+        \DB::table('permissions')->insert(
         	[
         		/**
         		 * notifications model permissions.

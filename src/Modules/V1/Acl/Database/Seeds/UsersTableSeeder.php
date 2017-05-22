@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Modules\V1\Acl\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class GroupsTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,88 +14,100 @@ class GroupsTableSeeder extends Seeder
     public function run()
     {
     	/**
-         * Insert the permissions related to groups table.
+         * Insert the permissions related to users table.
          */
-        DB::table('permissions')->insert(
+        \DB::table('permissions')->insert(
         	[
         		/**
-        		 * Groups model permissions.
+        		 * Users model permissions.
         		 */
 	        	[
 	        	'name'       => 'save',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'delete',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'find',
-	        	'model'      => 'groups',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'search',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'list',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'search',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'findby',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'first',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginate',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
 	        	'name'       => 'paginateby',
-	        	'model'      => 'groups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'assignpermissions',
-	        	'model'      => 'groups',
+	        	'name'       => 'assigngroups',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'users',
-	        	'model'      => 'groups',
+	        	'name'       => 'block',
+	        	'model'      => 'users',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'unblock',
+	        	'model'      => 'users',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'group',
+	        	'model'      => 'users',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
                 [
                 'name'       => 'deleted',
-                'model'      => 'groups',
+                'model'      => 'users',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'restore',
-                'model'      => 'groups',
+                'model'      => 'users',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ]
@@ -101,14 +115,16 @@ class GroupsTableSeeder extends Seeder
         );
 
 		/**
-		 * Create Default groups.
+		 * Create Default users.
 		 */
-		DB::table('groups')->insertGetId(
-			[
+		\DB::table('users')->insertGetId(
+            [
 			'name'       => 'Admin',
+			'email'      => 'admin@user.com',
+			'password'   => bcrypt('123456'),
 			'created_at' => \DB::raw('NOW()'),
 			'updated_at' => \DB::raw('NOW()')
 			]
-		);
+        );
     }
 }

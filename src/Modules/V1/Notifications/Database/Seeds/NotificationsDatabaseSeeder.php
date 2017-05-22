@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Modules\V1\Notifications\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class NotificationsDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
