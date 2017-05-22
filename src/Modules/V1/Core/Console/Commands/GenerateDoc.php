@@ -252,8 +252,8 @@ class GenerateDoc extends Command
     /**
      * Get the route response object type.
      * 
+     * @param  string $modelName
      * @param  string $method
-     * @param  string $route
      * @return array
      */
     protected function getResponseObject($modelName, $method)
