@@ -27,6 +27,7 @@ Caffeinated\Modules\ModulesServiceProvider::class,
 Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider::class,
 Laravel\Socialite\SocialiteServiceProvider::class,
+Clockwork\Support\Laravel\ClockworkServiceProvider::class,
 ```
 add the aliases in config/app.php
 
@@ -40,6 +41,14 @@ add the aliases in config/app.php
 'JWTFactory'       => Tymon\JWTAuth\Facades\JWTFactory::class,
 'PushNotification' => Davibennun\LaravelPushNotification\Facades\PushNotification::class,
 'Socialite'        => Laravel\Socialite\Facades\Socialite::class,
+```
+
+add Clockwork middleware to http kernel.php
+``` bash
+protected $middleware = [
+    \Clockwork\Support\Laravel\ClockworkMiddleware::class,
+    ...
+]
 ```
 
 add the following code in Exception/Handler.php in render function
@@ -125,7 +134,7 @@ php artisan module:seed
 
 api documentation
 
-add this command to kernel.php
+add this command to console kernel.php
 ``` bash
 use \App\Modules\V1\Core\Console\Commands\GenerateDoc as GenerateDoc;
 protected $commands = [

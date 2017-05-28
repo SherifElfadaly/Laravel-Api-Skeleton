@@ -55,7 +55,7 @@ class CachingDecorator
         if ($this->cacheConfig && $this->cacheConfig == 'cache') 
         {
             $page     = \Request::get('page') ?? '1';
-            $cacheKey = $name . $page . serialize($arguments);
+            $cacheKey = $name . $page . \Session::get('locale') . serialize($arguments);
             return $this->cache->tags([$this->model])->rememberForever($cacheKey, function() use ($arguments, $name) {
                 return call_user_func_array([$this->repo, $name], $arguments);
             });
