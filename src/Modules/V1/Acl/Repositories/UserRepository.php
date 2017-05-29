@@ -292,7 +292,7 @@ class UserRepository extends AbstractRepository
      */
     public function changePassword($credentials)
     {
-        $user = $this->find(\JWTAuth::parseToken()->authenticate()->id);
+        $user = \JWTAuth::parseToken()->authenticate();
         if ( ! \Hash::check($credentials['old_password'], $user->password)) 
         {
             \ErrorHandler::invalidOldPassword();

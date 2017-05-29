@@ -240,7 +240,7 @@ class BaseApiController extends Controller
         $permission = $permission !== 'index' ? $permission : 'list';
         if ( ! in_array($permission, $this->skipLoginCheck)) 
         {
-            $user = \Core::users()->find(\JWTAuth::parseToken()->authenticate()->id);
+            $user = \JWTAuth::parseToken()->authenticate();
             if ($user->blocked)
             {
                 \ErrorHandler::userIsBlocked();

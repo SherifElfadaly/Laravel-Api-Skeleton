@@ -12,18 +12,10 @@ abstract class AbstractRepository implements RepositoryInterface
     public $model;
     
     /**
-     * The config implementation.
-     * 
-     * @var config
-     */
-    protected $config;
-    
-    /**
      * Create new AbstractRepository instance.
      */
     public function __construct()
     {   
-        $this->config = \CoreConfig::getConfig();
         $this->model  = \App::make($this->getModel());
     }
 

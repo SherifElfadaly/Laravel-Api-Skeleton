@@ -5,12 +5,7 @@ class CoreConfig
 {
     public function getConfig()
     {
-    	$customSettings = [];
-    	Settings::get(['key', 'value'])->each(function ($setting) use (&$customSettings){
-    		$customSettings[$setting['key']] = $setting['value'];
-    	});
-
-        return array_merge($customSettings, [
+        return [
         	'resetLink' => '{{link_here}}',
 			/**
 			 * Specify what relations should be used for every model.
@@ -184,6 +179,6 @@ class CoreConfig
 					]
 				]
 			]
-		]);
+		];
     }
 }
