@@ -15,7 +15,7 @@ Route::group(['prefix' => 'v1/reporting'], function() {
 	
 	Route::group(['prefix' => 'reports'], function() {
 		
-		Route::get('/list/{sortBy?}/{desc?}', 'ReportsController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'ReportsController@index');
 		Route::get('find/{id}', 'ReportsController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@paginate');

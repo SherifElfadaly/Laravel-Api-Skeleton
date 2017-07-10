@@ -17,6 +17,13 @@ class CachingDecorator
     protected $cache;
 
     /**
+     * The modelClass implementation.
+     * 
+     * @var string
+     */
+    public $modelClass;
+
+    /**
      * The model implementation.
      * 
      * @var string
@@ -35,9 +42,10 @@ class CachingDecorator
      */
     public function __construct($repo, $cache)
     {   
-        $this->repo  = $repo;
-        $this->cache = $cache;
-        $this->model = get_class($this->repo->model);
+        $this->repo       = $repo;
+        $this->cache      = $cache;
+        $this->model      = $this->repo->model;
+        $this->modelClass = get_class($this->model);
     }
 
     /**
@@ -56,13 +64,13 @@ class CachingDecorator
         {
             $page     = \Request::get('page') ?? '1';
             $cacheKey = $name . $page . \Session::get('locale') . serialize($arguments);
-            return $this->cache->tags([$this->model])->rememberForever($cacheKey, function() use ($arguments, $name) {
+            return $this->cache->tags([$this->modelClass])->rememberForever($cacheKey, function() use ($arguments, $name) {
                 return call_user_func_array([$this->repo, $name], $arguments);
             });
         }
         else if ($this->cacheConfig)
         {
-            $this->cache->tags($this->cacheConfig)->flush();
+            $this->cache->tags($this->modelClass)->flush();
             return call_user_func_array([$this->repo, $name], $arguments);
         }
 
@@ -85,11 +93,11 @@ class CachingDecorator
         $cacheConfig       = array_key_exists($configKey, $config['cacheConfig']) ? $config['cacheConfig'][$configKey] : false;
         $this->cacheConfig = false;
 
-        if (in_array($name, $cacheConfig['cache']))
+        if ($cacheConfig && in_array($name, $cacheConfig['cache']))
         {
             $this->cacheConfig = 'cache';
         }
-        else if (in_array($name, $cacheConfig['clear']))
+        else if ($cacheConfig && in_array($name, $cacheConfig['clear']))
         {
             $this->cacheConfig = $cacheConfig['clear'][$name];
         }

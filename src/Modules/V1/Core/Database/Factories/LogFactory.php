@@ -2,7 +2,6 @@
 
 $factory->define(App\Modules\V1\Core\Log::class, function (Faker\Generator $faker) {
     return [
-		'id'         => $faker->randomDigitNotNull(),
 		'action'     => $faker->randomElement(['create', 'delete', 'update']),
 		'item_name ' => $faker->randomElement(['User', 'Settings', 'Group']),
 		'item_id'    => $faker->randomDigitNotNull(),

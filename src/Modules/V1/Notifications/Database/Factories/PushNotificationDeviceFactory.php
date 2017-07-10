@@ -2,7 +2,6 @@
 
 $factory->define(App\Modules\V1\Notifications\PushNotificationDevice::class, function (Faker\Generator $faker) {
     return [
-		'id'           => $faker->randomDigitNotNull(),
 		'device_token' => $faker->sha1(),
 		'device_type ' => $faker->randomElement(['android', 'ios']),
 		'user_id'      => $faker->randomDigitNotNull(),

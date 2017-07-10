@@ -45,4 +45,13 @@ class AclPermissionObserver {
         //
     }
 
+    public function restoring($model)
+    {
+        //
+    }
+
+    public function restored($model)
+    {
+        //
+    }
 }

@@ -63,4 +63,13 @@ class AclGroupObserver {
         //
     }
 
+    public function restoring($model)
+    {
+        //
+    }
+
+    public function restored($model)
+    {
+        //
+    }
 }

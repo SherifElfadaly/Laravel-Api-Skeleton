@@ -2,7 +2,6 @@
 
 $factory->define(App\Modules\V1\Notifications\Notification::class, function (Faker\Generator $faker) {
     return [
-		'id'          => $faker->randomDigitNotNull(),
 		'key'         => $faker->randomElement(['low_stock', 'order_added', 'new_request']),
 		'item_name '  => $faker->randomElement(['User', 'Settings', 'Group']),
 		'item_id'     => $faker->randomDigitNotNull(),

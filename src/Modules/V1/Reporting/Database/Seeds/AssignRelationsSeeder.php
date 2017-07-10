@@ -12,10 +12,7 @@ class AssignRelationsSeeder extends Seeder
      * @return void
      */
     public function run()
-    {	
-        /**
-		 * Assign the permissions to the admin group.
-		 */
+    {
     	$adminGroupId = \DB::table('groups')->where('name', 'admin')->select('id')->first()->id;
 
         /**

@@ -15,7 +15,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 
 	Route::group(['prefix' => 'notifications'], function() {
 		
-		Route::get('/list/{sortBy?}/{desc?}', 'NotificationsController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'NotificationsController@index');
 		Route::get('find/{id}', 'NotificationsController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'NotificationsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'NotificationsController@paginate');
@@ -28,7 +28,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 
 	Route::group(['prefix' => 'push_notifications_devices'], function() {
 		
-		Route::get('/list/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@index');
 		Route::get('find/{id}', 'PushNotificationsDevicesController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginate');

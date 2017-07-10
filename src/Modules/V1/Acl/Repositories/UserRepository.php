@@ -65,11 +65,13 @@ class UserRepository extends AbstractRepository
      * Check if the logged in user has the given group.
      * 
      * @param  string  $groupName
+     * @param  integer $userId
      * @return boolean
      */
-    public function hasGroup($groupName)
+    public function hasGroup($groupName, $userId = fa;se)
     {
-        $groups = $this->find(\JWTAuth::parseToken()->authenticate()->id)->groups;
+        $userId = $userId ?: \JWTAuth::parseToken()->authenticate()->id;
+        $groups = $this->find($userId)->groups;
         return $groups->pluck('name')->search($groupName, true) === false ? false : true;
     }
 

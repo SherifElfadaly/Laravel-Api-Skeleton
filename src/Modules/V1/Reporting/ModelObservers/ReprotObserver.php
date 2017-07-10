@@ -45,4 +45,13 @@ class ReprotObserver {
         //
     }
 
+    public function restoring($model)
+    {
+        //
+    }
+
+    public function restored($model)
+    {
+        //
+    }
 }

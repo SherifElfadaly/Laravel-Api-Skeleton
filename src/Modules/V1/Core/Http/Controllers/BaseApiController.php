@@ -7,13 +7,6 @@ use Illuminate\Http\Request;
 class BaseApiController extends Controller
 {
     /**
-     * The model implementation.
-     * 
-     * @var string
-     */
-    protected $model;
-
-    /**
      * The config implementation.
      * 
      * @var array
@@ -27,6 +20,13 @@ class BaseApiController extends Controller
      */
     protected $relations;
 
+    /**
+     * The repo implementation.
+     * 
+     * @var array
+     */
+    protected $repo;
+
     public function __construct()
     {        
         $this->config              = \CoreConfig::getConfig();
@@ -34,6 +34,7 @@ class BaseApiController extends Controller
         $this->validationRules     = property_exists($this, 'validationRules') ? $this->validationRules : false;
         $this->skipPermissionCheck = property_exists($this, 'skipPermissionCheck') ? $this->skipPermissionCheck : [];
         $this->skipLoginCheck      = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
+        $this->repo                = call_user_func_array("\Core::{$this->model}", []);
         $route                     = explode('@',\Route::currentRouteAction())[1];
 
         $this->checkPermission($route);
@@ -50,9 +51,9 @@ class BaseApiController extends Controller
      */
     public function index($sortBy = 'created_at', $desc = 1) 
     {
-        if ($this->model)
+        if ($this->repo)
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->all($this->relations, $sortBy, $desc), 200);
+            return \Response::json($this->repo->all($this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -64,9 +65,9 @@ class BaseApiController extends Controller
      */
     public function find($id) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->find($id, $this->relations), 200);
+            return \Response::json($this->repo->find($id, $this->relations), 200);
         }
     }
 
@@ -82,9 +83,9 @@ class BaseApiController extends Controller
      */
     public function search($query = '', $perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->search($query, $perPage, $this->relations, $sortBy, $desc), 200);
+            return \Response::json($this->repo->search($query, $perPage, $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -99,9 +100,9 @@ class BaseApiController extends Controller
      */
     public function findby(Request $request, $sortBy = 'created_at', $desc = 1) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->findBy($request->all(), $this->relations, $sortBy, $desc), 200);
+            return \Response::json($this->repo->findBy($request->all(), $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -114,9 +115,9 @@ class BaseApiController extends Controller
      */
     public function first(Request $request) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->first($request->all(), $this->relations), 200);
+            return \Response::json($this->repo->first($request->all(), $this->relations), 200);
         }
     }
 
@@ -130,9 +131,9 @@ class BaseApiController extends Controller
      */
     public function paginate($perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->paginate($perPage, $this->relations, $sortBy, $desc), 200);
+            return \Response::json($this->repo->paginate($perPage, $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -148,9 +149,9 @@ class BaseApiController extends Controller
      */
     public function paginateby(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->paginateBy($request->all(), $perPage, $this->relations, $sortBy, $desc), 200);
+            return \Response::json($this->repo->paginateBy($request->all(), $perPage, $this->relations, $sortBy, $desc), 200);
         }
     }
 
@@ -181,9 +182,9 @@ class BaseApiController extends Controller
         
         $this->validate($request, $this->validationRules);
 
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->save($request->all()), 200);
+            return \Response::json($this->repo->save($request->all()), 200);
         }
     }
 
@@ -195,9 +196,9 @@ class BaseApiController extends Controller
      */
     public function delete($id) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->delete($id), 200);
+            return \Response::json($this->repo->delete($id), 200);
         }
     }
 
@@ -212,7 +213,7 @@ class BaseApiController extends Controller
      */
     public function deleted(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1) 
     {
-        return \Response::json(call_user_func_array("\Core::{$this->model}", [])->deleted($request->all(), $perPage, $sortBy, $desc), 200);
+        return \Response::json($this->repo->deleted($request->all(), $perPage, $sortBy, $desc), 200);
     }
 
     /**
@@ -223,9 +224,9 @@ class BaseApiController extends Controller
      */
     public function restore($id) 
     {
-        if ($this->model) 
+        if ($this->repo) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->restore($id), 200);
+            return \Response::json($this->repo->restore($id), 200);
         }
     }
 

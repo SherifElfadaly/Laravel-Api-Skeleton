@@ -241,11 +241,20 @@ class GenerateDoc extends Command
      */
     protected function getModels($modelName, &$docData)
     {
-        if ( ! array_key_exists($modelName, $docData['models'])) 
+        if ($modelName && ! array_key_exists($modelName, $docData['models'])) 
         {
-            $modelClass      = call_user_func_array("\Core::{$modelName}", [])->model;
-            $model           = factory($modelClass)->make();
-            $docData['models'][$modelName] = json_encode($model->toArray(), JSON_PRETTY_PRINT);
+            $modelClass = call_user_func_array("\Core::{$modelName}", [])->modelClass;
+            $model      = factory($modelClass)->make();
+            $modelArr   = $model->toArray();
+
+            if ( $model->trans && ! $model->trans->count()) 
+            {
+                $modelArr['trans'] = [
+                    'en' => factory($modelClass . 'Translation')->make()->toArray()
+                ];
+            }
+
+            $docData['models'][$modelName] = json_encode($modelArr, JSON_PRETTY_PRINT);
         }
     }
 

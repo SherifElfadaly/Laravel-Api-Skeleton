@@ -15,7 +15,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 
 	Route::group(['prefix' => 'settings'], function() {
 		
-		Route::get('/list/{sortBy?}/{desc?}', 'SettingsController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'SettingsController@index');
 		Route::get('find/{id}', 'SettingsController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginate');
@@ -27,7 +27,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 
 	Route::group(['prefix' => 'logs'], function() {
 
-		Route::get('/list/{sortBy?}/{desc?}', 'LogsController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'LogsController@index');
 		Route::get('find/{id}', 'LogsController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'LogsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'LogsController@paginate');

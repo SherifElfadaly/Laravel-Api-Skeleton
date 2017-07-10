@@ -15,7 +15,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 
 	Route::group(['prefix' => 'users'], function() {
 		
-		Route::get('/list/{sortBy?}/{desc?}', 'UsersController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'UsersController@index');
 		Route::get('find/{id}', 'UsersController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'UsersController@paginate');
@@ -44,7 +44,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 
 	Route::group(['prefix' => 'groups'], function() {
 
-		Route::get('/list/{sortBy?}/{desc?}', 'GroupsController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'GroupsController@index');
 		Route::get('find/{id}', 'GroupsController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@paginate');
@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 	
 	Route::group(['prefix' => 'permissions'], function() {
 		
-		Route::get('/list/{sortBy?}/{desc?}', 'PermissionsController@index');
+		Route::get('list/{sortBy?}/{desc?}', 'PermissionsController@index');
 		Route::get('find/{id}', 'PermissionsController@find');
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'PermissionsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'PermissionsController@paginate');

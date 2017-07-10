@@ -52,4 +52,13 @@ class NotificationObserver {
         //
     }
 
+    public function restoring($model)
+    {
+        //
+    }
+
+    public function restored($model)
+    {
+        //
+    }
 }
