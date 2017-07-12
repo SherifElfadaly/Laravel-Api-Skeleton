@@ -17,11 +17,11 @@ class CachingDecorator
     protected $cache;
 
     /**
-     * The modelClass implementation.
+     * The modelKey implementation.
      * 
      * @var string
      */
-    public $modelClass;
+    public $modelKey;
 
     /**
      * The model implementation.
@@ -42,10 +42,11 @@ class CachingDecorator
      */
     public function __construct($repo, $cache)
     {   
-        $this->repo       = $repo;
-        $this->cache      = $cache;
-        $this->model      = $this->repo->model;
-        $this->modelClass = get_class($this->model);
+        $this->repo     = $repo;
+        $this->cache    = $cache;
+        $this->model    = $this->repo->model;
+        $repoName       = end(explode('\\', get_class($this->repo)));
+        $this->cacheTag = str_plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
     }
 
     /**
@@ -62,15 +63,15 @@ class CachingDecorator
 
         if ($this->cacheConfig && $this->cacheConfig == 'cache') 
         {
-            $page     = \Request::get('page') ?? '1';
+            $page     = \Request::get('page') !== null ? \Request::get('page') : '1';
             $cacheKey = $name . $page . \Session::get('locale') . serialize($arguments);
-            return $this->cache->tags([$this->modelClass])->rememberForever($cacheKey, function() use ($arguments, $name) {
+            return $this->cache->tags([$this->cacheTag])->rememberForever($cacheKey, function() use ($arguments, $name) {
                 return call_user_func_array([$this->repo, $name], $arguments);
             });
         }
         else if ($this->cacheConfig)
         {
-            $this->cache->tags($this->modelClass)->flush();
+            $this->cache->tags($this->cacheConfig)->flush();
             return call_user_func_array([$this->repo, $name], $arguments);
         }
 
@@ -84,20 +85,16 @@ class CachingDecorator
      * @return void
      */
     private function setCacheConfig($name)
-    {
-        $strArr            = explode('\\', get_class($this->repo));
-        $repoName          = end($strArr);
-        $configKey         = str_plural(strtolower(substr($repoName, 0, strpos($repoName, 'Repository'))));
-        
+    {   
         $config            = \CoreConfig::getConfig();
-        $cacheConfig       = array_key_exists($configKey, $config['cacheConfig']) ? $config['cacheConfig'][$configKey] : false;
+        $cacheConfig       = array_key_exists($this->cacheTag, $config['cacheConfig']) ? $config['cacheConfig'][$this->cacheTag] : false;
         $this->cacheConfig = false;
 
         if ($cacheConfig && in_array($name, $cacheConfig['cache']))
         {
             $this->cacheConfig = 'cache';
         }
-        else if ($cacheConfig && in_array($name, $cacheConfig['clear']))
+        else if ($cacheConfig && isset($cacheConfig['clear'][$name]))
         {
             $this->cacheConfig = $cacheConfig['clear'][$name];
         }
