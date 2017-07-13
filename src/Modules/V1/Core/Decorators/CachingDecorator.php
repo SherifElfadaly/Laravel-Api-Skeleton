@@ -45,7 +45,8 @@ class CachingDecorator
         $this->repo     = $repo;
         $this->cache    = $cache;
         $this->model    = $this->repo->model;
-        $repoName       = end(explode('\\', get_class($this->repo)));
+        $repoClass      = explode('\\', get_class($this->repo));
+        $repoName       = end($repoClass);
         $this->cacheTag = str_plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
     }
 

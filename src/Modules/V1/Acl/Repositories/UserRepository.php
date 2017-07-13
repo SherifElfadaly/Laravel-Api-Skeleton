@@ -247,7 +247,7 @@ class UserRepository extends AbstractRepository
         $url   = $this->config['resetLink'];
         $token = \Password::getRepository()->create($user);
         
-        \Mail::send('Acl:resetpassword', ['user' => $user, 'url' => $url, 'token' => $token], function ($m) use ($user) {
+        \Mail::send('acl::resetpassword', ['user' => $user, 'url' => $url, 'token' => $token], function ($m) use ($user) {
             $m->to($user->email, $user->name)->subject('Your Password Reset Link');
         });
     }
@@ -262,7 +262,7 @@ class UserRepository extends AbstractRepository
     {
         $token    = false;
         $response = \Password::reset($credentials, function ($user, $password) use (&$token) {
-            $user->password = bcrypt($password);
+            $user->password = $password;
             $user->save();
 
             $token = \JWTAuth::fromUser($user);

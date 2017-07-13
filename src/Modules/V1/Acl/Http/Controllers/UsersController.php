@@ -19,7 +19,7 @@ class UsersController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['account', 'logout', 'sendreset', 'changePassword'];
+    protected $skipPermissionCheck = ['account', 'logout', 'changePassword'];
 
     /**
      * List of all route actions that the base api controller
