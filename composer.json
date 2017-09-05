@@ -19,7 +19,7 @@
     "require": {
         "itsgoingd/clockwork": "^1.14",
         "phpdocumentor/reflection-docblock": "^3.1",
-        "laravel/socialite": "2.0.*",
+        "laravel/socialite": "3.0.*",
         "davibennun/laravel-push-notification": "dev-laravel5",
         "tymon/jwt-auth": "0.5.*",
         "caffeinated/modules": "^4.0",
