@@ -18,12 +18,12 @@
     ],
     "require": {
         "itsgoingd/clockwork": "^2.0",
-        "phpdocumentor/reflection-docblock": "^3.1",
+        "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
         "davibennun/laravel-push-notification": "dev-laravel5",
         "tymon/jwt-auth": "dev-develop",
-        "caffeinated/modules": "^4.0",
-        "predis/predis": "^1.0",
+        "caffeinated/modules": "^4.2",
+        "predis/predis": "^1.1",
         "illuminate/support": "~5.1",
         "php" : "~5.5|~7.0"
     },
@@ -58,22 +58,13 @@
         "laravel": {
             "providers": [
                 "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider::class",
-                "Caffeinated\\Modules\\ModulesServiceProvider::class",
-                "Tymon\\JWTAuth\\Provider\\JWTAuthServiceProvider::class",
-                "Davibennun\\LaravelPushNotification\\LaravelPushNotificationServiceProvider::class",
-                "Laravel\\Socialite\\SocialiteServiceProvider::class",
-                "Clockwork\\Support\\Laravel\\ClockworkServiceProvider::class"
             ],
             "aliases": {
-                "Core"             : "App\\Modules\\V1\\Core\\Facades\\Core::class",
-                "ErrorHandler"     : "App\\Modules\\V1\\Core\\Facades\\ErrorHandler::class",
-                "CoreConfig"       : "App\\Modules\\V1\\Core\\Facades\\CoreConfig::class",
-                "Logging"          : "App\\Modules\\V1\\Core\\Facades\\Logging::class",
-                "Module"           : "Caffeinated\\Modules\\Facades\\Module::class",
-                "JWTAuth"          : "Tymon\\JWTAuth\\Facades\\JWTAuth::class",
-                "JWTFactory"       : "Tymon\\JWTAuth\\Facades\\JWTFactory::class",
-                "PushNotification" : "Davibennun\\LaravelPushNotification\\Facades\\PushNotification::class",
-                "Socialite"        : "Laravel\\Socialite\\Facades\\Socialite::class"
+                "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core::class",
+                "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler::class",
+                "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig::class",
+                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging::class",
+                "Module"      : "Caffeinated\\Modules\\Facades\\Module::class",
             }
         }
     }
