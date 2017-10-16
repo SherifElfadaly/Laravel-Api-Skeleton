@@ -62,7 +62,7 @@
                 "Tymon\\JWTAuth\\Provider\\JWTAuthServiceProvider::class",
                 "Davibennun\\LaravelPushNotification\\LaravelPushNotificationServiceProvider::class",
                 "Laravel\\Socialite\\SocialiteServiceProvider::class",
-                "Clockwork\\Support\\Laravel\\ClockworkServiceProvider::class",
+                "Clockwork\\Support\\Laravel\\ClockworkServiceProvider::class"
             ],
             "aliases": {
                 "Core"             : "App\\Modules\\V1\\Core\\Facades\\Core::class",
@@ -73,7 +73,7 @@
                 "JWTAuth"          : "Tymon\\JWTAuth\\Facades\\JWTAuth::class",
                 "JWTFactory"       : "Tymon\\JWTAuth\\Facades\\JWTFactory::class",
                 "PushNotification" : "Davibennun\\LaravelPushNotification\\Facades\\PushNotification::class",
-                "Socialite"        : "Laravel\\Socialite\\Facades\\Socialite::class",
+                "Socialite"        : "Laravel\\Socialite\\Facades\\Socialite::class"
             }
         }
     }
