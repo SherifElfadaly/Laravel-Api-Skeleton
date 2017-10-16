@@ -54,6 +54,27 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider::class",
+                "Caffeinated\\Modules\\ModulesServiceProvider::class",
+                "Tymon\\JWTAuth\\Provider\\JWTAuthServiceProvider::class",
+                "Davibennun\\LaravelPushNotification\\LaravelPushNotificationServiceProvider::class",
+                "Laravel\\Socialite\\SocialiteServiceProvider::class",
+                "Clockwork\\Support\\Laravel\\ClockworkServiceProvider::class",
+            ],
+            "aliases": {
+                "Core"             : "App\\Modules\\V1\\Core\\Facades\\Core::class",
+                "ErrorHandler"     : "App\\Modules\\V1\\Core\\Facades\\ErrorHandler::class",
+                "CoreConfig"       : "App\\Modules\\V1\\Core\\Facades\\CoreConfig::class",
+                "Logging"          : "App\\Modules\\V1\\Core\\Facades\\Logging::class",
+                "Module"           : "Caffeinated\\Modules\\Facades\\Module::class",
+                "JWTAuth"          : "Tymon\\JWTAuth\\Facades\\JWTAuth::class",
+                "JWTFactory"       : "Tymon\\JWTAuth\\Facades\\JWTFactory::class",
+                "PushNotification" : "Davibennun\\LaravelPushNotification\\Facades\\PushNotification::class",
+                "Socialite"        : "Laravel\\Socialite\\Facades\\Socialite::class",
+            }
         }
     }
 }
