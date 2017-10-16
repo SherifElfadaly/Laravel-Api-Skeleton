@@ -57,14 +57,14 @@
         },
         "laravel": {
             "providers": [
-                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider::class",
+                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider::class"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core::class",
                 "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler::class",
                 "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig::class",
                 "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging::class",
-                "Module"      : "Caffeinated\\Modules\\Facades\\Module::class",
+                "Module"      : "Caffeinated\\Modules\\Facades\\Module::class"
             }
         }
     }
