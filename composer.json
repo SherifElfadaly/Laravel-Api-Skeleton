@@ -21,7 +21,6 @@
         "itsgoingd/clockwork": "^2.0",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
-        "davibennun/laravel-push-notification": "dev-laravel5",
         "tymon/jwt-auth": "dev-develop",
         "caffeinated/modules": "^4.2",
         "predis/predis": "^1.1",
@@ -58,13 +57,15 @@
         },
         "laravel": {
             "providers": [
-                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider"
+                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider",
+                "LaravelFCM\\FCMServiceProvider"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core",
                 "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler",
                 "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig",
-                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging"
+                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging",
+                "'FCM"        : "LaravelFCM\\Facades\\FCM"
             }
         }
     }

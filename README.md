@@ -7,12 +7,6 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 ## Install
 
-Add this to cpmposer.json
-``` bash
-"minimum-stability" : "dev",
-"prefer-stable": true
-```
-
 Via Composer
 
 Run this command:
