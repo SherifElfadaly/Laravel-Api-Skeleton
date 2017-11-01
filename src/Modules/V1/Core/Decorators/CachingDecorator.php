@@ -31,6 +31,13 @@ class CachingDecorator
     public $model;
 
     /**
+     * The modelClass implementation.
+     * 
+     * @var string
+     */
+    public $modelClass;
+
+    /**
      * The cacheConfig implementation.
      * 
      * @var array
@@ -42,12 +49,13 @@ class CachingDecorator
      */
     public function __construct($repo, $cache)
     {   
-        $this->repo     = $repo;
-        $this->cache    = $cache;
-        $this->model    = $this->repo->model;
-        $repoClass      = explode('\\', get_class($this->repo));
-        $repoName       = end($repoClass);
-        $this->cacheTag = str_plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
+        $this->repo       = $repo;
+        $this->cache      = $cache;
+        $this->model      = $this->repo->model;
+        $this->modelClass = get_class($this->model);
+        $repoClass        = explode('\\', get_class($this->repo));
+        $repoName         = end($repoClass);
+        $this->cacheTag   = str_plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
     }
 
     /**

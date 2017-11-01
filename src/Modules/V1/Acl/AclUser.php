@@ -1,10 +1,11 @@
 <?php namespace App\Modules\V1\Acl;
 
-use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
 
-class AclUser extends User {
+class AclUser extends User implements AuthenticatableUserContract {
 
     use SoftDeletes;
     protected $table    = 'users';
@@ -13,6 +14,16 @@ class AclUser extends User {
     protected $guarded  = ['id'];
     protected $fillable = ['name', 'email', 'password'];
     public $searchable  = ['name', 'email'];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     
     public function getCreatedAtAttribute($value)
     {
@@ -48,6 +59,11 @@ class AclUser extends User {
     public function groups()
     {
         return $this->belongsToMany('\App\Modules\V1\Acl\AclGroup','users_groups','user_id','group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+    }
+
+    public function employee()
+    {
+        return $this->hasOne('App\Modules\V1\Tobacco\Employee', 'user_id');
     }
     
     public static function boot()

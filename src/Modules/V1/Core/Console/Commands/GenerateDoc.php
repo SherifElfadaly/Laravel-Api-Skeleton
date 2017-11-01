@@ -62,8 +62,7 @@ class GenerateDoc extends Command
                 $this->getPostData($route, $reflectionMethod, $validationRules);
 
                 preg_match('/api\/v1\/([^#]+)\//iU', $route['uri'], $module);
-                preg_match('/api\/v1\/' . $module[1] . '\/([^#]+)\//iU', $route['uri'], $model);
-                $docData['modules'][$module[1]][$model[1]][] = $route;
+                $docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/v1/' . $module[1] . '/') - 1)][] = $route;
 
                 $this->getModels($classProperties['model'], $docData);
             }
@@ -86,7 +85,8 @@ class GenerateDoc extends Command
                 return [
                     'method' => $route->methods()[0],
                     'uri'    => $route->uri(),
-                    'action' => $route->getActionName()
+                    'action' => $route->getActionName(),
+                    'prefix' => $route->getPrefix()
                 ];
             }
             return false;

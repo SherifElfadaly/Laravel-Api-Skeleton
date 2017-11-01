@@ -15,14 +15,35 @@ class PushNotificationsDevicesController extends BaseApiController
     protected $model            = 'pushNotificationDevices';
 
     /**
+     * List of all route actions that the base api controller
+     * will skip permissions check for them.
+     * @var array
+     */
+    protected $skipPermissionCheck = ['registerDevice'];
+
+    /**
      * The validations rules used by the base api controller
      * to check before add.
      * @var array
      */
     protected $validationRules  = [
     'device_token' => 'required|string|max:255',
-    'device_type'  => 'required|in:android,ios',
     'user_id'      => 'required|exists:users,id',
     'active'       => 'boolean'
     ];
+
+    /**
+     * Register the given device to the logged in user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function registerDevice(Request $request)
+    {
+        $this->validate($request, [
+            'device_token' => 'required|string|max:255'
+            ]);
+
+        return \Response::json(\Core::pushNotificationDevices()->registerDevice($request->all()), 200);
+    }
 }

@@ -68,7 +68,7 @@ class UserRepository extends AbstractRepository
      * @param  integer $userId
      * @return boolean
      */
-    public function hasGroup($groupName, $userId = fa;se)
+    public function hasGroup($groupName, $userId = false)
     {
         $userId = $userId ?: \JWTAuth::parseToken()->authenticate()->id;
         $groups = $this->find($userId)->groups;

@@ -1,78 +1,73 @@
 <?php namespace App\Modules\V1\Notifications\Repositories;
 
 use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\V1\Notifications\Jobs\PushNotifications;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
 
 class PushNotificationDeviceRepository extends AbstractRepository
 {
-      /**
-      * Return the model full namespace.
-      * 
-      * @return string
-      */
-      protected function getModel()
-      {
-          return 'App\Modules\V1\Notifications\PushNotificationDevice';
-      }
+    /**
+    * Return the model full namespace.
+    * 
+    * @return string
+    */
+    protected function getModel()
+    {
+        return 'App\Modules\V1\Notifications\PushNotificationDevice';
+    }
 
     /**
-     * Broadcast the message to the given users devices.
+     * Set the notification notified to all.
      *
      * @param  array  $users_ids
-     * @param  string $messageText
+     * @param  string $title
+     * @param  string $message
+     * @param  string $data
      * @return void
      */
-    public function broadcast($users_ids, $messageText)
+    public function registerDevice($data)
     {
-        $devicesArray = [];
-        $devices      = $this->model->whereIn('user_id', $users_ids)->get();
-        foreach ($devices as $device) 
+        $data['user_id'] = \JWTAuth::parseToken()->authenticate()->id;
+        if ($device = $this->model->where('device_token', $data['device_token'])->where('user_id', $data['user_id'])->first()) 
         {
-            $devicesArray[$device->device_type][] = \PushNotification::Device($device->device_token);
-        }
-        
-        if (array_key_exists('ios', $devicesArray)) 
-        {
-            $message = $this->constructMessage($messageText, [ 'badge' => 15, 'sound' => 'default', 'content-available' => 1 ]);
-            $iosDevices = \PushNotification::DeviceCollection($devicesArray['ios']);
-            $this->push('ios', $iosDevices, $message);
+            $data['id'] = $device->id;
         }
 
-        if (array_key_exists('android', $devicesArray)) 
-        {
-            $message = $this->constructMessage($messageText);
-            $androidDevices = \PushNotification::DeviceCollection($devicesArray['android']);
-            $this->push('android', $androidDevices, $message);
-        }
-    }
-
-
-    /**
-     * Push the given message to the given devices.
-     *
-     * @param  string    $type
-     * @param  colletion $devices
-     * @param  string    $message
-     * @return object
-     */
-    public function push($type, $devices, $message)
-    {
-        $collection = \PushNotification::app($type)->to($devices)->send($message);
-        foreach ($collection->pushManager as $push) 
-        {
-            $response[] = $push->getAdapter()->getResponse();
-        }
-        dd($response);
+        return $this->save($data);
     }
 
     /**
-     * Construct the notification message.
+     * Set the notification notified to all.
      *
-     * @param  string $messageText
-     * @param  array  $options
-     * @return object
+     * @param  array  $userIds
+     * @param  string $title
+     * @param  string $message
+     * @param  string $data
+     * @return void
      */
-    protected function constructMessage($messageText, $options = [])
+    public function push($userIds, $title, $message, $data = [])
     {
-        return \PushNotification::Message($messageText, $options);
+        if (count($userIds)) 
+        {
+            $optionBuilder       = new OptionsBuilder();
+            $notificationBuilder = new PayloadNotificationBuilder($title);
+            $dataBuilder         = new PayloadDataBuilder();
+
+            $optionBuilder->setTimeToLive(60*20);
+            $notificationBuilder->setBody($message);
+            $dataBuilder->addData($data);
+
+            $option              = $optionBuilder->build();
+            $notification        = $notificationBuilder->build();
+            $data                = $dataBuilder->build();
+            $tokens              = $this->model->whereIn('user_id', $userIds)->pluck('device_token')->toArray();
+
+            if (count($tokens)) 
+            {
+                dispatch(new PushNotifications($option, $notification, $data, $tokens));
+            }
+        }
     }
 }

@@ -39,5 +39,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginateby');
 		Route::post('save', 'PushNotificationsDevicesController@save');
 		Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@deleted');
+		Route::post('register/device', 'PushNotificationsDevicesController@registerDevice');
 	});
 });

@@ -15,10 +15,9 @@ class PushNotificationsDevices extends Migration
 		Schema::create('push_notifications_devices', function (Blueprint $table) {
 			$table->increments('id');
 			$table->string('device_token');
-			$table->enum('device_type', ['android', 'ios']);
 			$table->integer('user_id');
 			$table->boolean('active')->default(1);
-			$table->unique(array('device_token', 'device_type'));
+			$table->unique(array('device_token', 'user_id'));
 			$table->softDeletes();
 			$table->timestamps();
         });

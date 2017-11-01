@@ -298,6 +298,6 @@ class BaseApiController extends Controller
     {
         $route           = $route !== 'index' ? $route : 'list';
         $relations       = array_key_exists($this->model, $this->config['relations']) ? $this->config['relations'][$this->model] : false;
-        $this->relations = $relations && $relations[$route] ? $relations[$route] : [];
+        $this->relations = $relations && isset($relations[$route]) ? $relations[$route] : [];
     }
 }

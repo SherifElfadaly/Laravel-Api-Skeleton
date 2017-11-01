@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "brozot/laravel-fcm": "^1.2",
         "itsgoingd/clockwork": "^2.0",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",

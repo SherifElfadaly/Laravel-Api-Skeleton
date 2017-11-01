@@ -61,9 +61,9 @@ if ($request->wantsJson())
     {
         return \Response::json($exception->getMessage(), $exception->getStatusCode());   
     }
-    else if ($exception instanceof \lluminate\Validation\ValidationException) 
+    else if ($exception instanceof \Illuminate\Validation\ValidationException) 
     {
-        return \Response::json($exception->getMessage(), $exception->getStatusCode());   
+        return \Response::json($exception->errors(), 422);   
     }
     else if ( ! $exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException)
     {
@@ -91,7 +91,7 @@ update the namespace and path in modules.php config
 
 set a secret key in the config file
 ``` bash
-php artisan jwt:generate
+php artisan jwt:secret
 ```
 
 run this command

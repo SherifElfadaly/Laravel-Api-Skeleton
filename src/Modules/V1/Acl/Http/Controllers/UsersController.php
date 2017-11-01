@@ -34,8 +34,8 @@ class UsersController extends BaseApiController
      * @var array
      */
     protected $validationRules     = [
-        'name'     => 'nullable|string|unique:users,name,{id},id,name,NOT_NULL', 
-        'email'    => 'required|email|unique:users,email,{id},id,email,NOT_NULL', 
+        'name'     => 'nullable|string|unique:users,name,{id}', 
+        'email'    => 'required|email|unique:users,email,{id}', 
         'password' => 'nullable|min:6'
     ];
 
@@ -90,8 +90,8 @@ class UsersController extends BaseApiController
     public function register(Request $request)
     {
         $this->validate($request, [
-            'name'     => 'nullable|string|unique:users,name,{id},id,name,NOT_NULL', 
-            'email'    => 'required|email|unique:users,email,{id},id,email,NOT_NULL', 
+            'name'     => 'nullable|string|unique:users,name,{id}', 
+            'email'    => 'required|email|unique:users,email,{id}', 
             'password' => 'required|min:6'
             ]);
 
@@ -99,7 +99,7 @@ class UsersController extends BaseApiController
     }
 
     /**
-     * Handle a login request of the none admin to the application.
+     * Handle a login request to the application.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
