@@ -21,7 +21,7 @@
         "itsgoingd/clockwork": "^2.0",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
-        "tymon/jwt-auth": "1.0.0",
+        "tymon/jwt-auth": "1.0.*",
         "caffeinated/modules": "^4.2",
         "predis/predis": "^1.1",
         "illuminate/support": "~5.1",
