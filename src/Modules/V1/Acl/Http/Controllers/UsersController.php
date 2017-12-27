@@ -34,7 +34,7 @@ class UsersController extends BaseApiController
      * @var array
      */
     protected $validationRules     = [
-        'name'     => 'nullable|string|unique:users,name,{id}', 
+        'name'     => 'nullable|string', 
         'email'    => 'required|email|unique:users,email,{id}', 
         'password' => 'nullable|min:6'
     ];
@@ -90,7 +90,7 @@ class UsersController extends BaseApiController
     public function register(Request $request)
     {
         $this->validate($request, [
-            'name'     => 'nullable|string|unique:users,name,{id}', 
+            'name'     => 'nullable|string', 
             'email'    => 'required|email|unique:users,email,{id}', 
             'password' => 'required|min:6'
             ]);

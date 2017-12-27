@@ -28,8 +28,7 @@ class PushNotificationsDevicesController extends BaseApiController
      */
     protected $validationRules  = [
     'device_token' => 'required|string|max:255',
-    'user_id'      => 'required|exists:users,id',
-    'active'       => 'boolean'
+    'user_id'      => 'required|exists:users,id'
     ];
 
     /**

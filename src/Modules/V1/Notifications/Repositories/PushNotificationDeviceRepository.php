@@ -2,9 +2,11 @@
 
 use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
 use App\Modules\V1\Notifications\Jobs\PushNotifications;
+use App\Modules\V1\Notifications\Jobs\PushNotificationsTopic;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
+use LaravelFCM\Message\Topics;
 
 class PushNotificationDeviceRepository extends AbstractRepository
 {
@@ -19,17 +21,15 @@ class PushNotificationDeviceRepository extends AbstractRepository
     }
 
     /**
-     * Set the notification notified to all.
+     * Register the given device to the logged in user.
      *
-     * @param  array  $users_ids
-     * @param  string $title
-     * @param  string $message
      * @param  string $data
      * @return void
      */
     public function registerDevice($data)
     {
-        $data['user_id'] = \JWTAuth::parseToken()->authenticate()->id;
+        $data['login_token'] = \JWTAuth::parseToken()->getToken();
+        $data['user_id']     = \JWTAuth::parseToken()->authenticate()->id;
         if ($device = $this->model->where('device_token', $data['device_token'])->where('user_id', $data['user_id'])->first()) 
         {
             $data['id'] = $device->id;
@@ -39,7 +39,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
     }
 
     /**
-     * Set the notification notified to all.
+     * Push the given notification to the given logged in userIds.
      *
      * @param  array  $userIds
      * @param  string $title
@@ -62,12 +62,51 @@ class PushNotificationDeviceRepository extends AbstractRepository
             $option              = $optionBuilder->build();
             $notification        = $notificationBuilder->build();
             $data                = $dataBuilder->build();
-            $tokens              = $this->model->whereIn('user_id', $userIds)->pluck('device_token')->toArray();
+            $devices             = $this->model->whereIn('user_id', $userIds)->get();
+            $tokens              = [];
+
+            foreach ($devices as $device) 
+            {
+                $loginToken = decrypt($device->login_token);
+
+                try
+                {
+                    if (\JWTAuth::authenticate($loginToken)) 
+                    {
+                        $tokens[] = $device->device_token;
+                    }    
+                } 
+                catch (\Exception $e) 
+                {
+                    $device->forceDelete();
+                }
+            }
 
             if (count($tokens)) 
             {
                 dispatch(new PushNotifications($option, $notification, $data, $tokens));
             }
         }
+    }
+
+    /**
+     * Push the given notification to the given topic.
+     *
+     * @param  string $topicName
+     * @param  string $title
+     * @param  string $message
+     * @return void
+     */
+    public function pushTopic($topicName, $title, $message)
+    {
+        $notificationBuilder = new PayloadNotificationBuilder($title);
+        $notificationBuilder->setBody($message)->setSound('default');
+
+        $notification = $notificationBuilder->build();
+
+        $topic = new Topics();
+        $topic->topic($topicName);
+
+        dispatch(new PushNotificationsTopic($topic, $notification));
     }
 }

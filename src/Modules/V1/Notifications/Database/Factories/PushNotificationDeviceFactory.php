@@ -4,7 +4,6 @@ $factory->define(App\Modules\V1\Notifications\PushNotificationDevice::class, fun
     return [
 		'device_token' => $faker->sha1(),
 		'user_id'      => $faker->randomDigitNotNull(),
-		'active'       => $faker->numberBetween(0, 1),
 		'created_at'   => $faker->dateTimeBetween('-1 years', 'now'),
 		'updated_at'   => $faker->dateTimeBetween('-1 years', 'now')
     ];
