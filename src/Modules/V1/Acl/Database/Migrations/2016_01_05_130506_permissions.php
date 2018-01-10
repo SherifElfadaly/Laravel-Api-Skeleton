@@ -26,6 +26,8 @@ class Permissions extends Migration
             $table->integer('permission_id');
             $table->softDeletes();
             $table->timestamps();
+
+	        $table->index(['group_id']);
         });
 	}
 

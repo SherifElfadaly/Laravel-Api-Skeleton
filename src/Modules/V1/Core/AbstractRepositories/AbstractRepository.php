@@ -67,10 +67,16 @@ abstract class AbstractRepository implements RepositoryInterface
 
             if (count($conditionColumns)) 
             {
+                $column = 'LOWER(' . array_shift($conditionColumns) . ')';
+                if (str_contains($column, '->')) 
+                {
+                    $column = $this->wrapJsonSelector($column);
+                }
+
                 /**
                  * Use the first element in the model columns to construct the first condition.
                  */
-                $q->where(\DB::raw('LOWER(' . array_shift($conditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
+                $q->where(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
             }
 
             /**
@@ -78,7 +84,13 @@ abstract class AbstractRepository implements RepositoryInterface
              */
             foreach ($conditionColumns as $column) 
             {
-                $q->orWhere(\DB::raw('LOWER(' . $column . ')'), 'LIKE', '%' . strtolower($query) . '%');
+                $column = 'LOWER(' . $column . ')';
+                if (str_contains($column, '->')) 
+                {
+                    $column = $this->wrapJsonSelector($column);
+                }
+
+                $q->orWhere(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
             }
 
             /**
@@ -110,10 +122,17 @@ abstract class AbstractRepository implements RepositoryInterface
 
                             if (count($subConditionColumns)) 
                             {
+
+                                $column = 'LOWER(' . array_shift($subConditionColumns) . ')';
+                                if (str_contains($column, '->')) 
+                                {
+                                    $column = $this->wrapJsonSelector($column);
+                                }
+
                                 /**
                                 * Use the first element in the relation model columns to construct the first condition.
                                  */
-                                $q->where(\DB::raw('LOWER(' . array_shift($subConditionColumns) . ')'), 'LIKE', '%' . strtolower($query) . '%');
+                                $q->where(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
                             }
 
                             /**
@@ -121,7 +140,13 @@ abstract class AbstractRepository implements RepositoryInterface
                              */
                             foreach ($subConditionColumns as $subConditionColumn)
                             {
-                                $q->orWhere(\DB::raw('LOWER(' . $subConditionColumn . ')'), 'LIKE', '%' . strtolower($query) . '%');
+                                $column = 'LOWER(' . $subConditionColumn . ')';
+                                if (str_contains($column, '->')) 
+                                {
+                                    $column = $this->wrapJsonSelector($column);
+                                }
+                                
+                                $q->orWhere(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
                             } 
                         });
 
@@ -577,6 +602,11 @@ abstract class AbstractRepository implements RepositoryInterface
         $conditionValues = [];
         foreach ($conditions as $key => $value) 
         {
+            if (str_contains($key, '->')) 
+            {
+                $key = $this->wrapJsonSelector($key);
+            }
+
             if ($key == 'and') 
             {
                 $conditions       = $this->constructConditions($value, $model);
@@ -647,6 +677,25 @@ abstract class AbstractRepository implements RepositoryInterface
         }
         $conditionString = '(' . rtrim($conditionString, '{op} ') . ')';
         return ['conditionString' => $conditionString, 'conditionValues' => $conditionValues];
+    }
+
+    /**
+     * Wrap the given JSON selector.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        $removeLast = strpos($value, ')');
+        $value      = $removeLast === false ? $value : substr($value, 0, $removeLast);
+        $path       = explode('->', $value);
+        $field      = array_shift($path);
+        $result     = sprintf('%s->\'$.%s\'', $field, collect($path)->map(function ($part) {
+            return '"'.$part.'"';
+        })->implode('.'));
+        
+        return $removeLast === false ? $result : $result . ')';
     }
 
     /**

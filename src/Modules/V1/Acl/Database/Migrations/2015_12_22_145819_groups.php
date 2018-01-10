@@ -25,6 +25,8 @@ class Groups extends Migration
             $table->integer('group_id');
             $table->softDeletes();
             $table->timestamps();
+
+	        $table->index(['user_id']);
         });
 	}
 
