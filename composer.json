@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "brozot/laravel-fcm": "^1.2",
+        "enniel/laravel-fcm-notification-channel": "1.*",
         "itsgoingd/clockwork": "^2.0",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
@@ -58,7 +58,7 @@
         "laravel": {
             "providers": [
                 "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider",
-                "LaravelFCM\\FCMServiceProvider"
+                "NotificationChannels\\FCM\\ServiceProvider"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core",

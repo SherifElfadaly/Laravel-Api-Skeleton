@@ -1,0 +1,92 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+
+class DummyClass extends Notification
+{
+    use Queueable;
+
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return ['mail'];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
+    }
+
+    /**
+     * Send to fcm message, topic or group.
+     *
+     * @param  mixed  $notifiable
+     * @return Object
+     */
+    public function toFCM($notifiable)
+    {
+        $messageData = \Core::pushNotificationsDevices()->generateMessageData($title, $message, $data = []);
+
+        return new FCMMessage($messageData['options'], $messageData['notification'], $messageData['data']);
+
+        /*or*/
+
+        return new FCMMessageTopic($messageData['options'], $messageData['notification'], $messageData['data']);
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return [
+            //
+        ];
+    }
+
+
+    /**
+    * Get the broadcastable representation of the notification.
+    *
+    * @param  mixed  $notifiable
+    * @return BroadcastMessage
+    */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            //
+        ]);
+    }
+}

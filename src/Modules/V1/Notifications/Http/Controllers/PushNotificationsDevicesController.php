@@ -43,6 +43,6 @@ class PushNotificationsDevicesController extends BaseApiController
             'device_token' => 'required|string|max:255'
             ]);
 
-        return \Response::json(\Core::pushNotificationDevices()->registerDevice($request->all()), 200);
+        return \Response::json($this->repo->registerDevice($request->all()), 200);
     }
 }

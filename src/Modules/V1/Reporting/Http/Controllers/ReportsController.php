@@ -33,7 +33,7 @@ class ReportsController extends BaseApiController
     {
         if ($this->model) 
         {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->getReport($reportName, $request->all(), $perPage), 200);
+            return \Response::json($this->repo->getReport($reportName, $request->all(), $perPage), 200);
         }
     }
 }

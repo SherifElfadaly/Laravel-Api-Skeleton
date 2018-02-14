@@ -22,55 +22,25 @@ class NotificationsTableSeeder extends Seeder
         		 * notifications model permissions.
         		 */
 	        	[
-	        	'name'       => 'find',
+	        	'name'       => 'all',
 	        	'model'      => 'notifications',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'search',
+	        	'name'       => 'unread',
 	        	'model'      => 'notifications',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'list',
+	        	'name'       => 'markAsRead',
 	        	'model'      => 'notifications',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'findby',
-	        	'model'      => 'notifications',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'first',
-	        	'model'      => 'notifications',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'paginate',
-	        	'model'      => 'notifications',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'paginateby',
-	        	'model'      => 'notifications',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'notified',
-	        	'model'      => 'notifications',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'notifyall',
+	        	'name'       => 'markAllAsRead',
 	        	'model'      => 'notifications',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')

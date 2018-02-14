@@ -7,7 +7,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
 
 class AclUser extends User implements AuthenticatableUserContract {
 
-    use SoftDeletes;
+    use SoftDeletes, Notifiable;
     protected $table    = 'users';
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden   = ['password', 'remember_token','deleted_at'];
@@ -51,14 +51,34 @@ class AclUser extends User implements AuthenticatableUserContract {
         $this->attributes['password'] = bcrypt($value);
     }
 
-    public function logs()
-    {
-        return $this->hasMany('App\Modules\V1\Core\Log', 'user_id');
-    }
-
     public function groups()
     {
         return $this->belongsToMany('\App\Modules\V1\Acl\AclGroup','users_groups','user_id','group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+    }
+
+    public function routeNotificationForFCM()
+    {
+        $devices = \Core::pushNotificationsDevices()->findBy(['user_id' => $this->id]);
+        $tokens  = [];
+
+        foreach ($devices as $device) 
+        {
+            $loginToken = decrypt($device->login_token);
+
+            try
+            {
+                if (\JWTAuth::authenticate($loginToken)) 
+                {
+                    $tokens[] = $device->device_token;
+                }    
+            } 
+            catch (\Exception $e) 
+            {
+                $device->forceDelete();
+            }
+        }
+
+        return $tokens;
     }
     
     public static function boot()

@@ -1,12 +1,9 @@
 <?php namespace App\Modules\V1\Notifications\Repositories;
 
 use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
-use App\Modules\V1\Notifications\Jobs\PushNotifications;
-use App\Modules\V1\Notifications\Jobs\PushNotificationsTopic;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
-use LaravelFCM\Message\Topics;
 
 class PushNotificationDeviceRepository extends AbstractRepository
 {
@@ -39,74 +36,27 @@ class PushNotificationDeviceRepository extends AbstractRepository
     }
 
     /**
-     * Push the given notification to the given logged in userIds.
+     * Generate the given message data.
      *
-     * @param  array  $userIds
      * @param  string $title
      * @param  string $message
      * @param  string $data
      * @return void
      */
-    public function push($userIds, $title, $message, $data = [])
+    public function generateMessageData($title, $message, $data = [])
     {
-        if (count($userIds)) 
-        {
-            $optionBuilder       = new OptionsBuilder();
-            $notificationBuilder = new PayloadNotificationBuilder($title);
-            $dataBuilder         = new PayloadDataBuilder();
-
-            $optionBuilder->setTimeToLive(60*20);
-            $notificationBuilder->setBody($message);
-            $dataBuilder->addData($data);
-
-            $option              = $optionBuilder->build();
-            $notification        = $notificationBuilder->build();
-            $data                = $dataBuilder->build();
-            $devices             = $this->model->whereIn('user_id', $userIds)->get();
-            $tokens              = [];
-
-            foreach ($devices as $device) 
-            {
-                $loginToken = decrypt($device->login_token);
-
-                try
-                {
-                    if (\JWTAuth::authenticate($loginToken)) 
-                    {
-                        $tokens[] = $device->device_token;
-                    }    
-                } 
-                catch (\Exception $e) 
-                {
-                    $device->forceDelete();
-                }
-            }
-
-            if (count($tokens)) 
-            {
-                dispatch(new PushNotifications($option, $notification, $data, $tokens));
-            }
-        }
-    }
-
-    /**
-     * Push the given notification to the given topic.
-     *
-     * @param  string $topicName
-     * @param  string $title
-     * @param  string $message
-     * @return void
-     */
-    public function pushTopic($topicName, $title, $message)
-    {
+        $optionBuilder       = new OptionsBuilder();
         $notificationBuilder = new PayloadNotificationBuilder($title);
-        $notificationBuilder->setBody($message)->setSound('default');
+        $dataBuilder         = new PayloadDataBuilder();
 
-        $notification = $notificationBuilder->build();
+        $optionBuilder->setTimeToLive(60*20);
+        $notificationBuilder->setBody($message);
+        $dataBuilder->addData($data);
 
-        $topic = new Topics();
-        $topic->topic($topicName);
+        $options             = $optionBuilder->build();
+        $notification        = $notificationBuilder->build();
+        $data                = $dataBuilder->build();
 
-        dispatch(new PushNotificationsTopic($topic, $notification));
+        return compact('options', 'notification', 'data');
     }
 }

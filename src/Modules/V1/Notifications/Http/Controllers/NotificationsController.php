@@ -15,23 +15,52 @@ class NotificationsController extends BaseApiController
     protected $model            = 'notifications';
 
     /**
-     * Set the notification notified to true.
+     * List of all route actions that the base api controller
+     * will skip permissions check for them.
+     * @var array
+     */
+    protected $skipPermissionCheck = ['markAsRead', 'markAllAsRead'];
+
+    /**
+     * Retrieve all notifications of the logged in user.
+     * 
+     * @param  integer $perPage
+     * @return \Illuminate\Http\Response
+     */
+    public function all($perPage = 0)
+    {
+        return \Response::json($this->repo->all($perPage), 200);
+    }
+
+    /**
+     * Retrieve unread notifications of the logged in user.
+     * 
+     * @param  integer $perPage
+     * @return \Illuminate\Http\Response
+     */
+    public function unread($perPage = 0)
+    {
+        return \Response::json($this->repo->unread($perPage), 200);
+    }
+
+    /**
+     * Mark the notification as read.
      * 
      * @param  integer  $id Id of the notification.
      * @return \Illuminate\Http\Response
      */
-    public function notified($id)
+    public function markAsRead($id)
     {
-        return \Response::json(\Core::notifications()->notified($id), 200);
+        return \Response::json($this->repo->markAsRead($id), 200);
     }
 
     /**
-     * Set the notification notified to all.
+     * Mark all notifications as read.
      * 
      * @return \Illuminate\Http\Response
      */
-    public function notifyall()
+    public function markAllAsRead()
     {
-        return \Response::json(\Core::notifications()->notifyAll(), 200);
+        return \Response::json($this->repo->markAllAsRead(), 200);
     }
 }

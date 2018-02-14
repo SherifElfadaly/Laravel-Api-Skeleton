@@ -15,15 +15,11 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 
 	Route::group(['prefix' => 'notifications'], function() {
 		
-		Route::get('list/{sortBy?}/{desc?}', 'NotificationsController@index');
-		Route::get('find/{id}', 'NotificationsController@find');
-		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'NotificationsController@search');
-		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'NotificationsController@paginate');
-		Route::get('notified/{id}', 'NotificationsController@notified');
-		Route::get('notifyall', 'NotificationsController@notifyall');
-		Route::post('first', 'NotificationsController@first');
-		Route::post('findby/{sortBy?}/{desc?}', 'NotificationsController@findby');
-		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'NotificationsController@paginateby');
+		Route::get('all/{perPage?}', 'NotificationsController@all');
+		Route::get('unread/{perPage?}', 'NotificationsController@unread');
+		Route::get('markAsRead/{id}', 'NotificationsController@markAsRead');
+		Route::get('markAllAsRead', 'NotificationsController@markAllAsRead');
+
 	});
 
 	Route::group(['prefix' => 'push_notifications_devices'], function() {
@@ -40,5 +36,6 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 		Route::post('save', 'PushNotificationsDevicesController@save');
 		Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@deleted');
 		Route::post('register/device', 'PushNotificationsDevicesController@registerDevice');
+		
 	});
 });

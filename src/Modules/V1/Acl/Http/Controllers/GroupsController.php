@@ -37,6 +37,6 @@ class GroupsController extends BaseApiController
             'group_id'       => 'required|array|exists:groups,id'
             ]);
 
-        return \Response::json(\Core::groups()->assignPermissions($request->get('group_id'), $request->get('permission_ids')), 200);
+        return \Response::json($this->repo->assignPermissions($request->get('group_id'), $request->get('permission_ids')), 200);
     }
 }

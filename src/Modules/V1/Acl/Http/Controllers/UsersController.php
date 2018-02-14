@@ -46,7 +46,7 @@ class UsersController extends BaseApiController
      */
     public function account()
     {
-        return \Response::json(\Core::users()->account($this->relations), 200);
+        return \Response::json($this->repo->account($this->relations), 200);
     }
 
     /**
@@ -57,7 +57,7 @@ class UsersController extends BaseApiController
      */
     public function block($id)
     {
-        return \Response::json(\Core::users()->block($id), 200);
+        return \Response::json($this->repo->block($id), 200);
     }
 
     /**
@@ -68,7 +68,7 @@ class UsersController extends BaseApiController
      */
     public function unblock($id)
     {
-        return \Response::json(\Core::users()->unblock($id), 200);
+        return \Response::json($this->repo->unblock($id), 200);
     }
 
     /**
@@ -78,7 +78,7 @@ class UsersController extends BaseApiController
      */
     public function logout()
     {
-        return \Response::json(\Core::users()->logout(), 200);
+        return \Response::json($this->repo->logout(), 200);
     }
 
     /**
@@ -95,7 +95,7 @@ class UsersController extends BaseApiController
             'password' => 'required|min:6'
             ]);
 
-        return \Response::json(\Core::users()->register($request->only('email', 'password')), 200);
+        return \Response::json($this->repo->register($request->only('email', 'password')), 200);
     }
 
     /**
@@ -112,7 +112,7 @@ class UsersController extends BaseApiController
             'admin'    => 'boolean'
             ]);
 
-        return \Response::json(\Core::users()->login($request->only('email', 'password'), $request->get('admin')), 200);
+        return \Response::json($this->repo->login($request->only('email', 'password'), $request->get('admin')), 200);
     }
 
     /**
@@ -129,7 +129,7 @@ class UsersController extends BaseApiController
             'type'         => 'required|in:facebook,google'
             ]);
 
-        return \Response::json(\Core::users()->loginSocial($request->only('auth_code', 'access_token', 'type')), 200);
+        return \Response::json($this->repo->loginSocial($request->only('auth_code', 'access_token', 'type')), 200);
     }
 
     /**
@@ -145,7 +145,7 @@ class UsersController extends BaseApiController
             'user_id'   => 'required|exists:users,id'
             ]);
 
-        return \Response::json(\Core::users()->assignGroups($request->get('user_id'), $request->get('group_ids')), 200);
+        return \Response::json($this->repo->assignGroups($request->get('user_id'), $request->get('group_ids')), 200);
     }
 
     /**
@@ -158,7 +158,7 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, ['email' => 'required|email']);
 
-        return \Response::json(\Core::users()->sendReset($request->only('email')), 200);
+        return \Response::json($this->repo->sendReset($request->only('email')), 200);
     }
 
     /**
@@ -176,7 +176,7 @@ class UsersController extends BaseApiController
             'password_confirmation' => 'required',
         ]);
 
-        return \Response::json(\Core::users()->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')), 200);
+        return \Response::json($this->repo->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')), 200);
     }
 
     /**
@@ -193,7 +193,7 @@ class UsersController extends BaseApiController
             'password_confirmation' => 'required',
         ]);
 
-        return \Response::json(\Core::users()->changePassword($request->only('old_password', 'password', 'password_confirmation')), 200);
+        return \Response::json($this->repo->changePassword($request->only('old_password', 'password', 'password_confirmation')), 200);
     }
 
     /**
@@ -203,7 +203,7 @@ class UsersController extends BaseApiController
      */
     public function refreshtoken()
     {
-        return \Response::json(\Core::users()->refreshtoken(), 200);
+        return \Response::json($this->repo->refreshtoken(), 200);
     }
 
     /**
@@ -218,7 +218,7 @@ class UsersController extends BaseApiController
      */
     public function group(Request $request, $groupName, $perPage = false, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json(\Core::users()->group($request->all(), $groupName, $this->relations, $perPage, $sortBy, $desc), 200);
+        return \Response::json($this->repo->group($request->all(), $groupName, $this->relations, $perPage, $sortBy, $desc), 200);
     }
 
     /**
