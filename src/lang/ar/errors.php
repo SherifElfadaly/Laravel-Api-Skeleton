@@ -6,7 +6,7 @@ return [
      * List of error messages used in core module.
      */
     'unAuthorized'           => 'من فضلك قم بتسجيل الدخول',
-    'tokenExpired'           => 'انتهت صلاحية الدخول',
+    'invalidRefreshToken'    => 'رمز التحديث غير صالح',
     'noPermissions'          => 'لا توجد صلاحية',
     'loginFailed'            => 'خطأ في البريد لاكتروني او كلمة المرور',
     'noSocialEmail'          => 'لا يمكن الحصول علي تابريد الاكتروني',

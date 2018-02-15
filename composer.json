@@ -17,11 +17,12 @@
         }
     ],
     "require": {
+        "optimus/api-consumer": "0.2.*",
         "enniel/laravel-fcm-notification-channel": "1.*",
         "itsgoingd/clockwork": "^2.0",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
-        "tymon/jwt-auth": "1.0.*",
+        "laravel/passport": "^4.0",
         "caffeinated/modules": "^4.2",
         "predis/predis": "^1.1",
         "illuminate/support": "~5.1",
@@ -58,14 +59,14 @@
         "laravel": {
             "providers": [
                 "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider",
+                "Optimus\\ApiConsumer\\Provider\\LaravelServiceProvider",
                 "NotificationChannels\\FCM\\ServiceProvider"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core",
                 "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler",
                 "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig",
-                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging",
-                "'FCM"        : "LaravelFCM\\Facades\\FCM"
+                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging"
             }
         }
     }

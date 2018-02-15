@@ -3,6 +3,7 @@ namespace App\Modules\V1\Acl\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Modules\V1\Core\Http\Controllers\BaseApiController;
+use App\Modules\V1\Acl\Proxy\LoginProxy;
 use Illuminate\Http\Request;
 
 class UsersController extends BaseApiController
@@ -38,6 +39,19 @@ class UsersController extends BaseApiController
         'email'    => 'required|email|unique:users,email,{id}', 
         'password' => 'nullable|min:6'
     ];
+
+    /**
+     * The loginProxy implementation.
+     * 
+     * @var array
+     */
+    protected $loginProxy;
+
+    public function __construct(LoginProxy $loginProxy)
+    {        
+        $this->loginProxy = $loginProxy;
+        parent::__construct();
+    }
 
     /**
      * Return the logged in user account.
@@ -78,7 +92,7 @@ class UsersController extends BaseApiController
      */
     public function logout()
     {
-        return \Response::json($this->repo->logout(), 200);
+        return \Response::json($this->loginProxy->logout(), 200);
     }
 
     /**
@@ -112,7 +126,7 @@ class UsersController extends BaseApiController
             'admin'    => 'boolean'
             ]);
 
-        return \Response::json($this->repo->login($request->only('email', 'password'), $request->get('admin')), 200);
+        return \Response::json($this->loginProxy->login($request->only('email', 'password'), $request->get('admin')), 200);
     }
 
     /**
@@ -203,7 +217,7 @@ class UsersController extends BaseApiController
      */
     public function refreshtoken()
     {
-        return \Response::json($this->repo->refreshtoken(), 200);
+        return \Response::json($this->loginProxy->refreshtoken(), 200);
     }
 
     /**

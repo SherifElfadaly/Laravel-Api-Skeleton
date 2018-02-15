@@ -37,6 +37,7 @@ class BaseApiController extends Controller
         $this->repo                = call_user_func_array("\Core::{$this->model}", []);
         $route                     = explode('@',\Route::currentRouteAction())[1];
 
+        $this->middleware('auth:api', ['except' => $this->skipLoginCheck]);
         $this->checkPermission($route);
         $this->setRelations($route);
         $this->setSessions();
@@ -237,19 +238,21 @@ class BaseApiController extends Controller
      * @return void
      */
     private function checkPermission($permission)
-    {
-        $permission = $permission !== 'index' ? $permission : 'list';
-        if ( ! in_array($permission, $this->skipLoginCheck)) 
+    {   
+        if ($user = \Auth::user()) 
         {
-            $user = \JWTAuth::parseToken()->authenticate();
-            if ($user->blocked)
+            $permission = $permission !== 'index' ? $permission : 'list';
+            if ( ! in_array($permission, $this->skipLoginCheck)) 
             {
-                \ErrorHandler::userIsBlocked();
-            }
-            
-            if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))
-            {
-                \ErrorHandler::noPermissions();
+                if ($user->blocked)
+                {
+                    \ErrorHandler::userIsBlocked();
+                }
+                
+                if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))
+                {
+                    \ErrorHandler::noPermissions();
+                }
             }
         }
     }

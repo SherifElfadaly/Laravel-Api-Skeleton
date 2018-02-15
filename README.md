@@ -27,6 +27,10 @@ add the following code in Exception/Handler.php in render function
 ``` bash
 if ($request->wantsJson())
 {
+    if ($exception instanceof \Illuminate\Auth\AuthenticationException) 
+    {
+        \ErrorHandler::unAuthorized();
+    }
     if ($exception instanceof \Illuminate\Database\QueryException) 
     {
         \ErrorHandler::dbQueryError();
@@ -34,18 +38,6 @@ if ($request->wantsJson())
     else if ($exception instanceof \predis\connection\connectionexception) 
     {
         \ErrorHandler::redisNotRunning();
-    }
-    else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) 
-    {
-        \ErrorHandler::tokenExpired();
-    } 
-    else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) 
-    {
-        \ErrorHandler::tokenExpired();
-    }
-    else if ($exception instanceof \Tymon\JWTAuth\Exceptions\JWTException) 
-    {
-        \ErrorHandler::unAuthorized();
     }
     else if ($exception instanceof \GuzzleHttp\Exception\ClientException) 
     {
@@ -85,7 +77,46 @@ update the namespace and path in modules.php config
 
 set a secret key in the config file
 ``` bash
-php artisan jwt:secret
+php artisan passport:install
+```
+
+Put your client id and client secret in .env
+``` bash
+PASSWORD_CLIENT_ID=xxxxxx
+PASSWORD_CLIENT_SECRET=xxxxxx
+```
+
+In config/auth.php set the driver property of the api authentication guard to passport
+``` bash
+'api' => [
+'driver' => 'passport',
+'provider' => 'users',
+]
+```
+
+In config/auth.php set user model in providers to App\Modules\V1\Acl\AclUser::class
+``` bash
+'providers' => [
+'users' => [
+'driver' => 'eloquent',
+'model' => App\Modules\V1\Acl\AclUser::class,
+]
+```
+
+In AuthServiceProvider add the following in boot method
+``` bash
+Passport::routes(function ($router) {
+$router->forAccessTokens();
+$router->forTransientTokens();
+});
+
+Passport::tokensExpireIn(\Carbon\Carbon::now()->addMinutes(10));
+Passport::refreshTokensExpireIn(\Carbon\Carbon::now()->addDays(10));
+```
+
+In BroadcastServiceProvider add the following in boot method
+``` bash
+\Broadcast::routes(['middleware' => ['auth:api']]);
 ```
 
 run this command
@@ -108,8 +139,10 @@ api documentation
 add this command to console kernel.php
 ``` bash
 use \App\Modules\V1\Core\Console\Commands\GenerateDoc as GenerateDoc;
+use App\Modules\V1\Notifications\Console\Commands\MakeNotificationsCommand as MakeNotificationsCommand;
 protected $commands = [
-    GenerateDoc::class
+    GenerateDoc::class,
+    MakeNotificationsCommand::class
 ];
 ```
 then run 

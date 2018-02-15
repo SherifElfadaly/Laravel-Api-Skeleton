@@ -4,15 +4,15 @@ use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
 
 class NotificationRepository extends AbstractRepository
 {
-	/**
-	 * Return the model full namespace.
-	 * 
-	 * @return string
-	 */
-	protected function getModel()
-	{
-		return 'App\Modules\V1\Notifications\Notification';
-	}
+    /**
+     * Return the model full namespace.
+     * 
+     * @return string
+     */
+    protected function getModel()
+    {
+        return 'App\Modules\V1\Notifications\Notification';
+    }
 
     /**
      * Retrieve all notifications of the logged in user.
@@ -20,9 +20,9 @@ class NotificationRepository extends AbstractRepository
      * @param  integer $perPage
      * @return Collection
      */
-    public function all($perPage)
+    public function list($perPage)
     {
-        return \JWTAuth::parseToken()->authenticate()->notifications()->paginate($perPage);
+        return \Auth::user()->notifications()->paginate($perPage);
     }
 
     /**
@@ -33,10 +33,10 @@ class NotificationRepository extends AbstractRepository
      */
     public function unread($perPage)
     {
-        return \JWTAuth::parseToken()->authenticate()->unreadNotifications()->paginate($perPage);
+        return \Auth::user()->unreadNotifications()->paginate($perPage);
     }
 
-	/**
+    /**
      * Mark the notification as read.
      * 
      * @param  integer  $id
@@ -44,7 +44,10 @@ class NotificationRepository extends AbstractRepository
      */
     public function markAsRead($id)
     {
-        \JWTAuth::parseToken()->authenticate()->unreadNotifications()->where('id', $id)->first()->markAsRead();
+        if ($notification = \Auth::user()->unreadNotifications()->where('id', $id)) 
+        {
+            $notification->first()->markAsRead();
+        }
     }
 
     /**
@@ -54,7 +57,7 @@ class NotificationRepository extends AbstractRepository
      */
     public function markAllAsRead()
     {
-        \JWTAuth::parseToken()->authenticate()->unreadNotifications()->update(['read_at' => now()]);
+        \Auth::user()->unreadNotifications()->update(['read_at' => now()]);
     }
 
     /**
@@ -67,6 +70,7 @@ class NotificationRepository extends AbstractRepository
      */
     public function notify($users, $notification, $notificationData = false)
     {
-        \Notification::send($users, new App\Modules\V1\Notifications\Notifications\$notification($notificationData));
+        $notification = 'App\Modules\V1\Notifications\Notifications\\' . $notification;
+        \Notification::send($users, new $notification($notificationData));
     }
 }

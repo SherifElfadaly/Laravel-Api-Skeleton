@@ -10,7 +10,6 @@ class MakeNotificationsCommand extends GeneratorCommand
      * @var string
      */
     protected $signature = 'make:module:notification
-        {slug : The slug of the module.}
         {name : The name of the notification class.}';
     /**
      * The console command description.
@@ -42,7 +41,7 @@ class MakeNotificationsCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        return module_path($this->argument('slug'), 'Notifications/'.$name.'.php');
+        return module_path('notifications', 'Notifications/'.$name.'.php');
     }
     /**
      * Parse the name and format according to the root namespace.
@@ -64,6 +63,6 @@ class MakeNotificationsCommand extends GeneratorCommand
      */
     protected function getNamespace($name)
     {
-        return module_class($this->argument('slug'), 'Notifications');
+        return module_class('notifications', 'Notifications');
     }
 }

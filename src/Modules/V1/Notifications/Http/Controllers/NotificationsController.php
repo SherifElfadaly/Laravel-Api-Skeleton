@@ -27,9 +27,9 @@ class NotificationsController extends BaseApiController
      * @param  integer $perPage
      * @return \Illuminate\Http\Response
      */
-    public function all($perPage = 0)
+    public function list($perPage = 0)
     {
-        return \Response::json($this->repo->all($perPage), 200);
+        return \Response::json($this->repo->list($perPage), 200);
     }
 
     /**

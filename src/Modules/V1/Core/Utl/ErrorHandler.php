@@ -8,9 +8,9 @@ class ErrorHandler
         abort($error['status'], $error['message']);
     }
 
-    public function tokenExpired()
+    public function invalidRefreshToken()
     {
-        $error = ['status' => 403, 'message' => trans('errors.tokenExpired')];
+        $error = ['status' => 401, 'message' => trans('errors.invalidRefreshToken')];
         abort($error['status'], $error['message']);
     }
 

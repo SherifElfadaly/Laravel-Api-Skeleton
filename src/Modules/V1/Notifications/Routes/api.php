@@ -15,7 +15,7 @@ Route::group(['prefix' => 'v1/notifications'], function() {
 
 	Route::group(['prefix' => 'notifications'], function() {
 		
-		Route::get('all/{perPage?}', 'NotificationsController@all');
+		Route::get('list/{perPage?}', 'NotificationsController@list');
 		Route::get('unread/{perPage?}', 'NotificationsController@unread');
 		Route::get('markAsRead/{id}', 'NotificationsController@markAsRead');
 		Route::get('markAllAsRead', 'NotificationsController@markAllAsRead');

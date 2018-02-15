@@ -11,7 +11,7 @@ class Logging
 	    		'item_name'   => $item_name,
 	    		'item_type'   => $item_type,
 	    		'item_id'     => $item_id,
-	    		'user_id'     => \JWTAuth::parseToken()->authenticate()->id,
+	    		'user_id'     => \Auth::id(),
 	    		], false, false);
     	}
     }

@@ -23,7 +23,7 @@ class UserRepository extends AbstractRepository
     public function account($relations = [])
     {
         $permissions = [];
-        $user        = \Core::users()->find(\JWTAuth::parseToken()->authenticate()->id, $relations);
+        $user        = \Core::users()->find(\Auth::id(), $relations);
         foreach ($user->groups()->get() as $group)
         {
             $group->permissions->each(function ($permission) use (&$permissions){
@@ -46,13 +46,8 @@ class UserRepository extends AbstractRepository
      */
     public function can($nameOfPermission, $model, $user = false )
     {      
-        $user        = $user ?: \JWTAuth::parseToken()->authenticate();
+        $user        = $user = $this->find(\Auth::id(), ['groups.permissions']);
         $permissions = [];
-
-        if ( ! $user = $this->find($user->id, ['groups.permissions'])) 
-        {
-            \ErrorHandler::tokenExpired();
-        }
 
         $user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model){
             $permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray()); 
@@ -70,7 +65,7 @@ class UserRepository extends AbstractRepository
      */
     public function hasGroup($groupName, $userId = false)
     {
-        $userId = $userId ?: \JWTAuth::parseToken()->authenticate()->id;
+        $userId = $userId ?: \Auth::id();
         $groups = $this->find($userId)->groups;
         return $groups->pluck('name')->search($groupName, true) === false ? false : true;
     }
@@ -98,7 +93,7 @@ class UserRepository extends AbstractRepository
      * 
      * @param  array   $credentials    
      * @param  boolean $adminLogin
-     * @return array
+     * @return object
      */
     public function login($credentials, $adminLogin = false)
     {
@@ -118,14 +113,8 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::userIsBlocked();
         }
-        else if ($token = \JWTAuth::attempt($credentials))
-        {
-            return ['token' => $token];
-        }
-        else
-        {
-            \ErrorHandler::loginFailed();
-        }
+
+        return $user;
     }
 
     /**
@@ -171,16 +160,6 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * Logout the user.
-     * 
-     * @return boolean
-     */
-    public function logout()
-    {
-        return \JWTAuth::invalidate(\JWTAuth::getToken());
-    }
-
-    /**
      * Block the user.
      *
      * @param  integer $user_id
@@ -196,7 +175,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::noPermissions();
         }
-        else if (\JWTAuth::parseToken()->authenticate()->id == $user_id)
+        else if (\Auth::id() == $user_id)
         {
             \ErrorHandler::noPermissions();
         }
@@ -294,7 +273,7 @@ class UserRepository extends AbstractRepository
      */
     public function changePassword($credentials)
     {
-        $user = \JWTAuth::parseToken()->authenticate();
+        $user = \Auth::user();
         if ( ! \Hash::check($credentials['old_password'], $user->password)) 
         {
             \ErrorHandler::invalidOldPassword();
@@ -302,18 +281,6 @@ class UserRepository extends AbstractRepository
 
         $user->password = $credentials['password'];
         $user->save();
-    }
-
-    /**
-     * Refresh the expired login token.
-     *
-     * @return array
-     */
-    public function refreshtoken()
-    {
-        $token = \JWTAuth::parseToken()->refresh();
-
-        return ['token' => $token];
     }
 
     /**
@@ -359,7 +326,7 @@ class UserRepository extends AbstractRepository
      */
     public function saveProfile($credentials) 
     {
-        $user = \JWTAuth::parseToken()->authenticate();
+        $user = \Auth::user();
         $user->save($credentials);
 
         return $user;

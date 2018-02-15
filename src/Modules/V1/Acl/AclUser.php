@@ -3,27 +3,18 @@
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-class AclUser extends User implements AuthenticatableUserContract {
+class AclUser extends User {
 
-    use SoftDeletes, Notifiable;
+    use SoftDeletes, HasApiTokens;
     protected $table    = 'users';
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden   = ['password', 'remember_token','deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['name', 'email', 'password'];
     public $searchable  = ['name', 'email'];
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
     
     public function getCreatedAtAttribute($value)
     {
@@ -79,6 +70,16 @@ class AclUser extends User implements AuthenticatableUserContract {
         }
 
         return $tokens;
+    }
+
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'users.' . $this->id;
     }
     
     public static function boot()

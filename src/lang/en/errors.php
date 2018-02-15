@@ -6,7 +6,7 @@ return [
      * List of error messages used in core module.
      */
     'unAuthorized'           => 'Please login before any action',
-    'tokenExpired'           => 'Login token expired',
+    'invalidRefreshToken'    => 'Invalid refresh token',
     'noPermissions'          => 'No permissions',
     'loginFailed'            => 'Wrong mail or password',
     'noSocialEmail'          => 'Couldn\'t retrieve email',
