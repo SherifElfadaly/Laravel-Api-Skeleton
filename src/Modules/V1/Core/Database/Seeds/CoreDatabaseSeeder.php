@@ -14,7 +14,6 @@ class CoreDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(ClearDataSeeder::class);
-    	$this->call(LogsTableSeeder::class);
     	$this->call(SettingsTableSeeder::class);
         $this->call(AssignRelationsSeeder::class);
     }

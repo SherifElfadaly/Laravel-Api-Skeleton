@@ -4,7 +4,7 @@ $factory->define(App\Modules\V1\Acl\AclUser::class, function (Faker\Generator $f
     return [
 		'name'       => $faker->name(),
 		'email'      => $faker->safeEmail(),
-		'password'   => bcrypt(str_random(10)),
+		'password'   => bcrypt(123456),
 		'created_at' => $faker->dateTimeBetween('-1 years', 'now'),
 		'updated_at' => $faker->dateTimeBetween('-1 years', 'now')
     ];

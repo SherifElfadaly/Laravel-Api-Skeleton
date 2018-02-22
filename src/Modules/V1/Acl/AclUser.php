@@ -1,7 +1,6 @@
 <?php namespace App\Modules\V1\Acl;
 
 use App\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -47,6 +46,10 @@ class AclUser extends User {
         return $this->belongsToMany('\App\Modules\V1\Acl\AclGroup','users_groups','user_id','group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
     }
 
+    /**
+     * Return fcm device tokens related to the user.
+     * @return array
+     */
     public function routeNotificationForFCM()
     {
         $devices = \Core::pushNotificationsDevices()->findBy(['user_id' => $this->id]);
@@ -54,14 +57,16 @@ class AclUser extends User {
 
         foreach ($devices as $device) 
         {
-            $loginToken = decrypt($device->login_token);
+            $accessToken = decrypt($device->access_token);
 
             try
             {
-                if (\JWTAuth::authenticate($loginToken)) 
+                if (\Core::users()->accessTokenExpiredOrRevoked($accessToken)) 
                 {
-                    $tokens[] = $device->device_token;
-                }    
+                    continue;
+                }
+
+                $tokens[] = $device->device_token;
             } 
             catch (\Exception $e) 
             {

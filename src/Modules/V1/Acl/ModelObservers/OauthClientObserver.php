@@ -1,9 +1,9 @@
-<?php namespace App\Modules\V1\Core\ModelObservers;
+<?php namespace App\Modules\V1\Acl\ModelObservers;
 
 /**
  * Handling of model events,
  */
-class LogObserver {
+class OauthClientObserver {
 
     public function saving($model)
     {
@@ -17,7 +17,7 @@ class LogObserver {
 
     public function creating($model)
     {
-        //
+        $model->secret = str_random(40);
     }
 
     public function created($model)

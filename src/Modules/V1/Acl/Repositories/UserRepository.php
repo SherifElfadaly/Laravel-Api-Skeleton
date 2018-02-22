@@ -1,6 +1,9 @@
 <?php namespace App\Modules\V1\Acl\Repositories;
 
 use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\V1\Acl\Proxy\LoginProxy;
+use Lcobucci\JWT\ValidationData;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 class UserRepository extends AbstractRepository
 {
@@ -12,6 +15,25 @@ class UserRepository extends AbstractRepository
     protected function getModel()
     {
         return 'App\Modules\V1\Acl\AclUser';
+    }
+
+    /**
+     * The loginProxy implementation.
+     * 
+     * @var array
+     */
+    protected $loginProxy;
+
+    /**
+     * @var The accessTokenRepository implementation.
+     */
+    private $accessTokenRepository;
+
+    public function __construct(LoginProxy $loginProxy, AccessTokenRepositoryInterface $accessTokenRepository)
+    {        
+        $this->loginProxy            = $loginProxy;
+        $this->accessTokenRepository = $accessTokenRepository;
+        parent::__construct();
     }
 
     /**
@@ -144,7 +166,8 @@ class UserRepository extends AbstractRepository
             {
                 \ErrorHandler::userAlreadyRegistered();
             }
-            return $this->login(['email' => $registeredUser->email, 'password' => ''], false);
+
+            return $this->loginProxy->login(['email' => $registeredUser->email, 'password' => ''], 0);
         }
     }
     
@@ -156,7 +179,8 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        return ['token' => \JWTAuth::fromUser($this->model->create($credentials))];
+        $this->model->create($credentials)
+        return $this->loginProxy->login($credentials, 0);
     }
 
     /**
@@ -239,17 +263,14 @@ class UserRepository extends AbstractRepository
      */
     public function resetPassword($credentials)
     {
-        $token    = false;
-        $response = \Password::reset($credentials, function ($user, $password) use (&$token) {
+        $response = \Password::reset($credentials, function ($user, $password) {
             $user->password = $password;
             $user->save();
-
-            $token = \JWTAuth::fromUser($user);
         });
 
         switch ($response) {
             case \Password::PASSWORD_RESET:
-                return ['token' => $token];
+                return 'success';
                 
             case \Password::INVALID_TOKEN:
                 \ErrorHandler::invalidResetToken('token');
@@ -330,5 +351,24 @@ class UserRepository extends AbstractRepository
         $user->save($credentials);
 
         return $user;
+    }
+
+    /**
+     * Ensure access token hasn't expired or revoked.
+     * 
+     * @param  string $accessToken
+     * @return boolean
+     */
+    public function accessTokenExpiredOrRevoked($accessToken)
+    {
+        $data = new ValidationData();
+        $data->setCurrentTime(time());
+
+        if ($accessToken->validate($data) === false || $this->accessTokenRepository->isAccessTokenRevoked($accessToken->getClaim('jti'))) 
+        {
+            return true;
+        }
+
+        return false;
     }
 }

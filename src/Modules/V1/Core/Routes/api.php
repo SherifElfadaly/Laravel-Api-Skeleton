@@ -23,16 +23,6 @@ Route::group(['prefix' => 'v1/core'], function() {
 		Route::post('findby/{sortBy?}/{desc?}', 'SettingsController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginateby');
 		Route::post('save', 'SettingsController@save');
+		
 	});
-
-	Route::group(['prefix' => 'logs'], function() {
-
-		Route::get('list/{sortBy?}/{desc?}', 'LogsController@index');
-		Route::get('find/{id}', 'LogsController@find');
-		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'LogsController@search');
-		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'LogsController@paginate');
-		Route::post('first', 'LogsController@first');
-		Route::post('findby/{sortBy?}/{desc?}', 'LogsController@findby');
-		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'LogsController@paginateby');
-	});	
 });

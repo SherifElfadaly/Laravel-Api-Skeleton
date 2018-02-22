@@ -213,11 +213,12 @@ class UsersController extends BaseApiController
     /**
      * Refresh the expired login token.
      *
+     * @param  string $refreshToken
      * @return \Illuminate\Http\Response
      */
-    public function refreshtoken()
+    public function refreshtoken($refreshToken)
     {
-        return \Response::json($this->loginProxy->refreshtoken(), 200);
+        return \Response::json($this->loginProxy->refreshtoken($refreshToken), 200);
     }
 
     /**

@@ -16,7 +16,7 @@ class PushNotificationsDevices extends Migration
 			$table->increments('id');
 			$table->string('device_token');
 			$table->integer('user_id');
-			$table->text('login_token')->nullable();
+			$table->text('access_token')->nullable();
 			$table->unique(array('device_token', 'user_id'));
 			$table->softDeletes();
 			$table->timestamps();

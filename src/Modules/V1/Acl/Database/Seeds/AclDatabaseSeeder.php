@@ -17,6 +17,7 @@ class AclDatabaseSeeder extends Seeder
     	$this->call(UsersTableSeeder::class);
     	$this->call(GroupsTableSeeder::class);
     	$this->call(PermissionsTableSeeder::class);
+        $this->call(OauthClientsTableSeeder::class);
     	$this->call(AssignRelationsSeeder::class);
     }
 }

@@ -25,7 +25,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::get('block/{id}', 'UsersController@block');
 		Route::get('unblock/{id}', 'UsersController@unblock');
 		Route::get('logout', 'UsersController@logout');
-		Route::get('refreshtoken', 'UsersController@refreshtoken');
+		Route::get('refreshtoken/{refreshToken}', 'UsersController@refreshtoken');
 		Route::post('first', 'UsersController@first');
 		Route::post('findby/{sortBy?}/{desc?}', 'UsersController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'UsersController@paginateby');
@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::post('resetpassword', 'UsersController@resetpassword');
 		Route::post('changepassword', 'UsersController@changePassword');
 		Route::post('group/{groupName}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@group');
+
 	});
 
 	Route::group(['prefix' => 'groups'], function() {
@@ -56,6 +57,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::post('save', 'GroupsController@save');
 		Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@deleted');
 		Route::post('assignpermissions', 'GroupsController@assignpermissions');
+
 	});	
 	
 	Route::group(['prefix' => 'permissions'], function() {
@@ -67,5 +69,20 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::post('first', 'PermissionsController@first');
 		Route::post('findby/{sortBy?}/{desc?}', 'PermissionsController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'PermissionsController@paginateby');
+
+	});
+
+	Route::group(['prefix' => 'oauth/clients'], function() {
+		
+		Route::get('list/{sortBy?}/{desc?}', 'OauthClientsController@index');
+		Route::get('find/{id}', 'OauthClientsController@find');
+		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@search');
+		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginate');
+		Route::get('revoke/{id}', 'OauthClientsController@revoke');
+		Route::post('first', 'OauthClientsController@first');
+		Route::post('findby/{sortBy?}/{desc?}', 'OauthClientsController@findby');
+		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginateby');
+		Route::post('save', 'OauthClientsController@save');
+
 	});
 });

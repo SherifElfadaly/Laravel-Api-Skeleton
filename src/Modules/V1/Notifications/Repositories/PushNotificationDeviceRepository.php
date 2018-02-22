@@ -25,8 +25,8 @@ class PushNotificationDeviceRepository extends AbstractRepository
      */
     public function registerDevice($data)
     {
-        $data['login_token'] = \JWTAuth::parseToken()->getToken();
-        $data['user_id']     = \JWTAuth::parseToken()->authenticate()->id;
+        $data['access_token'] = \Auth::user()->token();
+        $data['user_id']      = \Auth::id();
         if ($device = $this->model->where('device_token', $data['device_token'])->where('user_id', $data['user_id'])->first()) 
         {
             $data['id'] = $device->id;

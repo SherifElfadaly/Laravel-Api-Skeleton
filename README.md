@@ -105,11 +105,7 @@ In config/auth.php set user model in providers to App\Modules\V1\Acl\AclUser::cl
 
 In AuthServiceProvider add the following in boot method
 ``` bash
-Passport::routes(function ($router) {
-$router->forAccessTokens();
-$router->forTransientTokens();
-});
-
+Passport::routes();
 Passport::tokensExpireIn(\Carbon\Carbon::now()->addMinutes(10));
 Passport::refreshTokensExpireIn(\Carbon\Carbon::now()->addDays(10));
 ```

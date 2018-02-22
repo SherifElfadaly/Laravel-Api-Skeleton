@@ -198,16 +198,15 @@ abstract class AbstractRepository implements RepositoryInterface
      * Save the given model to the storage.
      * 
      * @param  array   $data
-     * @param  boolean $saveLog
      * @return void
      */
-    public function save(array $data, $saveLog = true)
+    public function save(array $data)
     {
         $model      = false;
         $modelClass = $this->model;
         $relations  = [];
 
-        \DB::transaction(function () use (&$model, &$relations, $data, $saveLog, $modelClass) {
+        \DB::transaction(function () use (&$model, &$relations, $data, $modelClass) {
             /**
              * If the id is present in the data then select the model for updating,
              * else create new model.
@@ -434,8 +433,6 @@ abstract class AbstractRepository implements RepositoryInterface
                     }
                 }
             }
-
-            $saveLog ? \Logging::saveLog(array_key_exists('id', $data) ? 'update' : 'create', class_basename($modelClass), $this->getModel(), $model->id, $model) : false;
         });
             
         return $model->id;
@@ -450,19 +447,17 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param  string $attribute condition column name
      * @return void
      */
-    public function update($value, array $data, $attribute = 'id', $saveLog = true)
+    public function update($value, array $data, $attribute = 'id')
     {
         if ($attribute == 'id') 
         {
             $model = $this->model->lockForUpdate()->find($value);
             $model ? $model->update($data) : 0;
-            $saveLog ? \Logging::saveLog('update', class_basename($this->model), $this->getModel(), $value, $model) : false;
         }
         else
         {
-            call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data, $saveLog){
+            call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data){
                 $model->update($data);
-                $saveLog ? \Logging::saveLog('update', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
             });
         }
     }
@@ -475,11 +470,11 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param  string $attribute condition column name
      * @return void
      */
-    public function delete($value, $attribute = 'id', $saveLog = true)
+    public function delete($value, $attribute = 'id')
     {
         if ($attribute == 'id') 
         {
-            \DB::transaction(function () use ($value, $attribute, &$result, $saveLog) {
+            \DB::transaction(function () use ($value, $attribute, &$result) {
                 $model = $this->model->lockForUpdate()->find($value);
                 if ( ! $model) 
                 {
@@ -487,15 +482,13 @@ abstract class AbstractRepository implements RepositoryInterface
                 }
                 
                 $model->delete();
-                $saveLog ? \Logging::saveLog('delete', class_basename($this->model), $this->getModel(), $value, $model) : false;
             });
         }
         else
         {
-            \DB::transaction(function () use ($value, $attribute, &$result, $saveLog) {
-                call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($saveLog){
+            \DB::transaction(function () use ($value, $attribute, &$result) {
+                call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model){
                     $model->delete();
-                    $saveLog ? \Logging::saveLog('delete', class_basename($this->model), $this->getModel(), $model->id, $model) : false;
                 });
             });   
         }
