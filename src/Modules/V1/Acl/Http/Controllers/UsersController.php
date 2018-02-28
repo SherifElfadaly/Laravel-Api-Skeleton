@@ -43,7 +43,7 @@ class UsersController extends BaseApiController
     /**
      * The loginProxy implementation.
      * 
-     * @var array
+     * @var App\Modules\V1\Acl\Proxy\LoginProxy
      */
     protected $loginProxy;
 

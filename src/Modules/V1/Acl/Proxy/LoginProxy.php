@@ -34,14 +34,12 @@ class LoginProxy
      */
     public function login($credentials, $adminLogin = false)
     {
-        $user = $this->userRepository->login($credentials, $adminLogin);
+        $this->userRepository->login($credentials, $adminLogin);
 
         return $this->proxy('password', [
             'username' => $credentials['email'],
             'password' => $credentials['password']
         ]);
-
-        \ErrorHandler::loginFailed();
     }
 
     /**
@@ -99,7 +97,7 @@ class LoginProxy
     {
         $accessToken = $this->auth->user()->token();
 
-        $refreshToken = $this->db
+        $this->db
             ->table('oauth_refresh_tokens')
             ->where('access_token_id', $accessToken->id)
             ->update([

@@ -179,7 +179,7 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        $this->model->create($credentials)
+        $this->model->create($credentials);
         return $this->loginProxy->login($credentials, 0);
     }
 

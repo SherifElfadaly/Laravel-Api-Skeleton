@@ -47,7 +47,7 @@ class CachingDecorator
     /**
      * The cacheTag implementation.
      * 
-     * @var array
+     * @var string
      */
     public $cacheTag;
     

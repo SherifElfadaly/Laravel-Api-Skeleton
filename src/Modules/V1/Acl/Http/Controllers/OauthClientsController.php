@@ -23,7 +23,7 @@ class OauthClientsController extends BaseApiController
     protected $validationRules  = [
         'name'                   => 'required|max:255',
         'redirect'               => 'required|url',
-        'user_id'                => 'required|array|exists:users,id'
+        'user_id'                => 'required|array|exists:users,id',
         'personal_access_client' => 'boolean',
         'password_client'        => 'boolean',
         'revoked'                => 'boolean'
