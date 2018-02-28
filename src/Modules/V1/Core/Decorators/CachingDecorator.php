@@ -43,6 +43,13 @@ class CachingDecorator
      * @var array
      */
     public $cacheConfig;
+
+    /**
+     * The cacheTag implementation.
+     * 
+     * @var array
+     */
+    public $cacheTag;
     
     /**
      * Create new CachingDecorator instance.

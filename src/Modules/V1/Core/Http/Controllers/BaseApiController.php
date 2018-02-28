@@ -23,7 +23,7 @@ class BaseApiController extends Controller
     /**
      * The repo implementation.
      * 
-     * @var array
+     * @var object
      */
     protected $repo;
 

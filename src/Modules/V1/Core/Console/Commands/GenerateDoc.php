@@ -58,7 +58,7 @@ class GenerateDoc extends Command
                 $route['response'] = $this->getResponseObject($classProperties['model'], $route['name']);
 
                 $this->processDocBlock($route, $reflectionMethod);
-                $this->getHeaders($route, $reflectionClass, $method, $skipLoginCheck);
+                $this->getHeaders($route, $method, $skipLoginCheck);
                 $this->getPostData($route, $reflectionMethod, $validationRules);
 
                 preg_match('/api\/v1\/([^#]+)\//iU', $route['uri'], $module);
@@ -97,12 +97,11 @@ class GenerateDoc extends Command
      * Generate headers for the given route.
      * 
      * @param  array  &$route
-     * @param  object $reflectionClass
      * @param  string $method
      * @param  array  $skipLoginCheck
      * @return void
      */
-    protected function getHeaders(&$route, $reflectionClass, $method, $skipLoginCheck)
+    protected function getHeaders(&$route, $method, $skipLoginCheck)
     {
         $route['headers'] = [
         'Accept'         => 'application/json',
@@ -236,7 +235,7 @@ class GenerateDoc extends Command
      * Get example object of all availble models.
      * 
      * @param  string $modelName
-     * @param  object $docData
+     * @param  array  $docData
      * @return string
      */
     protected function getModels($modelName, &$docData)
