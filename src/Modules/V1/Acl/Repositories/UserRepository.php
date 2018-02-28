@@ -20,12 +20,13 @@ class UserRepository extends AbstractRepository
     /**
      * The loginProxy implementation.
      * 
-     * @var array
+     * @var \App\Modules\V1\Acl\Proxy\LoginProxy
      */
     protected $loginProxy;
 
     /**
-     * @var The accessTokenRepository implementation.
+     * The accessTokenRepository implementation.
+     * @var \League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface
      */
     private $accessTokenRepository;
 
@@ -66,9 +67,9 @@ class UserRepository extends AbstractRepository
      * @param  boolean $user
      * @return boolean
      */
-    public function can($nameOfPermission, $model, $user = false )
+    public function can($nameOfPermission, $model, $user = false)
     {      
-        $user        = $user = $this->find(\Auth::id(), ['groups.permissions']);
+        $user        = $user ?: $this->find(\Auth::id(), ['groups.permissions']);
         $permissions = [];
 
         $user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model){
