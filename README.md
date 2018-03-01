@@ -75,7 +75,22 @@ update the namespace and path in modules.php config
 'namespace' => 'App\Modules\V1\\',
 ```
 
-set a secret key in the config file
+run this command
+``` bash
+php artisan module:optimize
+```
+
+run database migrations
+``` bash
+php artisan module:migrate
+```
+
+run database seeds
+``` bash
+php artisan module:seed
+```
+
+Install passport
 ``` bash
 php artisan passport:install
 ```
@@ -113,21 +128,6 @@ Passport::refreshTokensExpireIn(\Carbon\Carbon::now()->addDays(10));
 In BroadcastServiceProvider add the following in boot method
 ``` bash
 \Broadcast::routes(['middleware' => ['auth:api']]);
-```
-
-run this command
-``` bash
-php artisan module:optimize
-```
-
-run database migrations
-``` bash
-php artisan module:migrate
-```
-
-run database seeds
-``` bash
-php artisan module:seed
 ```
 
 api documentation
