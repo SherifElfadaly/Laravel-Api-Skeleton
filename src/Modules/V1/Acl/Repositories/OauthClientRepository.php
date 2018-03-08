@@ -28,12 +28,12 @@ class OauthClientRepository extends AbstractRepository
     }
 
     /**
-     * Revoke the given client.
+     * Regenerate seceret for the given client.
      *
      * @param  integer  $clientId
      * @return void
      */
-    public function revoke($clientId)
+    public function regenerateSecret($clientId)
     {
 		$this->update($clientId, ['secret' => str_random(40)]);
     }

@@ -28,6 +28,33 @@ class Groups extends Migration
 
 	        $table->index(['user_id']);
         });
+        
+		/**
+		 * Create Default groups.
+		 */
+		\DB::table('groups')->insert(
+			[
+				[
+					'name'       => 'Admin',
+					'created_at' => \DB::raw('NOW()'),
+					'updated_at' => \DB::raw('NOW()')
+				]
+			]
+		);
+        
+		/**
+		 * Assign default users to admin groups.
+		 */
+		$adminGroupId = \DB::table('groups')->where('name', 'admin')->select('id')->first()->id;
+		$adminUserId  = \DB::table('users')->where('email', 'admin@user.com')->select('id')->first()->id;
+		\DB::table('users_groups')->insert(
+			[
+			'user_id'    => $adminUserId,
+			'group_id'   => $adminGroupId,
+			'created_at' => \DB::raw('NOW()'),
+			'updated_at' => \DB::raw('NOW()')
+			]
+        );
 	}
 
 	/**

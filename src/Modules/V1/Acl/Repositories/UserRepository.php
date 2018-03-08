@@ -1,9 +1,7 @@
 <?php namespace App\Modules\V1\Acl\Repositories;
 
 use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
-use App\Modules\V1\Acl\Proxy\LoginProxy;
 use Lcobucci\JWT\ValidationData;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 class UserRepository extends AbstractRepository
 {
@@ -17,25 +15,6 @@ class UserRepository extends AbstractRepository
         return 'App\Modules\V1\Acl\AclUser';
     }
 
-    /**
-     * The loginProxy implementation.
-     * 
-     * @var \App\Modules\V1\Acl\Proxy\LoginProxy
-     */
-    protected $loginProxy;
-
-    /**
-     * The accessTokenRepository implementation.
-     * @var \League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface
-     */
-    private $accessTokenRepository;
-
-    public function __construct(LoginProxy $loginProxy, AccessTokenRepositoryInterface $accessTokenRepository)
-    {        
-        $this->loginProxy            = $loginProxy;
-        $this->accessTokenRepository = $accessTokenRepository;
-        parent::__construct();
-    }
 
     /**
      * Return the logged in user account.
@@ -168,7 +147,8 @@ class UserRepository extends AbstractRepository
                 \ErrorHandler::userAlreadyRegistered();
             }
 
-            return $this->loginProxy->login(['email' => $registeredUser->email, 'password' => ''], 0);
+            $loginProxy = \App::make('App\Modules\V1\Acl\Proxy\LoginProxy');
+            return $loginProxy->login(['email' => $registeredUser->email, 'password' => ''], 0);
         }
     }
     
@@ -180,8 +160,10 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
+        $loginProxy = \App::make('App\Modules\V1\Acl\Proxy\LoginProxy');
         $this->model->create($credentials);
-        return $this->loginProxy->login($credentials, 0);
+
+        return $loginProxy->login($credentials, 0);
     }
 
     /**
@@ -362,10 +344,12 @@ class UserRepository extends AbstractRepository
      */
     public function accessTokenExpiredOrRevoked($accessToken)
     {
+
+        $accessTokenRepository = \App::make('League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface');
         $data = new ValidationData();
         $data->setCurrentTime(time());
 
-        if ($accessToken->validate($data) === false || $this->accessTokenRepository->isAccessTokenRevoked($accessToken->getClaim('jti'))) 
+        if ($accessToken->validate($data) === false || $accessTokenRepository->isAccessTokenRevoked($accessToken->getClaim('jti'))) 
         {
             return true;
         }

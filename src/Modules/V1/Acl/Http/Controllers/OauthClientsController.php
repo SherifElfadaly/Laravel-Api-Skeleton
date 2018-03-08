@@ -32,7 +32,7 @@ class OauthClientsController extends BaseApiController
     /**
      * Revoke the given client.
      *
-     * @param  integer  $clientId
+     * @param  integer  $clientId Id of the client
      * @return \Illuminate\Http\Response
      */
     public function revoke($clientId)
@@ -43,7 +43,7 @@ class OauthClientsController extends BaseApiController
     /**
      * Regenerate seceret for the given client.
      *
-     * @param  integer  $clientId
+     * @param  integer  $clientId Id of the client
      * @return \Illuminate\Http\Response
      */
     public function regenerateSecret($clientId)

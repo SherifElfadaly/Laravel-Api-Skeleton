@@ -23,7 +23,7 @@
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
         "laravel/passport": "^4.0",
-        "caffeinated/modules": "^4.2",
+        "caffeinated/modules": "^4.3",
         "predis/predis": "^1.1",
         "illuminate/support": "~5.1",
         "php" : "~5.5|~7.0"

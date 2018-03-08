@@ -1,5 +1,4 @@
 <?php namespace App\Modules\V1\Core\Utl;
-use \App\Modules\V1\Core\Settings;
 
 class CoreConfig
 {
@@ -43,7 +42,7 @@ class CoreConfig
 					'search'     => [],
 					'deleted'    => [],
 				],
-				'logs' => [
+				'oauthClients' => [
 					'list'       => [],
 					'find'       => [],
 					'findby'     => [],
@@ -51,17 +50,13 @@ class CoreConfig
 					'paginateby' => [],
 					'first'      => [],
 					'search'     => [],
+					'account'    => [],
+					'group'      => [],
 					'deleted'    => [],
 				],
 				'notifications' => [
-					'list'       => [],
-					'find'       => [],
-					'findby'     => [],
-					'paginate'   => [],
-					'paginateby' => [],
-					'first'      => [],
-					'search'     => [],
-					'deleted'    => [],
+					'list'   => [],
+					'unread' => [],
 				],
 				'pushNotificationDevices' => [
 					'list'       => [],
@@ -98,32 +93,7 @@ class CoreConfig
 			 * Specify caching config for each api.
 			 */
 			'cacheConfig' => [
-				'users' => [
-					'cache' => [
-						'all',
-						'find',
-						'findBy',
-						'paginate',
-						'paginateBy',
-						'first',
-						'search',
-						'account',
-						'group',
-						'deleted'
-					],
-					'clear' => [
-						'block'        => ['users', 'groups'],
-						'unblock'      => ['users', 'groups'],
-						'register'     => ['users', 'groups'],
-						'assignGroups' => ['users', 'groups'],
-						'saveProfile'  => ['users', 'groups'],
-						'update'       => ['users', 'groups'],
-						'save'         => ['users', 'groups'],
-						'delete'       => ['users', 'groups'],
-						'restore'      => ['users', 'groups'],
-					],
-				],
-				'permissions' => [
+				'oauthClients' => [
 					'cache' => [
 						'all',
 						'find',
@@ -135,30 +105,13 @@ class CoreConfig
 						'deleted'
 					],
 					'clear' => [
-						'update'  => ['users', 'groups', 'permissions'],
-						'save'    => ['users', 'groups', 'permissions'],
-						'delete'  => ['users', 'groups', 'permissions'],
-						'restore' => ['users', 'groups', 'permissions'],
-					]
-				],
-				'groups' => [
-					'cache' => [
-						'all',
-						'find',
-						'findBy',
-						'paginate',
-						'paginateBy',
-						'first',
-						'search',
-						'deleted'
+						'update'           => ['oauthClients', 'users', 'groups'],
+						'save'             => ['oauthClients', 'users', 'groups'],
+						'delete'           => ['oauthClients', 'users', 'groups'],
+						'restore'          => ['oauthClients', 'users', 'groups'],
+						'revoke'           => ['oauthClients', 'users', 'groups'],
+						'regenerateSecret' => ['oauthClients', 'users', 'groups'],
 					],
-					'clear' => [
-						'update'            => ['users', 'groups', 'permissions'],
-						'save'              => ['users', 'groups', 'permissions'],
-						'delete'            => ['users', 'groups', 'permissions'],
-						'restore'           => ['users', 'groups', 'permissions'],
-						'assignPermissions' => ['users', 'groups', 'permissions'],
-					]
 				],
 				'settings' => [
 					'cache' => [

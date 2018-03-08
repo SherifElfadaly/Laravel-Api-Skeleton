@@ -113,18 +113,5 @@ class UsersTableSeeder extends Seeder
                 ]
         	]
         );
-
-		/**
-		 * Create Default users.
-		 */
-		\DB::table('users')->insertGetId(
-            [
-			'name'       => 'Admin',
-			'email'      => 'admin@user.com',
-			'password'   => bcrypt('123456'),
-			'created_at' => \DB::raw('NOW()'),
-			'updated_at' => \DB::raw('NOW()')
-			]
-        );
     }
 }

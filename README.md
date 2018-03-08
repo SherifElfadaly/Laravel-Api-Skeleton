@@ -62,6 +62,14 @@ else
 }
 ```
 
+add this in Exception/Handler.php in dontReport array
+
+``` bash
+protected $dontReport = [
+\League\OAuth2\Server\Exception\OAuthServerException::class,
+];
+```
+
 publish files
 
 ``` bash
@@ -107,6 +115,14 @@ In config/auth.php set the driver property of the api authentication guard to pa
 'driver' => 'passport',
 'provider' => 'users',
 ]
+```
+
+In config/auth.php set the default guard to api
+``` bash
+'defaults' => [
+'guard' => 'api',
+'passwords' => 'users',
+],
 ```
 
 In config/auth.php set user model in providers to App\Modules\V1\Acl\AclUser::class

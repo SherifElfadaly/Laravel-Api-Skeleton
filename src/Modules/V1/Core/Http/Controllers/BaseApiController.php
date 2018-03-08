@@ -37,7 +37,6 @@ class BaseApiController extends Controller
         $this->repo                = call_user_func_array("\Core::{$this->model}", []);
         $route                     = explode('@',\Route::currentRouteAction())[1];
 
-        $this->middleware('auth:api', ['except' => $this->skipLoginCheck]);
         $this->checkPermission($route);
         $this->setRelations($route);
         $this->setSessions();
@@ -239,20 +238,27 @@ class BaseApiController extends Controller
      */
     private function checkPermission($permission)
     {   
+        \Auth::shouldUse('api');
+        $this->middleware('auth:api', ['except' => $this->skipLoginCheck]);
+        
         if ($user = \Auth::user()) 
         {
-            $permission = $permission !== 'index' ? $permission : 'list';
-            if ( ! in_array($permission, $this->skipLoginCheck)) 
+            $permission       = $permission !== 'index' ? $permission : 'list';
+            $isPasswordClient = $user->token()->client->password_client;
+
+            if ($user->blocked)
             {
-                if ($user->blocked)
-                {
-                    \ErrorHandler::userIsBlocked();
-                }
-                
-                if ( ! in_array($permission, $this->skipPermissionCheck) && ! \Core::users()->can($permission, $this->model))
-                {
-                    \ErrorHandler::noPermissions();
-                }
+                \ErrorHandler::userIsBlocked();
+            }
+
+            if ($isPasswordClient && (in_array($permission, $this->skipPermissionCheck) || \Core::users()->can($permission, $this->model)))
+            {}
+            elseif ( ! $isPasswordClient && $user->tokenCan($this->model . '-' . $permission)) 
+            {}
+            else
+            {
+
+                \ErrorHandler::noPermissions();
             }
         }
     }

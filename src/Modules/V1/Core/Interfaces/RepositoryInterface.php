@@ -57,10 +57,9 @@ interface RepositoryInterface
      * Save the given model/models to the storage.
      * 
      * @param  array   $data
-     * @param  boolean $saveLog
      * @return object
      */
-    public function save(array $data, $saveLog = true);
+    public function save(array $data);
 
     /**
      * Update record in the storage based on the given

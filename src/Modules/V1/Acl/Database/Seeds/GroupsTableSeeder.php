@@ -81,12 +81,6 @@ class GroupsTableSeeder extends Seeder
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
-	        	[
-	        	'name'       => 'users',
-	        	'model'      => 'groups',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
                 [
                 'name'       => 'deleted',
                 'model'      => 'groups',
@@ -101,16 +95,5 @@ class GroupsTableSeeder extends Seeder
                 ]
         	]
         );
-
-		/**
-		 * Create Default groups.
-		 */
-		\DB::table('groups')->insertGetId(
-			[
-			'name'       => 'Admin',
-			'created_at' => \DB::raw('NOW()'),
-			'updated_at' => \DB::raw('NOW()')
-			]
-		);
     }
 }

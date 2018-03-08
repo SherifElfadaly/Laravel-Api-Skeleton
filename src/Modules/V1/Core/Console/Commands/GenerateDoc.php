@@ -54,12 +54,12 @@ class GenerateDoc extends Command
                 $classProperties   = $reflectionClass->getDefaultProperties();
                 $skipLoginCheck    = array_key_exists('skipLoginCheck', $classProperties) ? $classProperties['skipLoginCheck'] : false;
                 $validationRules   = array_key_exists('validationRules', $classProperties) ? $classProperties['validationRules'] : false;
-                
-                $route['response'] = $this->getResponseObject($classProperties['model'], $route['name']);
 
                 $this->processDocBlock($route, $reflectionMethod);
                 $this->getHeaders($route, $method, $skipLoginCheck);
                 $this->getPostData($route, $reflectionMethod, $validationRules);
+
+                $route['response'] = $this->getResponseObject($classProperties['model'], $route['name'], $route['returnDocBlock']);
 
                 preg_match('/api\/v1\/([^#]+)\//iU', $route['uri'], $module);
                 $docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/v1/' . $module[1] . '/') - 1)][] = $route;
@@ -113,7 +113,7 @@ class GenerateDoc extends Command
 
         if (! $skipLoginCheck || ! in_array($method, $skipLoginCheck)) 
         {
-            $route['headers']['Authrization'] = 'bearer {token}';
+            $route['headers']['Authrization'] = 'Bearer {token}';
         }
     }
 
@@ -127,10 +127,11 @@ class GenerateDoc extends Command
      */
     protected function processDocBlock(&$route, $reflectionMethod)
     {
-        $factory              = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
-        $docblock             = $factory->create($reflectionMethod->getDocComment());
-        $route['description'] = trim(preg_replace('/\s+/', ' ', $docblock->getSummary()));
-        $params               = $docblock->getTagsByName('param');
+        $factory                 = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+        $docblock                = $factory->create($reflectionMethod->getDocComment());
+        $route['description']    = trim(preg_replace('/\s+/', ' ', $docblock->getSummary()));
+        $params                  = $docblock->getTagsByName('param');
+        $route['returnDocBlock'] = $docblock->getTagsByName('return')[0]->getType()->getFqsen()->getName();
         foreach ($params as $param) 
         {
             $name = $param->getVariableName();
@@ -164,7 +165,7 @@ class GenerateDoc extends Command
                 }
                 else
                 {
-                    $route['body'] = eval('return ' . $match[1] . ';');
+                    $route['body'] = eval('return ' . str_replace(',\'.$request->get(\'id\')', ',{id}\'', $match[1]) . ';');
                 }
 
                 foreach ($route['body'] as &$rule) 
@@ -262,12 +263,14 @@ class GenerateDoc extends Command
      * 
      * @param  string $modelName
      * @param  string $method
+     * @param  string $returnDocBlock
      * @return array
      */
-    protected function getResponseObject($modelName, $method)
+    protected function getResponseObject($modelName, $method, $returnDocBlock)
     {
         $config    = \CoreConfig::getConfig();
         $relations = array_key_exists($modelName, $config['relations']) ? array_key_exists($method, $config['relations'][$modelName]) ? $config['relations'][$modelName] : false : false;
+        $modelName = call_user_func_array("\Core::{$returnDocBlock}", []) ? $returnDocBlock : $modelName;
 
         return $relations ? [$modelName => $relations && $relations[$method] ? $relations[$method] : []] : false;
     }

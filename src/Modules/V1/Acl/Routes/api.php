@@ -25,7 +25,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::get('block/{id}', 'UsersController@block');
 		Route::get('unblock/{id}', 'UsersController@unblock');
 		Route::get('logout', 'UsersController@logout');
-		Route::get('refreshtoken/{refreshToken}', 'UsersController@refreshtoken');
+		Route::post('refreshtoken', 'UsersController@refreshtoken');
 		Route::post('first', 'UsersController@first');
 		Route::post('findby/{sortBy?}/{desc?}', 'UsersController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'UsersController@paginateby');
@@ -79,6 +79,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginate');
 		Route::get('revoke/{id}', 'OauthClientsController@revoke');
+		Route::get('regenerateSecret/{id}', 'OauthClientsController@regenerateSecret');
 		Route::post('first', 'OauthClientsController@first');
 		Route::post('findby/{sortBy?}/{desc?}', 'OauthClientsController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginateby');

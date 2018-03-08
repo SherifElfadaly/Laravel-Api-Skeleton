@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\V1\Acl\Http\Controllers;
+namespace App\Modules\V1\Acl;
 
 use Laravel\Passport\Client;
 
