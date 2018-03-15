@@ -21,12 +21,10 @@ class OauthClientsController extends BaseApiController
      * @var array
      */
     protected $validationRules  = [
-        'name'                   => 'required|max:255',
-        'redirect'               => 'required|url',
-        'user_id'                => 'required|array|exists:users,id',
-        'personal_access_client' => 'boolean',
-        'password_client'        => 'boolean',
-        'revoked'                => 'boolean'
+        'name'     => 'required|max:255',
+        'redirect' => 'required|url',
+        'user_id'  => 'required|exists:users,id',
+        'revoked'  => 'boolean'
     ];
 
     /**
@@ -41,13 +39,13 @@ class OauthClientsController extends BaseApiController
     }
 
     /**
-     * Regenerate seceret for the given client.
+     * Un revoke the given client.
      *
      * @param  integer  $clientId Id of the client
      * @return \Illuminate\Http\Response
      */
-    public function regenerateSecret($clientId)
+    public function unRevoke($clientId)
     {
-        return \Response::json($this->repo->regenerateSecret($clientId), 200);
+        return \Response::json($this->repo->unRevoke($clientId), 200);
     }
 }

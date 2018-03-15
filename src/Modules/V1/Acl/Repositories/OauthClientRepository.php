@@ -4,15 +4,15 @@ use App\Modules\V1\Core\AbstractRepositories\AbstractRepository;
 
 class OauthClientRepository extends AbstractRepository
 {
-	/**
-	 * Return the model full namespace.
-	 * 
-	 * @return string
-	 */
-	protected function getModel()
-	{
-		return 'App\Modules\V1\Acl\OauthClient';
-	}
+    /**
+     * Return the model full namespace.
+     * 
+     * @return string
+     */
+    protected function getModel()
+    {
+        return 'App\Modules\V1\Acl\OauthClient';
+    }
 
     /**
      * Revoke the given client.
@@ -22,19 +22,19 @@ class OauthClientRepository extends AbstractRepository
      */
     public function revoke($clientId)
     {
-    	$client = $this->find($clientId);
+        $client = $this->find($clientId);
         $client->tokens()->update(['revoked' => true]);
-        $client->forceFill(['revoked' => true])->save();
+        $this->save(['id'=> $clientId, 'revoked' => true]);
     }
 
     /**
-     * Regenerate seceret for the given client.
+     * Un revoke the given client.
      *
      * @param  integer  $clientId
      * @return void
      */
-    public function regenerateSecret($clientId)
+    public function unRevoke($clientId)
     {
-		$this->update($clientId, ['secret' => str_random(40)]);
+        $this->save(['id'=> $clientId, 'revoked' => false]);
     }
 }

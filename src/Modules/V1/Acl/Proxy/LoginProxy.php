@@ -15,10 +15,10 @@ class LoginProxy
 
     private $userRepository;
 
-    public function __construct(Application $app, UserRepository $userRepository) 
+    public function __construct(Application $app) 
     {
 
-        $this->userRepository = $userRepository;
+        $this->userRepository = $app->make('App\Modules\V1\Acl\Repositories\UserRepository');
         $this->apiConsumer    = $app->make('apiconsumer');
         $this->auth           = $app->make('auth');
         $this->db             = $app->make('db');

@@ -79,7 +79,7 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@search');
 		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginate');
 		Route::get('revoke/{id}', 'OauthClientsController@revoke');
-		Route::get('regenerateSecret/{id}', 'OauthClientsController@regenerateSecret');
+		Route::get('unrevoke/{id}', 'OauthClientsController@unRevoke');
 		Route::post('first', 'OauthClientsController@first');
 		Route::post('findby/{sortBy?}/{desc?}', 'OauthClientsController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginateby');

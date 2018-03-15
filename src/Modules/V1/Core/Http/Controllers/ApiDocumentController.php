@@ -8,8 +8,7 @@ class ApiDocumentController extends Controller
 {
 	public function index() 
 	{
-		$path       = str_replace($_SERVER['DOCUMENT_ROOT'], '',str_replace('\\', '/', __FILE__));
-		$baseUrl    = str_replace('Http/Controllers/ApiDocumentController.php', '', $path);
+		$baseUrl    = str_replace('public/', '', url('app/Modules/V1/Core'));
 		$jsonDoc    = json_decode(file_get_contents(app_path('Modules/V1/Core/Resources/api.json')), true);
 		$modules    = $jsonDoc['modules'];
 		$errors     = $jsonDoc['errors'];

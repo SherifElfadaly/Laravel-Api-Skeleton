@@ -198,7 +198,7 @@ abstract class AbstractRepository implements RepositoryInterface
      * Save the given model to the storage.
      * 
      * @param  array   $data
-     * @return void
+     * @return object
      */
     public function save(array $data)
     {
@@ -342,10 +342,6 @@ abstract class AbstractRepository implements RepositoryInterface
                     $model->$key = $value;   
                 }
             }
-            /**
-             * Save the model.
-             */
-            $model->save();
 
             /**
              * Loop through the relations array.
@@ -364,7 +360,12 @@ abstract class AbstractRepository implements RepositoryInterface
                  */
                 else if (gettype($value) == 'array') 
                 {
+                    /**
+                     * Save the model.
+                     */
+                    $model->save();
                     $ids = [];
+
                     /**
                      * Loop through the relations.
                      */
@@ -423,19 +424,35 @@ abstract class AbstractRepository implements RepositoryInterface
                     switch (class_basename($model->$key())) 
                     {
                         /**
-                         * If the relation is one to many or one to one.
+                         * If the relation is one to one.
                          */
                         case 'HasOne':
+                            /**
+                             * Save the model.
+                             */
+                            $model->save();
                             $foreignKeyName         = $model->$key()->getForeignKeyName();
                             $value->$foreignKeyName = $model->id;
                             $value->save();
                             break;
+                        case 'BelongsTo':
+                            /**
+                             * Save the model.
+                             */
+                            $value->save();
+                            $model->$key()->associate($value);
+                            break;
                     }
                 }
             }
+
+            /**
+             * Save the model.
+             */
+            $model->save();
         });
             
-        return $model->id;
+        return $model;
     }
     
     /**

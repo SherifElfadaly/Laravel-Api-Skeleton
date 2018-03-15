@@ -44,12 +44,6 @@ class ModuleServiceProvider extends ServiceProvider
         {
             return new \App\Modules\V1\Core\Utl\CoreConfig;
         });
-
-        //Bind Logging Facade to the IoC Container
-        \App::bind('Logging', function()
-        {
-            return new \App\Modules\V1\Core\Utl\Logging;
-        });
         
         $this->app->register(RouteServiceProvider::class);
     }

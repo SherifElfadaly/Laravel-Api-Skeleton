@@ -20,7 +20,7 @@ class UsersController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['account', 'logout', 'changePassword'];
+    protected $skipPermissionCheck = ['account', 'logout', 'changePassword', 'saveProfile', 'account'];
 
     /**
      * List of all route actions that the base api controller
@@ -109,7 +109,7 @@ class UsersController extends BaseApiController
             'password' => 'required|min:6'
             ]);
 
-        return \Response::json($this->repo->register($request->only('email', 'password')), 200);
+        return \Response::json($this->repo->register($request->only('name', 'email', 'password')), 200);
     }
 
     /**
@@ -122,11 +122,10 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, [
             'email'    => 'required|email', 
-            'password' => 'required|min:6',
-            'admin'    => 'boolean'
+            'password' => 'required|min:6'
             ]);
 
-        return \Response::json($this->loginProxy->login($request->only('email', 'password'), $request->get('admin')), 200);
+        return \Response::json($this->loginProxy->login($request->only('email', 'password')), 200);
     }
 
     /**
@@ -222,11 +221,11 @@ class UsersController extends BaseApiController
             'refreshtoken' => 'required',
         ]);
 
-        return \Response::json($this->loginProxy->refreshtoken($request->only('refreshtoken')), 200);
+        return \Response::json($this->loginProxy->refreshtoken($request->get('refreshtoken')), 200);
     }
 
     /**
-     * Paginate all users with inthe given group.
+     * Paginate all users with in the given group.
      * 
      * @param  \Illuminate\Http\Request  $request
      * @param  string $groupName The name of the requested group.
@@ -248,28 +247,11 @@ class UsersController extends BaseApiController
      */
     public function saveProfile(Request $request) 
     {
-        foreach ($this->validationRules as &$rule) 
-        {
-            if (strpos($rule, 'exists') && ! strpos($rule, 'deleted_at,NULL')) 
-            {
-                $rule .= ',deleted_at,NULL';
-            }
+        $this->validate($request, [
+            'name'  => 'nullable|string', 
+            'email' => 'required|email|unique:users,email,' . \Auth::id()
+        ]);
 
-            if ($request->has('id')) 
-            {
-                $rule = str_replace('{id}', $request->get('id'), $rule);
-            }
-            else
-            {
-                $rule = str_replace(',{id}', '', $rule);
-            }
-        }
-
-        $this->validate($request, $this->validationRules);
-
-        if ($this->model)
-        {
-            return \Response::json(call_user_func_array("\Core::{$this->model}", [])->saveProfile($request->all()), 200);
-        }
+        return \Response::json($this->repo->saveProfile($request->only('name', 'email')), 200);
     }
 }

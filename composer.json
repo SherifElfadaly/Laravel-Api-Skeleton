@@ -19,7 +19,6 @@
     "require": {
         "optimus/api-consumer": "0.2.*",
         "enniel/laravel-fcm-notification-channel": "0.*",
-        "itsgoingd/clockwork": "^2.0",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
         "laravel/passport": "^4.0",

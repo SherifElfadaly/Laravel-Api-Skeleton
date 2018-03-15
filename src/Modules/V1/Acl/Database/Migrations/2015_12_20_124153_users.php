@@ -18,8 +18,6 @@ class Users extends Migration
             $table->string('email')->unique();
             $table->string('password', 60)->nullable();
             $table->boolean('blocked')->default(0);
-			$table->date('last_change_password')->nullable();
-            $table->string('two_factor_code', 4)->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

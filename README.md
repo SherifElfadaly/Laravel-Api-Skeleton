@@ -14,14 +14,6 @@ Run this command:
 composer require api-skeleton/api-skeleton
 ```
 
-add Clockwork middleware to http kernel.php
-``` bash
-protected $middleware = [
-    \Clockwork\Support\Laravel\ClockworkMiddleware::class,
-    ...
-]
-```
-
 add the following code in Exception/Handler.php in render function
 
 ``` bash
@@ -117,14 +109,6 @@ In config/auth.php set the driver property of the api authentication guard to pa
 ]
 ```
 
-In config/auth.php set the default guard to api
-``` bash
-'defaults' => [
-'guard' => 'api',
-'passwords' => 'users',
-],
-```
-
 In config/auth.php set user model in providers to App\Modules\V1\Acl\AclUser::class
 ``` bash
 'providers' => [
@@ -136,14 +120,21 @@ In config/auth.php set user model in providers to App\Modules\V1\Acl\AclUser::cl
 
 In AuthServiceProvider add the following in boot method
 ``` bash
-Passport::routes();
+use Laravel\Passport\Passport;
+
+Passport::routes(function ($router) {
+    $router->forAuthorization();
+    $router->forAccessTokens();
+    $router->forPersonalAccessTokens();
+    $router->forTransientTokens();
+});
 Passport::tokensExpireIn(\Carbon\Carbon::now()->addMinutes(10));
 Passport::refreshTokensExpireIn(\Carbon\Carbon::now()->addDays(10));
 ```
 
 In BroadcastServiceProvider add the following in boot method
 ``` bash
-\Broadcast::routes(['middleware' => ['auth:api']]);
+Broadcast::routes(['middleware' => ['auth:api']]);
 ```
 
 api documentation

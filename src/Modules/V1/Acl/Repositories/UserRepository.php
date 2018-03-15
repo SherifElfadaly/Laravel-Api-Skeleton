@@ -160,10 +160,7 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        $loginProxy = \App::make('App\Modules\V1\Acl\Proxy\LoginProxy');
         $this->model->create($credentials);
-
-        return $loginProxy->login($credentials, 0);
     }
 
     /**
@@ -326,14 +323,12 @@ class UserRepository extends AbstractRepository
      * Save the given data to the logged in user.
      *
      * @param  array $credentials
-     * @return object
+     * @return void
      */
-    public function saveProfile($credentials) 
+    public function saveProfile($data) 
     {
-        $user = \Auth::user();
-        $user->save($credentials);
-
-        return $user;
+        $data['id'] = \Auth::id();
+        $this->save($data);
     }
 
     /**

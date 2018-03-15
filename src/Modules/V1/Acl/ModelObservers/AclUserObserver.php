@@ -27,10 +27,7 @@ class AclUserObserver {
 
     public function updating($model)
     {
-        if ($model->password) 
-        {
-            $model->last_change_password = \Carbon\Carbon::now()->toDateTimeString();
-        }
+        //
     }
 
     public function updated($model)
@@ -38,19 +35,12 @@ class AclUserObserver {
         //
     }
 
-    /**
-     * Soft delete user logs.
-     * 
-     * @param  object $model the delted model.
-     * @return void
-     */
     public function deleting($model)
     {
         if ($model->getOriginal('id') == \Auth::id()) 
         {
             \ErrorHandler::noPermissions();
         }
-        $model->logs()->delete();
     }
 
     public function deleted($model)

@@ -110,6 +110,7 @@ class CoreConfig
 						'delete'           => ['oauthClients', 'users', 'groups'],
 						'restore'          => ['oauthClients', 'users', 'groups'],
 						'revoke'           => ['oauthClients', 'users', 'groups'],
+						'ubRevoke'         => ['oauthClients', 'users', 'groups'],
 						'regenerateSecret' => ['oauthClients', 'users', 'groups'],
 					],
 				],

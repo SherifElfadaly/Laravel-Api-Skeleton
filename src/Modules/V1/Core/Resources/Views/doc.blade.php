@@ -11,18 +11,18 @@
 
     <title>Api Documentation</title>
 
-    <link href="{{$baseUrl}}Resources/Assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{$baseUrl}}Resources/Assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet">
-    <link href="{{$baseUrl}}Resources/Assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{$baseUrl}}Resources/Assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="{{$baseUrl}}/Resources/Assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{$baseUrl}}/Resources/Assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet">
+    <link href="{{$baseUrl}}/Resources/Assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{$baseUrl}}/Resources/Assets/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet">
 
     <!-- BEGIN THEME GLOBAL STYLES -->
-    <link href="{{$baseUrl}}Resources/Assets/css/components.min.css" rel="stylesheet" id="style_components">
-    <link href="{{$baseUrl}}Resources/Assets/css/plugins.min.css" rel="stylesheet">
+    <link href="{{$baseUrl}}/Resources/Assets/css/components.min.css" rel="stylesheet" id="style_components">
+    <link href="{{$baseUrl}}/Resources/Assets/css/plugins.min.css" rel="stylesheet">
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
-    <link href="{{$baseUrl}}Resources/Assets/css/layout.min.css" rel="stylesheet">
-    <link href="{{$baseUrl}}Resources/Assets/css/themes/dark.min.css" rel="stylesheet" id="style_color" />
+    <link href="{{$baseUrl}}/Resources/Assets/css/layout.min.css" rel="stylesheet">
+    <link href="{{$baseUrl}}/Resources/Assets/css/themes/dark.min.css" rel="stylesheet" id="style_color" />
     <!-- END THEME LAYOUT STYLES -->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -41,8 +41,8 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="index.html">
-                        <img style="margin: 10px 0 0;" src="{{$baseUrl}}Resources/Assets/img/logo1.png" alt="logo" class="logo-default" /> </a>
+                    <a href="#">
+                        <img style="margin: 10px 0 0;" src="{{$baseUrl}}/Resources/Assets/img/logo1.png" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
                     </div>
@@ -331,12 +331,12 @@
         <!-- End CONTAINER -->
 
     <!-- JS -->
-    <script src="{{$baseUrl}}Resources/Assets/js/jquery.min.js"></script> 
-    <script src="{{$baseUrl}}Resources/Assets/js/bootstrap.min.js"></script>        
-    <script src="{{$baseUrl}}Resources/Assets/js/js.cookie.min.js"></script>
-    <script src="{{$baseUrl}}Resources/Assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="{{$baseUrl}}Resources/Assets/js/app.min.js"></script>
-    <script src="{{$baseUrl}}Resources/Assets/js/layout.min.js"></script>
+    <script src="{{$baseUrl}}/Resources/Assets/js/jquery.min.js"></script> 
+    <script src="{{$baseUrl}}/Resources/Assets/js/bootstrap.min.js"></script>        
+    <script src="{{$baseUrl}}/Resources/Assets/js/js.cookie.min.js"></script>
+    <script src="{{$baseUrl}}/Resources/Assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="{{$baseUrl}}/Resources/Assets/js/app.min.js"></script>
+    <script src="{{$baseUrl}}/Resources/Assets/js/layout.min.js"></script>
 </body>
 
 </html>

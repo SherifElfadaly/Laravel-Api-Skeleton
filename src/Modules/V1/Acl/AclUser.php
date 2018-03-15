@@ -47,7 +47,8 @@ class AclUser extends User {
     }
 
     /**
-     * Return fcm device tokens related to the user.
+     * Return fcm device tokens that will be used in sending fcm notifications.
+     * 
      * @return array
      */
     public function routeNotificationForFCM()

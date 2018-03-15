@@ -22,13 +22,7 @@ class OauthClientsTableSeeder extends Seeder
         		 * Users model permissions.
         		 */
 	        	[
-	        	'name'       => 'save',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'delete',
+	        	'name'       => 'list',
 	        	'model'      => 'oauthClients',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
@@ -40,25 +34,7 @@ class OauthClientsTableSeeder extends Seeder
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'list',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
 	        	'name'       => 'search',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'findby',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'first',
 	        	'model'      => 'oauthClients',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
@@ -70,47 +46,41 @@ class OauthClientsTableSeeder extends Seeder
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
+	        	'name'       => 'revoke',
+	        	'model'      => 'oauthClients',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'unRevoke',
+	        	'model'      => 'oauthClients',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'first',
+	        	'model'      => 'oauthClients',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'findby',
+	        	'model'      => 'oauthClients',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
 	        	'name'       => 'paginateby',
 	        	'model'      => 'oauthClients',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
 	        	],
 	        	[
-	        	'name'       => 'assigngroups',
+	        	'name'       => 'save',
 	        	'model'      => 'oauthClients',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'block',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'unblock',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-	        	[
-	        	'name'       => 'group',
-	        	'model'      => 'oauthClients',
-	        	'created_at' => \DB::raw('NOW()'),
-	        	'updated_at' => \DB::raw('NOW()')
-	        	],
-                [
-                'name'       => 'deleted',
-                'model'      => 'oauthClients',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'restore',
-                'model'      => 'oauthClients',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ]
+	        	]
         	]
         );
     }

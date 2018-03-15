@@ -34,8 +34,8 @@ trait Translatable
     protected function getTranslatedAttribute($key, $values)
     {
         $values         = json_decode($values);
-        $primaryLocale  = \Session::get(\CoreConfig::getConfig()['var_names']['locale']);
-        $fallbackLocale = \CoreConfig::getConfig()['var_names']['locale_fallback'];
+        $primaryLocale  = \Session::get('locale');
+        $fallbackLocale = 'en';
 
         if ($primaryLocale == 'all') 
         {
