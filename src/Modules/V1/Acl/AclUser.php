@@ -41,9 +41,38 @@ class AclUser extends User {
         $this->attributes['password'] = bcrypt($value);
     }
 
+    /**
+     * Get the entity's notifications.
+     */
+    public function notifications()
+    {
+        return $this->morphMany('\App\Modules\V1\Notifications\Notification', 'notifiable')->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the entity's read notifications.
+     */
+    public function readNotifications()
+    {
+        return $this->notifications()->whereNotNull('read_at');
+    }
+
+    /**
+     * Get the entity's unread notifications.
+     */
+    public function unreadNotifications()
+    {
+        return $this->notifications()->whereNull('read_at');
+    }
+
     public function groups()
     {
         return $this->belongsToMany('\App\Modules\V1\Acl\AclGroup','users_groups','user_id','group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+    }
+
+    public function oauthClients()
+    {
+        return $this->hasMany('App\Modules\V1\Acl\OauthClient', 'user_id');
     }
 
     /**

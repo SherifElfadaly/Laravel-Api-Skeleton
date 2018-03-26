@@ -137,6 +137,11 @@ In BroadcastServiceProvider add the following in boot method
 Broadcast::routes(['middleware' => ['auth:api']]);
 ```
 
+In app.php uncomment the following
+``` bash
+App\Providers\BroadcastServiceProvider::class,
+```
+
 api documentation
 
 add this command to console kernel.php

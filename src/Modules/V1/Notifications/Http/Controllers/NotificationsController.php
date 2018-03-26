@@ -7,7 +7,7 @@ use App\Modules\V1\Core\Http\Controllers\BaseApiController;
 
 class NotificationsController extends BaseApiController
 {
-	/**
+    /**
      * The name of the model that is used by the base api controller 
      * to preform actions like (add, edit ... etc).
      * @var string
@@ -19,12 +19,12 @@ class NotificationsController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['markAsRead', 'markAllAsRead'];
+    protected $skipPermissionCheck = ['markAsRead', 'markAllAsRead', 'list', 'unread'];
 
     /**
      * Retrieve all notifications of the logged in user.
      * 
-     * @param  integer $perPage
+     * @param  integer $perPage Number of rows per page default all data.
      * @return \Illuminate\Http\Response
      */
     public function list($perPage = 0)
@@ -35,7 +35,7 @@ class NotificationsController extends BaseApiController
     /**
      * Retrieve unread notifications of the logged in user.
      * 
-     * @param  integer $perPage
+     * @param  integer $perPage Number of rows per page default all data.
      * @return \Illuminate\Http\Response
      */
     public function unread($perPage = 0)

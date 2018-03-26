@@ -22,9 +22,10 @@ class ReportRepository extends AbstractRepository
      * @param  array   $conditions array of conditions
      * @param  integer $perPage
      * @param  array   $relations
+     * @param  boolean   $skipPermission
      * @return object
      */
-    public function getReport($reportName, $conditions = false, $perPage = 0, $relations = [])
+    public function getReport($reportName, $conditions = false, $perPage = 0, $relations = [], $skipPermission = false)
     {
         /**
          * Fetch the report from db.
@@ -39,7 +40,7 @@ class ReportRepository extends AbstractRepository
         {
             \ErrorHandler::notFound('report');
         }
-        else if ( ! \Core::users()->can($report->view_name, 'reports'))
+        else if (! $skipPermission && ! \Core::users()->can($report->view_name, 'reports'))
         {
             \ErrorHandler::noPermissions();
         }

@@ -50,7 +50,7 @@ class AclUserObserver {
 
     public function restoring($model)
     {
-        $model->logs()->restore();
+        //
     }
 
     public function restored($model)
