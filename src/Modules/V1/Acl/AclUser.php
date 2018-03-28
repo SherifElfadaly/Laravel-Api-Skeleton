@@ -12,7 +12,7 @@ class AclUser extends User {
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden   = ['password', 'remember_token','deleted_at', 'two_factor_code'];
     protected $guarded  = ['id'];
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['profile_picture', 'name', 'email', 'password'];
     public $searchable  = ['name', 'email'];
     
     public function getCreatedAtAttribute($value)

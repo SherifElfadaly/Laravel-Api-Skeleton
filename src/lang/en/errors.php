@@ -22,5 +22,7 @@ return [
     'invalidOldPassword'     => 'Old password is invalid',
     'notFound'               => 'The requested :replace not found',
     'generalError'           => 'Something went wrong',
+    'emailNotConfirmed'      => 'Your email isn\'t confirmed',
+    'emailAlreadyConfirmed'  => 'Your email is already confirmed'
 
 ];

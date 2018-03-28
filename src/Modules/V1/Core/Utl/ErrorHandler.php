@@ -74,6 +74,18 @@ class ErrorHandler
         abort($error['status'], $error['message']);
     }
 
+    public function emailNotConfirmed()
+    {
+        $error = ['status' => 403, 'message' => trans('errors.emailNotConfirmed')];
+        abort($error['status'], $error['message']);
+    }
+
+    public function emailAlreadyConfirmed()
+    {
+        $error = ['status' => 403, 'message' => trans('errors.emailAlreadyConfirmed')];
+        abort($error['status'], $error['message']);
+    }
+
     public function invalidResetToken()
     {
         $error = ['status' => 400, 'message' => trans('errors.invalidResetToken')];

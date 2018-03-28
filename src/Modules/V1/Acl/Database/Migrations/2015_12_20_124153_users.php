@@ -14,10 +14,13 @@ class Users extends Migration
 	{
 		Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('profile_picture', 150)->nullable();
             $table->string('name', 100)->nullable();
             $table->string('email')->unique();
             $table->string('password', 60)->nullable();
             $table->boolean('blocked')->default(0);
+            $table->boolean('confirmed')->default(1);
+            $table->string('confirmation_code')->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

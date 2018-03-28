@@ -39,6 +39,8 @@ Route::group(['prefix' => 'v1/acl'], function() {
 		Route::post('sendreset', 'UsersController@sendreset');
 		Route::post('resetpassword', 'UsersController@resetpassword');
 		Route::post('changepassword', 'UsersController@changePassword');
+		Route::post('confirm/email', 'UsersController@confirmEmail');
+		Route::post('confirm/email/confirmation', 'UsersController@resendEmailConfirmation');
 		Route::post('group/{groupName}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@group');
 
 	});

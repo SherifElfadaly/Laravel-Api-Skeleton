@@ -22,5 +22,7 @@ return [
     'invalidOldPassword'     => 'كلمة السر القديمه خطا',
     'notFound'               => 'ال :replace المطلوب غير موجود',
     'generalError'           => 'حدث خطا ما',
+    'emailNotConfirmed'      => 'بريدك الاكتروني غير مفعل',
+    'emailAlreadyConfirmed'  => 'البريد الاكتروني مفع بالقعل'
 
 ];

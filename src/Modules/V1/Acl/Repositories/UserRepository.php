@@ -115,6 +115,10 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::userIsBlocked();
         }
+        else if ( ! $user->confirmed)
+        {
+            \ErrorHandler::emailNotConfirmed();
+        }
 
         return $user;
     }
@@ -160,7 +164,12 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        $this->model->create($credentials);
+        $user = $this->model->create($credentials);
+
+        if ( ! env('DISABLE_CONFIRM_EMAIL')) 
+        {
+            $this->sendConfirmationEmail($user->email);
+        }
     }
 
     /**
@@ -227,12 +236,8 @@ class UserRepository extends AbstractRepository
             \ErrorHandler::notFound('email');
         }
 
-        $url   = $this->config['resetLink'];
         $token = \Password::getRepository()->create($user);
-        
-        \Mail::send('acl::resetpassword', ['user' => $user, 'url' => $url, 'token' => $token], function ($m) use ($user) {
-            $m->to($user->email, $user->name)->subject('Your Password Reset Link');
-        });
+        \Core::notifications()->notify($user, 'ResetPassword', $token);
     }
 
     /**
@@ -285,6 +290,40 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * Confirm email using the confirmation code.
+     *
+     * @param  string $confirmationCode
+     * @return void
+     */
+    public function confirmEmail($confirmationCode)
+    {
+        $user                    = $this->first(['confirmation_code' => $confirmationCode]);
+        $user->confirmed         = 1;
+        $user->confirmation_code = null;
+        $user->save();
+    }
+
+    /**
+     * Send the confirmation mail.
+     *
+     * @param  string $email
+     * @return void
+     */
+    public function sendConfirmationEmail($email)
+    {
+        $user = $this->first(['email' => $email]);
+        if ($user->confirmed) 
+        {
+            \ErrorHandler::emailAlreadyConfirmed();
+        }
+
+        $user->confirmed         = 0;
+        $user->confirmation_code = sha1(microtime());
+        $user->save();
+        \Core::notifications()->notify($user, 'ConfirmEmail');
+    }
+
+    /**
      * Paginate all users in the given group based on the given conditions.
      * 
      * @param  string  $groupName
@@ -327,6 +366,11 @@ class UserRepository extends AbstractRepository
      */
     public function saveProfile($data) 
     {
+        if (array_key_exists('profile_picture', $data)) 
+        {
+            $data['profile_picture'] = \Media::uploadImageBas64($data['profile_picture'], 'admins/profile_pictures');
+        }
+        
         $data['id'] = \Auth::id();
         $this->save($data);
     }

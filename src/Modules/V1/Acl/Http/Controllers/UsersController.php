@@ -27,7 +27,7 @@ class UsersController extends BaseApiController
      * will skip login check for them.
      * @var array
      */
-    protected $skipLoginCheck      = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword', 'refreshtoken'];
+    protected $skipLoginCheck      = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword', 'refreshtoken', 'confirmEmail', 'resendEmailConfirmation'];
 
     /**
      * The validations rules used by the base api controller
@@ -210,6 +210,36 @@ class UsersController extends BaseApiController
     }
 
     /**
+     * Confirm email using the confirmation code.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmEmail(Request $request)
+    {
+        $this->validate($request, [
+            'confirmation_code' => 'required|string|exists:users,confirmation_code'
+        ]);
+
+        return \Response::json($this->repo->confirmEmail($request->only('confirmation_code')), 200);
+    }
+
+    /**
+     * Resend the email confirmation mail.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function resendEmailConfirmation(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|exists:users,email'
+        ]);
+
+        return \Response::json($this->repo->sendConfirmationEmail($request->only('email')), 200);
+    }
+
+    /**
      * Refresh the expired login token.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -248,8 +278,9 @@ class UsersController extends BaseApiController
     public function saveProfile(Request $request) 
     {
         $this->validate($request, [
-            'name'  => 'nullable|string', 
-            'email' => 'required|email|unique:users,email,' . \Auth::id()
+            'profile_picture' => 'nullable|base64image',
+            'name'            => 'nullable|string', 
+            'email'           => 'required|email|unique:users,email,' . \Auth::id()
         ]);
 
         return \Response::json($this->repo->saveProfile($request->only('name', 'email')), 200);

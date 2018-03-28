@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "intervention/image": "^2.4",
         "optimus/api-consumer": "0.2.*",
         "enniel/laravel-fcm-notification-channel": "0.*",
         "phpdocumentor/reflection-docblock": "^4.1",
@@ -65,7 +66,8 @@
                 "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core",
                 "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler",
                 "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig",
-                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging"
+                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging",
+                "Media"       : "App\\Modules\\V1\\Core\\Facades\\Media"
             }
         }
     }

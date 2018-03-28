@@ -5,7 +5,6 @@ class CoreConfig
     public function getConfig()
     {
         return [
-        	'resetLink' => '{{link_here}}',
 			/**
 			 * Specify what relations should be used for every model.
 			 */
