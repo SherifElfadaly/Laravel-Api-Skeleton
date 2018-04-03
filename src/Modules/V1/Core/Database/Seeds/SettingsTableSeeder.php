@@ -68,6 +68,12 @@ class SettingsTableSeeder extends Seeder
 	        	'model'      => 'settings',
 	        	'created_at' => \DB::raw('NOW()'),
 	        	'updated_at' => \DB::raw('NOW()')
+	        	],
+	        	[
+	        	'name'       => 'saveMany',
+	        	'model'      => 'settings',
+	        	'created_at' => \DB::raw('NOW()'),
+	        	'updated_at' => \DB::raw('NOW()')
 	        	]
         	]
         );

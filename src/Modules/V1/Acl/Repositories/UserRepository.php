@@ -65,11 +65,10 @@ class UserRepository extends AbstractRepository
      * @param  integer $userId
      * @return boolean
      */
-    public function hasGroup($groupName, $userId = false)
+    public function hasGroup($groups, $user = false)
     {
-        $userId = $userId ?: \Auth::id();
-        $groups = $this->find($userId)->groups;
-        return $groups->pluck('name')->search($groupName, true) === false ? false : true;
+        $user = $user ?: $this->find(\Auth::id());
+        return $user->groups->whereIn('name', $groups)->count() ? true : false;
     }
 
     /**
@@ -90,6 +89,7 @@ class UserRepository extends AbstractRepository
         return $this->find($user_id);
     }
 
+
     /**
      * Handle a login request to the application.
      * 
@@ -103,11 +103,11 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::loginFailed();
         }
-        else if ($adminLogin && $user->groups->pluck('name')->search('Admin', true) === false) 
+        else if ($adminLogin && ! $user->groups->whereIn('name', ['Admin'])->count()) 
         {
             \ErrorHandler::loginFailed();
         }
-        else if ( ! $adminLogin && $user->groups->pluck('name')->search('Admin', true) !== false) 
+        else if ( ! $adminLogin && $user->groups->whereIn('name', ['Admin'])->count()) 
         {
             \ErrorHandler::loginFailed();
         }
@@ -171,7 +171,7 @@ class UserRepository extends AbstractRepository
             $this->sendConfirmationEmail($user->email);
         }
     }
-
+    
     /**
      * Block the user.
      *
@@ -184,7 +184,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::notFound('user');
         }
-        if ( ! $this->hasGroup('Admin'))
+        if ( ! $this->hasGroup(['Admin']))
         {
             \ErrorHandler::noPermissions();
         }
@@ -211,7 +211,7 @@ class UserRepository extends AbstractRepository
      */
     public function unblock($user_id)
     {
-        if ( ! $this->hasGroup('Admin'))
+        if ( ! $this->hasGroup(['Admin']))
         {
             \ErrorHandler::noPermissions();
         }

@@ -24,4 +24,15 @@ class SettingsController extends BaseApiController
     'name'  => 'required|string|max:100',
     'value' => 'required|string'
     ];
+    
+    /**
+     * Save list of settings.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function saveMany(Request $request) 
+    {   
+        return \Response::json($this->repo->saveMany($request->all()), 200);
+    }
 }

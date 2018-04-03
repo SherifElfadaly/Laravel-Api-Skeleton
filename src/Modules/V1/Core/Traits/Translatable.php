@@ -42,7 +42,7 @@ trait Translatable
             return $values;
         }
 
-        if ( ! $primaryLocale || ! property_exists($values->$primaryLocale)) 
+        if ( ! $primaryLocale || ! is_object($values) || ! property_exists($values, $primaryLocale)) 
         {
             return $values ? isset($values->$fallbackLocale) ? $values->$fallbackLocale : $values : '';
         }

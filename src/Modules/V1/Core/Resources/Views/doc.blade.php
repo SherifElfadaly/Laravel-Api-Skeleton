@@ -88,6 +88,12 @@
                         </li>
                         @endforeach
                         <li class="nav-item ">
+                            <a href="#available-reports" class="nav-link nav-toggle">
+                                <i class="icon-doc"></i>
+                                <span class="title">Available Reports</span>
+                            </a>
+                        </li>  
+                        <li class="nav-item ">
                             <a href="#errors" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
                                 <span class="title">Errors</span>
@@ -285,9 +291,30 @@
                             @endforeach
                         </div>
                         @endforeach
+                        <div class="col-lg-12" id="available-reports">
+                            <h1>Available reports</h1>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <table class="table table-bordered"> 
+                                        <thead> 
+                                            <tr> 
+                                                <th>Name</th> 
+                                            </tr> 
+                                        </thead> 
+                                        <tbody> 
+                                            @foreach ($avaialableReports as $report)
+                                            <tr> 
+                                                <td>{{$report->report_name}}</td> 
+                                            </tr> 
+                                            @endforeach
+                                        </tbody> 
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-12" id="errors">
                             <h1>Available error codes</h1>
-                            <div class="panel panel-default" id="{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
+                            <div class="panel panel-default">
                                 <div class="panel-body">
                                     <table class="table table-bordered"> 
                                         <thead> 

@@ -113,7 +113,7 @@ class GenerateDoc extends Command
 
         if (! $skipLoginCheck || ! in_array($method, $skipLoginCheck)) 
         {
-            $route['headers']['Authrization'] = 'Bearer {token}';
+            $route['headers']['Authorization'] = 'Bearer {token}';
         }
     }
 

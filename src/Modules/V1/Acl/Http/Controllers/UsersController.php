@@ -122,10 +122,11 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, [
             'email'    => 'required|email', 
-            'password' => 'required|min:6'
+            'password' => 'required|min:6', 
+            'admin'    => 'nullable|boolean'
             ]);
 
-        return \Response::json($this->loginProxy->login($request->only('email', 'password')), 200);
+        return \Response::json($this->loginProxy->login($request->only('email', 'password'), $request->get('admin')), 200);
     }
 
     /**
@@ -283,6 +284,6 @@ class UsersController extends BaseApiController
             'email'           => 'required|email|unique:users,email,' . \Auth::id()
         ]);
 
-        return \Response::json($this->repo->saveProfile($request->only('name', 'email')), 200);
+        return \Response::json($this->repo->saveProfile($request->only('name', 'email', 'profile_picture')), 200);
     }
 }

@@ -31,9 +31,6 @@ class ReportsController extends BaseApiController
      */
     public function getReport(Request $request, $reportName, $perPage = 0) 
     {
-        if ($this->model) 
-        {
-            return \Response::json($this->repo->getReport($reportName, $request->all(), $perPage), 200);
-        }
+        return \Response::json($this->repo->getReport($reportName, $request->all(), $perPage), 200);
     }
 }

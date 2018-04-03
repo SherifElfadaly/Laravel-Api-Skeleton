@@ -68,6 +68,8 @@ class ApiDocumentController extends Controller
 			'data'          => ['The model object']
 		];
 
-		return view('core::doc', ['baseUrl' => $baseUrl, 'modules' => $modules, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT)]);
+		$avaialableReports = \Core::reports()->all();
+
+		return view('core::doc', ['baseUrl' => $baseUrl, 'modules' => $modules, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT), 'avaialableReports' => $avaialableReports]);
 	}
 }

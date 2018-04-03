@@ -31,6 +31,11 @@ class Media
      */
     public function uploadImageBas64($image, $dir) 
     {
+        if (! strlen($image)) 
+        {
+            return null;
+        }
+        
         $response        = [];
         $image           = $image;
         $imageName       = 'image' . uniqid() . time() . '.jpg';

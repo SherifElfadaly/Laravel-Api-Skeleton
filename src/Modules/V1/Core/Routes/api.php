@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1/core'], function() {
 		Route::post('findby/{sortBy?}/{desc?}', 'SettingsController@findby');
 		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginateby');
 		Route::post('save', 'SettingsController@save');
+		Route::post('save/many', 'SettingsController@saveMany');
 		
 	});
 });
