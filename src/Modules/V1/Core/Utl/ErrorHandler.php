@@ -10,7 +10,7 @@ class ErrorHandler
 
     public function invalidRefreshToken()
     {
-        $error = ['status' => 401, 'message' => trans('errors.invalidRefreshToken')];
+        $error = ['status' => 400, 'message' => trans('errors.invalidRefreshToken')];
         abort($error['status'], $error['message']);
     }
 

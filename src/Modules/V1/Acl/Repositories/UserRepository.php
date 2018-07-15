@@ -164,7 +164,7 @@ class UserRepository extends AbstractRepository
      */
     public function register($credentials)
     {
-        $user = $this->model->create($credentials);
+        $user = $this->save($credentials);
 
         if ( ! env('DISABLE_CONFIRM_EMAIL')) 
         {

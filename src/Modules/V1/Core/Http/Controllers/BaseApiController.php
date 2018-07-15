@@ -245,7 +245,7 @@ class BaseApiController extends Controller
      */
     private function setSessions()
     {
-        \Session::put('timeZoneDiff', \Request::header('time-zone-diff') ?: 0);
+        \Session::put('time-zone', \Request::header('time-zone') ?: 0);
 
         $locale = \Request::header('locale');
         switch ($locale) 

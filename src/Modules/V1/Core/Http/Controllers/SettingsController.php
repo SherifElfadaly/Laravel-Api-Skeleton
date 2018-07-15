@@ -21,8 +21,8 @@ class SettingsController extends BaseApiController
      * @var array
      */
     protected $validationRules  = [
-    'name'  => 'required|string|max:100',
-    'value' => 'required|string'
+        'id'    => 'required|exists:settings,id',
+        'value' => 'required|string'
     ];
     
     /**

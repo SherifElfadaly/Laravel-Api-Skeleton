@@ -60,14 +60,16 @@
             "providers": [
                 "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider",
                 "Optimus\\ApiConsumer\\Provider\\LaravelServiceProvider",
-                "NotificationChannels\\FCM\\ServiceProvider"
+                "NotificationChannels\\FCM\\ServiceProvider",
+                "Intervention\\Image\\ImageServiceProvider"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core",
                 "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler",
                 "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig",
                 "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging",
-                "Media"       : "App\\Modules\\V1\\Core\\Facades\\Media"
+                "Media"       : "App\\Modules\\V1\\Core\\Facades\\Media",
+                "Image"       : "Intervention\\Image\\Facades\\Image"
             }
         }
     }

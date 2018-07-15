@@ -5,7 +5,7 @@ $factory->define(App\Modules\V1\Acl\AclUser::class, function (Faker\Generator $f
 		'profile_picture' => 'http://lorempixel.com/400/200/',
 		'name'            => $faker->name(),
 		'email'           => $faker->safeEmail(),
-		'password'        => bcrypt(123456),
+		'password'        => 123456,
 		'created_at'      => $faker->dateTimeBetween('-1 years', 'now'),
 		'updated_at'      => $faker->dateTimeBetween('-1 years', 'now')
     ];
