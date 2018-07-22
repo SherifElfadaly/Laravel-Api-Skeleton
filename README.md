@@ -68,13 +68,6 @@ publish files
 php artisan vendor:publish
 ```
 
-update the namespace and path in modules.php config
-
-``` bash
-'path'      => app_path('Modules/V1'),
-'namespace' => 'App\Modules\V1\\',
-```
-
 run this command
 ``` bash
 php artisan module:optimize
