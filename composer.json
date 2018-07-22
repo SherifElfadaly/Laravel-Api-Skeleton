@@ -22,7 +22,7 @@
         "enniel/laravel-fcm-notification-channel": "0.*",
         "phpdocumentor/reflection-docblock": "^4.1",
         "laravel/socialite": "3.0.*",
-        "laravel/passport": "^4.0",
+        "laravel/passport": "^6.0",
         "caffeinated/modules": "^4.3",
         "predis/predis": "^1.1",
         "illuminate/support": "~5.1",
