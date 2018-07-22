@@ -61,7 +61,7 @@ class GenerateDoc extends Command
 
                 $route['response'] = $this->getResponseObject($classProperties['model'], $route['name'], $route['returnDocBlock']);
 
-                preg_match('/api\/v1\/([^#]+)\//iU', $route['uri'], $module);
+                preg_match('/api\/([^#]+)\//iU', $route['uri'], $module);
                 $docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/' . $module[1] . '/') - 1)][] = $route;
 
                 $this->getModels($classProperties['model'], $docData);

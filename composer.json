@@ -64,11 +64,11 @@
                 "Intervention\\Image\\ImageServiceProvider"
             ],
             "aliases": {
-                "Core"        : "App\\Modules\\V1\\Core\\Facades\\Core",
-                "ErrorHandler": "App\\Modules\\V1\\Core\\Facades\\ErrorHandler",
-                "CoreConfig"  : "App\\Modules\\V1\\Core\\Facades\\CoreConfig",
-                "Logging"     : "App\\Modules\\V1\\Core\\Facades\\Logging",
-                "Media"       : "App\\Modules\\V1\\Core\\Facades\\Media",
+                "Core"        : "App\\Modules\\Core\\Facades\\Core",
+                "ErrorHandler": "App\\Modules\\Core\\Facades\\ErrorHandler",
+                "CoreConfig"  : "App\\Modules\\Core\\Facades\\CoreConfig",
+                "Logging"     : "App\\Modules\\Core\\Facades\\Logging",
+                "Media"       : "App\\Modules\\Core\\Facades\\Media",
                 "Image"       : "Intervention\\Image\\Facades\\Image"
             }
         }

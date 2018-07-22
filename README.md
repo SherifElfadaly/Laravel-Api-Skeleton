@@ -102,12 +102,12 @@ In config/auth.php set the driver property of the api authentication guard to pa
 ]
 ```
 
-In config/auth.php set user model in providers to App\Modules\V1\Acl\AclUser::class
+In config/auth.php set user model in providers to App\Modules\Acl\AclUser::class
 ``` bash
 'providers' => [
 'users' => [
 'driver' => 'eloquent',
-'model' => App\Modules\V1\Acl\AclUser::class,
+'model' => App\Modules\Acl\AclUser::class,
 ]
 ```
 
@@ -139,8 +139,8 @@ api documentation
 
 add this command to console kernel.php
 ``` bash
-use \App\Modules\V1\Core\Console\Commands\GenerateDoc as GenerateDoc;
-use App\Modules\V1\Notifications\Console\Commands\MakeNotificationsCommand as MakeNotificationsCommand;
+use \App\Modules\Core\Console\Commands\GenerateDoc as GenerateDoc;
+use App\Modules\Notifications\Console\Commands\MakeNotificationsCommand as MakeNotificationsCommand;
 protected $commands = [
     GenerateDoc::class,
     MakeNotificationsCommand::class
