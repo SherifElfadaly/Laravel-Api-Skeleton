@@ -44,27 +44,30 @@ class GenerateDoc extends Command
         {
             if ($route) 
             {
-                $actoinArray       = explode('@', $route['action']);
-                $controller        = $actoinArray[0];
-                $method            = $actoinArray[1];
-                $route['name']     = $method !== 'index' ? $method : 'list';
-                
-                $reflectionClass   = new \ReflectionClass($controller);
-                $reflectionMethod  = $reflectionClass->getMethod($method);
-                $classProperties   = $reflectionClass->getDefaultProperties();
-                $skipLoginCheck    = array_key_exists('skipLoginCheck', $classProperties) ? $classProperties['skipLoginCheck'] : false;
-                $validationRules   = array_key_exists('validationRules', $classProperties) ? $classProperties['validationRules'] : false;
+                $actoinArray = explode('@', $route['action']);
+                if(array_get($actoinArray, 1, false))
+                {
+                    $controller       = $actoinArray[0];
+                    $method           = $actoinArray[1];
+                    $route['name']    = $method !== 'index' ? $method : 'list';
+                    
+                    $reflectionClass  = new \ReflectionClass($controller);
+                    $reflectionMethod = $reflectionClass->getMethod($method);
+                    $classProperties  = $reflectionClass->getDefaultProperties();
+                    $skipLoginCheck   = array_key_exists('skipLoginCheck', $classProperties) ? $classProperties['skipLoginCheck'] : false;
+                    $validationRules  = array_key_exists('validationRules', $classProperties) ? $classProperties['validationRules'] : false;
 
-                $this->processDocBlock($route, $reflectionMethod);
-                $this->getHeaders($route, $method, $skipLoginCheck);
-                $this->getPostData($route, $reflectionMethod, $validationRules);
+                    $this->processDocBlock($route, $reflectionMethod);
+                    $this->getHeaders($route, $method, $skipLoginCheck);
+                    $this->getPostData($route, $reflectionMethod, $validationRules);
 
-                $route['response'] = $this->getResponseObject($classProperties['model'], $route['name'], $route['returnDocBlock']);
+                    $route['response'] = $this->getResponseObject($classProperties['model'], $route['name'], $route['returnDocBlock']);
 
-                preg_match('/api\/([^#]+)\//iU', $route['uri'], $module);
-                $docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/' . $module[1] . '/') - 1)][] = $route;
+                    preg_match('/api\/([^#]+)\//iU', $route['uri'], $module);
+                    $docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/' . $module[1] . '/') - 1)][] = $route;
 
-                $this->getModels($classProperties['model'], $docData);
+                    $this->getModels($classProperties['model'], $docData);   
+                }
             }
         }
         
@@ -80,7 +83,7 @@ class GenerateDoc extends Command
     protected function getRoutes()
     {
         return collect(\Route::getRoutes())->map(function ($route) {
-            if (strpos($route->uri(), 'api/v') !== false) 
+            if (strpos($route->uri(), 'api') !== false) 
             {
                 return [
                     'method' => $route->methods()[0],

@@ -125,7 +125,7 @@ class CoreConfig
 						'deleted'
 					],
 					'clear' => [
-						'update'   => ['users', 'groups', 'permissions'],
+						'update'   => ['settings'],
 						'save'     => ['settings'],
 						'delete'   => ['settings'],
 						'restore'  => ['settings'],

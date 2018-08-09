@@ -115,7 +115,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::userIsBlocked();
         }
-        else if ( ! $user->confirmed)
+        else if (! env('DISABLE_CONFIRM_EMAIL') && ! $user->confirmed)
         {
             \ErrorHandler::emailNotConfirmed();
         }

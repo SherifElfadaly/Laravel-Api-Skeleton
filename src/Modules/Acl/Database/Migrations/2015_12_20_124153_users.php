@@ -19,7 +19,7 @@ class Users extends Migration
             $table->string('email')->unique();
             $table->string('password', 60)->nullable();
             $table->boolean('blocked')->default(0);
-            $table->boolean('confirmed')->default(1);
+            $table->boolean('confirmed')->default(0);
             $table->string('confirmation_code')->nullable();
             $table->softDeletes();
             $table->rememberToken();
