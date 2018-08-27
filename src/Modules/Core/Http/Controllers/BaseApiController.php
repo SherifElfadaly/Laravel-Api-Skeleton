@@ -216,8 +216,9 @@ class BaseApiController extends Controller
         \Auth::shouldUse('api');
         $this->middleware('auth:api', ['except' => $this->skipLoginCheck]);
         
-        if ($user = \Auth::user()) 
+        if (\Auth::user() && ! in_array($permission, $this->skipLoginCheck))
         {
+            $user             = \Auth::user();
             $permission       = $permission !== 'index' ? $permission : 'list';
             $isPasswordClient = $user->token()->client->password_client;
 

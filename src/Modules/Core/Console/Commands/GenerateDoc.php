@@ -107,10 +107,10 @@ class GenerateDoc extends Command
     protected function getHeaders(&$route, $method, $skipLoginCheck)
     {
         $route['headers'] = [
-        'Accept'         => 'application/json',
-        'Content-Type'   => 'application/json',
-        'locale'         => 'The language of the returned data: ar, en or all.',
-        'time-zone-diff' => 'Timezone difference between UTC and Local Time',
+        'Accept'       => 'application/json',
+        'Content-Type' => 'application/json',
+        'locale'       => 'The language of the returned data: ar, en or all.',
+        'time-zone'    => 'Your locale time zone',
         ];
 
 
