@@ -16,15 +16,15 @@ class ApiSkeletonServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Modules'                               => app_path('Modules'),
             __DIR__.'/../lang'                               => base_path('resources/lang'),
-            __DIR__.'/../files/Handler.php'                  => base_path('app/Exceptions/Handler.php'),
-            __DIR__.'/../files/auth.php'                     => base_path('config/auth.php'),
-            __DIR__.'/../files/AuthServiceProvider.php'      => base_path('app/Providers/AuthServiceProvider.php'),
-            __DIR__.'/../files/BroadcastServiceProvider.php' => base_path('app/Providers/BroadcastServiceProvider.php'),
-            __DIR__.'/../files/Kernel.php'                   => base_path('app/Console/Kernel.php'),
+            __DIR__.'/../files/Handler.php'                  => app_path('Exceptions/Handler.php'),
+            __DIR__.'/../files/AuthServiceProvider.php'      => app_path('Providers/AuthServiceProvider.php'),
+            __DIR__.'/../files/BroadcastServiceProvider.php' => app_path('Providers/BroadcastServiceProvider.php'),
+            __DIR__.'/../files/Kernel.php'                   => app_path('Console/Kernel.php'),
         ]);
 
         $this->publishes([
             __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
+            __DIR__.'/../files/auth.php'      => config_path('auth.php'),
         ], 'config');
     }
 
