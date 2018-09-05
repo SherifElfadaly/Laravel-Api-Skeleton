@@ -17,7 +17,7 @@ composer require api-skeleton/api-skeleton
 publish files
 
 ``` bash
-php artisan vendor:publish
+php artisan vendor:publish --force
 ```
 
 run this command
