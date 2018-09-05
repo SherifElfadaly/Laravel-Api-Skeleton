@@ -4,8 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use \App\Modules\V1\Core\Console\Commands\GenerateDoc as GenerateDoc;
-use App\Modules\V1\Notifications\Console\Commands\MakeNotificationsCommand as MakeNotificationsCommand;
+use \App\Modules\Core\Console\Commands\GenerateDoc as GenerateDoc;
+use App\Modules\Notifications\Console\Commands\MakeNotificationsCommand as MakeNotificationsCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,8 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         GenerateDoc::class,
-        MakeNotificationsCommand::class,
-        UpdateTeachersWorkingHoursCommand::class
+        MakeNotificationsCommand::class
     ];
 
     /**
