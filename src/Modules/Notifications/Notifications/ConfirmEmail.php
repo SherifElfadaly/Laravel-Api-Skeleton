@@ -45,6 +45,6 @@ class ConfirmEmail extends Notification implements ShouldQueue
             ->subject('Email verification')
             ->line('Email verification')
             ->line('To validate your email click on the button below')
-            ->action('Verify your email', config('confrim_email_url') . '/' . $notifiable->confirmation_code));
+            ->action('Verify your email', config('confrim_email_url') . '/' . $notifiable->confirmation_code);
     }
 }
