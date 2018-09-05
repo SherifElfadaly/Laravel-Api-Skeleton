@@ -14,54 +14,6 @@ Run this command:
 composer require api-skeleton/api-skeleton
 ```
 
-add the following code in Exception/Handler.php in render function
-
-``` bash
-if ($request->wantsJson())
-{
-    if ($exception instanceof \Illuminate\Auth\AuthenticationException) 
-    {
-        \ErrorHandler::unAuthorized();
-    }
-    if ($exception instanceof \Illuminate\Database\QueryException) 
-    {
-        \ErrorHandler::dbQueryError();
-    }
-    else if ($exception instanceof \predis\connection\connectionexception) 
-    {
-        \ErrorHandler::redisNotRunning();
-    }
-    else if ($exception instanceof \GuzzleHttp\Exception\ClientException) 
-    {
-        \ErrorHandler::connectionError();
-    }
-    else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) 
-    {
-        return \Response::json($exception->getMessage(), $exception->getStatusCode());   
-    }
-    else if ($exception instanceof \Illuminate\Validation\ValidationException) 
-    {
-        return \Response::json($exception->errors(), 422);   
-    }
-    else if ( ! $exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException)
-    {
-        return parent::render($request, $exception);
-    }
-}
-else
-{
-    return parent::render($request, $exception);
-}
-```
-
-add this in Exception/Handler.php in dontReport array
-
-``` bash
-protected $dontReport = [
-\League\OAuth2\Server\Exception\OAuthServerException::class,
-];
-```
-
 publish files
 
 ``` bash
@@ -93,60 +45,7 @@ Put your client id and client secret in .env
 PASSWORD_CLIENT_ID=xxxxxx
 PASSWORD_CLIENT_SECRET=xxxxxx
 ```
-
-In config/auth.php set the driver property of the api authentication guard to passport
-``` bash
-'api' => [
-'driver' => 'passport',
-'provider' => 'users',
-]
-```
-
-In config/auth.php set user model in providers to App\Modules\Acl\AclUser::class
-``` bash
-'providers' => [
-'users' => [
-'driver' => 'eloquent',
-'model' => App\Modules\Acl\AclUser::class,
-]
-```
-
-In AuthServiceProvider add the following in boot method
-``` bash
-use Laravel\Passport\Passport;
-
-Passport::routes(function ($router) {
-    $router->forAuthorization();
-    $router->forAccessTokens();
-    $router->forPersonalAccessTokens();
-    $router->forTransientTokens();
-});
-Passport::tokensExpireIn(\Carbon\Carbon::now()->addMinutes(10));
-Passport::refreshTokensExpireIn(\Carbon\Carbon::now()->addDays(10));
-```
-
-In BroadcastServiceProvider add the following in boot method
-``` bash
-Broadcast::routes(['middleware' => ['auth:api']]);
-```
-
-In app.php uncomment the following
-``` bash
-App\Providers\BroadcastServiceProvider::class,
-```
-
-api documentation
-
-add this command to console kernel.php
-``` bash
-use \App\Modules\Core\Console\Commands\GenerateDoc as GenerateDoc;
-use App\Modules\Notifications\Console\Commands\MakeNotificationsCommand as MakeNotificationsCommand;
-protected $commands = [
-    GenerateDoc::class,
-    MakeNotificationsCommand::class
-];
-```
-then run 
+run 
 ``` bash
 php artisan doc:generate
 ```

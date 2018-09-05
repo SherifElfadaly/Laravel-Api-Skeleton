@@ -115,7 +115,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::userIsBlocked();
         }
-        else if (! env('DISABLE_CONFIRM_EMAIL') && ! $user->confirmed)
+        else if ( ! config('disable_confirm_email') && ! $user->confirmed)
         {
             \ErrorHandler::emailNotConfirmed();
         }
@@ -166,7 +166,7 @@ class UserRepository extends AbstractRepository
     {
         $user = $this->save($credentials);
 
-        if ( ! env('DISABLE_CONFIRM_EMAIL')) 
+        if ( ! config('disable_confirm_email')) 
         {
             $this->sendConfirmationEmail($user->email);
         }
