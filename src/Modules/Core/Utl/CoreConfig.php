@@ -1,4 +1,4 @@
-<?php namespace App\Modules\V1\Core\Utl;
+<?php namespace App\Modules\Core\Utl;
 
 class CoreConfig
 {
@@ -8,11 +8,11 @@ class CoreConfig
 			/**
 			 * Specify what relations should be used for every model.
 			 */
-			'relations' => config('relations'),
+			'relations' => config('skeleton.relations'),
 			/**
 			 * Specify caching config for each api.
 			 */
-			'cacheConfig' =>  config('cache_config'),
+			'cacheConfig' =>  config('skeleton.cache_config'),
 		];
     }
 }

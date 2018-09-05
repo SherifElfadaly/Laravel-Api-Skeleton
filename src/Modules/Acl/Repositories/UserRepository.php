@@ -115,7 +115,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::userIsBlocked();
         }
-        else if ( ! config('disable_confirm_email') && ! $user->confirmed)
+        else if ( ! config('skeleton.disable_confirm_email') && ! $user->confirmed)
         {
             \ErrorHandler::emailNotConfirmed();
         }
@@ -166,7 +166,7 @@ class UserRepository extends AbstractRepository
     {
         $user = $this->save($credentials);
 
-        if ( ! config('disable_confirm_email')) 
+        if ( ! config('skeleton.disable_confirm_email')) 
         {
             $this->sendConfirmationEmail($user->email);
         }

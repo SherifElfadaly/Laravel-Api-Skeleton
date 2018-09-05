@@ -64,8 +64,8 @@ class LoginProxy
     public function proxy($grantType, array $data = [])
     {
         $data = array_merge($data, [
-            'client_id'     => config('passport_client_id'),
-            'client_secret' => config('passport_client_secret'),
+            'client_id'     => config('skeleton.passport_client_id'),
+            'client_secret' => config('skeleton.passport_client_secret'),
             'grant_type'    => $grantType
         ]);
 
