@@ -15,6 +15,7 @@ class ApiSkeletonServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/Modules'                               => app_path('Modules'),
+            __DIR__.'/Modules/Core/Resources/Assets'         => base_path('public/doc/assets'),
             __DIR__.'/../lang'                               => base_path('resources/lang'),
             __DIR__.'/../files/Handler.php'                  => app_path('Exceptions/Handler.php'),
             __DIR__.'/../files/AuthServiceProvider.php'      => app_path('Providers/AuthServiceProvider.php'),
