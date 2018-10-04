@@ -10,6 +10,7 @@ class ApiDocumentController extends Controller
 	{
 		$jsonDoc    = json_decode(file_get_contents(app_path('Modules/Core/Resources/api.json')), true);
 		$modules    = $jsonDoc['modules'];
+		$reports    = $jsonDoc['reports'];
 		$errors     = $jsonDoc['errors'];
 		$models     = $jsonDoc['models'];
 		$conditions = [
@@ -69,6 +70,6 @@ class ApiDocumentController extends Controller
 
 		$avaialableReports = \Core::reports()->all();
 
-		return view('core::doc', ['modules' => $modules, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT), 'avaialableReports' => $avaialableReports]);
+		return view('core::doc', ['modules' => $modules, 'reports' => $reports, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT), 'avaialableReports' => $avaialableReports]);
 	}
 }

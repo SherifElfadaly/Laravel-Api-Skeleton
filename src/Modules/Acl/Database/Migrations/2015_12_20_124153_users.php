@@ -34,6 +34,7 @@ class Users extends Migration
 			'name'       => 'Admin',
 			'email'      => 'admin@user.com',
 			'password'   => bcrypt('123456'),
+			'confirmed'  => 1,
 			'created_at' => \DB::raw('NOW()'),
 			'updated_at' => \DB::raw('NOW()')
 			]

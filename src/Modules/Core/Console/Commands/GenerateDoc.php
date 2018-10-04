@@ -71,7 +71,8 @@ class GenerateDoc extends Command
             }
         }
         
-        $docData['errors'] = $this->getErrors();
+        $docData['errors']  = $this->getErrors();
+        $docData['reports'] = \Core::reports()->all();
         \File::put(app_path('Modules/Core/Resources/api.json'), json_encode($docData));
     }
 

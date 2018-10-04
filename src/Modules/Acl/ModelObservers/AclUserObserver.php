@@ -32,7 +32,14 @@ class AclUserObserver {
 
     public function updated($model)
     {
-        //
+        if ($model->isDirty('blocked') && $model->blocked) 
+        {
+            $model->tokens()->each(function($token){
+
+                \Core::users()->revokeAccessToken($token);
+
+            });
+        }
     }
 
     public function deleting($model)

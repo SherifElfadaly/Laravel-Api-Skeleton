@@ -122,7 +122,7 @@
             </div>
             <!-- END SIDEBAR -->
 
-            <!--Pag Content -->
+           <!--Pag Content -->
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
@@ -291,30 +291,9 @@
                             @endforeach
                         </div>
                         @endforeach
-                        <div class="col-lg-12" id="available-reports">
-                            <h1>Available reports</h1>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <table class="table table-bordered"> 
-                                        <thead> 
-                                            <tr> 
-                                                <th>Name</th> 
-                                            </tr> 
-                                        </thead> 
-                                        <tbody> 
-                                            @foreach ($avaialableReports as $report)
-                                            <tr> 
-                                                <td>{{$report->report_name}}</td> 
-                                            </tr> 
-                                            @endforeach
-                                        </tbody> 
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-lg-12" id="errors">
                             <h1>Available error codes</h1>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" id="{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
                                 <div class="panel-body">
                                     <table class="table table-bordered"> 
                                         <thead> 
@@ -329,9 +308,34 @@
                                                 <td>{{$errorCode}}</td> 
                                                 <td>
                                                     @foreach ($errorsDesc as $errorDesc)
-                                                    <p>{{ucfirst($errorDesc)}} : {{trans('core::errors.' . $errorDesc . '')}}</p>
+                                                    <p>{{ucfirst($errorDesc)}} : {{trans('errors.' . $errorDesc . '')}}</p>
                                                     @endforeach
                                                 </td> 
+                                            </tr> 
+                                            @endforeach
+                                        </tbody> 
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" id="available-reports">
+                            <h1>Available reports</h1>
+                            <div class="panel panel-default" id="{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
+                                <div class="panel-body">
+                                    <table class="table table-bordered"> 
+                                        <thead> 
+                                            <tr> 
+                                                <th>ID</th> 
+                                                <th>Report Name</th> 
+                                                <th>View Name</th> 
+                                            </tr> 
+                                        </thead> 
+                                        <tbody> 
+                                            @foreach ($reports as $report)
+                                            <tr> 
+                                                <td>{{$report['id']}}</td> 
+                                                <td>{{$report['report_name']}}</td>
+                                                <td>{{$report['view_name']}}</td> 
                                             </tr> 
                                             @endforeach
                                         </tbody> 

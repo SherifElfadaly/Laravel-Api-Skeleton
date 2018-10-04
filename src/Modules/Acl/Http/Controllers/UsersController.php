@@ -172,7 +172,7 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, ['email' => 'required|email']);
 
-        return \Response::json($this->repo->sendReset($request->only('email')), 200);
+        return \Response::json($this->repo->sendReset($request->get('email')), 200);
     }
 
     /**
@@ -237,7 +237,7 @@ class UsersController extends BaseApiController
             'email' => 'required|exists:users,email'
         ]);
 
-        return \Response::json($this->repo->sendConfirmationEmail($request->only('email')), 200);
+        return \Response::json($this->repo->sendConfirmationEmail($request->get('email')), 200);
     }
 
     /**

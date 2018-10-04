@@ -385,7 +385,7 @@ class UserRepository extends AbstractRepository
     {
 
         $accessTokenRepository = \App::make('League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface');
-        $data = new ValidationData();
+        $data                  = new ValidationData();
         $data->setCurrentTime(time());
 
         if ($accessToken->validate($data) === false || $accessTokenRepository->isAccessTokenRevoked($accessToken->getClaim('jti'))) 
@@ -394,5 +394,23 @@ class UserRepository extends AbstractRepository
         }
 
         return false;
+    }
+
+    /**
+     * Revoke the given access token and all 
+     * associated refresh tokens.
+     *
+     * @param  string  $accessToken
+     * @return void
+     */
+    public function revokeAccessToken($accessToken)
+    {
+        \DB::table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update([
+                'revoked' => true
+            ]);
+
+        $accessToken->revoke();
     }
 }

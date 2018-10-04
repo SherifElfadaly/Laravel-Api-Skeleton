@@ -9,8 +9,6 @@ class LoginProxy
 
     private $auth;
 
-    private $db;
-
     private $request;
 
     private $userRepository;
@@ -21,7 +19,6 @@ class LoginProxy
         $this->userRepository = $app->make('App\Modules\Acl\Repositories\UserRepository');
         $this->apiConsumer    = $app->make('apiconsumer');
         $this->auth           = $app->make('auth');
-        $this->db             = $app->make('db');
         $this->request        = $app->make('request');
     }
 
@@ -92,18 +89,11 @@ class LoginProxy
 
     /**
      * Logs out the user. We revoke access token and refresh token.
+     * 
+     * @return void
      */
     public function logout()
     {
-        $accessToken = $this->auth->user()->token();
-
-        $this->db
-            ->table('oauth_refresh_tokens')
-            ->where('access_token_id', $accessToken->id)
-            ->update([
-                'revoked' => true
-            ]);
-
-        $accessToken->revoke();
+        \Core::users()->revokeAccessToken($this->auth->user()->token());
     }
 }
