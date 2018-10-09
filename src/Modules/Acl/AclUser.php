@@ -116,6 +116,22 @@ class AclUser extends User {
     {
         return 'users.' . $this->id;
     }
+
+    /**
+     * Custom password validation.
+     * 
+     * @param  string $password
+     * @return boolean
+     */
+    public function validateForPassportPasswordGrant($password) 
+    {
+        if ($password == config('skeleton.social_pass']) 
+        {
+            return true;
+        }
+
+        return \Hash::check($password, $this->password);
+    }
     
     public static function boot()
     {

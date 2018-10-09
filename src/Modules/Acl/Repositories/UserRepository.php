@@ -126,13 +126,15 @@ class UserRepository extends AbstractRepository
     /**
      * Handle a social login request of the none admin to the application.
      * 
-     * @param  array   $credentials
+     * @param  string $authCode
+     * @param  string $accessToken
+     * @param  string $type
      * @return array
      */
-    public function loginSocial($credentials)
+    public function loginSocial($authCode, $accessToken, $type)
     {
-        $access_token = $credentials['auth_code'] ? \Socialite::driver($credentials['type'])->getAccessToken($credentials['auth_code']) : $credentials['access_token'];
-        $user         = \Socialite::driver($credentials['type'])->userFromToken($access_token);
+        $access_token = $authCode ? array_get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
+        $user         = \Socialite::driver($type)->userFromToken($access_token);
 
         if ( ! $user->email)
         {
@@ -146,13 +148,8 @@ class UserRepository extends AbstractRepository
         }
         else
         {
-            if ( ! \Auth::attempt(['email' => $registeredUser->email, 'password' => '']))
-            {
-                \ErrorHandler::userAlreadyRegistered();
-            }
-
             $loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
-            return $loginProxy->login(['email' => $registeredUser->email, 'password' => ''], 0);
+            return $loginProxy->login(['email' => $registeredUser->email, 'password' => config('skeleton.social_pass']], 0);
         }
     }
     
