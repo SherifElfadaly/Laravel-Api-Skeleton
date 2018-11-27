@@ -202,6 +202,7 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function save(array $data)
     {
+        \Session::put('locale', 'all');
         $model      = false;
         $modelClass = $this->model;
         $relations  = [];

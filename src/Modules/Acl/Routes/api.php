@@ -40,7 +40,7 @@ Route::group(['prefix' => 'acl'], function() {
 		Route::post('resetpassword', 'UsersController@resetpassword');
 		Route::post('changepassword', 'UsersController@changePassword');
 		Route::post('confirm/email', 'UsersController@confirmEmail');
-		Route::post('confirm/email/confirmation', 'UsersController@resendEmailConfirmation');
+		Route::post('resend/email/confirmation', 'UsersController@resendEmailConfirmation');
 		Route::post('group/{groupName}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@group');
 
 	});

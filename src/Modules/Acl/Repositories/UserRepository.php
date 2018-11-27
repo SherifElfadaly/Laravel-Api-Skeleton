@@ -74,19 +74,19 @@ class UserRepository extends AbstractRepository
     /**
      * Assign the given group ids to the given user.
      * 
-     * @param  integer $user_id    
+     * @param  integer $userId    
      * @param  array   $group_ids
      * @return object
      */
-    public function assignGroups($user_id, $group_ids)
+    public function assignGroups($userId, $group_ids)
     {
-        \DB::transaction(function () use ($user_id, $group_ids) {
-            $user = $this->find($user_id);
+        \DB::transaction(function () use ($userId, $group_ids) {
+            $user = $this->find($userId);
             $user->groups()->detach();
             $user->groups()->attach($group_ids);
         });
 
-        return $this->find($user_id);
+        return $this->find($userId);
     }
 
 
@@ -143,41 +143,46 @@ class UserRepository extends AbstractRepository
 
         if ( ! $registeredUser = $this->model->where('email', $user->email)->first()) 
         {
-            $data = ['email' => $user->email, 'password' => ''];
-            return $this->register($data);
+            $this->register(['email' => $user->email, 'password' => ''], 1);
         }
-        else
-        {
-            $loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
-            return $loginProxy->login(['email' => $registeredUser->email, 'password' => config('skeleton.social_pass']], 0);
-        }
+
+        $loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
+        return $loginProxy->login(['email' => $credentials['email'], 'password' => config('skeleton.social_pass']], 0);
     }
     
     /**
      * Handle a registration request.
      * 
-     * @param  array $credentials
+     * @param  array   $credentials
+     * @param  boolean $skipConfirmEmail
      * @return array
      */
-    public function register($credentials)
+    public function register($credentials, $skipConfirmEmail = false)
     {
         $user = $this->save($credentials);
 
-        if ( ! config('skeleton.disable_confirm_email')) 
+        if ($skipConfirmEmail) 
+        {
+            $user->confirmed = 1;
+            $user->save();
+        }
+        else if ( ! config('skeleton.disable_confirm_email'))  
         {
             $this->sendConfirmationEmail($user->email);
         }
+
+        return $user;
     }
     
     /**
      * Block the user.
      *
-     * @param  integer $user_id
+     * @param  integer $userId
      * @return object
      */
-    public function block($user_id)
+    public function block($userId)
     {
-        if ( ! $user = $this->find($user_id)) 
+        if ( ! $user = $this->find($userId)) 
         {
             \ErrorHandler::notFound('user');
         }
@@ -185,7 +190,7 @@ class UserRepository extends AbstractRepository
         {
             \ErrorHandler::noPermissions();
         }
-        else if (\Auth::id() == $user_id)
+        else if (\Auth::id() == $userId)
         {
             \ErrorHandler::noPermissions();
         }
@@ -203,17 +208,17 @@ class UserRepository extends AbstractRepository
     /**
      * Unblock the user.
      *
-     * @param  integer $user_id
+     * @param  integer $userId
      * @return object
      */
-    public function unblock($user_id)
+    public function unblock($userId)
     {
         if ( ! $this->hasGroup(['Admin']))
         {
             \ErrorHandler::noPermissions();
         }
 
-        $user          = $this->find($user_id);
+        $user          = $this->find($userId);
         $user->blocked = 0;
         $user->save();
 
