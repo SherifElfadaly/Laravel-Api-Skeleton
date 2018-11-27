@@ -10,41 +10,41 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class ResetPassword extends Notification implements ShouldQueue
 {
-    use Queueable;
+	use Queueable;
 
-    protected $token;
+	protected $token;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct($token)
-    {
-        $this->token = $token;
-    }
+	/**
+	 * Create a new notification instance.
+	 */
+	public function __construct($token)
+	{
+		$this->token = $token;
+	}
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
+	/**
+	 * Get the notification's delivery channels.
+	 *
+	 * @param  mixed  $notifiable
+	 * @return array
+	 */
+	public function via($notifiable)
+	{
+		return ['mail'];
+	}
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->subject('Reset passowrd')
-            ->line('Reset passowrd')
-            ->line('To reset your password click on the button below')
-            ->action('Reset password', config('skeleton.reset_password_url') . '/' . $this->token);
-    }
+	/**
+	 * Get the mail representation of the notification.
+	 *
+	 * @param  mixed  $notifiable
+	 * @return \Illuminate\Notifications\Messages\MailMessage
+	 */
+	public function toMail($notifiable)
+	{
+		return (new MailMessage)
+			->subject('Reset passowrd')
+			->line('Reset passowrd')
+			->line('To reset your password click on the button below')
+			->action('Reset password', config('skeleton.reset_password_url') . '/' . $this->token);
+	}
 }

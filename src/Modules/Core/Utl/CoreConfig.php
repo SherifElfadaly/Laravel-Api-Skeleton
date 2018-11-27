@@ -2,9 +2,9 @@
 
 class CoreConfig
 {
-    public function getConfig()
-    {
-        return [
+	public function getConfig()
+	{
+		return [
 			/**
 			 * Specify what relations should be used for every model.
 			 */
@@ -14,5 +14,5 @@ class CoreConfig
 			 */
 			'cacheConfig' =>  config('skeleton.cache_config'),
 		];
-    }
+	}
 }

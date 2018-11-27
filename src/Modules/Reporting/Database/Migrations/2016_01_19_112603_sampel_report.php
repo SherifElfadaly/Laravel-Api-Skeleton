@@ -21,15 +21,15 @@ class SampelReport extends Migration
 			");
 		
 		DB::table('reports')->insert(
-        	[
-	        	[
+			[
+				[
 				'report_name' => 'admin_count',
 				'view_name'   => 'admin_count',
 				'created_at'  => \DB::raw('NOW()'),
 				'updated_at'  => \DB::raw('NOW()')
-	        	]
-        	]
-        );
+				]
+			]
+		);
 	}
 
 	/**
