@@ -621,14 +621,12 @@ abstract class AbstractRepository implements RepositoryInterface
 				$conditions       = $this->constructConditions($value, $model);
 				$conditionString .= str_replace('{op}', 'and', $conditions['conditionString']).' {op} ';
 				$conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
-			}
-			else if ($key == 'or')
+			} else if ($key == 'or')
 			{
 				$conditions       = $this->constructConditions($value, $model);
 				$conditionString .= str_replace('{op}', 'or', $conditions['conditionString']).' {op} ';
 				$conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
-			}
-			else
+			} else
 			{
 				if (is_array($value)) 
 				{
@@ -653,29 +651,24 @@ abstract class AbstractRepository implements RepositoryInterface
 
 					$conditionString  .= $key.' <= ? {op} ';
 					$conditionValues[] = $value2;
-				}
-				elseif (strtolower($operator) == 'in') 
+				} elseif (strtolower($operator) == 'in') 
 				{
 					$conditionValues  = array_merge($conditionValues, $value);
 					$inBindingsString = rtrim(str_repeat('?,', count($value)), ',');
 					$conditionString .= $key.' in ('.rtrim($inBindingsString, ',').') {op} ';
-				}
-				elseif (strtolower($operator) == 'null') 
+				} elseif (strtolower($operator) == 'null') 
 				{
 					$conditionString .= $key.' is null {op} ';
-				}
-				elseif (strtolower($operator) == 'not null') 
+				} elseif (strtolower($operator) == 'not null') 
 				{
 					$conditionString .= $key.' is not null {op} ';
-				}
-				elseif (strtolower($operator) == 'has') 
+				} elseif (strtolower($operator) == 'has') 
 				{
 					$sql              = $model->withTrashed()->has($key)->toSql();
 					$conditions       = $this->constructConditions($value, $model->$key()->getRelated());
 					$conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')').' and '.$conditions['conditionString'].') {op} ';
 					$conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
-				}
-				else
+				} else
 				{
 					$conditionString  .= $key.' '.$operator.' ? {op} ';
 					$conditionValues[] = $value;

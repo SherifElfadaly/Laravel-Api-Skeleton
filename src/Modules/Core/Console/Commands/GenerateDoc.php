@@ -174,14 +174,12 @@ class GenerateDoc extends Command
 					if (strpos($rule, 'unique'))
 					{
 						$rule = substr($rule, 0, strpos($rule, 'unique') + 6);
-					}
-					elseif (strpos($rule, 'exists'))
+					} elseif (strpos($rule, 'exists'))
 					{
 						$rule = substr($rule, 0, strpos($rule, 'exists') - 1);
 					}
 				}
-			}
-			else
+			} else
 			{
 				$route['body'] = 'conditions';
 			}
@@ -217,7 +215,7 @@ class GenerateDoc extends Command
 	/**
 	 * Get the given method body code.
 	 * 
-	 * @param  object $reflectionMethod
+	 * @param  \ReflectionMethod $reflectionMethod
 	 * @return string
 	 */
 	protected function getMethodBody($reflectionMethod)

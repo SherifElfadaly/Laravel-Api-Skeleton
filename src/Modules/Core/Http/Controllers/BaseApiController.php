@@ -227,10 +227,8 @@ class BaseApiController extends Controller
 			}
 
 			if ($isPasswordClient && (in_array($permission, $this->skipPermissionCheck) || \Core::users()->can($permission, $this->model)))
-			{}
-			elseif ( ! $isPasswordClient && $user->tokenCan($this->model.'-'.$permission)) 
-			{}
-			else
+			{} elseif ( ! $isPasswordClient && $user->tokenCan($this->model.'-'.$permission)) 
+			{} else
 			{
 
 				\ErrorHandler::noPermissions();

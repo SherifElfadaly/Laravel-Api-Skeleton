@@ -13,24 +13,24 @@ class Users extends Migration
 	public function up()
 	{
 		Schema::create('users', function(Blueprint $table) {
-            $table->increments('id');
-            $table->string('profile_picture', 150)->nullable();
-            $table->string('name', 100)->nullable();
-            $table->string('email')->unique();
-            $table->string('password', 60)->nullable();
-            $table->boolean('blocked')->default(0);
-            $table->boolean('confirmed')->default(0);
-            $table->string('confirmation_code')->nullable();
-            $table->softDeletes();
-            $table->rememberToken();
-            $table->timestamps();
-        });
+			$table->increments('id');
+			$table->string('profile_picture', 150)->nullable();
+			$table->string('name', 100)->nullable();
+			$table->string('email')->unique();
+			$table->string('password', 60)->nullable();
+			$table->boolean('blocked')->default(0);
+			$table->boolean('confirmed')->default(0);
+			$table->string('confirmation_code')->nullable();
+			$table->softDeletes();
+			$table->rememberToken();
+			$table->timestamps();
+		});
 
 		/**
 		 * Create Default users.
 		 */
 		\DB::table('users')->insertGetId(
-            [
+			[
 			'name'       => 'Admin',
 			'email'      => 'admin@user.com',
 			'password'   => bcrypt('123456'),
@@ -38,7 +38,7 @@ class Users extends Migration
 			'created_at' => \DB::raw('NOW()'),
 			'updated_at' => \DB::raw('NOW()')
 			]
-        );
+		);
 	}
 
 	/**

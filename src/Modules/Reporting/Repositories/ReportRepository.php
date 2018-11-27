@@ -39,8 +39,7 @@ class ReportRepository extends AbstractRepository
 		if ( ! $report) 
 		{
 			\ErrorHandler::notFound('report');
-		}
-		else if ( ! $skipPermission && ! \Core::users()->can($report->view_name, 'reports'))
+		} else if ( ! $skipPermission && ! \Core::users()->can($report->view_name, 'reports'))
 		{
 			\ErrorHandler::noPermissions();
 		}
