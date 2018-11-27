@@ -36,6 +36,6 @@ class AclPermission extends Model {
     public static function boot()
     {
         parent::boot();
-        parent::observe(\App::make('App\Modules\Acl\ModelObservers\AclPermissionObserver'));
+        $this->observe(\App::make('App\Modules\Acl\ModelObservers\AclPermissionObserver'));
     }
 }

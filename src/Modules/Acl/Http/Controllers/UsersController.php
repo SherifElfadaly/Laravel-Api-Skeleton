@@ -279,7 +279,7 @@ class UsersController extends BaseApiController
     public function saveProfile(Request $request) 
     {
         $this->validate($request, [
-            'profile_picture' => 'nullable|base64image',
+            'profile_picture' => 'nullable|string',
             'name'            => 'nullable|string', 
             'email'           => 'required|email|unique:users,email,' . \Auth::id()
         ]);

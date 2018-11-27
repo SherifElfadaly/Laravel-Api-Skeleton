@@ -11,8 +11,6 @@ class Media
      */
     public function uploadImage($image, $dir) 
     {
-       $response        = [];
-       $image           = $image;
        $imageName       =  str_slug('image' . uniqid() . time() . '_' . $image->getClientOriginalName());
        $destinationPath = 'media' . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR;
 
@@ -36,15 +34,13 @@ class Media
             return null;
         }
         
-        $response        = [];
-        $image           = $image;
         $imageName       = 'image' . uniqid() . time() . '.jpg';
         $destinationPath = 'media' . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR;
 
         ! file_exists($destinationPath) ? \File::makeDirectory($destinationPath) : false;
 
         $base  = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
-        $image = \Image::make($base)->save($destinationPath . $imageName);
+        \Image::make($base)->save($destinationPath . $imageName);
 
         return url($destinationPath . $imageName);
     }

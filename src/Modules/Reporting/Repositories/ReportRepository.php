@@ -19,13 +19,13 @@ class ReportRepository extends AbstractRepository
      * condition.
      *
      * @param  string  $reportName
-     * @param  array   $conditions array of conditions
+     * @param  array   $conditions
      * @param  integer $perPage
      * @param  array   $relations
-     * @param  boolean   $skipPermission
+     * @param  boolean $skipPermission
      * @return object
      */
-    public function getReport($reportName, $conditions = false, $perPage = 0, $relations = [], $skipPermission = false)
+    public function getReport($reportName, $conditions = [], $perPage = 0, $relations = [], $skipPermission = false)
     {
         /**
          * Fetch the report from db.

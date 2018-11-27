@@ -61,8 +61,8 @@ class UserRepository extends AbstractRepository
     /**
      * Check if the logged in user has the given group.
      * 
-     * @param  string  $groupName
-     * @param  integer $userId
+     * @param  string  $groups
+     * @param  integer $user
      * @return boolean
      */
     public function hasGroup($groups, $user = false)
@@ -75,15 +75,15 @@ class UserRepository extends AbstractRepository
      * Assign the given group ids to the given user.
      * 
      * @param  integer $userId    
-     * @param  array   $group_ids
+     * @param  array   $groupIds
      * @return object
      */
-    public function assignGroups($userId, $group_ids)
+    public function assignGroups($userId, $groupIds)
     {
-        \DB::transaction(function () use ($userId, $group_ids) {
+        \DB::transaction(function () use ($userId, $groupIds) {
             $user = $this->find($userId);
             $user->groups()->detach();
-            $user->groups()->attach($group_ids);
+            $user->groups()->attach($groupIds);
         });
 
         return $this->find($userId);
@@ -143,11 +143,11 @@ class UserRepository extends AbstractRepository
 
         if ( ! $registeredUser = $this->model->where('email', $user->email)->first()) 
         {
-            $this->register(['email' => $user->email, 'password' => ''], 1);
+            $this->register(['email' => $user->email, 'password' => ''], true);
         }
 
         $loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
-        return $loginProxy->login(['email' => $credentials['email'], 'password' => config('skeleton.social_pass')], 0);
+        return $loginProxy->login(['email' => $user->email, 'password' => config('skeleton.social_pass')], 0);
     }
     
     /**
@@ -363,7 +363,7 @@ class UserRepository extends AbstractRepository
     /**
      * Save the given data to the logged in user.
      *
-     * @param  array $credentials
+     * @param  array $data
      * @return void
      */
     public function saveProfile($data) 
@@ -380,7 +380,7 @@ class UserRepository extends AbstractRepository
     /**
      * Ensure access token hasn't expired or revoked.
      * 
-     * @param  string $accessToken
+     * @param  oject $accessToken
      * @return boolean
      */
     public function accessTokenExpiredOrRevoked($accessToken)
@@ -402,7 +402,7 @@ class UserRepository extends AbstractRepository
      * Revoke the given access token and all 
      * associated refresh tokens.
      *
-     * @param  string  $accessToken
+     * @param  oject $accessToken
      * @return void
      */
     public function revokeAccessToken($accessToken)

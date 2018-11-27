@@ -31,6 +31,6 @@ class Report extends Model{
     public static function boot()
     {
         parent::boot();
-        parent::observe(\App::make('App\Modules\Reporting\ModelObservers\ReprotObserver'));
+        $this->observe(\App::make('App\Modules\Reporting\ModelObservers\ReprotObserver'));
     }
 }

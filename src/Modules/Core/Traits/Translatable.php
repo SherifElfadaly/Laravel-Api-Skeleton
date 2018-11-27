@@ -17,7 +17,7 @@ trait Translatable
         {
             if (isset($this->translatable) && in_array($key, $this->translatable)) 
             {
-                $model->$key = $this->getTranslatedAttribute($key, $value);
+                $model->$key = $this->getTranslatedAttribute($value);
             }
         }
 
@@ -27,11 +27,10 @@ trait Translatable
     /**
      * Returns a translatable model attribute based on the application's locale settings.
      *
-     * @param $key
      * @param $values
      * @return string
      */
-    protected function getTranslatedAttribute($key, $values)
+    protected function getTranslatedAttribute($values)
     {
         $values         = json_decode($values);
         $primaryLocale  = \Session::get('locale');

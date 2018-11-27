@@ -20,7 +20,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
     /**
      * Register the given device to the logged in user.
      *
-     * @param  string $data
+     * @param  array $data
      * @return void
      */
     public function registerDevice($data)

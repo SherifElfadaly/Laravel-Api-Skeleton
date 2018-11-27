@@ -22,8 +22,6 @@ class GenerateDoc extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -126,7 +124,7 @@ class GenerateDoc extends Command
      * based on the docblock.
      * 
      * @param  array  &$route
-     * @param  object $reflectionMethod]
+     * @param  object $reflectionMethod
      * @return void
      */
     protected function processDocBlock(&$route, $reflectionMethod)

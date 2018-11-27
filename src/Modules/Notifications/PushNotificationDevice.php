@@ -47,6 +47,6 @@ class PushNotificationDevice extends Model{
     public static function boot()
     {
         parent::boot();
-        parent::observe(\App::make('App\Modules\Notifications\ModelObservers\PushNotificationDeviceObserver'));
+        $this->observe(\App::make('App\Modules\Notifications\ModelObservers\PushNotificationDeviceObserver'));
     }
 }

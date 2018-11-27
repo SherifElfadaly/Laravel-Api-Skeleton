@@ -40,7 +40,7 @@ class CachingDecorator
     /**
      * The cacheConfig implementation.
      * 
-     * @var array
+     * @var mixed
      */
     public $cacheConfig;
 
