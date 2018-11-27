@@ -23,6 +23,6 @@ class OauthClient extends Client
     public static function boot()
     {
         parent::boot();
-        $this->observe(\App::make('App\Modules\Acl\ModelObservers\OauthClientObserver'));
+        OauthClient::observe(\App::make('App\Modules\Acl\ModelObservers\OauthClientObserver'));
     }
 }

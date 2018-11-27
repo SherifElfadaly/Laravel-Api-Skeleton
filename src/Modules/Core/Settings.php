@@ -36,6 +36,6 @@ class Settings extends Model{
     public static function boot()
     {
         parent::boot();
-        $this->observe(\App::make('App\Modules\Core\ModelObservers\SettingsObserver'));
+        Settings::observe(\App::make('App\Modules\Core\ModelObservers\SettingsObserver'));
     }
 }

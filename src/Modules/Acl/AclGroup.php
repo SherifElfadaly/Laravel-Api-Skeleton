@@ -41,6 +41,6 @@ class AclGroup extends Model{
     public static function boot()
     {
         parent::boot();
-        $this->observe(\App::make('App\Modules\Acl\ModelObservers\AclGroupObserver'));
+        AclGroup::observe(\App::make('App\Modules\Acl\ModelObservers\AclGroupObserver'));
     }
 }

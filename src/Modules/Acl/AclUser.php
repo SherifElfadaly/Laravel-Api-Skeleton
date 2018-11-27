@@ -136,6 +136,6 @@ class AclUser extends User {
     public static function boot()
     {
         parent::boot();
-        $this->observe(\App::make('App\Modules\Acl\ModelObservers\AclUserObserver'));
+        AclUser::observe(\App::make('App\Modules\Acl\ModelObservers\AclUserObserver'));
     }
 }
