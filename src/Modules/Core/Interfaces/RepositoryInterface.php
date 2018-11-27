@@ -56,8 +56,8 @@ interface RepositoryInterface
      /**
      * Save the given model/models to the storage.
      * 
-     * @param  array   $data
-     * @return object
+     * @param  array $data
+     * @return mixed
      */
     public function save(array $data);
 

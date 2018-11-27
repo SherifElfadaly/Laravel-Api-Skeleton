@@ -41,9 +41,9 @@ class UserRepository extends AbstractRepository
      * Check if the logged in user or the given user 
      * has the given permissions on the given model.
      * 
-     * @param  string  $nameOfPermission
-     * @param  string  $model            
-     * @param  boolean $user
+     * @param  string $nameOfPermission
+     * @param  string $model            
+     * @param  mixed  $user
      * @return boolean
      */
     public function can($nameOfPermission, $model, $user = false)
@@ -61,8 +61,8 @@ class UserRepository extends AbstractRepository
     /**
      * Check if the logged in user has the given group.
      * 
-     * @param  string  $groups
-     * @param  integer $user
+     * @param  array $groups
+     * @param  mixed $user
      * @return boolean
      */
     public function hasGroup($groups, $user = false)

@@ -200,7 +200,7 @@ class GenerateDoc extends Command
         $reflectionClass = new \ReflectionClass('App\Modules\Core\Utl\ErrorHandler');
         foreach ($reflectionClass->getMethods() as $method) 
         {
-            $methodName       = $method->getName();
+            $methodName       = $method->name;
             $reflectionMethod = $reflectionClass->getMethod($methodName);
             $body             = $this->getMethodBody($reflectionMethod);
 

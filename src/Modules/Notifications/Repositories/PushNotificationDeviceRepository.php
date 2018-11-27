@@ -40,7 +40,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
      *
      * @param  string $title
      * @param  string $message
-     * @param  string $data
+     * @param  array  $data
      * @return void
      */
     public function generateMessageData($title, $message, $data = [])
