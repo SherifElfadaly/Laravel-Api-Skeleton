@@ -70,7 +70,7 @@ class NotificationRepository extends AbstractRepository
 	 */
 	public function notify($users, $notification, $notificationData = false)
 	{
-		$notification = 'App\Modules\Notifications\Notifications\\' . $notification;
+		$notification = 'App\Modules\Notifications\Notifications\\'.$notification;
 		\Notification::send($users, new $notification($notificationData));
 	}
 }

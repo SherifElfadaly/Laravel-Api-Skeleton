@@ -12,7 +12,7 @@ class ReportsController extends BaseApiController
 	 * to preform actions like (add, edit ... etc).
 	 * @var string
 	 */
-	protected $model               = 'reports';
+	protected $model = 'reports';
 
 	/**
 	 * List of all route actions that the base api controller

@@ -2,7 +2,6 @@
 namespace App\Modules\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class ApiDocumentController extends Controller
 {
@@ -20,27 +19,27 @@ class ApiDocumentController extends Controller
 			],
 			[
 				'title'   => 'email equal John@Doe.com and user is blocked:',
-				'content' => ['and' => ['email' => 'John@Doe.com','blocked' => 1]]
+				'content' => ['and' => ['email' => 'John@Doe.com', 'blocked' => 1]]
 			],
 			[
 				'title'   => 'email equal John@Doe.com or user is blocked:',
-				'content' => ['or' => ['email' => 'John@Doe.com','blocked' => 1]]
+				'content' => ['or' => ['email' => 'John@Doe.com', 'blocked' => 1]]
 			],
 			[
 				'title'   => 'email contain John:',
-				'content' => ['email' => ['op' => 'like','val' => '%John%']]
+				'content' => ['email' => ['op' => 'like', 'val' => '%John%']]
 			],
 			[
 				'title'   => 'user created after 2016-10-25:',
-				'content' => ['created_at' => ['op' => '>','val' => '2016-10-25']]
+				'content' => ['created_at' => ['op' => '>', 'val' => '2016-10-25']]
 			],
 			[
 				'title'   => 'user created between 2016-10-20 and 2016-10-25:',
-				'content' => ['created_at' => ['op' => 'between','val1' => '2016-10-20','val2' => '2016-10-25']]
+				'content' => ['created_at' => ['op' => 'between', 'val1' => '2016-10-20', 'val2' => '2016-10-25']]
 			],
 			[
 				'title'   => 'user id in 1,2,3:',
-				'content' => ['id' => ['op' => 'in','val' => [1, 2, 3]]]
+				'content' => ['id' => ['op' => 'in', 'val' => [1, 2, 3]]]
 			],
 			[
 				'title'   => 'user name is null:',
@@ -52,7 +51,7 @@ class ApiDocumentController extends Controller
 			],
 			[
 				'title'   => 'user has group admin:',
-				'content' => ['groups' => ['op' => 'has','val' => ['name' => 'Admin']]]
+				'content' => ['groups' => ['op' => 'has', 'val' => ['name' => 'Admin']]]
 			]
 		];
 

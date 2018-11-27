@@ -49,7 +49,7 @@ class PushNotificationDeviceRepository extends AbstractRepository
 		$notificationBuilder = new PayloadNotificationBuilder($title);
 		$dataBuilder         = new PayloadDataBuilder();
 
-		$optionBuilder->setTimeToLive(60*20);
+		$optionBuilder->setTimeToLive(60 * 20);
 		$notificationBuilder->setBody($message);
 		$dataBuilder->addData($data);
 

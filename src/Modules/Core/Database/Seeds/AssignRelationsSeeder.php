@@ -18,7 +18,7 @@ class AssignRelationsSeeder extends Seeder
 		/**
 		 * Assign the permissions to the admin group.
 		 */
-		\DB::table('permissions')->orderBy('created_at', 'asc')->whereIn('model', ['settings'])->each(function ($permission) use ($adminGroupId) {
+		\DB::table('permissions')->orderBy('created_at', 'asc')->whereIn('model', ['settings'])->each(function($permission) use ($adminGroupId) {
 			\DB::table('groups_permissions')->insert(
 				[
 				'permission_id' => $permission->id,

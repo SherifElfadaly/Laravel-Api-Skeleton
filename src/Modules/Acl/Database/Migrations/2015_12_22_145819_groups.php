@@ -12,14 +12,14 @@ class Groups extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('groups', function (Blueprint $table) {
+		Schema::create('groups', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('name',100)->unique();
+			$table->string('name', 100)->unique();
 			$table->softDeletes();
 			$table->timestamps();
 		});
         
-		Schema::create('users_groups', function (Blueprint $table) {
+		Schema::create('users_groups', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('group_id');

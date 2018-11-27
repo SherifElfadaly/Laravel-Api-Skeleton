@@ -10,7 +10,7 @@ class AclUser extends User {
 	use SoftDeletes, HasApiTokens;
 	protected $table    = 'users';
 	protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
-	protected $hidden   = ['password', 'remember_token','deleted_at'];
+	protected $hidden   = ['password', 'remember_token', 'deleted_at'];
 	protected $guarded  = ['id'];
 	protected $fillable = ['profile_picture', 'name', 'email', 'password'];
 	public $searchable  = ['name', 'email'];
@@ -67,7 +67,7 @@ class AclUser extends User {
 
 	public function groups()
 	{
-		return $this->belongsToMany('\App\Modules\Acl\AclGroup','users_groups','user_id','group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+		return $this->belongsToMany('\App\Modules\Acl\AclGroup', 'users_groups', 'user_id', 'group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
 	}
 
 	public function oauthClients()
@@ -97,8 +97,7 @@ class AclUser extends User {
 				}
 
 				$tokens[] = $device->device_token;
-			} 
-			catch (\Exception $e) 
+			} catch (\Exception $e) 
 			{
 				$device->forceDelete();
 			}
@@ -114,7 +113,7 @@ class AclUser extends User {
 	 */
 	public function receivesBroadcastNotificationsOn()
 	{
-		return 'users.' . $this->id;
+		return 'users.'.$this->id;
 	}
 
 	/**

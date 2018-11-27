@@ -1,6 +1,6 @@
 <?php
 
-$factory->define(App\Modules\Acl\OauthClient::class, function (Faker\Generator $faker) {
+$factory->define(App\Modules\Acl\OauthClient::class, function(Faker\Generator $faker) {
 	return [
 		'user_id'                => $faker->randomDigit(),
 		'name'                   => $faker->name(),

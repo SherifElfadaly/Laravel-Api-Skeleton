@@ -40,7 +40,7 @@ class ReportRepository extends AbstractRepository
 		{
 			\ErrorHandler::notFound('report');
 		}
-		else if (! $skipPermission && ! \Core::users()->can($report->view_name, 'reports'))
+		else if ( ! $skipPermission && ! \Core::users()->can($report->view_name, 'reports'))
 		{
 			\ErrorHandler::noPermissions();
 		}
@@ -61,8 +61,7 @@ class ReportRepository extends AbstractRepository
 		if ($perPage) 
 		{
 			return $report->paginate($perPage);
-		}
-		else
+		} else
 		{
 			return $report->get();  
 		}

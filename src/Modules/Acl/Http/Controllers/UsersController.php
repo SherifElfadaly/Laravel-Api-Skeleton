@@ -13,7 +13,7 @@ class UsersController extends BaseApiController
 	 * to preform actions like (add, edit ... etc).
 	 * @var string
 	 */
-	protected $model               = 'users';
+	protected $model = 'users';
 
 	/**
 	 * List of all route actions that the base api controller
@@ -27,14 +27,14 @@ class UsersController extends BaseApiController
 	 * will skip login check for them.
 	 * @var array
 	 */
-	protected $skipLoginCheck      = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword', 'refreshtoken', 'confirmEmail', 'resendEmailConfirmation'];
+	protected $skipLoginCheck = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword', 'refreshtoken', 'confirmEmail', 'resendEmailConfirmation'];
 
 	/**
 	 * The validations rules used by the base api controller
 	 * to check before add.
 	 * @var array
 	 */
-	protected $validationRules     = [
+	protected $validationRules = [
 		'name'     => 'nullable|string', 
 		'email'    => 'required|email|unique:users,email,{id}', 
 		'password' => 'nullable|min:6'
@@ -281,7 +281,7 @@ class UsersController extends BaseApiController
 		$this->validate($request, [
 			'profile_picture' => 'nullable|string',
 			'name'            => 'nullable|string', 
-			'email'           => 'required|email|unique:users,email,' . \Auth::id()
+			'email'           => 'required|email|unique:users,email,'.\Auth::id()
 		]);
 
 		return \Response::json($this->repo->saveProfile($request->only('name', 'email', 'profile_picture')), 200);

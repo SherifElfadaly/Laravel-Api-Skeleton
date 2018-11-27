@@ -13,14 +13,14 @@ class SettingsController extends BaseApiController
 	 * to preform actions like (add, edit ... etc).
 	 * @var string
 	 */
-	protected $model               = 'settings';
+	protected $model = 'settings';
 
 	/**
 	 * The validations rules used by the base api controller
 	 * to check before add.
 	 * @var array
 	 */
-	protected $validationRules  = [
+	protected $validationRules = [
 		'id'    => 'required|exists:settings,id',
 		'value' => 'required|string'
 	];

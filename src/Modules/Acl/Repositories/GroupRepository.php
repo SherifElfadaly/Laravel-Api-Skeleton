@@ -23,7 +23,7 @@ class GroupRepository extends AbstractRepository
 	 */
 	public function assignPermissions($groupId, $permissionIds)
 	{
-		\DB::transaction(function () use ($groupId, $permissionIds) {
+		\DB::transaction(function() use ($groupId, $permissionIds) {
 			$group = $this->find($groupId);
 			$group->permissions()->detach();
 			$group->permissions()->attach($permissionIds);

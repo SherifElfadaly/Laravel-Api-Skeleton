@@ -1,6 +1,6 @@
 <?php
 
-$factory->define(App\Modules\Acl\AclUser::class, function (Faker\Generator $faker) {
+$factory->define(App\Modules\Acl\AclUser::class, function(Faker\Generator $faker) {
 	return [
 		'profile_picture' => 'http://lorempixel.com/400/200/',
 		'name'            => $faker->name(),

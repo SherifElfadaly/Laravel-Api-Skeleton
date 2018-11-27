@@ -63,11 +63,11 @@ abstract class AbstractRepository implements RepositoryInterface
 		/**
 		 * Construct the select conditions for the model.
 		 */
-		$model->where(function ($q) use ($query, $conditionColumns, $relations){
+		$model->where(function($q) use ($query, $conditionColumns, $relations){
 
 			if (count($conditionColumns)) 
 			{
-				$column = 'LOWER(' . array_shift($conditionColumns) . ')';
+				$column = 'LOWER('.array_shift($conditionColumns).')';
 				if (str_contains($column, '->')) 
 				{
 					$column = $this->wrapJsonSelector($column);
@@ -76,7 +76,7 @@ abstract class AbstractRepository implements RepositoryInterface
 				/**
 				 * Use the first element in the model columns to construct the first condition.
 				 */
-				$q->where(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
+				$q->where(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
 			}
 
 			/**
@@ -84,13 +84,13 @@ abstract class AbstractRepository implements RepositoryInterface
 			 */
 			foreach ($conditionColumns as $column) 
 			{
-				$column = 'LOWER(' . $column . ')';
+				$column = 'LOWER('.$column.')';
 				if (str_contains($column, '->')) 
 				{
 					$column = $this->wrapJsonSelector($column);
 				}
 
-				$q->orWhere(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
+				$q->orWhere(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
 			}
 
 			/**
@@ -111,9 +111,9 @@ abstract class AbstractRepository implements RepositoryInterface
 					/**
 					 * Construct the relation condition.
 					 */
-					$q->orWhereHas($relation, function ($subModel) use ($query, $relation){
+					$q->orWhereHas($relation, function($subModel) use ($query, $relation){
 
-						$subModel->where(function ($q) use ($query, $relation){
+						$subModel->where(function($q) use ($query, $relation){
 
 							/**
 							 * Get columns of the relation.
@@ -123,7 +123,7 @@ abstract class AbstractRepository implements RepositoryInterface
 							if (count($subConditionColumns)) 
 							{
 
-								$column = 'LOWER(' . array_shift($subConditionColumns) . ')';
+								$column = 'LOWER('.array_shift($subConditionColumns).')';
 								if (str_contains($column, '->')) 
 								{
 									$column = $this->wrapJsonSelector($column);
@@ -132,7 +132,7 @@ abstract class AbstractRepository implements RepositoryInterface
 								/**
 								 * Use the first element in the relation model columns to construct the first condition.
 								 */
-								$q->where(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
+								$q->where(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
 							}
 
 							/**
@@ -140,13 +140,13 @@ abstract class AbstractRepository implements RepositoryInterface
 							 */
 							foreach ($subConditionColumns as $subConditionColumn)
 							{
-								$column = 'LOWER(' . $subConditionColumn . ')';
+								$column = 'LOWER('.$subConditionColumn.')';
 								if (str_contains($column, '->')) 
 								{
 									$column = $this->wrapJsonSelector($column);
 								}
                                 
-								$q->orWhere(\DB::raw($column), 'LIKE', '%' . strtolower($query) . '%');
+								$q->orWhere(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
 							} 
 						});
 
@@ -207,7 +207,7 @@ abstract class AbstractRepository implements RepositoryInterface
 		$modelClass = $this->model;
 		$relations  = [];
 
-		\DB::transaction(function () use (&$model, &$relations, $data, $modelClass) {
+		\DB::transaction(function() use (&$model, &$relations, $data, $modelClass) {
 			/**
 			 * If the id is present in the data then select the model for updating,
 			 * else create new model.
@@ -216,7 +216,7 @@ abstract class AbstractRepository implements RepositoryInterface
 			$model = array_key_exists('id', $data) ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
 			if ( ! $model) 
 			{
-				\ErrorHandler::notFound(class_basename($modelClass) . ' with id : ' . $data['id']);
+				\ErrorHandler::notFound(class_basename($modelClass).' with id : '.$data['id']);
 			}
 
 			/**
@@ -274,7 +274,7 @@ abstract class AbstractRepository implements RepositoryInterface
 								 */
 								if ( ! $relationModel) 
 								{
-									\ErrorHandler::notFound(class_basename($relationBaseModel) . ' with id : ' . $val['id']);
+									\ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$val['id']);
 								}
 
 								/**
@@ -285,7 +285,7 @@ abstract class AbstractRepository implements RepositoryInterface
 									/**
 									 * Prevent the sub relations or attributes not in the fillable.
 									 */
-									if (gettype($val) !== 'object' && gettype($val) !== 'array' &&  array_search($attr, $relationModel->getFillable(), true) !== false)
+									if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false)
 									{
 										$relationModel->$attr = $val;
 									}
@@ -315,7 +315,7 @@ abstract class AbstractRepository implements RepositoryInterface
 									 */
 									if ( ! $relationModel) 
 									{
-										\ErrorHandler::notFound(class_basename($relationBaseModel) . ' with id : ' . $value['id']);
+										\ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$value['id']);
 									}
 
 									foreach ($value as $relationAttribute => $relationValue) 
@@ -471,10 +471,9 @@ abstract class AbstractRepository implements RepositoryInterface
 		{
 			$model = $this->model->lockForUpdate()->find($value);
 			$model ? $model->update($data) : 0;
-		}
-		else
+		} else
 		{
-			call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data){
+			call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function($model) use ($data){
 				$model->update($data);
 			});
 		}
@@ -492,20 +491,19 @@ abstract class AbstractRepository implements RepositoryInterface
 	{
 		if ($attribute == 'id') 
 		{
-			\DB::transaction(function () use ($value, $attribute, &$result) {
+			\DB::transaction(function() use ($value, $attribute, &$result) {
 				$model = $this->model->lockForUpdate()->find($value);
 				if ( ! $model) 
 				{
-					\ErrorHandler::notFound(class_basename($this->model) . ' with id : ' . $value);
+					\ErrorHandler::notFound(class_basename($this->model).' with id : '.$value);
 				}
                 
 				$model->delete();
 			});
-		}
-		else
+		} else
 		{
-			\DB::transaction(function () use ($value, $attribute, &$result) {
-				call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model){
+			\DB::transaction(function() use ($value, $attribute, &$result) {
+				call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function($model) {
 					$model->delete();
 				});
 			});   
@@ -517,7 +515,7 @@ abstract class AbstractRepository implements RepositoryInterface
 	 * id.
 	 * 
 	 * @param  integer $id
-	 * @param  array   $relations
+	 * @param  string[]   $relations
 	 * @param  array   $columns
 	 * @return object
 	 */
@@ -541,7 +539,7 @@ abstract class AbstractRepository implements RepositoryInterface
 	{
 		$conditions = $this->constructConditions($conditions, $this->model);
 		$sort       = $desc ? 'desc' : 'asc';
-		return call_user_func_array("{$this->getModel()}::with",  array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->get($columns);
+		return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->get($columns);
 	}
 
 	/**
@@ -581,7 +579,7 @@ abstract class AbstractRepository implements RepositoryInterface
 			$model->whereRaw($conditions['conditionString'], $conditions['conditionValues']);
 		}
 
-		return $model->orderBy($sortBy, $sort)->paginate($perPage, $columns);;
+		return $model->orderBy($sortBy, $sort)->paginate($perPage, $columns); ;
 	}
 
 	/**
@@ -596,7 +594,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
 		if ( ! $model) 
 		{
-			\ErrorHandler::notFound(class_basename($this->model) . ' with id : ' . $id);
+			\ErrorHandler::notFound(class_basename($this->model).' with id : '.$id);
 		}
 
 		$model->restore();
@@ -621,13 +619,13 @@ abstract class AbstractRepository implements RepositoryInterface
 			if ($key == 'and') 
 			{
 				$conditions       = $this->constructConditions($value, $model);
-				$conditionString .= str_replace('{op}', 'and', $conditions['conditionString']) . ' {op} ';
+				$conditionString .= str_replace('{op}', 'and', $conditions['conditionString']).' {op} ';
 				$conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
 			}
 			else if ($key == 'or')
 			{
 				$conditions       = $this->constructConditions($value, $model);
-				$conditionString .= str_replace('{op}', 'or', $conditions['conditionString']) . ' {op} ';
+				$conditionString .= str_replace('{op}', 'or', $conditions['conditionString']).' {op} ';
 				$conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
 			}
 			else
@@ -639,54 +637,52 @@ abstract class AbstractRepository implements RepositoryInterface
 					{
 						$value1 = $value['val1'];
 						$value2 = $value['val2'];
-					}
-					else
+					} else
 					{
 						$value = array_key_exists('val', $value) ? $value['val'] : '';
 					}
-				}
-				else
+				} else
 				{
 					$operator = '=';
 				}
                 
 				if (strtolower($operator) == 'between') 
 				{
-					$conditionString  .= $key . ' >= ? and ';
+					$conditionString  .= $key.' >= ? and ';
 					$conditionValues[] = $value1;
 
-					$conditionString  .= $key . ' <= ? {op} ';
+					$conditionString  .= $key.' <= ? {op} ';
 					$conditionValues[] = $value2;
 				}
 				elseif (strtolower($operator) == 'in') 
 				{
 					$conditionValues  = array_merge($conditionValues, $value);
 					$inBindingsString = rtrim(str_repeat('?,', count($value)), ',');
-					$conditionString .= $key . ' in (' . rtrim($inBindingsString, ',') . ') {op} ';
+					$conditionString .= $key.' in ('.rtrim($inBindingsString, ',').') {op} ';
 				}
 				elseif (strtolower($operator) == 'null') 
 				{
-					$conditionString .= $key . ' is null {op} ';
+					$conditionString .= $key.' is null {op} ';
 				}
 				elseif (strtolower($operator) == 'not null') 
 				{
-					$conditionString .= $key . ' is not null {op} ';
+					$conditionString .= $key.' is not null {op} ';
 				}
 				elseif (strtolower($operator) == 'has') 
 				{
 					$sql              = $model->withTrashed()->has($key)->toSql();
 					$conditions       = $this->constructConditions($value, $model->$key()->getRelated());
-					$conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')') . ' and ' . $conditions['conditionString'] . ') {op} ';
+					$conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')').' and '.$conditions['conditionString'].') {op} ';
 					$conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
 				}
 				else
 				{
-					$conditionString  .= $key . ' ' . $operator . ' ? {op} ';
+					$conditionString  .= $key.' '.$operator.' ? {op} ';
 					$conditionValues[] = $value;
 				}
 			}
 		}
-		$conditionString = '(' . rtrim($conditionString, '{op} ') . ')';
+		$conditionString = '('.rtrim($conditionString, '{op} ').')';
 		return ['conditionString' => $conditionString, 'conditionValues' => $conditionValues];
 	}
 
@@ -702,11 +698,11 @@ abstract class AbstractRepository implements RepositoryInterface
 		$value      = $removeLast === false ? $value : substr($value, 0, $removeLast);
 		$path       = explode('->', $value);
 		$field      = array_shift($path);
-		$result     = sprintf('%s->\'$.%s\'', $field, collect($path)->map(function ($part) {
+		$result     = sprintf('%s->\'$.%s\'', $field, collect($path)->map(function($part) {
 			return '"'.$part.'"';
 		})->implode('.'));
         
-		return $removeLast === false ? $result : $result . ')';
+		return $removeLast === false ? $result : $result.')';
 	}
 
 	/**

@@ -18,10 +18,10 @@ abstract class AbstractRepositoryContainer implements RepositoryContainerInterfa
 	{
 		foreach ($this->getRepoNameSpace() as $repoNameSpace) 
 		{
-			$class = rtrim($repoNameSpace, '\\') . '\\' . ucfirst(str_singular($name)) . 'Repository';
+			$class = rtrim($repoNameSpace, '\\').'\\'.ucfirst(str_singular($name)).'Repository';
 			if (class_exists($class)) 
 			{
-				\App::singleton($class, function ($app) use ($class) {
+				\App::singleton($class, function($app) use ($class) {
 
 					return new \App\Modules\Core\Decorators\CachingDecorator(new $class, $app['cache.store']);
 				});

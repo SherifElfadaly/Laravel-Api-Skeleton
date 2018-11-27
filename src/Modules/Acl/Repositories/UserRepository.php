@@ -28,7 +28,7 @@ class UserRepository extends AbstractRepository
 		$user        = \Core::users()->find(\Auth::id(), $relations);
 		foreach ($user->groups()->get() as $group)
 		{
-			$group->permissions->each(function ($permission) use (&$permissions){
+			$group->permissions->each(function($permission) use (&$permissions){
 				$permissions[$permission->model][$permission->id] = $permission->name;
 			});
 		}
@@ -51,7 +51,7 @@ class UserRepository extends AbstractRepository
 		$user        = $user ?: $this->find(\Auth::id(), ['groups.permissions']);
 		$permissions = [];
 
-		$user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model){
+		$user->groups->pluck('permissions')->each(function($permission) use (&$permissions, $model){
 			$permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray()); 
 		});
         
@@ -61,7 +61,7 @@ class UserRepository extends AbstractRepository
 	/**
 	 * Check if the logged in user has the given group.
 	 * 
-	 * @param  array $groups
+	 * @param  string[] $groups
 	 * @param  mixed $user
 	 * @return boolean
 	 */
@@ -80,7 +80,7 @@ class UserRepository extends AbstractRepository
 	 */
 	public function assignGroups($userId, $groupIds)
 	{
-		\DB::transaction(function () use ($userId, $groupIds) {
+		\DB::transaction(function() use ($userId, $groupIds) {
 			$user = $this->find($userId);
 			$user->groups()->detach();
 			$user->groups()->attach($groupIds);
@@ -102,20 +102,16 @@ class UserRepository extends AbstractRepository
 		if ( ! $user = $this->first(['email' => $credentials['email']])) 
 		{
 			\ErrorHandler::loginFailed();
-		}
-		else if ($adminLogin && ! $user->groups->whereIn('name', ['Admin'])->count()) 
+		} else if ($adminLogin && ! $user->groups->whereIn('name', ['Admin'])->count()) 
 		{
 			\ErrorHandler::loginFailed();
-		}
-		else if ( ! $adminLogin && $user->groups->whereIn('name', ['Admin'])->count()) 
+		} else if ( ! $adminLogin && $user->groups->whereIn('name', ['Admin'])->count()) 
 		{
 			\ErrorHandler::loginFailed();
-		}
-		else if ($user->blocked)
+		} else if ($user->blocked)
 		{
 			\ErrorHandler::userIsBlocked();
-		}
-		else if ( ! config('skeleton.disable_confirm_email') && ! $user->confirmed)
+		} else if ( ! config('skeleton.disable_confirm_email') && ! $user->confirmed)
 		{
 			\ErrorHandler::emailNotConfirmed();
 		}
@@ -165,8 +161,7 @@ class UserRepository extends AbstractRepository
 		{
 			$user->confirmed = 1;
 			$user->save();
-		}
-		else if ( ! config('skeleton.disable_confirm_email'))  
+		} else if ( ! config('skeleton.disable_confirm_email'))  
 		{
 			$this->sendConfirmationEmail($user->email);
 		}
@@ -189,12 +184,10 @@ class UserRepository extends AbstractRepository
 		if ( ! $this->hasGroup(['Admin']))
 		{
 			\ErrorHandler::noPermissions();
-		}
-		else if (\Auth::id() == $userId)
+		} else if (\Auth::id() == $userId)
 		{
 			\ErrorHandler::noPermissions();
-		}
-		else if ($user->groups->pluck('name')->search('Admin', true) !== false) 
+		} else if ($user->groups->pluck('name')->search('Admin', true) !== false) 
 		{
 			\ErrorHandler::noPermissions();
 		}
@@ -246,11 +239,11 @@ class UserRepository extends AbstractRepository
 	 * Reset the given user's password.
 	 *
 	 * @param  array  $credentials
-	 * @return array
+	 * @return string|null
 	 */
 	public function resetPassword($credentials)
 	{
-		$response = \Password::reset($credentials, function ($user, $password) {
+		$response = \Password::reset($credentials, function($user, $password) {
 			$user->password = $password;
 			$user->save();
 		});

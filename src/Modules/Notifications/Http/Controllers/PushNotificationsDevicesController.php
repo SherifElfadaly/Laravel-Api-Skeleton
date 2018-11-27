@@ -12,7 +12,7 @@ class PushNotificationsDevicesController extends BaseApiController
 	 * to preform actions like (add, edit ... etc).
 	 * @var string
 	 */
-	protected $model            = 'pushNotificationDevices';
+	protected $model = 'pushNotificationDevices';
 
 	/**
 	 * List of all route actions that the base api controller
@@ -26,7 +26,7 @@ class PushNotificationsDevicesController extends BaseApiController
 	 * to check before add.
 	 * @var array
 	 */
-	protected $validationRules  = [
+	protected $validationRules = [
 	'device_token' => 'required|string|max:255',
 	'user_id'      => 'required|exists:users,id'
 	];
