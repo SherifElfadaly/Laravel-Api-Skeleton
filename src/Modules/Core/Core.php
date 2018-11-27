@@ -2,7 +2,7 @@
 
 use App\Modules\Core\AbstractRepositories\AbstractRepositoryContainer;
 
-class Core extends AbstractRepositoryContainer{
+class Core extends AbstractRepositoryContainer {
 	/**
 	 * Specify module repositories name space.
 	 * 

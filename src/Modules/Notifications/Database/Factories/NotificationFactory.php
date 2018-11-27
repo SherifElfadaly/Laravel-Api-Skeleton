@@ -1,6 +1,6 @@
 <?php
 
-$factory->define(App\Modules\Notifications\Notification::class, function (Faker\Generator $faker) {
+$factory->define(App\Modules\Notifications\Notification::class, function(Faker\Generator $faker) {
 	return [
 		'type'            => '',
 		'notifiable_type' => '',

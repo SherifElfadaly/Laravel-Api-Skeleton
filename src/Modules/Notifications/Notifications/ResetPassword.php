@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class ResetPassword extends Notification implements ShouldQueue
 {
@@ -26,7 +25,7 @@ class ResetPassword extends Notification implements ShouldQueue
 	 * Get the notification's delivery channels.
 	 *
 	 * @param  mixed  $notifiable
-	 * @return array
+	 * @return string[]
 	 */
 	public function via($notifiable)
 	{
@@ -45,6 +44,6 @@ class ResetPassword extends Notification implements ShouldQueue
 			->subject('Reset passowrd')
 			->line('Reset passowrd')
 			->line('To reset your password click on the button below')
-			->action('Reset password', config('skeleton.reset_password_url') . '/' . $this->token);
+			->action('Reset password', config('skeleton.reset_password_url').'/'.$this->token);
 	}
 }

@@ -13,14 +13,14 @@ class OauthClientsController extends BaseApiController
 	 * to preform actions like (add, edit ... etc).
 	 * @var string
 	 */
-	protected $model               = 'oauthClients';
+	protected $model = 'oauthClients';
 
 	/**
 	 * The validations rules used by the base api controller
 	 * to check before add.
 	 * @var array
 	 */
-	protected $validationRules  = [
+	protected $validationRules = [
 		'name'     => 'required|max:255',
 		'redirect' => 'required|url',
 		'user_id'  => 'required|exists:users,id',

@@ -43,7 +43,7 @@ class GenerateDoc extends Command
 			if ($route) 
 			{
 				$actoinArray = explode('@', $route['action']);
-				if(array_get($actoinArray, 1, false))
+				if (array_get($actoinArray, 1, false))
 				{
 					$controller       = $actoinArray[0];
 					$method           = $actoinArray[1];
@@ -62,7 +62,7 @@ class GenerateDoc extends Command
 					$route['response'] = $this->getResponseObject($classProperties['model'], $route['name'], $route['returnDocBlock']);
 
 					preg_match('/api\/([^#]+)\//iU', $route['uri'], $module);
-					$docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/' . $module[1] . '/') - 1)][] = $route;
+					$docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/'.$module[1].'/') - 1)][] = $route;
 
 					$this->getModels($classProperties['model'], $docData);   
 				}
@@ -81,7 +81,7 @@ class GenerateDoc extends Command
 	 */
 	protected function getRoutes()
 	{
-		return collect(\Route::getRoutes())->map(function ($route) {
+		return collect(\Route::getRoutes())->map(function($route) {
 			if (strpos($route->uri(), 'api') !== false) 
 			{
 				return [
@@ -113,7 +113,7 @@ class GenerateDoc extends Command
 		];
 
 
-		if (! $skipLoginCheck || ! in_array($method, $skipLoginCheck)) 
+		if ( ! $skipLoginCheck || ! in_array($method, $skipLoginCheck)) 
 		{
 			$route['headers']['Authorization'] = 'Bearer {token}';
 		}
@@ -124,7 +124,7 @@ class GenerateDoc extends Command
 	 * based on the docblock.
 	 * 
 	 * @param  array  &$route
-	 * @param  object $reflectionMethod
+	 * @param  \ReflectionMethod $reflectionMethod
 	 * @return void
 	 */
 	protected function processDocBlock(&$route, $reflectionMethod)
@@ -148,7 +148,7 @@ class GenerateDoc extends Command
 	 * Generate post body for the given route.
 	 * 
 	 * @param  array  &$route
-	 * @param  object $reflectionMethod
+	 * @param  \ReflectionMethod $reflectionMethod
 	 * @param  array  $validationRules
 	 * @return void
 	 */
@@ -164,19 +164,18 @@ class GenerateDoc extends Command
 				if ($match[1] == '$this->validationRules')
 				{
 					$route['body'] = $validationRules;
-				}
-				else
+				} else
 				{
-					$route['body'] = eval('return ' . str_replace(',\'.$request->get(\'id\')', ',{id}\'', $match[1]) . ';');
+					$route['body'] = eval('return '.str_replace(',\'.$request->get(\'id\')', ',{id}\'', $match[1]).';');
 				}
 
 				foreach ($route['body'] as &$rule) 
 				{
-					if(strpos($rule, 'unique'))
+					if (strpos($rule, 'unique'))
 					{
 						$rule = substr($rule, 0, strpos($rule, 'unique') + 6);
 					}
-					elseif(strpos($rule, 'exists'))
+					elseif (strpos($rule, 'exists'))
 					{
 						$rule = substr($rule, 0, strpos($rule, 'exists') - 1);
 					}
@@ -249,10 +248,10 @@ class GenerateDoc extends Command
 			$model      = factory($modelClass)->make();
 			$modelArr   = $model->toArray();
 
-			if ( $model->trans && ! $model->trans->count()) 
+			if ($model->trans && ! $model->trans->count()) 
 			{
 				$modelArr['trans'] = [
-					'en' => factory($modelClass . 'Translation')->make()->toArray()
+					'en' => factory($modelClass.'Translation')->make()->toArray()
 				];
 			}
 

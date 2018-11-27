@@ -34,9 +34,9 @@ class BaseApiController extends Controller
 		$this->validationRules     = property_exists($this, 'validationRules') ? $this->validationRules : false;
 		$this->skipPermissionCheck = property_exists($this, 'skipPermissionCheck') ? $this->skipPermissionCheck : [];
 		$this->skipLoginCheck      = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
-		$route                     = explode('@',\Route::currentRouteAction())[1];
+		$route                     = explode('@', \Route::currentRouteAction())[1];
 
-		$this->middleware(function ($request, $next) {
+		$this->middleware(function($request, $next) {
             
 			$this->repo = call_user_func_array("\Core::{$this->model}", []);            
 			return $next($request);
@@ -157,8 +157,7 @@ class BaseApiController extends Controller
 			if ($request->has('id')) 
 			{
 				$rule = str_replace('{id}', $request->get('id'), $rule);
-			}
-			else
+			} else
 			{
 				$rule = str_replace(',{id}', '', $rule);
 			}
@@ -229,7 +228,7 @@ class BaseApiController extends Controller
 
 			if ($isPasswordClient && (in_array($permission, $this->skipPermissionCheck) || \Core::users()->can($permission, $this->model)))
 			{}
-			elseif ( ! $isPasswordClient && $user->tokenCan($this->model . '-' . $permission)) 
+			elseif ( ! $isPasswordClient && $user->tokenCan($this->model.'-'.$permission)) 
 			{}
 			else
 			{

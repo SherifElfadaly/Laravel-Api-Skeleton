@@ -12,7 +12,7 @@ class NotificationsController extends BaseApiController
 	 * to preform actions like (add, edit ... etc).
 	 * @var string
 	 */
-	protected $model            = 'notifications';
+	protected $model = 'notifications';
 
 	/**
 	 * List of all route actions that the base api controller

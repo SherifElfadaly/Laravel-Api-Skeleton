@@ -22,7 +22,7 @@ class SettingRepository extends AbstractRepository
 	 */
 	public function saveMany(array $data)
 	{
-		\DB::transaction(function () use ($data) {
+		\DB::transaction(function() use ($data) {
 			foreach ($data as $key => $value) 
 			{
 				$this->save($value);

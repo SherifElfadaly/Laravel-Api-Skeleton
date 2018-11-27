@@ -80,12 +80,11 @@ class CachingDecorator
 		if ($this->cacheConfig && $this->cacheConfig == 'cache') 
 		{
 			$page     = \Request::get('page') !== null ? \Request::get('page') : '1';
-			$cacheKey = $name . $page . \Session::get('locale') . serialize($arguments);
+			$cacheKey = $name.$page.\Session::get('locale').serialize($arguments);
 			return $this->cache->tags([$this->cacheTag])->rememberForever($cacheKey, function() use ($arguments, $name) {
 				return call_user_func_array([$this->repo, $name], $arguments);
 			});
-		}
-		else if ($this->cacheConfig)
+		} else if ($this->cacheConfig)
 		{
 			$this->cache->tags($this->cacheConfig)->flush();
 			return call_user_func_array([$this->repo, $name], $arguments);
@@ -109,8 +108,7 @@ class CachingDecorator
 		if ($cacheConfig && in_array($name, $cacheConfig['cache']))
 		{
 			$this->cacheConfig = 'cache';
-		}
-		else if ($cacheConfig && isset($cacheConfig['clear'][$name]))
+		} else if ($cacheConfig && isset($cacheConfig['clear'][$name]))
 		{
 			$this->cacheConfig = $cacheConfig['clear'][$name];
 		}

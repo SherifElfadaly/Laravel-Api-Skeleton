@@ -57,29 +57,23 @@ class Handler extends ExceptionHandler
 			if ($exception instanceof \Illuminate\Database\QueryException) 
 			{
 				\ErrorHandler::dbQueryError();
-			}
-			else if ($exception instanceof \predis\connection\connectionexception) 
+			} else if ($exception instanceof \predis\connection\connectionexception) 
 			{
 				\ErrorHandler::redisNotRunning();
-			}
-			else if ($exception instanceof \GuzzleHttp\Exception\ClientException) 
+			} else if ($exception instanceof \GuzzleHttp\Exception\ClientException) 
 			{
 				\ErrorHandler::connectionError();
-			}
-			else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) 
+			} else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) 
 			{
 				return \Response::json($exception->getMessage(), $exception->getStatusCode());   
-			}
-			else if ($exception instanceof \Illuminate\Validation\ValidationException) 
+			} else if ($exception instanceof \Illuminate\Validation\ValidationException) 
 			{
 				return \Response::json($exception->errors(), 422);   
-			}
-			else if ( ! $exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException)
+			} else if ( ! $exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException)
 			{
 				return parent::render($request, $exception);
 			}
-		}
-		else
+		} else
 		{
 			return parent::render($request, $exception);
 		}

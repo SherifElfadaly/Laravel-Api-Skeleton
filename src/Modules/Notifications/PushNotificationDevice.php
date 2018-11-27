@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PushNotificationDevice extends Model{
+class PushNotificationDevice extends Model {
 
 	use SoftDeletes;
 	protected $table    = 'push_notifications_devices';

@@ -13,7 +13,7 @@ class Notifications extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('notifications', function (Blueprint $table) {
+		Schema::create('notifications', function(Blueprint $table) {
 			$table->uuid('id')->primary();
 			$table->string('type');
 			$table->morphs('notifiable');

@@ -13,7 +13,7 @@ class ClearDataSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$permissions  = \DB::table('permissions')->whereIn('model', ['reports']);
+		$permissions = \DB::table('permissions')->whereIn('model', ['reports']);
 		\DB::table('groups_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
 		$permissions->delete();
 	}

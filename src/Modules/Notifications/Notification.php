@@ -3,7 +3,7 @@
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Notification extends DatabaseNotification{
+class Notification extends DatabaseNotification {
 
 	public function getCreatedAtAttribute($value)
 	{
