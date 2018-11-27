@@ -13,13 +13,13 @@ class Settings extends Migration
 	public function up()
 	{
 		Schema::create('settings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name',100);
-            $table->string('key',100)->unique();
-            $table->text('value')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-        });
+			$table->increments('id');
+			$table->string('name',100);
+			$table->string('key',100)->unique();
+			$table->text('value')->nullable();
+			$table->softDeletes();
+			$table->timestamps();
+		});
 	}
 
 	/**

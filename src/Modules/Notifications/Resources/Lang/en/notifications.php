@@ -2,8 +2,8 @@
 
 return [
     
-    /**
-     * Here goes your notification messages.
-     */
+	/**
+	 * Here goes your notification messages.
+	 */
 
 ];

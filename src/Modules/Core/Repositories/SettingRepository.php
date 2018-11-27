@@ -14,19 +14,19 @@ class SettingRepository extends AbstractRepository
 		return 'App\Modules\Core\Settings';
 	}
 
-    /**
-     * Save list of settings.
-     *
-     * @param  array   $data
-     * @return void
-     */
-    public function saveMany(array $data)
-    {
-    	\DB::transaction(function () use ($data) {
-    		foreach ($data as $key => $value) 
-    		{
-    			$this->save($value);
-    		}
-    	});
-    }
+	/**
+	 * Save list of settings.
+	 *
+	 * @param  array   $data
+	 * @return void
+	 */
+	public function saveMany(array $data)
+	{
+		\DB::transaction(function () use ($data) {
+			foreach ($data as $key => $value) 
+			{
+				$this->save($value);
+			}
+		});
+	}
 }

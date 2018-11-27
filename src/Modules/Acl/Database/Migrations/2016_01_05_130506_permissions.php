@@ -12,23 +12,23 @@ class Permissions extends Migration
 	 */
 	public function up()
 	{
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name',100);
-            $table->string('model',100);
-            $table->softDeletes();
-            $table->timestamps();
-            $table->unique(array('name', 'model'));
-        });
-        Schema::create('groups_permissions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('group_id');
-            $table->integer('permission_id');
-            $table->softDeletes();
-            $table->timestamps();
+		Schema::create('permissions', function (Blueprint $table) {
+			$table->increments('id');
+			$table->string('name',100);
+			$table->string('model',100);
+			$table->softDeletes();
+			$table->timestamps();
+			$table->unique(array('name', 'model'));
+		});
+		Schema::create('groups_permissions', function (Blueprint $table) {
+			$table->increments('id');
+			$table->integer('group_id');
+			$table->integer('permission_id');
+			$table->softDeletes();
+			$table->timestamps();
 
-	        $table->index(['group_id']);
-        });
+			$table->index(['group_id']);
+		});
 	}
 
 	/**

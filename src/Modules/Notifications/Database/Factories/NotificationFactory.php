@@ -1,7 +1,7 @@
 <?php
 
 $factory->define(App\Modules\Notifications\Notification::class, function (Faker\Generator $faker) {
-    return [
+	return [
 		'type'            => '',
 		'notifiable_type' => '',
 		'notifiable_id'   => '',
@@ -9,5 +9,5 @@ $factory->define(App\Modules\Notifications\Notification::class, function (Faker\
 		'read_at'         => null,
 		'created_at'      => $faker->dateTimeBetween('-1 years', 'now'),
 		'updated_at'      => $faker->dateTimeBetween('-1 years', 'now')
-    ];
+	];
 });

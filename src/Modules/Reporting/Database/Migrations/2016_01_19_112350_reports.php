@@ -18,7 +18,7 @@ class Reports extends Migration
 			$table->string('view_name',100);
 			$table->softDeletes();
 			$table->timestamps();
-        });
+		});
 	}
 
 	/**

@@ -1,8 +1,8 @@
 <?php
 
 $factory->define(App\Modules\Acl\OauthClient::class, function (Faker\Generator $faker) {
-    return [
-    	'user_id'                => $faker->randomDigit(),
+	return [
+		'user_id'                => $faker->randomDigit(),
 		'name'                   => $faker->name(),
 		'secret'                 => str_random(40),
 		'redirect'               => $faker->url(),
@@ -11,5 +11,5 @@ $factory->define(App\Modules\Acl\OauthClient::class, function (Faker\Generator $
 		'revoked'                => $faker->boolean(),
 		'created_at'             => $faker->dateTimeBetween('-1 years', 'now'),
 		'updated_at'             => $faker->dateTimeBetween('-1 years', 'now')
-    ];
+	];
 });

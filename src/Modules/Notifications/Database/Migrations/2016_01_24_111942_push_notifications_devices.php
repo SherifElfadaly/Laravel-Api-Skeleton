@@ -20,7 +20,7 @@ class PushNotificationsDevices extends Migration
 			$table->unique(array('device_token', 'user_id'));
 			$table->softDeletes();
 			$table->timestamps();
-        });
+		});
 	}
 
 	/**

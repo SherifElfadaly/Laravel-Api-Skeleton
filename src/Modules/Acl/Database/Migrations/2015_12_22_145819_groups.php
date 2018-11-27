@@ -13,21 +13,21 @@ class Groups extends Migration
 	public function up()
 	{
 		Schema::create('groups', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name',100)->unique();
-            $table->softDeletes();
-            $table->timestamps();
-        });
+			$table->increments('id');
+			$table->string('name',100)->unique();
+			$table->softDeletes();
+			$table->timestamps();
+		});
         
-        Schema::create('users_groups', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('group_id');
-            $table->softDeletes();
-            $table->timestamps();
+		Schema::create('users_groups', function (Blueprint $table) {
+			$table->increments('id');
+			$table->integer('user_id');
+			$table->integer('group_id');
+			$table->softDeletes();
+			$table->timestamps();
 
-	        $table->index(['user_id']);
-        });
+			$table->index(['user_id']);
+		});
         
 		/**
 		 * Create Default groups.
@@ -54,7 +54,7 @@ class Groups extends Migration
 			'created_at' => \DB::raw('NOW()'),
 			'updated_at' => \DB::raw('NOW()')
 			]
-        );
+		);
 	}
 
 	/**
