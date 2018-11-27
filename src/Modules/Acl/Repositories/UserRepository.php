@@ -147,7 +147,7 @@ class UserRepository extends AbstractRepository
         }
 
         $loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
-        return $loginProxy->login(['email' => $credentials['email'], 'password' => config('skeleton.social_pass']], 0);
+        return $loginProxy->login(['email' => $credentials['email'], 'password' => config('skeleton.social_pass')], 0);
     }
     
     /**

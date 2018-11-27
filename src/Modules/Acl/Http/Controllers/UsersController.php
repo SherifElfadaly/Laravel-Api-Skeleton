@@ -143,7 +143,7 @@ class UsersController extends BaseApiController
             'type'         => 'required|in:facebook,google'
             ]);
 
-        return \Response::json($this->repo->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type'))), 200);
+        return \Response::json($this->repo->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type')), 200);
     }
 
     /**
