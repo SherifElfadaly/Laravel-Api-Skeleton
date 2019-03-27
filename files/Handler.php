@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler
 				\ErrorHandler::connectionError();
 			} else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) 
 			{
-				return \Response::json($exception->getMessage(), $exception->getStatusCode());   
+				return \Response::json([$exception->getMessage()], $exception->getStatusCode());   
 			} else if ($exception instanceof \Illuminate\Validation\ValidationException) 
 			{
 				return \Response::json($exception->errors(), 422);   
