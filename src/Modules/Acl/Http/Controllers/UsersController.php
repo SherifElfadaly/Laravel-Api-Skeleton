@@ -219,7 +219,7 @@ class UsersController extends BaseApiController
 	public function confirmEmail(Request $request)
 	{
 		$this->validate($request, [
-			'confirmation_code' => 'required|string|exists:users,confirmation_code'
+			'confirmation_code' => 'required|string'
 		]);
 
 		return \Response::json($this->repo->confirmEmail($request->only('confirmation_code')), 200);

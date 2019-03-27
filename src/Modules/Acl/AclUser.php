@@ -12,7 +12,7 @@ class AclUser extends User {
 	protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
 	protected $hidden   = ['password', 'remember_token', 'deleted_at'];
 	protected $guarded  = ['id'];
-	protected $fillable = ['profile_picture', 'name', 'email', 'password'];
+	protected $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'time_zone'];
 	public $searchable  = ['name', 'email'];
     
 	public function getCreatedAtAttribute($value)
@@ -28,6 +28,15 @@ class AclUser extends User {
 	public function getDeletedAtAttribute($value)
 	{
 		return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
+	}
+
+    /**
+     * Get the profile picture url.
+     * @return string
+     */
+	public function getProfilePictureAttribute($value)
+	{
+		return url(\Storage::url($value));
 	}
 
 	/**
@@ -80,31 +89,30 @@ class AclUser extends User {
 	 * 
 	 * @return array
 	 */
-	public function routeNotificationForFCM()
-	{
-		$devices = \Core::pushNotificationsDevices()->findBy(['user_id' => $this->id]);
-		$tokens  = [];
+    public function routeNotificationForFCM()
+    {
+        $devices = \Core::pushNotificationDevices()->findBy(['user_id' => $this->id]);
+        $tokens  = [];
 
-		foreach ($devices as $device) 
-		{
-			$accessToken = decrypt($device->access_token);
+        foreach ($devices as $device) 
+        {
+            try
+            {
+                if (\Core::users()->accessTokenExpiredOrRevoked($device->access_token)) 
+                {
+                    continue;
+                }
 
-			try
-			{
-				if (\Core::users()->accessTokenExpiredOrRevoked($accessToken)) 
-				{
-					continue;
-				}
+                $tokens[] = $device->device_token;
+            } 
+            catch (\Exception $e) 
+            {
+                $device->forceDelete();
+            }
+        }
 
-				$tokens[] = $device->device_token;
-			} catch (\Exception $e) 
-			{
-				$device->forceDelete();
-			}
-		}
-
-		return $tokens;
-	}
+        return $tokens;
+    }
 
 	/**
 	 * The channels the user receives notification broadcasts on.

@@ -3,6 +3,7 @@ namespace App\Modules\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class BaseApiController extends Controller
 {
@@ -42,9 +43,9 @@ class BaseApiController extends Controller
 			return $next($request);
 		});
 
-		$this->checkPermission($route);
-		$this->setRelations($route);
-		$this->setSessions();
+        $this->setSessions();
+        $this->checkPermission($route);
+        $this->setRelations($route);
 	}
 
 	/**
@@ -220,6 +221,7 @@ class BaseApiController extends Controller
 			$user             = \Auth::user();
 			$permission       = $permission !== 'index' ? $permission : 'list';
 			$isPasswordClient = $user->token()->client->password_client;
+            $this->updateLocaleAndTimezone($user);
 
 			if ($user->blocked)
 			{
@@ -281,7 +283,36 @@ class BaseApiController extends Controller
 	private function setRelations($route)
 	{
 		$route           = $route !== 'index' ? $route : 'list';
-		$relations       = array_key_exists($this->model, $this->config['relations']) ? $this->config['relations'][$this->model] : false;
+		$relations       = Arr::get($this->config['relations'], $this->model, false);
 		$this->relations = $relations && isset($relations[$route]) ? $relations[$route] : [];
 	}
+
+    /**
+     * Update the logged in user locale and time zone.
+     * 
+     * @param  object $user
+     * @return void
+     */
+    private function updateLocaleAndTimezone($user)
+    {   
+        $update   = false;
+        $locale   = \Session::get('locale');
+        $timezone = \Session::get('time-zone');
+        if ($locale && $locale !== 'all' && $locale !== $user->locale)
+        {
+            $user->locale = $locale;
+            $update       = true;
+        }
+
+        if ($timezone && $timezone !== $user->timezone)
+        {
+            $user->timezone = $timezone;
+            $update       = true;
+        }
+
+        if ($update) 
+        {
+            $user->save();
+        }
+    }
 }

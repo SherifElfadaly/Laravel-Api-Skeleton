@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Core\AbstractRepositories;
 
 use App\Modules\Core\Interfaces\RepositoryInterface;
+use Illuminate\Support\Arr;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
@@ -213,7 +214,7 @@ abstract class AbstractRepository implements RepositoryInterface
 			 * else create new model.
 			 * @var array
 			 */
-			$model = array_key_exists('id', $data) ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
+			$model = Arr::has($data, 'id') ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
 			if ( ! $model) 
 			{
 				\ErrorHandler::notFound(class_basename($modelClass).' with id : '.$data['id']);
@@ -267,7 +268,7 @@ abstract class AbstractRepository implements RepositoryInterface
 								 * If the id is present in the data then select the relation model for updating,
 								 * else create new model.
 								 */
-								$relationModel = array_key_exists('id', $val) ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
+								$relationModel = Arr::has($val, 'id') ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
 
 								/**
 								 * If model doesn't exists.
@@ -308,7 +309,7 @@ abstract class AbstractRepository implements RepositoryInterface
 									 * If the id is present in the data then select the relation model for updating,
 									 * else create new model.
 									 */
-									$relationModel = array_key_exists('id', $value) ? $relationBaseModel->lockForUpdate()->find($value['id']) : new $relationBaseModel;
+									$relationModel = Arr::has($value, 'id') ? $relationBaseModel->lockForUpdate()->find($value['id']) : new $relationBaseModel;
 
 									/**
 									 * If model doesn't exists.
@@ -639,7 +640,7 @@ abstract class AbstractRepository implements RepositoryInterface
 						$value2 = $value['val2'];
 					} else
 					{
-						$value = array_key_exists('val', $value) ? $value['val'] : '';
+						$value = Arr::get($value, 'val', '');
 					}
 				} else
 				{

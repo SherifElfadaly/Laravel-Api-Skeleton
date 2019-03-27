@@ -12,4 +12,4 @@
 */
 
 
-Route::get('/apidoc', 'ApiDocumentController@index');
+Route::get('/docs', 'ApiDocumentController@index');

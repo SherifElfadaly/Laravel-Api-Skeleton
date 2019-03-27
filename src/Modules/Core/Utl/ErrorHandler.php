@@ -104,6 +104,12 @@ class ErrorHandler
 		abort($error['status'], $error['message']);
 	}
 
+    public function invalidConfirmationCode()
+    {
+        $error = ['status' => 400, 'message' => trans('core::errors.invalidConfirmationCode')];
+        abort($error['status'], $error['message']);
+    }
+
 	public function notFound($text)
 	{
 		$error = ['status' => 404, 'message' => trans('core::errors.notFound', ['replace' => $text])];

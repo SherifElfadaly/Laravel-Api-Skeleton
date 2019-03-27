@@ -1,64 +1,64 @@
-<?php namespace App\Modules\Core\Utl;
+<?php namespace App\Modules\V1\Core\Utl;
 
 class Media
 {
-	/**
-	 * Upload the given image.
-	 * 
-	 * @param  object  $image
-	 * @param  string  $dir
-	 * @return string
-	 */
-	public function uploadImage($image, $dir) 
-	{
-	   $imageName       = str_slug('image'.uniqid().time().'_'.$image->getClientOriginalName());
-	   $destinationPath = 'media'.DIRECTORY_SEPARATOR.$dir.DIRECTORY_SEPARATOR;
+    /**
+     * Upload the given image.
+     * 
+     * @param  object  $image
+     * @param  string  $dir
+     * @return string
+     */
+    public function uploadImage($image, $dir) 
+    {
+        $image = \Image::make($image);
+        return $this->saveImage($image, $dir);
+    }
 
-	   ! file_exists($destinationPath) ? \File::makeDirectory($destinationPath) : false;
-	   $image->move($destinationPath, $imageName);
+    /**
+     * Upload the given image.
+     * 
+     * @param  object  $image
+     * @param  string  $dir
+     * @return string
+     */
+    public function uploadImageBas64($image, $dir) 
+    {
+        if ( ! strlen($image)) 
+        {
+            return null;
+        }
 
-	   return url($destinationPath.$imageName);
-	}
+        $base  = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
+        $image = \Image::make($base);
 
-	/**
-	 * Upload the given image.
-	 * 
-	 * @param  object  $image
-	 * @param  string  $dir
-	 * @return string
-	 */
-	public function uploadImageBas64($image, $dir) 
-	{
-		if ( ! strlen($image)) 
-		{
-			return null;
-		}
-        
-		$imageName       = 'image'.uniqid().time().'.jpg';
-		$destinationPath = 'media'.DIRECTORY_SEPARATOR.$dir.DIRECTORY_SEPARATOR;
+        return $this->saveImage($image, $dir);
+    }
 
-		! file_exists($destinationPath) ? \File::makeDirectory($destinationPath) : false;
+    /**
+     * Delete the given image.
+     * 
+     * @param  object $path
+     * @return void
+     */
+    public function deleteImage($path) 
+    {   
+        \Storage::delete($path);
+    }
 
-		$base = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
-		\Image::make($base)->save($destinationPath.$imageName);
+    /**
+     * Save the given image.
+     * 
+     * @param  object  $image
+     * @param  string  $dir
+     * @return string
+     */
+    protected function saveImage($image, $dir) 
+    {
+        $imageName = 'image'.uniqid().time().'.jpg';
+        $path      = 'public'.DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.$dir.DIRECTORY_SEPARATOR.$imageName;
+        \Storage::put($path, $image->stream());
 
-		return url($destinationPath.$imageName);
-	}
-
-	/**
-	 * Delete the given image.
-	 * 
-	 * @param  object  $path
-	 * @param  string  $dir
-	 * @return void
-	 */
-	public function deleteImage($path, $dir) 
-	{   
-		$arr      = explode('/', $path);
-		$path     = 'media'.DIRECTORY_SEPARATOR.$dir.DIRECTORY_SEPARATOR.end($arr);
-		if (\File::exists($path)) 
-		{
-			\File::delete($path);
-		}
-	}
+        return $path;
+    }
 }

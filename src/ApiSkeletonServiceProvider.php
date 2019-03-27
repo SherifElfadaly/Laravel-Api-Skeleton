@@ -21,6 +21,7 @@ class ApiSkeletonServiceProvider extends ServiceProvider
 			__DIR__.'/../files/AuthServiceProvider.php'      => app_path('Providers/AuthServiceProvider.php'),
 			__DIR__.'/../files/BroadcastServiceProvider.php' => app_path('Providers/BroadcastServiceProvider.php'),
 			__DIR__.'/../files/Kernel.php'                   => app_path('Console/Kernel.php'),
+			__DIR__.'/../files/channels.php'                 => app_path('routes/channels.php'),
 		]);
 
 		$this->publishes([

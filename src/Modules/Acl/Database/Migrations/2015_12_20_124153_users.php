@@ -21,6 +21,8 @@ class Users extends Migration
             $table->boolean('blocked')->default(0);
             $table->boolean('confirmed')->default(0);
             $table->string('confirmation_code')->nullable();
+            $table->string('locale', 2)->default('en');
+            $table->string('timezone', 50)->default('Africa/Cairo');
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

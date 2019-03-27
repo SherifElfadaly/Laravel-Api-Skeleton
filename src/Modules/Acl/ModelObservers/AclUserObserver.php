@@ -7,7 +7,10 @@ class AclUserObserver {
 
 	public function saving($model)
 	{
-		//
+        if ($model->isDirty('profile_picture')) 
+        {
+            \Media::deleteImage($model->getOriginal('profile_picture'));
+        }
 	}
 
 	public function saved($model)

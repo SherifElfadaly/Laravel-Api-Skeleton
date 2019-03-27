@@ -1,5 +1,7 @@
 <?php namespace App\Modules\Core\Decorators;
 
+use Illuminate\Support\Arr;
+
 class CachingDecorator
 {
 	/**
@@ -102,7 +104,7 @@ class CachingDecorator
 	private function setCacheConfig($name)
 	{   
 		$config            = \CoreConfig::getConfig();
-		$cacheConfig       = array_key_exists($this->cacheTag, $config['cacheConfig']) ? $config['cacheConfig'][$this->cacheTag] : false;
+		$cacheConfig       = Arr::get($config['cacheConfig'], $this->cacheTag, false);
 		$this->cacheConfig = false;
 
 		if ($cacheConfig && in_array($name, $cacheConfig['cache']))

@@ -3,6 +3,7 @@
 namespace App\Modules\Core\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class GenerateDoc extends Command
 {
@@ -43,7 +44,7 @@ class GenerateDoc extends Command
 			if ($route) 
 			{
 				$actoinArray = explode('@', $route['action']);
-				if (array_get($actoinArray, 1, false))
+				if (Arr::get($actoinArray, 1, false))
 				{
 					$controller       = $actoinArray[0];
 					$method           = $actoinArray[1];
@@ -52,8 +53,8 @@ class GenerateDoc extends Command
 					$reflectionClass  = new \ReflectionClass($controller);
 					$reflectionMethod = $reflectionClass->getMethod($method);
 					$classProperties  = $reflectionClass->getDefaultProperties();
-					$skipLoginCheck   = array_key_exists('skipLoginCheck', $classProperties) ? $classProperties['skipLoginCheck'] : false;
-					$validationRules  = array_key_exists('validationRules', $classProperties) ? $classProperties['validationRules'] : false;
+					$skipLoginCheck   = Arr::get($classProperties, 'skipLoginCheck', false);
+					$validationRules  = Arr::get($classProperties, 'validationRules', false);
 
 					$this->processDocBlock($route, $reflectionMethod);
 					$this->getHeaders($route, $method, $skipLoginCheck);
@@ -82,7 +83,7 @@ class GenerateDoc extends Command
 	protected function getRoutes()
 	{
 		return collect(\Route::getRoutes())->map(function($route) {
-			if (strpos($route->uri(), 'api') !== false) 
+			if (strpos($route->uri(), 'api/') !== false) 
 			{
 				return [
 					'method' => $route->methods()[0],
@@ -242,7 +243,7 @@ class GenerateDoc extends Command
 	 */
 	protected function getModels($modelName, &$docData)
 	{
-		if ($modelName && ! array_key_exists($modelName, $docData['models'])) 
+		if ($modelName && ! Arr::has($docData['models'], $modelName)) 
 		{
 			$modelClass = call_user_func_array("\Core::{$modelName}", [])->modelClass;
 			$model      = factory($modelClass)->make();
@@ -270,7 +271,7 @@ class GenerateDoc extends Command
 	protected function getResponseObject($modelName, $method, $returnDocBlock)
 	{
 		$config    = \CoreConfig::getConfig();
-		$relations = array_key_exists($modelName, $config['relations']) ? array_key_exists($method, $config['relations'][$modelName]) ? $config['relations'][$modelName] : false : false;
+		$relations = Arr::has($config['relations'], $modelName) ? Arr::has($config['relations'][$modelName], $method) ? $config['relations'][$modelName] : false : false;
 		$modelName = call_user_func_array("\Core::{$returnDocBlock}", []) ? $returnDocBlock : $modelName;
 
 		return $relations ? [$modelName => $relations && $relations[$method] ? $relations[$method] : []] : false;

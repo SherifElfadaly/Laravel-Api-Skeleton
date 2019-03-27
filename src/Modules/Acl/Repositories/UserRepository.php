@@ -2,6 +2,7 @@
 
 use App\Modules\Core\AbstractRepositories\AbstractRepository;
 use Lcobucci\JWT\ValidationData;
+use Illuminate\Support\Arr;
 
 class UserRepository extends AbstractRepository
 {
@@ -129,7 +130,7 @@ class UserRepository extends AbstractRepository
 	 */
 	public function loginSocial($authCode, $accessToken, $type)
 	{
-		$access_token = $authCode ? array_get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
+		$access_token = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
 		$user         = \Socialite::driver($type)->userFromToken($access_token);
 
 		if ( ! $user->email)
@@ -292,10 +293,14 @@ class UserRepository extends AbstractRepository
 	 */
 	public function confirmEmail($confirmationCode)
 	{
-		$user                    = $this->first(['confirmation_code' => $confirmationCode]);
-		$user->confirmed         = 1;
-		$user->confirmation_code = null;
-		$user->save();
+        if ( ! $user = $this->first(['confirmation_code' => $confirmationCode])) 
+        {
+            \ErrorHandler::invalidConfirmationCode();
+        }
+
+        $user->confirmed         = 1;
+        $user->confirmation_code = null;
+        $user->save();
 	}
 
 	/**
@@ -361,7 +366,7 @@ class UserRepository extends AbstractRepository
 	 */
 	public function saveProfile($data) 
 	{
-		if (array_key_exists('profile_picture', $data)) 
+		if (Arr::has($data, 'profile_picture')) 
 		{
 			$data['profile_picture'] = \Media::uploadImageBas64($data['profile_picture'], 'admins/profile_pictures');
 		}
@@ -370,26 +375,23 @@ class UserRepository extends AbstractRepository
 		$this->save($data);
 	}
 
-	/**
-	 * Ensure access token hasn't expired or revoked.
-	 * 
-	 * @param  oject $accessToken
-	 * @return boolean
-	 */
-	public function accessTokenExpiredOrRevoked($accessToken)
-	{
+    /**
+     * Ensure access token hasn't expired or revoked.
+     * 
+     * @param  string $accessToken
+     * @return boolean
+     */
+    public function accessTokenExpiredOrRevoked($accessToken)
+    {
+        $accessToken = json_decode($accessToken, true);
+        
+        if (\Carbon\Carbon::parse($accessToken['expires_at'])->isPast() || $accessToken['revoked']) 
+        {
+            return true;
+        }
 
-		$accessTokenRepository = \App::make('League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface');
-		$data                  = new ValidationData();
-		$data->setCurrentTime(time());
-
-		if ($accessToken->validate($data) === false || $accessTokenRepository->isAccessTokenRevoked($accessToken->getClaim('jti'))) 
-		{
-			return true;
-		}
-
-		return false;
-	}
+        return false;
+    }
 
 	/**
 	 * Revoke the given access token and all 
