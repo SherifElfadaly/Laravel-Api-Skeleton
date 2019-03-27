@@ -4,7 +4,7 @@ $factory->define(App\Modules\Acl\OauthClient::class, function(Faker\Generator $f
 	return [
 		'user_id'                => $faker->randomDigit(),
 		'name'                   => $faker->name(),
-		'secret'                 => str_random(40),
+		'secret'                 => \Illuminate\Support\Str::random(40),
 		'redirect'               => $faker->url(),
 		'personal_access_client' => 0,
 		'password_client'        => 0,

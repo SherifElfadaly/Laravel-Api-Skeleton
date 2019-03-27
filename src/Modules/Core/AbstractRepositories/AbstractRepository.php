@@ -2,6 +2,7 @@
 
 use App\Modules\Core\Interfaces\RepositoryInterface;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
@@ -69,7 +70,7 @@ abstract class AbstractRepository implements RepositoryInterface
 			if (count($conditionColumns)) 
 			{
 				$column = 'LOWER('.array_shift($conditionColumns).')';
-				if (str_contains($column, '->')) 
+				if (Str::contains($column, '->')) 
 				{
 					$column = $this->wrapJsonSelector($column);
 				}
@@ -86,7 +87,7 @@ abstract class AbstractRepository implements RepositoryInterface
 			foreach ($conditionColumns as $column) 
 			{
 				$column = 'LOWER('.$column.')';
-				if (str_contains($column, '->')) 
+				if (Str::contains($column, '->')) 
 				{
 					$column = $this->wrapJsonSelector($column);
 				}
@@ -125,7 +126,7 @@ abstract class AbstractRepository implements RepositoryInterface
 							{
 
 								$column = 'LOWER('.array_shift($subConditionColumns).')';
-								if (str_contains($column, '->')) 
+								if (Str::contains($column, '->')) 
 								{
 									$column = $this->wrapJsonSelector($column);
 								}
@@ -142,7 +143,7 @@ abstract class AbstractRepository implements RepositoryInterface
 							foreach ($subConditionColumns as $subConditionColumn)
 							{
 								$column = 'LOWER('.$subConditionColumn.')';
-								if (str_contains($column, '->')) 
+								if (Str::contains($column, '->')) 
 								{
 									$column = $this->wrapJsonSelector($column);
 								}
@@ -612,7 +613,7 @@ abstract class AbstractRepository implements RepositoryInterface
 		$conditionValues = [];
 		foreach ($conditions as $key => $value) 
 		{
-			if (str_contains($key, '->')) 
+			if (Str::contains($key, '->')) 
 			{
 				$key = $this->wrapJsonSelector($key);
 			}

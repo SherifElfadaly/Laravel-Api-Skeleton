@@ -263,17 +263,17 @@
                                             <tbody> 
                                                 <tr> 
                                                     <td>
-                                                        <a href="#model_{{$object}}">{{ucfirst(str_singular($object))}}</a>
+                                                        <a href="#model_{{$object}}">{{ucfirst(\Illuminate\Support\Str::singular($object))}}</a>
                                                     </td> 
                                                     @if(count($relations))
                                                     <td>
                                                         @foreach ($relations as $relation)
                                                         @if($relation == 'item')
                                                         {{ucfirst($relation)}}: could be any model ex (User, Group....).
-                                                        @elseif(str_singular($relation) !== $relation)
-                                                        Array of <a href="#model_{{str_plural($relation)}}">{{ucfirst($relation)}}</a>
+                                                        @elseif(\Illuminate\Support\Str::singular($relation) !== $relation)
+                                                        Array of <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
                                                         @else
-                                                        <a href="#model_{{str_plural($relation)}}">{{ucfirst($relation)}}</a>
+                                                        <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
                                                         @endif
                                                         <br>
                                                         @endforeach

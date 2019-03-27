@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Core\AbstractRepositories;
 
 use App\Modules\Core\Interfaces\RepositoryContainerInterface;
+use Illuminate\Support\Str;
 
 abstract class AbstractRepositoryContainer implements RepositoryContainerInterface
 {
@@ -18,7 +19,7 @@ abstract class AbstractRepositoryContainer implements RepositoryContainerInterfa
 	{
 		foreach ($this->getRepoNameSpace() as $repoNameSpace) 
 		{
-			$class = rtrim($repoNameSpace, '\\').'\\'.ucfirst(str_singular($name)).'Repository';
+			$class = rtrim($repoNameSpace, '\\').'\\'.ucfirst(Str::singular($name)).'Repository';
 			if (class_exists($class)) 
 			{
 				\App::singleton($class, function($app) use ($class) {

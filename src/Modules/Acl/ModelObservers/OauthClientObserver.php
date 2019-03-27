@@ -1,5 +1,7 @@
 <?php namespace App\Modules\Acl\ModelObservers;
 
+use Illuminate\Support\Str;
+
 /**
  * Handling of model events,
  */
@@ -17,7 +19,7 @@ class OauthClientObserver {
 
 	public function creating($model)
 	{
-		$model->secret = str_random(40);
+		$model->secret = Str::random(40);
 	}
 
 	public function created($model)

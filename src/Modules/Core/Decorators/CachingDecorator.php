@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Core\Decorators;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class CachingDecorator
 {
@@ -64,7 +65,7 @@ class CachingDecorator
 		$this->modelClass = get_class($this->model);
 		$repoClass        = explode('\\', get_class($this->repo));
 		$repoName         = end($repoClass);
-		$this->cacheTag   = str_plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
+		$this->cacheTag   = Str::plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
 	}
 
 	/**
