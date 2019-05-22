@@ -383,9 +383,12 @@ class UserRepository extends AbstractRepository
      */
     public function accessTokenExpiredOrRevoked($accessToken)
     {
-        $accessToken = json_decode($accessToken, true);
+        $accessTokenId = json_decode($accessToken, true)['id'];
+        $accessToken   = \DB::table('oauth_access_tokens')
+                ->where('id', $accessTokenId)
+                ->first();
         
-        if (\Carbon\Carbon::parse($accessToken['expires_at'])->isPast() || $accessToken['revoked']) 
+        if (\Carbon\Carbon::parse($accessToken->expires_at)->isPast() || $accessToken->revoked) 
         {
             return true;
         }

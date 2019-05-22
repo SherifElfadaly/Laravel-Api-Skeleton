@@ -44,9 +44,9 @@ class NotificationRepository extends AbstractRepository
 	 */
 	public function markAsRead($id)
 	{
-		if ($notification = \Auth::user()->unreadNotifications()->where('id', $id)) 
+		if ($notification = \Auth::user()->unreadNotifications()->where('id', $id)->first()) 
 		{
-			$notification->first()->markAsRead();
+			$notification->markAsRead();
 		}
 	}
 

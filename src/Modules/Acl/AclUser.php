@@ -96,19 +96,16 @@ class AclUser extends User {
 
         foreach ($devices as $device) 
         {
-            try
+            if (\Core::users()->accessTokenExpiredOrRevoked($device->access_token)) 
             {
-                if (\Core::users()->accessTokenExpiredOrRevoked($device->access_token)) 
-                {
-                    continue;
-                }
-
-                $tokens[] = $device->device_token;
-            } 
-            catch (\Exception $e) 
+                continue;
+            }
+            else
             {
                 $device->forceDelete();
             }
+
+            $tokens[] = $device->device_token;
         }
 
         return $tokens;
