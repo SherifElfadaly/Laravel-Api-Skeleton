@@ -98,11 +98,8 @@ class AclUser extends User {
         {
             if (\Core::users()->accessTokenExpiredOrRevoked($device->access_token)) 
             {
-                continue;
-            }
-            else
-            {
                 $device->forceDelete();
+                continue;
             }
 
             $tokens[] = $device->device_token;
