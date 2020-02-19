@@ -1,8 +1,5 @@
 <?php namespace App\Modules\Acl\Proxy;
 
-use Illuminate\Foundation\Application;
-use App\Modules\Acl\Repositories\UserRepository;
-
 class LoginProxy
 {
     /**

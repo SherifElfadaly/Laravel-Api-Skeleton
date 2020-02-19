@@ -1,4 +1,4 @@
-<?php namespace Optimus\ApiConsumer;
+<?php namespace App\Modules\Core\Utl;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;

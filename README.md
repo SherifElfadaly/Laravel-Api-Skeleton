@@ -49,6 +49,15 @@ run
 ``` bash
 php artisan doc:generate
 ```
+Install php code sniffer
+``` bash
+composer require --dev squizlabs/php_codesniffer
+```
+Add php code sniffer command to composer.json
+``` bash
+"phpcs" :"./vendor/bin/phpcs ./",
+"phpcbf" :"./vendor/bin/phpcbf ./",
+```
 
 ## Usage
 Check the [wiki][link-wiki].
