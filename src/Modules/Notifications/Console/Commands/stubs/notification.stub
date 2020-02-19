@@ -55,13 +55,18 @@ class DummyClass extends Notification implements ShouldQueue
      */
     public function toFCM($notifiable)
     {
-        $messageData = \Core::pushNotificationDevices()->generateMessageData($title, $message, $data = []);
-
-        return new FCMMessage($messageData['options'], $messageData['notification'], $messageData['data']);
-
-        /*or*/
-
-        return new FCMMessageTopic($messageData['options'], $messageData['notification'], $messageData['data']);
+        $message = new FcmMessage();
+        $message->content([
+            'title'        => 'Foo', 
+            'body'         => 'Bar', 
+            'sound'        => '', // Optional 
+            'icon'         => '', // Optional
+            'click_action' => '' // Optional
+        ])->data([
+            'param1' => 'baz' // Optional
+        ])->priority(FcmMessage::PRIORITY_HIGH); // Optional - Default is 'normal'.
+        
+        return $message;
     }
 
     /**

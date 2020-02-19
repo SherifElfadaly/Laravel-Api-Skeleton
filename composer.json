@@ -20,7 +20,7 @@
         "barryvdh/laravel-cors": "^1.0",
         "intervention/image": "^2.5",
         "optimus/api-consumer": "^0.2.3",
-        "enniel/laravel-fcm-notification-channel": "^0.2.0",
+        "benwilkins/laravel-fcm-notification": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.0",
         "laravel/socialite": "^4.3",
         "laravel/passport": "^8.4",
@@ -61,9 +61,7 @@
         "laravel": {
             "providers": [
                 "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider",
-                "Optimus\\ApiConsumer\\Provider\\LaravelServiceProvider",
-                "NotificationChannels\\FCM\\ServiceProvider",
-                "Intervention\\Image\\ImageServiceProvider"
+                "Optimus\\ApiConsumer\\Provider\\LaravelServiceProvider"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\Core\\Facades\\Core",
