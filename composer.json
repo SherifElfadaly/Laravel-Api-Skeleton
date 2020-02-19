@@ -19,7 +19,6 @@
     "require": {
         "barryvdh/laravel-cors": "^1.0",
         "intervention/image": "^2.5",
-        "optimus/api-consumer": "^0.2.3",
         "benwilkins/laravel-fcm-notification": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.0",
         "laravel/socialite": "^4.3",
@@ -60,16 +59,14 @@
         },
         "laravel": {
             "providers": [
-                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider",
-                "Optimus\\ApiConsumer\\Provider\\LaravelServiceProvider"
+                "ApiSkeleton\\ApiSkeleton\\ApiSkeletonServiceProvider"
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\Core\\Facades\\Core",
                 "ErrorHandler": "App\\Modules\\Core\\Facades\\ErrorHandler",
                 "CoreConfig"  : "App\\Modules\\Core\\Facades\\CoreConfig",
                 "Logging"     : "App\\Modules\\Core\\Facades\\Logging",
-                "Media"       : "App\\Modules\\Core\\Facades\\Media",
-                "Image"       : "Intervention\\Image\\Facades\\Image"
+                "Media"       : "App\\Modules\\Core\\Facades\\Media"
             }
         }
     }

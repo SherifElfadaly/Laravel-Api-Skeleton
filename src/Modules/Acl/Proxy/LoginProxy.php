@@ -5,23 +5,6 @@ use App\Modules\Acl\Repositories\UserRepository;
 
 class LoginProxy
 {
-    private $apiConsumer;
-
-    private $auth;
-
-    private $request;
-
-    private $userRepository;
-
-    public function __construct(Application $app)
-    {
-
-        $this->userRepository = $app->make('App\Modules\Acl\Repositories\UserRepository');
-        $this->apiConsumer    = $app->make('apiconsumer');
-        $this->auth           = $app->make('auth');
-        $this->request        = $app->make('request');
-    }
-
     /**
      * Attempt to create an access token using user credentials.
      *
@@ -31,7 +14,7 @@ class LoginProxy
      */
     public function login($credentials, $adminLogin = false)
     {
-        $this->userRepository->login($credentials, $adminLogin);
+        \Core::users()->login($credentials, $adminLogin);
 
         return $this->proxy('password', [
             'username' => $credentials['email'],
@@ -66,7 +49,7 @@ class LoginProxy
             'grant_type'    => $grantType
         ]);
 
-        $response = $this->apiConsumer->post('/oauth/token', $data);
+        $response = \ApiConsumer::post('/oauth/token', $data);
 
         if (! $response->isSuccessful()) {
             if ($grantType == 'refresh_token') {
@@ -92,6 +75,6 @@ class LoginProxy
      */
     public function logout()
     {
-        \Core::users()->revokeAccessToken($this->auth->user()->token());
+        \Core::users()->revokeAccessToken(\Auth::user()->token());
     }
 }

@@ -46,6 +46,11 @@ class ModuleServiceProvider extends ServiceProvider
         \App::bind('Media', function () {
             return new \App\Modules\Core\Utl\Media;
         });
+
+        //Bind Mpgs Facade to the IoC Container
+        \App::bind('ApiConsumer', function () {
+            return new \App\Modules\Core\Utl\ApiConsumer;
+        });
         
         $this->app->register(RouteServiceProvider::class);
     }
