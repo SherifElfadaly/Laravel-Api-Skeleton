@@ -11,19 +11,18 @@
 |
 */
 
-Route::group(['prefix' => 'core'], function() {
+Route::group(['prefix' => 'core'], function () {
 
-	Route::group(['prefix' => 'settings'], function() {
-		
-		Route::get('list/{sortBy?}/{desc?}', 'SettingsController@index');
-		Route::get('find/{id}', 'SettingsController@find');
-		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@search');
-		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginate');
-		Route::post('first', 'SettingsController@first');
-		Route::post('findby/{sortBy?}/{desc?}', 'SettingsController@findby');
-		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginateby');
-		Route::post('save', 'SettingsController@save');
-		Route::post('save/many', 'SettingsController@saveMany');
-		
-	});
+    Route::group(['prefix' => 'settings'], function () {
+        
+        Route::get('list/{sortBy?}/{desc?}', 'SettingsController@index');
+        Route::get('find/{id}', 'SettingsController@find');
+        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@search');
+        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginate');
+        Route::post('first', 'SettingsController@first');
+        Route::post('findby/{sortBy?}/{desc?}', 'SettingsController@findby');
+        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'SettingsController@paginateby');
+        Route::post('save', 'SettingsController@save');
+        Route::post('save/many', 'SettingsController@saveMany');
+    });
 });

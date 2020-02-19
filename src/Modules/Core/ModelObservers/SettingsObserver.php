@@ -3,70 +3,70 @@
 /**
  * Handling of model events,
  */
-class SettingsObserver {
+class SettingsObserver
+{
 
-	public function saving($model)
-	{
-		//
-	}
+    public function saving($model)
+    {
+        //
+    }
 
-	public function saved($model)
-	{
-		//
-	}
+    public function saved($model)
+    {
+        //
+    }
 
-	/**
-	 * Prevent the creating of the settings.
-	 * 
-	 * @param  object $model the model beign created.
-	 * @return void
-	 */
-	public function creating($model)
-	{
-		\ErrorHandler::cannotCreateSetting();
-	}
+    /**
+     * Prevent the creating of the settings.
+     *
+     * @param  object $model the model beign created.
+     * @return void
+     */
+    public function creating($model)
+    {
+        \ErrorHandler::cannotCreateSetting();
+    }
 
-	public function created($model)
-	{
-		//
-	}
+    public function created($model)
+    {
+        //
+    }
 
-	/**
-	 * Prevent updating of the setting key.
-	 * 
-	 * @param  object $model the model beign updated.
-	 * @return void
-	 */
-	public function updating($model)
-	{
-		if ($model->getOriginal('key') !== $model->key) 
-		{
-			\ErrorHandler::cannotUpdateSettingKey();
-		}
-	}
+    /**
+     * Prevent updating of the setting key.
+     *
+     * @param  object $model the model beign updated.
+     * @return void
+     */
+    public function updating($model)
+    {
+        if ($model->getOriginal('key') !== $model->key) {
+            \ErrorHandler::cannotUpdateSettingKey();
+        }
+    }
 
-	public function updated($model)
-	{
-		//
-	}
+    public function updated($model)
+    {
+        //
+    }
 
-	public function deleting($model)
-	{
-		//
-	}
+    public function deleting($model)
+    {
+        //
+    }
 
-	public function deleted($model)
-	{
-		//
-	}
+    public function deleted($model)
+    {
+        //
+    }
 
-	public function restoring($model)
-	{
-		//
-	}
+    public function restoring($model)
+    {
+        //
+    }
 
-	public function restored($model)
-	{
-		//
-	}
+    public function restored($model)
+    {
+        //
+    }
 }

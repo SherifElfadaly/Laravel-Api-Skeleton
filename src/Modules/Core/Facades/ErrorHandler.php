@@ -4,5 +4,8 @@ use Illuminate\Support\Facades\Facade;
 
 class ErrorHandler extends Facade
 {
-	protected static function getFacadeAccessor() { return 'ErrorHandler'; }
+    protected static function getFacadeAccessor()
+    {
+        return 'ErrorHandler';
+    }
 }

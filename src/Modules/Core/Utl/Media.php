@@ -4,12 +4,12 @@ class Media
 {
     /**
      * Upload the given image.
-     * 
+     *
      * @param  object  $image
      * @param  string  $dir
      * @return string
      */
-    public function uploadImage($image, $dir) 
+    public function uploadImage($image, $dir)
     {
         $image = \Image::make($image);
         return $this->saveImage($image, $dir);
@@ -17,15 +17,14 @@ class Media
 
     /**
      * Upload the given image.
-     * 
+     *
      * @param  object  $image
      * @param  string  $dir
      * @return string
      */
-    public function uploadImageBas64($image, $dir) 
+    public function uploadImageBas64($image, $dir)
     {
-        if ( ! strlen($image)) 
-        {
+        if (! strlen($image)) {
             return null;
         }
 
@@ -37,23 +36,23 @@ class Media
 
     /**
      * Delete the given image.
-     * 
+     *
      * @param  object $path
      * @return void
      */
-    public function deleteImage($path) 
-    {   
+    public function deleteImage($path)
+    {
         \Storage::delete($path);
     }
 
     /**
      * Save the given image.
-     * 
+     *
      * @param  object  $image
      * @param  string  $dir
      * @return string
      */
-    protected function saveImage($image, $dir) 
+    protected function saveImage($image, $dir)
     {
         $imageName = 'image'.uniqid().time().'.jpg';
         $path      = 'public'.DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.$dir.DIRECTORY_SEPARATOR.$imageName;

@@ -6,378 +6,359 @@ use Illuminate\Support\Arr;
 
 class UserRepository extends AbstractRepository
 {
-	/**
-	 * Return the model full namespace.
-	 * 
-	 * @return string
-	 */
-	protected function getModel()
-	{
-		return 'App\Modules\Acl\AclUser';
-	}
+    /**
+     * Return the model full namespace.
+     *
+     * @return string
+     */
+    protected function getModel()
+    {
+        return 'App\Modules\Acl\AclUser';
+    }
 
 
-	/**
-	 * Return the logged in user account.
-	 *
-	 * @param  array   $relations
-	 * @return boolean
-	 */
-	public function account($relations = [])
-	{
-		$permissions = [];
-		$user        = \Core::users()->find(\Auth::id(), $relations);
-		foreach ($user->groups()->get() as $group)
-		{
-			$group->permissions->each(function($permission) use (&$permissions){
-				$permissions[$permission->model][$permission->id] = $permission->name;
-			});
-		}
-		$user->permissions = $permissions;
+    /**
+     * Return the logged in user account.
+     *
+     * @param  array   $relations
+     * @return boolean
+     */
+    public function account($relations = [])
+    {
+        $permissions = [];
+        $user        = \Core::users()->find(\Auth::id(), $relations);
+        foreach ($user->groups()->get() as $group) {
+            $group->permissions->each(function ($permission) use (&$permissions) {
+                $permissions[$permission->model][$permission->id] = $permission->name;
+            });
+        }
+        $user->permissions = $permissions;
 
-	   return $user;
-	}
+        return $user;
+    }
 
-	/**
-	 * Check if the logged in user or the given user 
-	 * has the given permissions on the given model.
-	 * 
-	 * @param  string $nameOfPermission
-	 * @param  string $model            
-	 * @param  mixed  $user
-	 * @return boolean
-	 */
-	public function can($nameOfPermission, $model, $user = false)
-	{      
-		$user        = $user ?: $this->find(\Auth::id(), ['groups.permissions']);
-		$permissions = [];
+    /**
+     * Check if the logged in user or the given user
+     * has the given permissions on the given model.
+     *
+     * @param  string $nameOfPermission
+     * @param  string $model
+     * @param  mixed  $user
+     * @return boolean
+     */
+    public function can($nameOfPermission, $model, $user = false)
+    {
+        $user        = $user ?: $this->find(\Auth::id(), ['groups.permissions']);
+        $permissions = [];
 
-		$user->groups->pluck('permissions')->each(function($permission) use (&$permissions, $model){
-			$permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray()); 
-		});
+        $user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model) {
+            $permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray());
+        });
         
-		return in_array($nameOfPermission, $permissions);
-	}
+        return in_array($nameOfPermission, $permissions);
+    }
 
-	/**
-	 * Check if the logged in user has the given group.
-	 * 
-	 * @param  string[] $groups
-	 * @param  mixed $user
-	 * @return boolean
-	 */
-	public function hasGroup($groups, $user = false)
-	{
-		$user = $user ?: $this->find(\Auth::id());
-		return $user->groups->whereIn('name', $groups)->count() ? true : false;
-	}
+    /**
+     * Check if the logged in user has the given group.
+     *
+     * @param  string[] $groups
+     * @param  mixed $user
+     * @return boolean
+     */
+    public function hasGroup($groups, $user = false)
+    {
+        $user = $user ?: $this->find(\Auth::id());
+        return $user->groups->whereIn('name', $groups)->count() ? true : false;
+    }
 
-	/**
-	 * Assign the given group ids to the given user.
-	 * 
-	 * @param  integer $userId    
-	 * @param  array   $groupIds
-	 * @return object
-	 */
-	public function assignGroups($userId, $groupIds)
-	{
-		\DB::transaction(function() use ($userId, $groupIds) {
-			$user = $this->find($userId);
-			$user->groups()->detach();
-			$user->groups()->attach($groupIds);
-		});
+    /**
+     * Assign the given group ids to the given user.
+     *
+     * @param  integer $userId
+     * @param  array   $groupIds
+     * @return object
+     */
+    public function assignGroups($userId, $groupIds)
+    {
+        \DB::transaction(function () use ($userId, $groupIds) {
+            $user = $this->find($userId);
+            $user->groups()->detach();
+            $user->groups()->attach($groupIds);
+        });
 
-		return $this->find($userId);
-	}
+        return $this->find($userId);
+    }
 
 
-	/**
-	 * Handle a login request to the application.
-	 * 
-	 * @param  array   $credentials    
-	 * @param  boolean $adminLogin
-	 * @return object
-	 */
-	public function login($credentials, $adminLogin = false)
-	{
-		if ( ! $user = $this->first(['email' => $credentials['email']])) 
-		{
-			\ErrorHandler::loginFailed();
-		} else if ($adminLogin && ! $user->groups->whereIn('name', ['Admin'])->count()) 
-		{
-			\ErrorHandler::loginFailed();
-		} else if ( ! $adminLogin && $user->groups->whereIn('name', ['Admin'])->count()) 
-		{
-			\ErrorHandler::loginFailed();
-		} else if ($user->blocked)
-		{
-			\ErrorHandler::userIsBlocked();
-		} else if ( ! config('skeleton.disable_confirm_email') && ! $user->confirmed)
-		{
-			\ErrorHandler::emailNotConfirmed();
-		}
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  array   $credentials
+     * @param  boolean $adminLogin
+     * @return object
+     */
+    public function login($credentials, $adminLogin = false)
+    {
+        if (! $user = $this->first(['email' => $credentials['email']])) {
+            \ErrorHandler::loginFailed();
+        } elseif ($adminLogin && ! $user->groups->whereIn('name', ['Admin'])->count()) {
+            \ErrorHandler::loginFailed();
+        } elseif (! $adminLogin && $user->groups->whereIn('name', ['Admin'])->count()) {
+            \ErrorHandler::loginFailed();
+        } elseif ($user->blocked) {
+            \ErrorHandler::userIsBlocked();
+        } elseif (! config('skeleton.disable_confirm_email') && ! $user->confirmed) {
+            \ErrorHandler::emailNotConfirmed();
+        }
 
-		return $user;
-	}
+        return $user;
+    }
 
-	/**
-	 * Handle a social login request of the none admin to the application.
-	 * 
-	 * @param  string $authCode
-	 * @param  string $accessToken
-	 * @param  string $type
-	 * @return array
-	 */
-	public function loginSocial($authCode, $accessToken, $type)
-	{
-		$access_token = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
-		$user         = \Socialite::driver($type)->userFromToken($access_token);
+    /**
+     * Handle a social login request of the none admin to the application.
+     *
+     * @param  string $authCode
+     * @param  string $accessToken
+     * @param  string $type
+     * @return array
+     */
+    public function loginSocial($authCode, $accessToken, $type)
+    {
+        $access_token = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
+        $user         = \Socialite::driver($type)->userFromToken($access_token);
 
-		if ( ! $user->email)
-		{
-			\ErrorHandler::noSocialEmail();
-		}
+        if (! $user->email) {
+            \ErrorHandler::noSocialEmail();
+        }
 
-		if ( ! $registeredUser = $this->model->where('email', $user->email)->first()) 
-		{
-			$this->register(['email' => $user->email, 'password' => ''], true);
-		}
+        if (! $registeredUser = $this->model->where('email', $user->email)->first()) {
+            $this->register(['email' => $user->email, 'password' => ''], true);
+        }
 
-		$loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
-		return $loginProxy->login(['email' => $user->email, 'password' => config('skeleton.social_pass')], 0);
-	}
+        $loginProxy = \App::make('App\Modules\Acl\Proxy\LoginProxy');
+        return $loginProxy->login(['email' => $user->email, 'password' => config('skeleton.social_pass')], 0);
+    }
     
-	/**
-	 * Handle a registration request.
-	 * 
-	 * @param  array   $credentials
-	 * @param  boolean $skipConfirmEmail
-	 * @return array
-	 */
-	public function register($credentials, $skipConfirmEmail = false)
-	{
-		$user = $this->save($credentials);
+    /**
+     * Handle a registration request.
+     *
+     * @param  array   $credentials
+     * @param  boolean $skipConfirmEmail
+     * @return array
+     */
+    public function register($credentials, $skipConfirmEmail = false)
+    {
+        $user = $this->save($credentials);
 
-		if ($skipConfirmEmail) 
-		{
-			$user->confirmed = 1;
-			$user->save();
-		} else if ( ! config('skeleton.disable_confirm_email'))  
-		{
-			$this->sendConfirmationEmail($user->email);
-		}
+        if ($skipConfirmEmail) {
+            $user->confirmed = 1;
+            $user->save();
+        } elseif (! config('skeleton.disable_confirm_email')) {
+            $this->sendConfirmationEmail($user->email);
+        }
 
-		return $user;
-	}
+        return $user;
+    }
     
-	/**
-	 * Block the user.
-	 *
-	 * @param  integer $userId
-	 * @return object
-	 */
-	public function block($userId)
-	{
-		if ( ! $user = $this->find($userId)) 
-		{
-			\ErrorHandler::notFound('user');
-		}
-		if ( ! $this->hasGroup(['Admin']))
-		{
-			\ErrorHandler::noPermissions();
-		} else if (\Auth::id() == $userId)
-		{
-			\ErrorHandler::noPermissions();
-		} else if ($user->groups->pluck('name')->search('Admin', true) !== false) 
-		{
-			\ErrorHandler::noPermissions();
-		}
+    /**
+     * Block the user.
+     *
+     * @param  integer $userId
+     * @return object
+     */
+    public function block($userId)
+    {
+        if (! $user = $this->find($userId)) {
+            \ErrorHandler::notFound('user');
+        }
+        if (! $this->hasGroup(['Admin'])) {
+            \ErrorHandler::noPermissions();
+        } elseif (\Auth::id() == $userId) {
+            \ErrorHandler::noPermissions();
+        } elseif ($user->groups->pluck('name')->search('Admin', true) !== false) {
+            \ErrorHandler::noPermissions();
+        }
 
-		$user->blocked = 1;
-		$user->save();
+        $user->blocked = 1;
+        $user->save();
         
-		return $user;
-	}
+        return $user;
+    }
 
-	/**
-	 * Unblock the user.
-	 *
-	 * @param  integer $userId
-	 * @return object
-	 */
-	public function unblock($userId)
-	{
-		if ( ! $this->hasGroup(['Admin']))
-		{
-			\ErrorHandler::noPermissions();
-		}
+    /**
+     * Unblock the user.
+     *
+     * @param  integer $userId
+     * @return object
+     */
+    public function unblock($userId)
+    {
+        if (! $this->hasGroup(['Admin'])) {
+            \ErrorHandler::noPermissions();
+        }
 
-		$user          = $this->find($userId);
-		$user->blocked = 0;
-		$user->save();
+        $user          = $this->find($userId);
+        $user->blocked = 0;
+        $user->save();
 
-		return $user;
-	}
+        return $user;
+    }
 
-	/**
-	 * Send a reset link to the given user.
-	 *
-	 * @param  string  $email
-	 * @return void
-	 */
-	public function sendReset($email)
-	{
-		if ( ! $user = $this->model->where('email', $email)->first())
-		{
-			\ErrorHandler::notFound('email');
-		}
+    /**
+     * Send a reset link to the given user.
+     *
+     * @param  string  $email
+     * @return void
+     */
+    public function sendReset($email)
+    {
+        if (! $user = $this->model->where('email', $email)->first()) {
+            \ErrorHandler::notFound('email');
+        }
 
-		$token = \Password::getRepository()->create($user);
-		\Core::notifications()->notify($user, 'ResetPassword', $token);
-	}
+        $token = \Password::getRepository()->create($user);
+        \Core::notifications()->notify($user, 'ResetPassword', $token);
+    }
 
-	/**
-	 * Reset the given user's password.
-	 *
-	 * @param  array  $credentials
-	 * @return string|null
-	 */
-	public function resetPassword($credentials)
-	{
-		$response = \Password::reset($credentials, function($user, $password) {
-			$user->password = $password;
-			$user->save();
-		});
+    /**
+     * Reset the given user's password.
+     *
+     * @param  array  $credentials
+     * @return string|null
+     */
+    public function resetPassword($credentials)
+    {
+        $response = \Password::reset($credentials, function ($user, $password) {
+            $user->password = $password;
+            $user->save();
+        });
 
-		switch ($response) {
-			case \Password::PASSWORD_RESET:
-				return 'success';
-                
-			case \Password::INVALID_TOKEN:
-				\ErrorHandler::invalidResetToken('token');
+        switch ($response) {
+            case \Password::PASSWORD_RESET:
+                return 'success';
 
-			case \Password::INVALID_PASSWORD:
-				\ErrorHandler::invalidResetPassword('email');
+            case \Password::INVALID_TOKEN:
+                \ErrorHandler::invalidResetToken('token');
+                //no break
 
-			case \Password::INVALID_USER:
-				\ErrorHandler::notFound('user');
+            case \Password::INVALID_PASSWORD:
+                \ErrorHandler::invalidResetPassword('email');
+                //no break
 
-			default:
-				\ErrorHandler::generalError();
-		}
-	}
+            case \Password::INVALID_USER:
+                \ErrorHandler::notFound('user');
+                //no break
 
-	/**
-	 * Change the logged in user password.
-	 *
-	 * @param  array  $credentials
-	 * @return void
-	 */
-	public function changePassword($credentials)
-	{
-		$user = \Auth::user();
-		if ( ! \Hash::check($credentials['old_password'], $user->password)) 
-		{
-			\ErrorHandler::invalidOldPassword();
-		}
+            default:
+                \ErrorHandler::generalError();
+        }
+    }
 
-		$user->password = $credentials['password'];
-		$user->save();
-	}
+    /**
+     * Change the logged in user password.
+     *
+     * @param  array  $credentials
+     * @return void
+     */
+    public function changePassword($credentials)
+    {
+        $user = \Auth::user();
+        if (! \Hash::check($credentials['old_password'], $user->password)) {
+            \ErrorHandler::invalidOldPassword();
+        }
 
-	/**
-	 * Confirm email using the confirmation code.
-	 *
-	 * @param  string $confirmationCode
-	 * @return void
-	 */
-	public function confirmEmail($confirmationCode)
-	{
-        if ( ! $user = $this->first(['confirmation_code' => $confirmationCode])) 
-        {
+        $user->password = $credentials['password'];
+        $user->save();
+    }
+
+    /**
+     * Confirm email using the confirmation code.
+     *
+     * @param  string $confirmationCode
+     * @return void
+     */
+    public function confirmEmail($confirmationCode)
+    {
+        if (! $user = $this->first(['confirmation_code' => $confirmationCode])) {
             \ErrorHandler::invalidConfirmationCode();
         }
 
         $user->confirmed         = 1;
         $user->confirmation_code = null;
         $user->save();
-	}
+    }
 
-	/**
-	 * Send the confirmation mail.
-	 *
-	 * @param  string $email
-	 * @return void
-	 */
-	public function sendConfirmationEmail($email)
-	{
-		$user = $this->first(['email' => $email]);
-		if ($user->confirmed) 
-		{
-			\ErrorHandler::emailAlreadyConfirmed();
-		}
+    /**
+     * Send the confirmation mail.
+     *
+     * @param  string $email
+     * @return void
+     */
+    public function sendConfirmationEmail($email)
+    {
+        $user = $this->first(['email' => $email]);
+        if ($user->confirmed) {
+            \ErrorHandler::emailAlreadyConfirmed();
+        }
 
-		$user->confirmed         = 0;
-		$user->confirmation_code = sha1(microtime());
-		$user->save();
-		\Core::notifications()->notify($user, 'ConfirmEmail');
-	}
+        $user->confirmed         = 0;
+        $user->confirmation_code = sha1(microtime());
+        $user->save();
+        \Core::notifications()->notify($user, 'ConfirmEmail');
+    }
 
-	/**
-	 * Paginate all users in the given group based on the given conditions.
-	 * 
-	 * @param  string  $groupName
-	 * @param  array   $relations
-	 * @param  integer $perPage
-	 * @param  string  $sortBy
-	 * @param  boolean $desc
-	 * @return \Illuminate\Http\Response
-	 */
-	public function group($conditions, $groupName, $relations, $perPage, $sortBy, $desc)
-	{   
-		unset($conditions['page']);
-		$conditions = $this->constructConditions($conditions, $this->model);
-		$sort       = $desc ? 'desc' : 'asc';
-		$model      = call_user_func_array("{$this->getModel()}::with", array($relations));
+    /**
+     * Paginate all users in the given group based on the given conditions.
+     *
+     * @param  string  $groupName
+     * @param  array   $relations
+     * @param  integer $perPage
+     * @param  string  $sortBy
+     * @param  boolean $desc
+     * @return \Illuminate\Http\Response
+     */
+    public function group($conditions, $groupName, $relations, $perPage, $sortBy, $desc)
+    {
+        unset($conditions['page']);
+        $conditions = $this->constructConditions($conditions, $this->model);
+        $sort       = $desc ? 'desc' : 'asc';
+        $model      = call_user_func_array("{$this->getModel()}::with", array($relations));
 
-		$model->whereHas('groups', function($q) use ($groupName){
-			$q->where('name', $groupName);
-		});
+        $model->whereHas('groups', function ($q) use ($groupName) {
+            $q->where('name', $groupName);
+        });
 
         
-		if (count($conditions['conditionValues']))
-		{
-			$model->whereRaw($conditions['conditionString'], $conditions['conditionValues']);
-		}
+        if (count($conditions['conditionValues'])) {
+            $model->whereRaw($conditions['conditionString'], $conditions['conditionValues']);
+        }
 
-		if ($perPage) 
-		{
-			return $model->orderBy($sortBy, $sort)->paginate($perPage);
-		}
+        if ($perPage) {
+            return $model->orderBy($sortBy, $sort)->paginate($perPage);
+        }
 
-		return $model->orderBy($sortBy, $sort)->get();
-	}
+        return $model->orderBy($sortBy, $sort)->get();
+    }
 
-	/**
-	 * Save the given data to the logged in user.
-	 *
-	 * @param  array $data
-	 * @return void
-	 */
-	public function saveProfile($data) 
-	{
-		if (Arr::has($data, 'profile_picture')) 
-		{
-			$data['profile_picture'] = \Media::uploadImageBas64($data['profile_picture'], 'admins/profile_pictures');
-		}
+    /**
+     * Save the given data to the logged in user.
+     *
+     * @param  array $data
+     * @return void
+     */
+    public function saveProfile($data)
+    {
+        if (Arr::has($data, 'profile_picture')) {
+            $data['profile_picture'] = \Media::uploadImageBas64($data['profile_picture'], 'admins/profile_pictures');
+        }
         
-		$data['id'] = \Auth::id();
-		$this->save($data);
-	}
+        $data['id'] = \Auth::id();
+        $this->save($data);
+    }
 
     /**
      * Ensure access token hasn't expired or revoked.
-     * 
+     *
      * @param  string $accessToken
      * @return boolean
      */
@@ -388,29 +369,28 @@ class UserRepository extends AbstractRepository
                 ->where('id', $accessTokenId)
                 ->first();
         
-        if (\Carbon\Carbon::parse($accessToken->expires_at)->isPast() || $accessToken->revoked) 
-        {
+        if (\Carbon\Carbon::parse($accessToken->expires_at)->isPast() || $accessToken->revoked) {
             return true;
         }
 
         return false;
     }
 
-	/**
-	 * Revoke the given access token and all 
-	 * associated refresh tokens.
-	 *
-	 * @param  oject $accessToken
-	 * @return void
-	 */
-	public function revokeAccessToken($accessToken)
-	{
-		\DB::table('oauth_refresh_tokens')
-			->where('access_token_id', $accessToken->id)
-			->update([
-				'revoked' => true
-			]);
+    /**
+     * Revoke the given access token and all
+     * associated refresh tokens.
+     *
+     * @param  oject $accessToken
+     * @return void
+     */
+    public function revokeAccessToken($accessToken)
+    {
+        \DB::table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update([
+                'revoked' => true
+            ]);
 
-		$accessToken->revoke();
-	}
+        $accessToken->revoke();
+    }
 }

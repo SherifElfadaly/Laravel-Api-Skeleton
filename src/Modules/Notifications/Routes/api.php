@@ -11,31 +11,29 @@
 |
 */
 
-Route::group(['prefix' => 'notifications'], function() {
+Route::group(['prefix' => 'notifications'], function () {
 
-	Route::group(['prefix' => 'notifications'], function() {
-		
-		Route::get('list/{perPage?}', 'NotificationsController@list');
-		Route::get('unread/{perPage?}', 'NotificationsController@unread');
-		Route::get('markAsRead/{id}', 'NotificationsController@markAsRead');
-		Route::get('markAllAsRead', 'NotificationsController@markAllAsRead');
+    Route::group(['prefix' => 'notifications'], function () {
+        
+        Route::get('list/{perPage?}', 'NotificationsController@list');
+        Route::get('unread/{perPage?}', 'NotificationsController@unread');
+        Route::get('markAsRead/{id}', 'NotificationsController@markAsRead');
+        Route::get('markAllAsRead', 'NotificationsController@markAllAsRead');
+    });
 
-	});
-
-	Route::group(['prefix' => 'push_notifications_devices'], function() {
-		
-		Route::get('list/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@index');
-		Route::get('find/{id}', 'PushNotificationsDevicesController@find');
-		Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@search');
-		Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginate');
-		Route::get('delete/{id}', 'PushNotificationsDevicesController@delete');
-		Route::get('restore/{id}', 'PushNotificationsDevicesController@restore');
-		Route::post('first', 'PushNotificationsDevicesController@first');
-		Route::post('findby/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@findby');
-		Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginateby');
-		Route::post('save', 'PushNotificationsDevicesController@save');
-		Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@deleted');
-		Route::post('register/device', 'PushNotificationsDevicesController@registerDevice');
-		
-	});
+    Route::group(['prefix' => 'push_notifications_devices'], function () {
+        
+        Route::get('list/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@index');
+        Route::get('find/{id}', 'PushNotificationsDevicesController@find');
+        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@search');
+        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginate');
+        Route::get('delete/{id}', 'PushNotificationsDevicesController@delete');
+        Route::get('restore/{id}', 'PushNotificationsDevicesController@restore');
+        Route::post('first', 'PushNotificationsDevicesController@first');
+        Route::post('findby/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@findby');
+        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@paginateby');
+        Route::post('save', 'PushNotificationsDevicesController@save');
+        Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'PushNotificationsDevicesController@deleted');
+        Route::post('register/device', 'PushNotificationsDevicesController@registerDevice');
+    });
 });
