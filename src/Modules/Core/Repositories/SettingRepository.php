@@ -11,7 +11,7 @@ class SettingRepository extends AbstractRepository
      */
     protected function getModel()
     {
-        return 'App\Modules\Core\Settings';
+        return 'App\Modules\Core\Setting';
     }
 
     /**

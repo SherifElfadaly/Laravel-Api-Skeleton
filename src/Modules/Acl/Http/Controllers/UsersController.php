@@ -1,20 +1,16 @@
 <?php
+
 namespace App\Modules\Acl\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Modules\Core\Http\Controllers\BaseApiController;
-use App\Modules\Acl\Proxy\LoginProxy;
 use Illuminate\Http\Request;
+use App\Modules\Core\Http\Controllers\BaseApiController;
+use App\Modules\Acl\Repositories\UserRepository;
+use App\Modules\Acl\Proxy\LoginProxy;
+use App\Modules\Core\Utl\CoreConfig;
+use App\Modules\Core\Http\Resources\General as GeneralResource;
 
 class UsersController extends BaseApiController
 {
-    /**
-     * The name of the model that is used by the base api controller
-     * to preform actions like (add, edit ... etc).
-     * @var string
-     */
-    protected $model = 'users';
-
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
@@ -47,10 +43,18 @@ class UsersController extends BaseApiController
      */
     protected $loginProxy;
 
-    public function __construct(LoginProxy $loginProxy)
+    /**
+     * Init new object.
+     *
+     * @param   LoginProxy     $loginProxy
+     * @param   UserRepository $repo
+     * @param   CoreConfig     $config
+     * @return  void
+     */
+    public function __construct(LoginProxy $loginProxy, UserRepository $repo, CoreConfig $config)
     {
         $this->loginProxy = $loginProxy;
-        parent::__construct();
+        parent::__construct($repo, $config, 'App\Modules\Acl\Http\Resources\AclUser');
     }
 
     /**
@@ -60,7 +64,7 @@ class UsersController extends BaseApiController
      */
     public function account()
     {
-        return \Response::json($this->repo->account($this->relations), 200);
+        return new $this->modelResource($this->repo->account($this->relations));
     }
 
     /**
@@ -71,7 +75,7 @@ class UsersController extends BaseApiController
      */
     public function block($id)
     {
-        return \Response::json($this->repo->block($id), 200);
+        return new $this->modelResource($this->repo->block($id));
     }
 
     /**
@@ -82,7 +86,7 @@ class UsersController extends BaseApiController
      */
     public function unblock($id)
     {
-        return \Response::json($this->repo->unblock($id), 200);
+        return new $this->modelResource($this->repo->unblock($id));
     }
 
     /**
@@ -92,7 +96,7 @@ class UsersController extends BaseApiController
      */
     public function logout()
     {
-        return \Response::json($this->loginProxy->logout(), 200);
+        return new GeneralResource($this->loginProxy->logout());
     }
 
     /**
@@ -109,7 +113,7 @@ class UsersController extends BaseApiController
             'password' => 'required|min:6'
             ]);
 
-        return \Response::json($this->repo->register($request->only('name', 'email', 'password')), 200);
+        return new $this->modelResource($this->repo->register($request->only('name', 'email', 'password')));
     }
 
     /**
@@ -125,8 +129,9 @@ class UsersController extends BaseApiController
             'password' => 'required|min:6',
             'admin'    => 'nullable|boolean'
             ]);
-
-        return \Response::json($this->loginProxy->login($request->only('email', 'password'), $request->get('admin')), 200);
+        
+        $result = $this->loginProxy->login($request->only('email', 'password'), $request->get('admin'));
+        return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
 
     /**
@@ -143,7 +148,8 @@ class UsersController extends BaseApiController
             'type'         => 'required|in:facebook,google'
             ]);
 
-        return \Response::json($this->repo->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type')), 200);
+        $result = $this->repo->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type'));
+        return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
 
     /**
@@ -159,7 +165,7 @@ class UsersController extends BaseApiController
             'user_id'   => 'required|exists:users,id'
             ]);
 
-        return \Response::json($this->repo->assignGroups($request->get('user_id'), $request->get('group_ids')), 200);
+        return new $this->modelResource($this->repo->assignGroups($request->get('user_id'), $request->get('group_ids')));
     }
 
     /**
@@ -172,7 +178,7 @@ class UsersController extends BaseApiController
     {
         $this->validate($request, ['email' => 'required|email']);
 
-        return \Response::json($this->repo->sendReset($request->get('email')), 200);
+        return new GeneralResource($this->repo->sendReset($request->get('email')));
     }
 
     /**
@@ -190,7 +196,7 @@ class UsersController extends BaseApiController
             'password_confirmation' => 'required',
         ]);
 
-        return \Response::json($this->repo->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')), 200);
+        return new GeneralResource($this->repo->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')));
     }
 
     /**
@@ -207,7 +213,7 @@ class UsersController extends BaseApiController
             'password_confirmation' => 'required',
         ]);
 
-        return \Response::json($this->repo->changePassword($request->only('old_password', 'password', 'password_confirmation')), 200);
+        return new GeneralResource($this->repo->changePassword($request->only('old_password', 'password', 'password_confirmation')));
     }
 
     /**
@@ -222,7 +228,7 @@ class UsersController extends BaseApiController
             'confirmation_code' => 'required|string'
         ]);
 
-        return \Response::json($this->repo->confirmEmail($request->only('confirmation_code')), 200);
+        return new GeneralResource($this->repo->confirmEmail($request->only('confirmation_code')));
     }
 
     /**
@@ -237,7 +243,7 @@ class UsersController extends BaseApiController
             'email' => 'required|exists:users,email'
         ]);
 
-        return \Response::json($this->repo->sendConfirmationEmail($request->get('email')), 200);
+        return new GeneralResource($this->repo->sendConfirmationEmail($request->get('email')));
     }
 
     /**
@@ -252,7 +258,7 @@ class UsersController extends BaseApiController
             'refreshtoken' => 'required',
         ]);
 
-        return \Response::json($this->loginProxy->refreshtoken($request->get('refreshtoken')), 200);
+        return new GeneralResource($this->loginProxy->refreshtoken($request->get('refreshtoken')));
     }
 
     /**
@@ -267,7 +273,7 @@ class UsersController extends BaseApiController
      */
     public function group(Request $request, $groupName, $perPage = false, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->group($request->all(), $groupName, $this->relations, $perPage, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->group($request->all(), $groupName, $this->relations, $perPage, $sortBy, $desc));
     }
 
     /**
@@ -284,6 +290,6 @@ class UsersController extends BaseApiController
             'email'           => 'required|email|unique:users,email,'.\Auth::id()
         ]);
 
-        return \Response::json($this->repo->saveProfile($request->only('name', 'email', 'profile_picture')), 200);
+        return new $this->modelResource($this->repo->saveProfile($request->only('name', 'email', 'profile_picture')));
     }
 }

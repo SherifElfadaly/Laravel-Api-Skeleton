@@ -12,7 +12,7 @@ class PushNotificationsDevices extends Migration
      */
     public function up()
     {
-        Schema::create('push_notifications_devices', function (Blueprint $table) {
+        Schema::create('push_notification_devices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('device_token');
             $table->integer('user_id');

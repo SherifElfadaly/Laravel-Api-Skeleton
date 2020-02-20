@@ -1,16 +1,22 @@
 <?php
+
 namespace App\Modules\Acl\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Modules\Core\Http\Controllers\BaseApiController;
-use Illuminate\Http\Request;
+use App\Modules\Acl\Repositories\PermissionRepository;
+use App\Modules\Core\Utl\CoreConfig;
 
 class PermissionsController extends BaseApiController
 {
     /**
-     * The name of the model that is used by the base api controller
-     * to preform actions like (add, edit ... etc).
-     * @var string
+     * Init new object.
+     *
+     * @param   PermissionRepository $repo
+     * @param   CoreConfig           $config
+     * @return  void
      */
-    protected $model = 'permissions';
+    public function __construct(PermissionRepository $repo, CoreConfig $config)
+    {
+        parent::__construct($repo, $config, 'App\Modules\Acl\Http\Resources\AclPermission');
+    }
 }

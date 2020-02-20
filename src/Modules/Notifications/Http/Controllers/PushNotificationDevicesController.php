@@ -1,19 +1,14 @@
 <?php
+
 namespace App\Modules\Notifications\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Controllers\BaseApiController;
+use \App\Modules\Notifications\Repositories\PushNotificationDeviceRepository;
+use App\Modules\Core\Utl\CoreConfig;
 
-class PushNotificationsDevicesController extends BaseApiController
+class PushNotificationDevicesController extends BaseApiController
 {
-    /**
-     * The name of the model that is used by the base api controller
-     * to preform actions like (add, edit ... etc).
-     * @var string
-     */
-    protected $model = 'pushNotificationDevices';
-
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
@@ -32,6 +27,18 @@ class PushNotificationsDevicesController extends BaseApiController
     ];
 
     /**
+     * Init new object.
+     *
+     * @param   PushNotificationDeviceRepository $repo
+     * @param   CoreConfig                       $config
+     * @return  void
+     */
+    public function __construct(PushNotificationDeviceRepository $repo, CoreConfig $config)
+    {
+        parent::__construct($repo, $config, 'App\Modules\Notifications\Http\Resources\PushNotificationDevice');
+    }
+
+    /**
      * Register the given device to the logged in user.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,6 +50,6 @@ class PushNotificationsDevicesController extends BaseApiController
             'device_token' => 'required|string|max:255'
             ]);
 
-        return \Response::json($this->repo->registerDevice($request->all()), 200);
+        return new $this->modelResource($this->repo->registerDevice($request->all()));
     }
 }

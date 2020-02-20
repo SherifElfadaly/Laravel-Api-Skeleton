@@ -20,6 +20,11 @@ class OauthClient extends Client
         return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
     }
     
+    public function user()
+    {
+        return $this->belongsTo('App\Modules\Acl\AclUser');
+    }
+    
     public static function boot()
     {
         parent::boot();

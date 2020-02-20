@@ -11,12 +11,13 @@ class LoginProxy
      */
     public function login($credentials, $adminLogin = false)
     {
-        \Core::users()->login($credentials, $adminLogin);
-
-        return $this->proxy('password', [
+        $user = \Core::users()->login($credentials, $adminLogin);
+        $tokens = $this->proxy('password', [
             'username' => $credentials['email'],
             'password' => $credentials['password']
         ]);
+
+        return compact('user', 'tokens');
     }
 
     /**

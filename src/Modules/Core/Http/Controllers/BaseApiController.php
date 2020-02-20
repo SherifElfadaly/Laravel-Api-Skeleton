@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Modules\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\Modules\Core\Http\Resources\General as GeneralResource;
 
 class BaseApiController extends Controller
 {
@@ -28,20 +30,25 @@ class BaseApiController extends Controller
      */
     protected $repo;
 
-    public function __construct()
+    /**
+     * Init new object.
+     *
+     * @param   mixed      $repo
+     * @param   CoreConfig $config
+     * @param   string     $modelResource
+     * @return  void
+     */
+    public function __construct($repo, $config, $modelResource)
     {
-        $this->config              = \CoreConfig::getConfig();
-        $this->model               = property_exists($this, 'model') ? $this->model : false;
-        $this->validationRules     = property_exists($this, 'validationRules') ? $this->validationRules : false;
+        $this->repo = $repo;
+        $this->modelResource = $modelResource;
+        $this->config = $config->getConfig();
+        $this->modelName = explode('\\', get_called_class());
+        $this->modelName = lcfirst(str_replace('Controller', '', end($this->modelName)));
+        $this->validationRules = property_exists($this, 'validationRules') ? $this->validationRules : false;
         $this->skipPermissionCheck = property_exists($this, 'skipPermissionCheck') ? $this->skipPermissionCheck : [];
-        $this->skipLoginCheck      = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
-        $route                     = explode('@', \Route::currentRouteAction())[1];
-
-        $this->middleware(function ($request, $next) {
-            
-            $this->repo = call_user_func_array("\Core::{$this->model}", []);
-            return $next($request);
-        });
+        $this->skipLoginCheck = property_exists($this, 'skipLoginCheck') ? $this->skipLoginCheck : [];
+        $route = explode('@', \Route::currentRouteAction())[1];
 
         $this->setSessions();
         $this->checkPermission($route);
@@ -57,7 +64,7 @@ class BaseApiController extends Controller
      */
     public function index($sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->all($this->relations, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->all($this->relations, $sortBy, $desc));
     }
 
     /**
@@ -68,7 +75,7 @@ class BaseApiController extends Controller
      */
     public function find($id)
     {
-        return \Response::json($this->repo->find($id, $this->relations), 200);
+        return new $this->modelResource($this->repo->find($id, $this->relations));
     }
 
     /**
@@ -83,7 +90,7 @@ class BaseApiController extends Controller
      */
     public function search($query = '', $perPage = 15, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->search($query, $perPage, $this->relations, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->search($query, $perPage, $this->relations, $sortBy, $desc));
     }
 
     /**
@@ -97,7 +104,7 @@ class BaseApiController extends Controller
      */
     public function findby(Request $request, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->findBy($request->all(), $this->relations, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->findBy($request->all(), $this->relations, $sortBy, $desc));
     }
 
     /**
@@ -109,7 +116,7 @@ class BaseApiController extends Controller
      */
     public function first(Request $request)
     {
-        return \Response::json($this->repo->first($request->all(), $this->relations), 200);
+        return new $this->modelResource($this->repo->first($request->all(), $this->relations));
     }
 
     /**
@@ -122,7 +129,7 @@ class BaseApiController extends Controller
      */
     public function paginate($perPage = 15, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->paginate($perPage, $this->relations, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->paginate($perPage, $this->relations, $sortBy, $desc));
     }
 
     /**
@@ -137,7 +144,7 @@ class BaseApiController extends Controller
      */
     public function paginateby(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->paginateBy($request->all(), $perPage, $this->relations, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->paginateBy($request->all(), $perPage, $this->relations, $sortBy, $desc));
     }
 
     /**
@@ -162,7 +169,7 @@ class BaseApiController extends Controller
         
         $this->validate($request, $this->validationRules);
 
-        return \Response::json($this->repo->save($request->all()), 200);
+        return $this->modelResource::collection($this->repo->save($request->all()));
     }
 
     /**
@@ -173,7 +180,7 @@ class BaseApiController extends Controller
      */
     public function delete($id)
     {
-        return \Response::json($this->repo->delete($id), 200);
+        return new GeneralResource($this->repo->delete($id));
     }
 
     /**
@@ -187,7 +194,7 @@ class BaseApiController extends Controller
      */
     public function deleted(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1)
     {
-        return \Response::json($this->repo->deleted($request->all(), $perPage, $sortBy, $desc), 200);
+        return $this->modelResource::collection($this->repo->deleted($request->all(), $perPage, $sortBy, $desc));
     }
 
     /**
@@ -198,7 +205,7 @@ class BaseApiController extends Controller
      */
     public function restore($id)
     {
-        return \Response::json($this->repo->restore($id), 200);
+        return new GeneralResource($this->repo->restore($id));
     }
 
     /**
@@ -222,8 +229,8 @@ class BaseApiController extends Controller
                 \ErrorHandler::userIsBlocked();
             }
 
-            if ($isPasswordClient && (in_array($permission, $this->skipPermissionCheck) || \Core::users()->can($permission, $this->model))) {
-            } elseif (! $isPasswordClient && $user->tokenCan($this->model.'-'.$permission)) {
+            if ($isPasswordClient && (in_array($permission, $this->skipPermissionCheck) || \Core::users()->can($permission, $this->modelName))) {
+            } elseif (! $isPasswordClient && $user->tokenCan($this->modelName.'-'.$permission)) {
             } else {
                 \ErrorHandler::noPermissions();
             }
@@ -272,7 +279,7 @@ class BaseApiController extends Controller
     private function setRelations($route)
     {
         $route           = $route !== 'index' ? $route : 'list';
-        $relations       = Arr::get($this->config['relations'], $this->model, false);
+        $relations       = Arr::get($this->config['relations'], $this->modelName, false);
         $this->relations = $relations && isset($relations[$route]) ? $relations[$route] : [];
     }
 

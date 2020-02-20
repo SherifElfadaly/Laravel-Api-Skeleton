@@ -131,7 +131,7 @@ class UserRepository extends AbstractRepository
             \ErrorHandler::noSocialEmail();
         }
 
-        if (! $registeredUser = $this->model->where('email', $user->email)->first()) {
+        if ( ! $this->model->where('email', $user->email)->first()) {
             $this->register(['email' => $user->email, 'password' => ''], true);
         }
 
@@ -353,7 +353,7 @@ class UserRepository extends AbstractRepository
         }
         
         $data['id'] = \Auth::id();
-        $this->save($data);
+        return $this->save($data);
     }
 
     /**

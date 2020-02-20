@@ -1,25 +1,32 @@
 <?php
+
 namespace App\Modules\Reporting\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Controllers\BaseApiController;
+use \App\Modules\Reporting\Repositories\ReportRepository;
+use App\Modules\Core\Utl\CoreConfig;
 
 class ReportsController extends BaseApiController
 {
-    /**
-     * The name of the model that is used by the base api controller
-     * to preform actions like (add, edit ... etc).
-     * @var string
-     */
-    protected $model = 'reports';
-
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
      * @var array
      */
     protected $skipPermissionCheck = ['getReport'];
+
+    /**
+     * Init new object.
+     *
+     * @param   ReportRepository $repo
+     * @param   CoreConfig       $config
+     * @return  void
+     */
+    public function __construct(ReportRepository $repo, CoreConfig $config)
+    {
+        parent::__construct($repo, $config, 'App\Modules\Reporting\Http\Resources\Report');
+    }
 
     /**
      * Render the given report name with the given conditions.

@@ -59,10 +59,11 @@ class Handler extends ExceptionHandler
             } elseif ($exception instanceof \GuzzleHttp\Exception\ClientException) {
                 \ErrorHandler::connectionError();
             } elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
-                return \Response::json([$exception->getMessage()], $exception->getStatusCode());
+                $errors = $exception->getStatusCode() === 404 ? 'not found' : $exception->getMessage();
+                return \Response::json(['errors' => [$errors]], $exception->getStatusCode());
             } elseif ($exception instanceof \Illuminate\Validation\ValidationException) {
-                return \Response::json($exception->errors(), 422);
-            } elseif (! $exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException) {
+                return \Response::json(['errors' => $exception->errors()], 422);
+            } elseif (! $exception instanceof \Symfony\Component\ErrorHandler\Error\FatalError) {
                 return parent::render($request, $exception);
             }
         }

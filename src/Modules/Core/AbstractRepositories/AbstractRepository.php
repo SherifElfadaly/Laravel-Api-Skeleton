@@ -525,7 +525,6 @@ abstract class AbstractRepository implements RepositoryInterface
         }
 
         return $model->orderBy($sortBy, $sort)->paginate($perPage, $columns);
-        ;
     }
 
     /**

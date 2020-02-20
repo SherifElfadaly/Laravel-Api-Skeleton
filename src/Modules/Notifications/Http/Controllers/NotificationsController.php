@@ -1,25 +1,32 @@
 <?php
+
 namespace App\Modules\Notifications\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use App\Modules\Core\Http\Controllers\BaseApiController;
+use \App\Modules\Notifications\Repositories\NotificationRepository;
+use App\Modules\Core\Utl\CoreConfig;
+use App\Modules\Core\Http\Resources\General as GeneralResource;
 
 class NotificationsController extends BaseApiController
 {
-    /**
-     * The name of the model that is used by the base api controller
-     * to preform actions like (add, edit ... etc).
-     * @var string
-     */
-    protected $model = 'notifications';
-
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
      * @var array
      */
     protected $skipPermissionCheck = ['markAsRead', 'markAllAsRead', 'list', 'unread'];
+
+    /**
+     * Init new object.
+     *
+     * @param   NotificationRepository $repo
+     * @param   CoreConfig             $config
+     * @return  void
+     */
+    public function __construct(NotificationRepository $repo, CoreConfig $config)
+    {
+        parent::__construct($repo, $config, 'App\Modules\Notifications\Http\Resources\Notification');
+    }
 
     /**
      * Retrieve all notifications of the logged in user.
@@ -29,7 +36,7 @@ class NotificationsController extends BaseApiController
      */
     public function list($perPage = 0)
     {
-        return \Response::json($this->repo->list($perPage), 200);
+        return $this->modelResource::collection($this->repo->list($perPage));
     }
 
     /**
@@ -40,7 +47,7 @@ class NotificationsController extends BaseApiController
      */
     public function unread($perPage = 0)
     {
-        return \Response::json($this->repo->unread($perPage), 200);
+        return $this->modelResource::collection($this->repo->unread($perPage));
     }
 
     /**
@@ -51,7 +58,7 @@ class NotificationsController extends BaseApiController
      */
     public function markAsRead($id)
     {
-        return \Response::json($this->repo->markAsRead($id), 200);
+        return new GeneralResource($this->repo->markAsRead($id));
     }
 
     /**
@@ -61,6 +68,6 @@ class NotificationsController extends BaseApiController
      */
     public function markAllAsRead()
     {
-        return \Response::json($this->repo->markAllAsRead(), 200);
+        return new GeneralResource($this->repo->markAllAsRead());
     }
 }

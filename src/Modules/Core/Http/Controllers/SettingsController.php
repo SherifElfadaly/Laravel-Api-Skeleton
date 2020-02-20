@@ -1,19 +1,15 @@
 <?php
+
 namespace App\Modules\Core\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Modules\Core\Http\Controllers\BaseApiController;
 use Illuminate\Http\Request;
+use App\Modules\Core\Http\Controllers\BaseApiController;
+use App\Modules\Core\Repositories\SettingRepository;
+use App\Modules\Core\Utl\CoreConfig;
+use App\Modules\Core\Http\Resources\General as GeneralResource;
 
 class SettingsController extends BaseApiController
 {
-    /**
-     * The name of the model that is used by the base api controller
-     * to preform actions like (add, edit ... etc).
-     * @var string
-     */
-    protected $model = 'settings';
-
     /**
      * The validations rules used by the base api controller
      * to check before add.
@@ -23,7 +19,19 @@ class SettingsController extends BaseApiController
         'id'    => 'required|exists:settings,id',
         'value' => 'required|string'
     ];
-    
+
+    /**
+     * Init new object.
+     *
+     * @param   SettingRepository $repo
+     * @param   CoreConfig        $config
+     * @return  void
+     */
+    public function __construct(SettingRepository $repo, CoreConfig $config)
+    {
+        parent::__construct($repo, $config, 'App\Modules\Core\Http\Resources\Setting');
+    }
+
     /**
      * Save list of settings.
      *
@@ -32,6 +40,6 @@ class SettingsController extends BaseApiController
      */
     public function saveMany(Request $request)
     {
-        return \Response::json($this->repo->saveMany($request->all()), 200);
+        return new GeneralResource($this->repo->saveMany($request->all()));
     }
 }
