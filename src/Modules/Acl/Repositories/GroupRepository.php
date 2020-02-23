@@ -1,17 +1,19 @@
 <?php namespace App\Modules\Acl\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
+use App\Modules\Acl\AclGroup;
 
-class GroupRepository extends AbstractRepository
+class GroupRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   AclGroup $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(AclGroup $model)
     {
-        return 'App\Modules\Acl\AclGroup';
+        parent::__construct($model);
     }
 
     /**

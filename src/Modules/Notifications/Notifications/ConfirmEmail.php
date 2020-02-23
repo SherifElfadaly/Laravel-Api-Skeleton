@@ -12,7 +12,9 @@ class ConfirmEmail extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new notification instance.
+     * Init new object.
+     *
+     * @return  void
      */
     public function __construct()
     {

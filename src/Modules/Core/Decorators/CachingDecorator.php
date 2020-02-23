@@ -55,7 +55,9 @@ class CachingDecorator
     public $cacheTag;
     
     /**
-     * Create new CachingDecorator instance.
+     * Init new object.
+     *
+     * @return  void
      */
     public function __construct($repo, $cache)
     {

@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Core\Interfaces;
 
-interface RepositoryInterface
+interface BaseRepositoryInterface
 {
     /**
      * Fetch all records with relations from the storage.

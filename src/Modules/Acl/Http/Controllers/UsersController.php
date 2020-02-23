@@ -3,7 +3,7 @@
 namespace App\Modules\Acl\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Modules\Core\Http\Controllers\BaseApiController;
+use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Acl\Repositories\UserRepository;
 use App\Modules\Acl\Proxy\LoginProxy;
 use App\Modules\Core\Utl\CoreConfig;

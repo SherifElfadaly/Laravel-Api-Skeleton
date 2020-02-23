@@ -1,17 +1,19 @@
 <?php namespace App\Modules\Notifications\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
+use App\Modules\Notifications\Notification;
 
-class NotificationRepository extends AbstractRepository
+class NotificationRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   Notification $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(Notification $model)
     {
-        return 'App\Modules\Notifications\Notification';
+        parent::__construct($model);
     }
 
     /**

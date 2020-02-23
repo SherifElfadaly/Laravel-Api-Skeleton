@@ -1,17 +1,19 @@
 <?php namespace App\Modules\Core\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
+use App\Modules\Core\Setting;
 
-class SettingRepository extends AbstractRepository
+class SettingRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   Setting $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(Setting $model)
     {
-        return 'App\Modules\Core\Setting';
+        parent::__construct($model);
     }
 
     /**

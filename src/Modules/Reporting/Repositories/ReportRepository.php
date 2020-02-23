@@ -1,17 +1,19 @@
 <?php namespace App\Modules\Reporting\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
+use App\Modules\Reporting\Report;
 
-class ReportRepository extends AbstractRepository
+class ReportRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   Report $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(Report $model)
     {
-        return 'App\Modules\Reporting\Report';
+        parent::__construct($model);
     }
 
     /**
@@ -31,10 +33,8 @@ class ReportRepository extends AbstractRepository
          * Fetch the report from db.
          */
         $reportConditions = $this->constructConditions(['report_name' => $reportName], $this->model);
-        $report           = call_user_func_array(
-            "{$this->getModel()}::with",
-            array($relations)
-        )->whereRaw(
+        $report           = $this->model->with($relations)
+        ->whereRaw(
             $reportConditions['conditionString'],
             $reportConditions['conditionValues']
         )->first();

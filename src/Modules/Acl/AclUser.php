@@ -2,7 +2,6 @@
 
 use App\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class AclUser extends User

@@ -3,7 +3,7 @@
 namespace App\Modules\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Modules\Core\Http\Controllers\BaseApiController;
+use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Core\Repositories\SettingRepository;
 use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;

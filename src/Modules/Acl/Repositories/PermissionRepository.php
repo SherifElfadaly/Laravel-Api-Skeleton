@@ -1,16 +1,18 @@
 <?php namespace App\Modules\Acl\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
+use App\Modules\Acl\AclPermission;
 
-class PermissionRepository extends AbstractRepository
+class PermissionRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   AclPermission $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(AclPermission $model)
     {
-        return 'App\Modules\Acl\AclPermission';
+        parent::__construct($model);
     }
 }

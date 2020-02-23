@@ -14,7 +14,9 @@ class ResetPassword extends Notification implements ShouldQueue
     protected $token;
 
     /**
-     * Create a new notification instance.
+     * Init new object.
+     *
+     * @return  void
      */
     public function __construct($token)
     {

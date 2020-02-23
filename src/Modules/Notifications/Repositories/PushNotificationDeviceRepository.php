@@ -1,20 +1,22 @@
 <?php namespace App\Modules\Notifications\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
+use App\Modules\Notifications\PushNotificationDevice;
 
-class PushNotificationDeviceRepository extends AbstractRepository
+class PushNotificationDeviceRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   PushNotificationDevice $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(PushNotificationDevice $model)
     {
-        return 'App\Modules\Notifications\PushNotificationDevice';
+        parent::__construct($model);
     }
 
     /**

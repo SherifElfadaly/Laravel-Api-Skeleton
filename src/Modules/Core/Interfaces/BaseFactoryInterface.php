@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Core\Interfaces;
 
-interface RepositoryContainerInterface
+interface BaseFactoryInterface
 {
     /**
      * Construct the repository class name based on

@@ -1,21 +1,21 @@
 <?php namespace App\Modules\Acl\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
-use Lcobucci\JWT\ValidationData;
+use App\Modules\Core\BaseClasses\BaseRepository;
 use Illuminate\Support\Arr;
+use App\Modules\Acl\AclUser;
 
-class UserRepository extends AbstractRepository
+class UserRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   AclUser $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(AclUser $model)
     {
-        return 'App\Modules\Acl\AclUser';
+        parent::__construct($model);
     }
-
 
     /**
      * Return the logged in user account.
@@ -26,7 +26,7 @@ class UserRepository extends AbstractRepository
     public function account($relations = [])
     {
         $permissions = [];
-        $user        = \Core::users()->find(\Auth::id(), $relations);
+        $user        = $this->find(\Auth::id(), $relations);
         foreach ($user->groups()->get() as $group) {
             $group->permissions->each(function ($permission) use (&$permissions) {
                 $permissions[$permission->model][$permission->id] = $permission->name;
@@ -322,7 +322,7 @@ class UserRepository extends AbstractRepository
         unset($conditions['page']);
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
-        $model      = call_user_func_array("{$this->getModel()}::with", array($relations));
+        $model      = $this->model->with($relations);
 
         $model->whereHas('groups', function ($q) use ($groupName) {
             $q->where('name', $groupName);

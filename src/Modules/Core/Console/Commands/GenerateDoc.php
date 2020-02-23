@@ -22,7 +22,9 @@ class GenerateDoc extends Command
     protected $description = 'Generate api documentation';
 
     /**
-     * Create a new command instance.
+     * Init new object.
+     *
+     * @return  void
      */
     public function __construct()
     {

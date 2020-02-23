@@ -1,17 +1,19 @@
 <?php namespace App\Modules\Acl\Repositories;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepository;
+use App\Modules\Core\BaseClasses\BaseRepository;
+use App\Modules\Acl\OauthClient;
 
-class OauthClientRepository extends AbstractRepository
+class OauthClientRepository extends BaseRepository
 {
     /**
-     * Return the model full namespace.
+     * Init new object.
      *
-     * @return string
+     * @param   OauthClient $model
+     * @return  void
      */
-    protected function getModel()
+    public function __construct(OauthClient $model)
     {
-        return 'App\Modules\Acl\OauthClient';
+        parent::__construct($model);
     }
 
     /**

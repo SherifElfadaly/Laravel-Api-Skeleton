@@ -1,10 +1,10 @@
-<?php namespace App\Modules\Core\AbstractRepositories;
+<?php namespace App\Modules\Core\BaseClasses;
 
-use App\Modules\Core\Interfaces\RepositoryInterface;
+use App\Modules\Core\Interfaces\BaseRepositoryInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-abstract class AbstractRepository implements RepositoryInterface
+abstract class BaseRepository implements BaseRepositoryInterface
 {
     /**
      * The model implementation.
@@ -14,19 +14,14 @@ abstract class AbstractRepository implements RepositoryInterface
     public $model;
     
     /**
-     * The config implementation.
+     * Init new object.
      *
-     * @var array
+     * @var mixed model
+     * @return  void
      */
-    protected $config;
-    
-    /**
-     * Create new AbstractRepository instance.
-     */
-    public function __construct()
+    public function __construct($model)
     {
-        $this->config = \CoreConfig::getConfig();
-        $this->model  = \App::make($this->getModel());
+        $this->model  = $model;
     }
 
     /**
@@ -41,7 +36,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function all($relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
     {
         $sort = $desc ? 'desc' : 'asc';
-        return call_user_func_array("{$this->getModel()}::with", array($relations))->orderBy($sortBy, $sort)->get($columns);
+        return $this->model->with($relations)->orderBy($sortBy, $sort)->get($columns);
     }
 
     /**
@@ -58,7 +53,7 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function search($query, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
     {
-        $model            = call_user_func_array("{$this->getModel()}::with", array($relations));
+        $model            = $this->model->with($relations);
         $conditionColumns = $this->model->searchable;
         $sort             = $desc ? 'desc' : 'asc';
 
@@ -161,7 +156,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function paginate($perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
     {
         $sort = $desc ? 'desc' : 'asc';
-        return call_user_func_array("{$this->getModel()}::with", array($relations))->orderBy($sortBy, $sort)->paginate($perPage, $columns);
+        return $this->model->with($relations)->orderBy($sortBy, $sort)->paginate($perPage, $columns);
     }
 
     /**
@@ -181,7 +176,7 @@ abstract class AbstractRepository implements RepositoryInterface
         unset($conditions['page']);
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
-        return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage, $columns);
+        return $this->model->with($relations)->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage, $columns);
     }
     
     /**
@@ -422,7 +417,7 @@ abstract class AbstractRepository implements RepositoryInterface
             $model = $this->model->lockForUpdate()->find($value);
             $model ? $model->update($data) : 0;
         } else {
-            call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) use ($data) {
+            $this->model->where($attribute, '=', $value)->lockForUpdate()->get()->each(function ($model) use ($data) {
                 $model->update($data);
             });
         }
@@ -439,7 +434,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function delete($value, $attribute = 'id')
     {
         if ($attribute == 'id') {
-            \DB::transaction(function () use ($value, $attribute, &$result) {
+            \DB::transaction(function () use ($value) {
                 $model = $this->model->lockForUpdate()->find($value);
                 if (! $model) {
                     \ErrorHandler::notFound(class_basename($this->model).' with id : '.$value);
@@ -448,8 +443,8 @@ abstract class AbstractRepository implements RepositoryInterface
                 $model->delete();
             });
         } else {
-            \DB::transaction(function () use ($value, $attribute, &$result) {
-                call_user_func_array("{$this->getModel()}::where", array($attribute, '=', $value))->lockForUpdate()->get()->each(function ($model) {
+            \DB::transaction(function () use ($value, $attribute) {
+                $this->model->where($attribute, '=', $value)->lockForUpdate()->get()->each(function ($model) {
                     $model->delete();
                 });
             });
@@ -467,7 +462,7 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function find($id, $relations = [], $columns = ['*'])
     {
-        return call_user_func_array("{$this->getModel()}::with", array($relations))->find($id, $columns);
+        return $this->model->with($relations)->find($id, $columns);
     }
     
     /**
@@ -485,7 +480,7 @@ abstract class AbstractRepository implements RepositoryInterface
     {
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
-        return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->get($columns);
+        return $this->model->with($relations)->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->get($columns);
     }
 
     /**
@@ -500,7 +495,7 @@ abstract class AbstractRepository implements RepositoryInterface
     public function first($conditions, $relations = [], $columns = ['*'])
     {
         $conditions = $this->constructConditions($conditions, $this->model);
-        return call_user_func_array("{$this->getModel()}::with", array($relations))->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->first($columns);
+        return $this->model->with($relations)->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->first($columns);
     }
 
     /**
@@ -626,13 +621,4 @@ abstract class AbstractRepository implements RepositoryInterface
         
         return $removeLast === false ? $result : $result.')';
     }
-
-    /**
-     * Abstract method that return the necessary
-     * information (full model namespace)
-     * needed to preform the previous actions.
-     *
-     * @return string
-     */
-    abstract protected function getModel();
 }

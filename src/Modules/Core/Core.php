@@ -1,22 +1,36 @@
 <?php namespace App\Modules\Core;
 
-use App\Modules\Core\AbstractRepositories\AbstractRepositoryContainer;
+use App\Modules\Core\Interfaces\BaseFactoryInterface;
+use App\Modules\Core\Decorators\CachingDecorator;
 
-class Core extends AbstractRepositoryContainer
+class Core implements BaseFactoryInterface
 {
     /**
-     * Specify module repositories name space.
+     * Construct the repository class name based on
+     * the method name called, search in the
+     * given namespaces for the class and
+     * return an instance.
      *
-     * @return array
+     * @param  string $name the called method name
+     * @param  array  $arguments the method arguments
+     * @return object
      */
-    protected function getRepoNameSpace()
+    public function __call($name, $arguments)
     {
-        return [
-        'App\Modules\Acl\Repositories',
-        'App\Modules\Logging\Repositories',
-        'App\Modules\Reporting\Repositories',
-        'App\Modules\Notifications\Repositories',
-        'App\Modules\Core\Repositories',
-        ];
+        foreach (\Module::all() as $module) {
+            $nameSpace = 'App\\Modules\\' . $module['basename'] ;
+            $model = ucfirst(\Str::singular($name));
+            $class = $nameSpace . '\\Repositories\\' . $model . 'Repository';
+            $decoratedClass = $class . '\\Decorated';
+
+            if (class_exists($class)) {
+                $classObj = \App::make($class);
+                \App::singleton($class, function ($app) use ($classObj) {
+                    return new CachingDecorator($classObj, $app['cache.store']);
+                });
+
+                return \App::make($class);
+            }
+        }
     }
 }
