@@ -62,17 +62,6 @@ interface BaseRepositoryInterface
     public function save(array $data);
 
     /**
-     * Update record in the storage based on the given
-     * condition.
-     *
-     * @param  var     $value condition value
-     * @param  array   $data
-     * @param  string  $attribute condition column name
-     * @return integer affected rows
-     */
-    public function update($value, array $data, $attribute = 'id');
-
-    /**
      * Delete record from the storage based on the given
      * condition.
      *

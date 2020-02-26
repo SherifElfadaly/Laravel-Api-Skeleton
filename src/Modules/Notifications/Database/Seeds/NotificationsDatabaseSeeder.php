@@ -15,7 +15,7 @@ class NotificationsDatabaseSeeder extends Seeder
     {
         $this->call(ClearDataSeeder::class);
         $this->call(NotificationsTableSeeder::class);
-        $this->call(PushNotificationsDevicesTableSeeder::class);
+        $this->call(PushNotificationDevicesTableSeeder::class);
         $this->call(AssignRelationsSeeder::class);
     }
 }

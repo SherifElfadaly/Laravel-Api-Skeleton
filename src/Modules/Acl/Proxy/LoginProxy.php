@@ -26,7 +26,7 @@ class LoginProxy
      * @param  string $refreshToken
      * @return array
      */
-    public function refreshtoken($refreshToken)
+    public function refreshToken($refreshToken)
     {
         return $this->proxy('refresh_token', [
             'refresh_token' => $refreshToken

@@ -25,6 +25,31 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
+     * Fetch records with relations based on the given params.
+     *
+     * @param   string  $relations
+     * @param   array   $conditions
+     * @param   integer $perPage
+     * @param   string  $sortBy
+     * @param   boolean $desc
+     * @return collection
+     */
+    public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true)
+    {
+        unset($conditions['page']);
+        unset($conditions['perPage']);
+        unset($conditions['sortBy']);
+        unset($conditions['sort']);
+        unset($conditions['page']);
+
+        if (count($conditions)) {
+            return $this->paginateBy(['and' => $conditions], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
+        }
+
+        return $this->paginate($perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
+    }
+
+    /**
      * Fetch all records with relations from the storage.
      *
      * @param  array   $relations
@@ -173,7 +198,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function paginateBy($conditions, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
     {
-        unset($conditions['page']);
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         return $this->model->with($relations)->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage, $columns);
@@ -212,7 +236,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                 /**
                  * If the attribute is a relation.
                  */
-                $relation = camel_case($key);
+                $relation = \Str::camel($key);
                 if (method_exists($model, $relation) && \Core::$relation()) {
                     /**
                      * Check if the relation is a collection.
@@ -401,27 +425,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
             
         return $model;
     }
-    
-    /**
-     * Update record in the storage based on the given
-     * condition.
-     *
-     * @param  var $value condition value
-     * @param  array $data
-     * @param  string $attribute condition column name
-     * @return void
-     */
-    public function update($value, array $data, $attribute = 'id')
-    {
-        if ($attribute == 'id') {
-            $model = $this->model->lockForUpdate()->find($value);
-            $model ? $model->update($data) : 0;
-        } else {
-            $this->model->where($attribute, '=', $value)->lockForUpdate()->get()->each(function ($model) use ($data) {
-                $model->update($data);
-            });
-        }
-    }
 
     /**
      * Delete record from the storage based on the given
@@ -511,6 +514,9 @@ abstract class BaseRepository implements BaseRepositoryInterface
     public function deleted($conditions, $perPage = 15, $sortBy = 'created_at', $desc = 1, $columns = ['*'])
     {
         unset($conditions['page']);
+        unset($conditions['perPage']);
+        unset($conditions['sortBy']);
+        unset($conditions['sort']);
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         $model      = $this->model->onlyTrashed();

@@ -31,12 +31,12 @@ class AclGroup extends Model
 
     public function users()
     {
-        return $this->belongsToMany('\App\Modules\Acl\AclUser', 'users_groups', 'group_id', 'user_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+        return $this->belongsToMany('App\Modules\Acl\AclUser', 'users_groups', 'group_id', 'user_id')->whereNull('users_groups.deleted_at')->withTimestamps();
     }
 
     public function permissions()
     {
-        return $this->belongsToMany('\App\Modules\Acl\AclPermission', 'groups_permissions', 'group_id', 'permission_id')->whereNull('groups_permissions.deleted_at')->withTimestamps();
+        return $this->belongsToMany('App\Modules\Acl\AclPermission', 'groups_permissions', 'group_id', 'permission_id')->whereNull('groups_permissions.deleted_at')->withTimestamps();
     }
 
     public static function boot()

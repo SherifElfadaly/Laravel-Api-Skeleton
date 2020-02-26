@@ -10,7 +10,7 @@ class OauthClient extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
@@ -23,8 +23,8 @@ class OauthClient extends JsonResource
             'personalAccessClient' => $this->personal_access_client,
             'passwordClient' => $this->password_client,
             'revoked' => $this->revoked,
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

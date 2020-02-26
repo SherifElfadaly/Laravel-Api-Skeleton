@@ -6,7 +6,7 @@ use App\Modules\Core\Http\Controllers\BaseApiController;
 use App\Modules\Acl\Repositories\PermissionRepository;
 use App\Modules\Core\Utl\CoreConfig;
 
-class PermissionsController extends BaseApiController
+class PermissionController extends BaseApiController
 {
     /**
      * Init new object.

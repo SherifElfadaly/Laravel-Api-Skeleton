@@ -9,7 +9,7 @@ class Notification extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
@@ -18,9 +18,9 @@ class Notification extends JsonResource
             'id' => $this->id,
             'type' => $this->type,
             'data' => $this->data,
-            'readAt' => $this->read_at,
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'read_at' => $this->read_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -54,7 +54,7 @@ class UserRepository extends BaseRepository
         $user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model) {
             $permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray());
         });
-        
+
         return in_array($nameOfPermission, $permissions);
     }
 
@@ -131,7 +131,7 @@ class UserRepository extends BaseRepository
             \ErrorHandler::noSocialEmail();
         }
 
-        if ( ! $this->model->where('email', $user->email)->first()) {
+        if (! $this->model->where('email', $user->email)->first()) {
             $this->register(['email' => $user->email, 'password' => ''], true);
         }
 

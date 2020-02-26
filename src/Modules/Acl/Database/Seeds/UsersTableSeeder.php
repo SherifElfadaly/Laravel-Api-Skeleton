@@ -22,92 +22,68 @@ class UsersTableSeeder extends Seeder
                  * Users model permissions.
                  */
                 [
-                'name'       => 'save',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'delete',
-                'model'      => 'users',
+                'name'       => 'index',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'find',
-                'model'      => 'users',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'list',
-                'model'      => 'users',
+                'name'       => 'insert',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'search',
-                'model'      => 'users',
+                'name'       => 'update',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'findby',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'first',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginate',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'assigngroups',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'block',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'unblock',
-                'model'      => 'users',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'group',
-                'model'      => 'users',
+                'name'       => 'delete',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'deleted',
-                'model'      => 'users',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'restore',
-                'model'      => 'users',
+                'model'      => 'user',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'assignGroups',
+                'model'      => 'user',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'block',
+                'model'      => 'user',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'unblock',
+                'model'      => 'user',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
+                'name'       => 'group',
+                'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ]

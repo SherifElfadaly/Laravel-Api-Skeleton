@@ -3,11 +3,11 @@
 namespace App\Modules\Reporting\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Modules\Core\Http\Controllers\BaseApiController;
-use \App\Modules\Reporting\Repositories\ReportRepository;
+use App\Modules\Core\BaseClasses\BaseApiController;
+use App\Modules\Reporting\Repositories\ReportRepository;
 use App\Modules\Core\Utl\CoreConfig;
 
-class ReportsController extends BaseApiController
+class ReportController extends BaseApiController
 {
     /**
      * List of all route actions that the base api controller
@@ -31,13 +31,12 @@ class ReportsController extends BaseApiController
     /**
      * Render the given report name with the given conditions.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $reportName Name of the requested report
-     * @param  integer $perPage    Number of rows per page default all data.
+     * @param Request $request
+     * @param  string $reportName Name of the requested report
      * @return \Illuminate\Http\Response
      */
-    public function getReport(Request $request, $reportName, $perPage = 0)
+    public function getReport(Request $request, $reportName)
     {
-        return \Response::json($this->repo->getReport($reportName, $request->all(), $perPage), 200);
+        return \Response::json($this->repo->getReport($reportName, $request->all(), $request->query('perPage')), 200);
     }
 }

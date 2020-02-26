@@ -158,7 +158,7 @@ class GenerateDoc extends Command
                 if ($match[1] == '$this->validationRules') {
                     $route['body'] = $validationRules;
                 } else {
-                    $route['body'] = eval('return '.str_replace(',\'.$request->get(\'id\')', ',{id}\'', $match[1]).';');
+                    $route['body'] = eval('return '.str_replace(',\'.$request->get(\'id\')', '$this->get('id')\'', $match[1]).';');
                 }
 
                 foreach ($route['body'] as &$rule) {

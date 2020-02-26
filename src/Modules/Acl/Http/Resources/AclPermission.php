@@ -10,7 +10,7 @@ class AclPermission extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
@@ -19,8 +19,8 @@ class AclPermission extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'groups' => GroupResource::collection($this->whenLoaded('groups')),
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

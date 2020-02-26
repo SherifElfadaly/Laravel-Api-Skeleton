@@ -22,77 +22,53 @@ class GroupsTableSeeder extends Seeder
                  * Groups model permissions.
                  */
                 [
-                'name'       => 'save',
-                'model'      => 'groups',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'delete',
-                'model'      => 'groups',
+                'name'       => 'index',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'find',
-                'model'      => 'groups',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'search',
-                'model'      => 'groups',
+                'name'       => 'insert',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'list',
-                'model'      => 'groups',
+                'name'       => 'update',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'findby',
-                'model'      => 'groups',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'first',
-                'model'      => 'groups',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginate',
-                'model'      => 'groups',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'groups',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'assignpermissions',
-                'model'      => 'groups',
+                'name'       => 'delete',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'deleted',
-                'model'      => 'groups',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'restore',
-                'model'      => 'groups',
+                'model'      => 'group',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
-                ]
+                ],
+                [
+                'name'       => 'assignPermissions',
+                'model'      => 'group',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
             ]
         );
     }

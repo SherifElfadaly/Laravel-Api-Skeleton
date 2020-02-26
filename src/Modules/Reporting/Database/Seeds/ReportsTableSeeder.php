@@ -19,53 +19,23 @@ class ReportsTableSeeder extends Seeder
         \DB::table('permissions')->insert(
             [
                 /**
-                 * Reporting model permissions.
+                 * Reports model permissions.
                  */
                 [
+                'name'       => 'index',
+                'model'      => 'report',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
                 'name'       => 'find',
-                'model'      => 'reports',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'search',
-                'model'      => 'reports',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'list',
-                'model'      => 'reports',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'findby',
-                'model'      => 'reports',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'first',
-                'model'      => 'reports',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginate',
-                'model'      => 'reports',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'reports',
+                'model'      => 'report',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'admin_count',
-                'model'      => 'reports',
+                'model'      => 'report',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ]

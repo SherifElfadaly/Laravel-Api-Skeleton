@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PushNotificationsDevices extends Migration
+class PushNotificationDevices extends Migration
 {
     /**
      * Run the migrations.

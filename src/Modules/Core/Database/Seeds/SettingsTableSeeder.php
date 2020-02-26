@@ -22,56 +22,32 @@ class SettingsTableSeeder extends Seeder
                  * Settings model permissions.
                  */
                 [
-                'name'       => 'save',
-                'model'      => 'settings',
+                'name'       => 'index',
+                'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'find',
-                'model'      => 'settings',
+                'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'search',
-                'model'      => 'settings',
+                'name'       => 'update',
+                'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'list',
-                'model'      => 'settings',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'findby',
-                'model'      => 'settings',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'first',
-                'model'      => 'settings',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginate',
-                'model'      => 'settings',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'settings',
+                'name'       => 'delete',
+                'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'saveMany',
-                'model'      => 'settings',
+                'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ]

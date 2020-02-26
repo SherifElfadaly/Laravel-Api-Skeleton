@@ -7,19 +7,10 @@ use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Core\Repositories\SettingRepository;
 use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use App\Modules\Core\Http\Requests\UpdateSetting;
 
-class SettingsController extends BaseApiController
+class SettingController extends BaseApiController
 {
-    /**
-     * The validations rules used by the base api controller
-     * to check before add.
-     * @var array
-     */
-    protected $validationRules = [
-        'id'    => 'required|exists:settings,id',
-        'value' => 'required|string'
-    ];
-
     /**
      * Init new object.
      *
@@ -33,9 +24,20 @@ class SettingsController extends BaseApiController
     }
 
     /**
+     * Update the given model to storage.
+     *
+     * @param UpdateSetting $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateSetting $request)
+    {
+        return new $this->modelResource($this->repo->save($request->all()));
+    }
+
+    /**
      * Save list of settings.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function saveMany(Request $request)

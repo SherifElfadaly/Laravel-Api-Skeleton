@@ -8,8 +8,22 @@ use App\Modules\Acl\Repositories\UserRepository;
 use App\Modules\Acl\Proxy\LoginProxy;
 use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use Illuminate\Support\Facades\App;
+use App\Modules\Acl\Http\Requests\AssignGroups;
+use App\Modules\Acl\Http\Requests\ChangePassword;
+use App\Modules\Acl\Http\Requests\Login;
+use App\Modules\Acl\Http\Requests\LoginSocial;
+use App\Modules\Acl\Http\Requests\RefreshToken;
+use App\Modules\Acl\Http\Requests\Register;
+use App\Modules\Acl\Http\Requests\ResendEmailConfirmation;
+use App\Modules\Acl\Http\Requests\ResetPassword;
+use App\Modules\Acl\Http\Requests\SaveProfile;
+use App\Modules\Acl\Http\Requests\SendReset;
+use App\Modules\Acl\Http\Requests\ConfirmEmail;
+use App\Modules\Acl\Http\Requests\InsertUser;
+use App\Modules\Acl\Http\Requests\UpdateUser;
 
-class UsersController extends BaseApiController
+class UserController extends BaseApiController
 {
     /**
      * List of all route actions that the base api controller
@@ -23,23 +37,12 @@ class UsersController extends BaseApiController
      * will skip login check for them.
      * @var array
      */
-    protected $skipLoginCheck = ['login', 'loginSocial', 'register', 'sendreset', 'resetpassword', 'refreshtoken', 'confirmEmail', 'resendEmailConfirmation'];
-
-    /**
-     * The validations rules used by the base api controller
-     * to check before add.
-     * @var array
-     */
-    protected $validationRules = [
-        'name'     => 'nullable|string',
-        'email'    => 'required|email|unique:users,email,{id}',
-        'password' => 'nullable|min:6'
-    ];
+    protected $skipLoginCheck = ['login', 'loginSocial', 'register', 'sendReset', 'resetPassword', 'refreshToken', 'confirmEmail', 'resendEmailConfirmation'];
 
     /**
      * The loginProxy implementation.
      *
-     * @var \App\Modules\Acl\Proxy\LoginProxy
+     * @var App\Modules\Acl\Proxy\LoginProxy
      */
     protected $loginProxy;
 
@@ -55,6 +58,28 @@ class UsersController extends BaseApiController
     {
         $this->loginProxy = $loginProxy;
         parent::__construct($repo, $config, 'App\Modules\Acl\Http\Resources\AclUser');
+    }
+
+    /**
+     * Insert the given model to storage.
+     *
+     * @param InsertUser $request
+     * @return \Illuminate\Http\Response
+     */
+    public function insert(InsertUser $request)
+    {
+        return new $this->modelResource($this->repo->save($request->all()));
+    }
+
+    /**
+     * Update the given model to storage.
+     *
+     * @param UpdateUser $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateUser $request)
+    {
+        return new $this->modelResource($this->repo->save($request->all()));
     }
 
     /**
@@ -102,194 +127,137 @@ class UsersController extends BaseApiController
     /**
      * Handle a registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Register $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
+    public function register(Register $request)
     {
-        $this->validate($request, [
-            'name'     => 'nullable|string',
-            'email'    => 'required|email|unique:users,email,{id}',
-            'password' => 'required|min:6'
-            ]);
-
         return new $this->modelResource($this->repo->register($request->only('name', 'email', 'password')));
     }
 
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Login $request
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request)
+    public function login(Login $request)
     {
-        $this->validate($request, [
-            'email'    => 'required|email',
-            'password' => 'required|min:6',
-            'admin'    => 'nullable|boolean'
-            ]);
-        
         $result = $this->loginProxy->login($request->only('email', 'password'), $request->get('admin'));
+
         return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
 
     /**
      * Handle a social login request of the none admin to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param LoginSocial $request
      * @return \Illuminate\Http\Response
      */
-    public function loginSocial(Request $request)
+    public function loginSocial(LoginSocial $request)
     {
-        $this->validate($request, [
-            'auth_code'    => 'required_without:access_token',
-            'access_token' => 'required_without:auth_code',
-            'type'         => 'required|in:facebook,google'
-            ]);
-
         $result = $this->repo->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type'));
+
         return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
 
     /**
      * Assign the given groups to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param AssignGroups $request
      * @return \Illuminate\Http\Response
      */
-    public function assigngroups(Request $request)
+    public function assignGroups(AssignGroups $request)
     {
-        $this->validate($request, [
-            'group_ids' => 'required|exists:groups,id',
-            'user_id'   => 'required|exists:users,id'
-            ]);
-
         return new $this->modelResource($this->repo->assignGroups($request->get('user_id'), $request->get('group_ids')));
     }
 
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param SendReset $request
      * @return \Illuminate\Http\Response
      */
-    public function sendreset(Request $request)
+    public function sendReset(SendReset $request)
     {
-        $this->validate($request, ['email' => 'required|email']);
-
         return new GeneralResource($this->repo->sendReset($request->get('email')));
     }
 
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ResetPassword $request
      * @return \Illuminate\Http\Response
      */
-    public function resetpassword(Request $request)
+    public function resetPassword(ResetPassword $request)
     {
-        $this->validate($request, [
-            'token'                 => 'required',
-            'email'                 => 'required|email',
-            'password'              => 'required|confirmed|min:6',
-            'password_confirmation' => 'required',
-        ]);
-
         return new GeneralResource($this->repo->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')));
     }
 
     /**
      * Change the logged in user password.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ChangePassword $request
      * @return \Illuminate\Http\Response
      */
-    public function changePassword(Request $request)
+    public function changePassword(ChangePassword $request)
     {
-        $this->validate($request, [
-            'old_password'          => 'required',
-            'password'              => 'required|confirmed|min:6',
-            'password_confirmation' => 'required',
-        ]);
-
         return new GeneralResource($this->repo->changePassword($request->only('old_password', 'password', 'password_confirmation')));
     }
 
     /**
      * Confirm email using the confirmation code.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ConfirmEmail $request
      * @return \Illuminate\Http\Response
      */
-    public function confirmEmail(Request $request)
+    public function confirmEmail(ConfirmEmail $request)
     {
-        $this->validate($request, [
-            'confirmation_code' => 'required|string'
-        ]);
-
         return new GeneralResource($this->repo->confirmEmail($request->only('confirmation_code')));
     }
 
     /**
      * Resend the email confirmation mail.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ResendEmailConfirmation $request
      * @return \Illuminate\Http\Response
      */
-    public function resendEmailConfirmation(Request $request)
+    public function resendEmailConfirmation(ResendEmailConfirmation $request)
     {
-        $this->validate($request, [
-            'email' => 'required|exists:users,email'
-        ]);
-
         return new GeneralResource($this->repo->sendConfirmationEmail($request->get('email')));
     }
 
     /**
      * Refresh the expired login token.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param RefreshToken $request
      * @return \Illuminate\Http\Response
      */
-    public function refreshtoken(Request $request)
+    public function refreshToken(RefreshToken $request)
     {
-        $this->validate($request, [
-            'refreshtoken' => 'required',
-        ]);
-
-        return new GeneralResource($this->loginProxy->refreshtoken($request->get('refreshtoken')));
+        return new GeneralResource($this->loginProxy->refreshToken($request->get('refresh_token')));
     }
 
     /**
      * Paginate all users with in the given group.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  string $groupName The name of the requested group.
-     * @param  integer $perPage  Number of rows per page default 15.
-     * @param  string  $sortBy   The name of the column to sort by.
-     * @param  boolean $desc     Sort ascending or descinding (1: desc, 0: asc).
      * @return \Illuminate\Http\Response
      */
-    public function group(Request $request, $groupName, $perPage = false, $sortBy = 'created_at', $desc = 1)
+    public function group(Request $request, $groupName)
     {
-        return $this->modelResource::collection($this->repo->group($request->all(), $groupName, $this->relations, $perPage, $sortBy, $desc));
+        return $this->modelResource::collection($this->repo->group($request->all(), $groupName, $this->relations, $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**
      * Save the given data to the logged in user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param SaveProfile $request
      * @return \Illuminate\Http\Response
      */
-    public function saveProfile(Request $request)
+    public function saveProfile(SaveProfile $request)
     {
-        $this->validate($request, [
-            'profile_picture' => 'nullable|string',
-            'name'            => 'nullable|string',
-            'email'           => 'required|email|unique:users,email,'.\Auth::id()
-        ]);
-
         return new $this->modelResource($this->repo->saveProfile($request->only('name', 'email', 'profile_picture')));
     }
 }

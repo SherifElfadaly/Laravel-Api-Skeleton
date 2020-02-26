@@ -12,7 +12,7 @@ class AclUser extends User
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden   = ['password', 'remember_token', 'deleted_at'];
     protected $guarded  = ['id'];
-    protected $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'time_zone'];
+    protected $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone'];
     public $searchable  = ['name', 'email'];
     
     public function getCreatedAtAttribute($value)
@@ -55,7 +55,7 @@ class AclUser extends User
      */
     public function notifications()
     {
-        return $this->morphMany('\App\Modules\Notifications\Notification', 'notifiable')->orderBy('created_at', 'desc');
+        return $this->morphMany('App\Modules\Notifications\Notification', 'notifiable')->orderBy('created_at', 'desc');
     }
 
     /**
@@ -76,7 +76,7 @@ class AclUser extends User
 
     public function groups()
     {
-        return $this->belongsToMany('\App\Modules\Acl\AclGroup', 'users_groups', 'user_id', 'group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+        return $this->belongsToMany('App\Modules\Acl\AclGroup', 'users_groups', 'user_id', 'group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
     }
 
     public function oauthClients()

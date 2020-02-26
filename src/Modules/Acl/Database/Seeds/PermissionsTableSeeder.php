@@ -22,47 +22,17 @@ class PermissionsTableSeeder extends Seeder
                  * Permissions model permissions.
                  */
                 [
+                'name'       => 'index',
+                'model'      => 'permission',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
                 'name'       => 'find',
-                'model'      => 'permissions',
+                'model'      => 'permission',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
-                [
-                'name'       => 'search',
-                'model'      => 'permissions',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'list',
-                'model'      => 'permissions',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'findby',
-                'model'      => 'permissions',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'first',
-                'model'      => 'permissions',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginate',
-                'model'      => 'permissions',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'permissions',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ]
             ]
         );
     }

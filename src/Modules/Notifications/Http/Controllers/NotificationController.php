@@ -2,19 +2,20 @@
 
 namespace App\Modules\Notifications\Http\Controllers;
 
-use App\Modules\Core\Http\Controllers\BaseApiController;
-use \App\Modules\Notifications\Repositories\NotificationRepository;
+use Illuminate\Http\Request;
+use App\Modules\Core\BaseClasses\BaseApiController;
+use App\Modules\Notifications\Repositories\NotificationRepository;
 use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 
-class NotificationsController extends BaseApiController
+class NotificationController extends BaseApiController
 {
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['markAsRead', 'markAllAsRead', 'list', 'unread'];
+    protected $skipPermissionCheck = ['markAsRead', 'markAllAsRead', 'index', 'unread'];
 
     /**
      * Init new object.
@@ -31,23 +32,23 @@ class NotificationsController extends BaseApiController
     /**
      * Retrieve all notifications of the logged in user.
      *
-     * @param  integer $perPage Number of rows per page default all data.
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function list($perPage = 0)
+    public function index(Request $request)
     {
-        return $this->modelResource::collection($this->repo->list($perPage));
+        return $this->modelResource::collection($this->repo->all($request->query('perPage')));
     }
 
     /**
      * Retrieve unread notifications of the logged in user.
      *
-     * @param  integer $perPage Number of rows per page default all data.
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function unread($perPage = 0)
+    public function unread(Request $request)
     {
-        return $this->modelResource::collection($this->repo->unread($perPage));
+        return $this->modelResource::collection($this->repo->unread($request->query('perPage')));
     }
 
     /**

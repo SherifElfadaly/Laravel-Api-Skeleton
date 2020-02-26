@@ -23,25 +23,25 @@ class NotificationsTableSeeder extends Seeder
                  */
                 [
                 'name'       => 'all',
-                'model'      => 'notifications',
+                'model'      => 'notification',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'unread',
-                'model'      => 'notifications',
+                'model'      => 'notification',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'markAsRead',
-                'model'      => 'notifications',
+                'model'      => 'notification',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'markAllAsRead',
-                'model'      => 'notifications',
+                'model'      => 'notification',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ]

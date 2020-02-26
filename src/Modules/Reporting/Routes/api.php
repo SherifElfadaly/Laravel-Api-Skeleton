@@ -15,13 +15,13 @@ Route::group(['prefix' => 'reporting'], function () {
     
     Route::group(['prefix' => 'reports'], function () {
         
-        Route::get('list/{sortBy?}/{desc?}', 'ReportsController@index');
-        Route::get('find/{id}', 'ReportsController@find');
-        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@search');
-        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@paginate');
-        Route::post('first', 'ReportsController@first');
-        Route::post('findby/{sortBy?}/{desc?}', 'ReportsController@findby');
-        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'ReportsController@paginateby');
-        Route::post('get/{reportName}/{perPage?}', 'ReportsController@getReport');
+        Route::get('/', 'ReportController@index');
+        Route::get('/{id}', 'ReportController@find');
+        Route::post('/', 'ReportController@insert');
+        Route::put('/', 'ReportController@update');
+        Route::delete('/{id}', 'ReportController@delete');
+        Route::get('list/deleted', 'ReportController@deleted');
+        Route::patch('restore/{id}', 'ReportController@restore');
+        Route::post('get/{reportName}', 'ReportController@getReport');
     });
 });

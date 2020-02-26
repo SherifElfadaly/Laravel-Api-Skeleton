@@ -4,7 +4,7 @@ namespace App\Modules\Notifications\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 
-class PushNotificationsDevicesTableSeeder extends Seeder
+class PushNotificationDevicesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,68 +22,44 @@ class PushNotificationsDevicesTableSeeder extends Seeder
                  * pushNotificationDevices model permissions.
                  */
                 [
+                'name'       => 'index',
+                'model'      => 'pushNotificationDevice',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
+                [
                 'name'       => 'find',
-                'model'      => 'pushNotificationDevices',
+                'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'search',
-                'model'      => 'pushNotificationDevices',
+                'name'       => 'insert',
+                'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'list',
-                'model'      => 'pushNotificationDevices',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'findby',
-                'model'      => 'pushNotificationDevices',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'first',
-                'model'      => 'pushNotificationDevices',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginate',
-                'model'      => 'pushNotificationDevices',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'pushNotificationDevices',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'save',
-                'model'      => 'pushNotificationDevices',
+                'name'       => 'update',
+                'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'delete',
-                'model'      => 'pushNotificationDevices',
+                'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'deleted',
-                'model'      => 'pushNotificationDevices',
+                'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'restore',
-                'model'      => 'pushNotificationDevices',
+                'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ]

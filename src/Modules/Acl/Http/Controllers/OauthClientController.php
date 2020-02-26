@@ -2,25 +2,15 @@
 
 namespace App\Modules\Acl\Http\Controllers;
 
-use App\Modules\Core\Http\Controllers\BaseApiController;
-use \App\Modules\Acl\Repositories\OauthClientRepository;
+use App\Modules\Core\BaseClasses\BaseApiController;
+use App\Modules\Acl\Repositories\OauthClientRepository;
 use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use App\Modules\Acl\Http\Requests\InsertOauthClient;
+use App\Modules\Acl\Http\Requests\UpdateOauthClient;
 
-class OauthClientsController extends BaseApiController
+class OauthClientController extends BaseApiController
 {
-    /**
-     * The validations rules used by the base api controller
-     * to check before add.
-     * @var array
-     */
-    protected $validationRules = [
-        'name'     => 'required|max:255',
-        'redirect' => 'required|url',
-        'user_id'  => 'required|exists:users,id',
-        'revoked'  => 'boolean'
-    ];
-
     /**
      * Init new object.
      *
@@ -31,6 +21,28 @@ class OauthClientsController extends BaseApiController
     public function __construct(OauthClientRepository $repo, CoreConfig $config)
     {
         parent::__construct($repo, $config, 'App\Modules\Acl\Http\Resources\OauthClient');
+    }
+
+    /**
+     * Insert the given model to storage.
+     *
+     * @param InsertOauthClient $request
+     * @return \Illuminate\Http\Response
+     */
+    public function insert(InsertOauthClient $request)
+    {
+        return new $this->modelResource($this->repo->save($request->all()));
+    }
+
+    /**
+     * Update the given model to storage.
+     *
+     * @param UpdateOauthClient $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateOauthClient $request)
+    {
+        return new $this->modelResource($this->repo->save($request->all()));
     }
 
     /**

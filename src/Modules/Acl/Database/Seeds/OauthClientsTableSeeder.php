@@ -19,68 +19,44 @@ class OauthClientsTableSeeder extends Seeder
         \DB::table('permissions')->insert(
             [
                 /**
-                 * Users model permissions.
+                 * OauthClients model permissions.
                  */
                 [
-                'name'       => 'list',
-                'model'      => 'oauthClients',
+                'name'       => 'index',
+                'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'find',
-                'model'      => 'oauthClients',
+                'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'search',
-                'model'      => 'oauthClients',
+                'name'       => 'insert',
+                'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'paginate',
-                'model'      => 'oauthClients',
+                'name'       => 'update',
+                'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'revoke',
-                'model'      => 'oauthClients',
+                'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
                 'name'       => 'unRevoke',
-                'model'      => 'oauthClients',
+                'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
-                [
-                'name'       => 'first',
-                'model'      => 'oauthClients',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'findby',
-                'model'      => 'oauthClients',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'paginateby',
-                'model'      => 'oauthClients',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'save',
-                'model'      => 'oauthClients',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ]
             ]
         );
     }

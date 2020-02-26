@@ -15,73 +15,60 @@ Route::group(['prefix' => 'acl'], function () {
 
     Route::group(['prefix' => 'users'], function () {
         
-        Route::get('list/{sortBy?}/{desc?}', 'UsersController@index');
-        Route::get('find/{id}', 'UsersController@find');
-        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@search');
-        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'UsersController@paginate');
-        Route::get('delete/{id}', 'UsersController@delete');
-        Route::get('restore/{id}', 'UsersController@restore');
-        Route::get('account', 'UsersController@account');
-        Route::get('block/{id}', 'UsersController@block');
-        Route::get('unblock/{id}', 'UsersController@unblock');
-        Route::get('logout', 'UsersController@logout');
-        Route::post('refreshtoken', 'UsersController@refreshtoken');
-        Route::post('first', 'UsersController@first');
-        Route::post('findby/{sortBy?}/{desc?}', 'UsersController@findby');
-        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'UsersController@paginateby');
-        Route::post('save', 'UsersController@save');
-        Route::post('profile/save', 'UsersController@saveProfile');
-        Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'UsersController@deleted');
-        Route::post('register', 'UsersController@register');
-        Route::post('login', 'UsersController@login');
-        Route::post('login/social', 'UsersController@loginSocial');
-        Route::post('assigngroups', 'UsersController@assigngroups');
-        Route::post('sendreset', 'UsersController@sendreset');
-        Route::post('resetpassword', 'UsersController@resetpassword');
-        Route::post('changepassword', 'UsersController@changePassword');
-        Route::post('confirm/email', 'UsersController@confirmEmail');
-        Route::post('resend/email/confirmation', 'UsersController@resendEmailConfirmation');
-        Route::post('group/{groupName}/{perPage?}/{sortBy?}/{desc?}', 'UsersController@group');
+        Route::get('/', 'UserController@index');
+        Route::get('/{id}', 'UserController@find');
+        Route::post('/', 'UserController@insert');
+        Route::put('/', 'UserController@update');
+        Route::delete('/{id}', 'UserController@delete');
+        Route::get('list/deleted', 'UserController@deleted');
+        Route::patch('restore/{id}', 'UserController@restore');
+        Route::get('block/{id}', 'UserController@block');
+        Route::get('unblock/{id}', 'UserController@unblock');
+        Route::post('assign/groups', 'UserController@assignGroups');
+        Route::post('group/{groupName}', 'UserController@group');
+
+        Route::group(['prefix' => 'account'], function () {
+
+            Route::get('my', 'UserController@account');
+            Route::get('logout', 'UserController@logout');
+            Route::post('refresh/token', 'UserController@refreshToken');
+            Route::post('save', 'UserController@saveProfile');
+            Route::post('register', 'UserController@register');
+            Route::post('login', 'UserController@login');
+            Route::post('login/social', 'UserController@loginSocial');
+            Route::post('send/reset', 'UserController@sendReset');
+            Route::post('reset/password', 'UserController@resetPassword');
+            Route::post('change/password', 'UserController@changePassword');
+            Route::post('confirm/email', 'UserController@confirmEmail');
+            Route::post('resend/email/confirmation', 'UserController@resendEmailConfirmation');
+        });
     });
 
     Route::group(['prefix' => 'groups'], function () {
 
-        Route::get('list/{sortBy?}/{desc?}', 'GroupsController@index');
-        Route::get('find/{id}', 'GroupsController@find');
-        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@search');
-        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@paginate');
-        Route::get('delete/{id}', 'GroupsController@delete');
-        Route::get('restore/{id}', 'GroupsController@restore');
-        Route::post('first', 'GroupsController@first');
-        Route::post('findby/{sortBy?}/{desc?}', 'GroupsController@findby');
-        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@paginateby');
-        Route::post('save', 'GroupsController@save');
-        Route::post('deleted/{perPage?}/{sortBy?}/{desc?}', 'GroupsController@deleted');
-        Route::post('assignpermissions', 'GroupsController@assignpermissions');
+        Route::get('/', 'GroupController@index');
+        Route::get('/{id}', 'GroupController@find');
+        Route::post('/', 'GroupController@insert');
+        Route::put('/', 'GroupController@update');
+        Route::delete('/{id}', 'GroupController@delete');
+        Route::get('list/deleted', 'GroupController@deleted');
+        Route::patch('restore/{id}', 'GroupController@restore');
+        Route::post('assign/permissions', 'GroupController@assignPermissions');
     });
     
     Route::group(['prefix' => 'permissions'], function () {
         
-        Route::get('list/{sortBy?}/{desc?}', 'PermissionsController@index');
-        Route::get('find/{id}', 'PermissionsController@find');
-        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'PermissionsController@search');
-        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'PermissionsController@paginate');
-        Route::post('first', 'PermissionsController@first');
-        Route::post('findby/{sortBy?}/{desc?}', 'PermissionsController@findby');
-        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'PermissionsController@paginateby');
+        Route::get('/', 'PermissionController@index');
+        Route::get('/{id}', 'PermissionController@find');
     });
 
     Route::group(['prefix' => 'oauth/clients'], function () {
         
-        Route::get('list/{sortBy?}/{desc?}', 'OauthClientsController@index');
-        Route::get('find/{id}', 'OauthClientsController@find');
-        Route::get('search/{query?}/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@search');
-        Route::get('paginate/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginate');
-        Route::get('revoke/{id}', 'OauthClientsController@revoke');
-        Route::get('unrevoke/{id}', 'OauthClientsController@unRevoke');
-        Route::post('first', 'OauthClientsController@first');
-        Route::post('findby/{sortBy?}/{desc?}', 'OauthClientsController@findby');
-        Route::post('paginateby/{perPage?}/{sortBy?}/{desc?}', 'OauthClientsController@paginateby');
-        Route::post('save', 'OauthClientsController@save');
+        Route::get('/', 'OauthClientController@index');
+        Route::get('/{id}', 'OauthClientController@find');
+        Route::post('/', 'OauthClientController@insert');
+        Route::put('/', 'OauthClientController@update');
+        Route::get('revoke/{id}', 'OauthClientController@revoke');
+        Route::get('unrevoke/{id}', 'OauthClientController@unRevoke');
     });
 });

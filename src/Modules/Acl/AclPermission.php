@@ -31,7 +31,7 @@ class AclPermission extends Model
     
     public function groups()
     {
-        return $this->belongsToMany('\App\Modules\Acl\AclGroup', 'groups_permissions', 'permission_id', 'group_id')->whereNull('groups_permissions.deleted_at')->withTimestamps();
+        return $this->belongsToMany('App\Modules\Acl\AclGroup', 'groups_permissions', 'permission_id', 'group_id')->whereNull('groups_permissions.deleted_at')->withTimestamps();
     }
 
     public static function boot()

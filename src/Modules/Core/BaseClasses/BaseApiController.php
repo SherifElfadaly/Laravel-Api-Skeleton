@@ -58,13 +58,12 @@ class BaseApiController extends Controller
     /**
      * Fetch all records with relations from storage.
      *
-     * @param  string  $sortBy The name of the column to sort by.
-     * @param  boolean $desc   Sort ascending or descinding (1: desc, 0: asc).
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index($sortBy = 'created_at', $desc = 1)
+    public function index(Request $request)
     {
-        return $this->modelResource::collection($this->repo->all($this->relations, $sortBy, $desc));
+        return $this->modelResource::collection($this->repo->list($this->relations, $request->query(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**
@@ -76,100 +75,6 @@ class BaseApiController extends Controller
     public function find($id)
     {
         return new $this->modelResource($this->repo->find($id, $this->relations));
-    }
-
-    /**
-     * Paginate all records with relations from storage
-     * that matche the given query.
-     *
-     * @param  string  $query   The search text.
-     * @param  integer $perPage Number of rows per page default 15.
-     * @param  string  $sortBy  The name of the column to sort by.
-     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
-     * @return \Illuminate\Http\Response
-     */
-    public function search($query = '', $perPage = 15, $sortBy = 'created_at', $desc = 1)
-    {
-        return $this->modelResource::collection($this->repo->search($query, $perPage, $this->relations, $sortBy, $desc));
-    }
-
-    /**
-     * Fetch records from the storage based on the given
-     * condition.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $sortBy The name of the column to sort by.
-     * @param  boolean $desc   Sort ascending or descinding (1: desc, 0: asc).
-     * @return \Illuminate\Http\Response
-     */
-    public function findby(Request $request, $sortBy = 'created_at', $desc = 1)
-    {
-        return $this->modelResource::collection($this->repo->findBy($request->all(), $this->relations, $sortBy, $desc));
-    }
-
-    /**
-     * Fetch the first record from the storage based on the given
-     * condition.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function first(Request $request)
-    {
-        return new $this->modelResource($this->repo->first($request->all(), $this->relations));
-    }
-
-    /**
-     * Paginate all records with relations from storage.
-     *
-     * @param  integer $perPage Number of rows per page default 15.
-     * @param  string  $sortBy  The name of the column to sort by.
-     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
-     * @return \Illuminate\Http\Response
-     */
-    public function paginate($perPage = 15, $sortBy = 'created_at', $desc = 1)
-    {
-        return $this->modelResource::collection($this->repo->paginate($perPage, $this->relations, $sortBy, $desc));
-    }
-
-    /**
-     * Fetch all records with relations based on
-     * the given condition from storage in pages.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  integer $perPage Number of rows per page default 15.
-     * @param  string  $sortBy  The name of the column to sort by.
-     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
-     * @return \Illuminate\Http\Response
-     */
-    public function paginateby(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1)
-    {
-        return $this->modelResource::collection($this->repo->paginateBy($request->all(), $perPage, $this->relations, $sortBy, $desc));
-    }
-
-    /**
-     * Save the given model to storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function save(Request $request)
-    {
-        foreach ($this->validationRules as &$rule) {
-            if (strpos($rule, 'exists') && ! strpos($rule, 'deleted_at,NULL')) {
-                $rule .= ',deleted_at,NULL';
-            }
-
-            if ($request->has('id')) {
-                $rule = str_replace('{id}', $request->get('id'), $rule);
-            } else {
-                $rule = str_replace(',{id}', '', $rule);
-            }
-        }
-        
-        $this->validate($request, $this->validationRules);
-
-        return $this->modelResource::collection($this->repo->save($request->all()));
     }
 
     /**
@@ -186,15 +91,12 @@ class BaseApiController extends Controller
     /**
      * Return the deleted models in pages based on the given conditions.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  integer $perPage Number of rows per page default 15.
-     * @param  string  $sortBy  The name of the column to sort by.
-     * @param  boolean $desc    Sort ascending or descinding (1: desc, 0: asc).
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function deleted(Request $request, $perPage = 15, $sortBy = 'created_at', $desc = 1)
+    public function deleted(Request $request)
     {
-        return $this->modelResource::collection($this->repo->deleted($request->all(), $perPage, $sortBy, $desc));
+        return $this->modelResource::collection($this->repo->deleted($request->all(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**

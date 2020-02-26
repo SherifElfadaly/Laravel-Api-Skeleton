@@ -12,7 +12,7 @@ class AclUser extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
@@ -28,9 +28,9 @@ class AclUser extends JsonResource
             'groups' => AclGroupResource::collection($this->whenLoaded('groups')),
             'oauthClients' => OauthClientResource::collection($this->whenLoaded('oauthClients')),
             'locale' => $this->locale,
-            'timeZone' => $this->time_zone,
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'timezone' => $this->timezone,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
