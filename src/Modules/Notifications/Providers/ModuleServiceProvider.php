@@ -13,11 +13,11 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'notification');
-        $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'notification');
-        
-        $factory = app('Illuminate\Database\Eloquent\Factory');
-        $factory->load(__DIR__.'/../Database/Factories');
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'notifications');
+        $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'notifications');
+
+        $this->loadMigrationsFrom(module_path('notifications', 'Database/Migrations', 'app'));
+        $this->loadFactoriesFrom(module_path('notifications', 'Database/Factories', 'app'));
     }
 
     /**

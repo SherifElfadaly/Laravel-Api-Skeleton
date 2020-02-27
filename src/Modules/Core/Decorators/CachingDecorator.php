@@ -1,7 +1,7 @@
 <?php namespace App\Modules\Core\Decorators;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Cache\Repository as Cache;
 
 class CachingDecorator
 {
@@ -57,9 +57,12 @@ class CachingDecorator
     /**
      * Init new object.
      *
+     * @param  string $repo
+     * @param  Cache  $cache
+     *
      * @return  void
      */
-    public function __construct($repo, $cache)
+    public function __construct($repo, Cache $cache)
     {
         $this->repo       = $repo;
         $this->cache      = $cache;
@@ -67,7 +70,7 @@ class CachingDecorator
         $this->modelClass = get_class($this->model);
         $repoClass        = explode('\\', get_class($this->repo));
         $repoName         = end($repoClass);
-        $this->cacheTag   = Str::plural(lcfirst(substr($repoName, 0, strpos($repoName, 'Repository'))));
+        $this->cacheTag   = lcfirst(substr($repoName, 0, strpos($repoName, 'Repository')));
     }
 
     /**

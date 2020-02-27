@@ -13,23 +13,8 @@
 
 Route::group(['prefix' => 'notifications'], function () {
 
-    Route::group(['prefix' => 'notifications'], function () {
-
-        Route::get('/', 'NotificationController@index');
-        Route::get('unread', 'NotificationController@unread');
-        Route::get('read/{id}', 'NotificationController@markAsRead');
-        Route::get('read/all', 'NotificationController@markAllAsRead');
-    });
-
-    Route::group(['prefix' => 'push_notification_devices'], function () {
-        
-        Route::get('/', 'PushNotificationDeviceController@index');
-        Route::get('/{id}', 'PushNotificationDeviceController@find');
-        Route::post('/', 'PushNotificationDeviceController@insert');
-        Route::put('/', 'PushNotificationDeviceController@update');
-        Route::delete('/{id}', 'PushNotificationDeviceController@delete');
-        Route::get('list/deleted', 'PushNotificationDeviceController@deleted');
-        Route::patch('restore/{id}', 'PushNotificationDeviceController@restore');
-        Route::post('register/device', 'PushNotificationDeviceController@registerDevice');
-    });
+    Route::get('/', 'NotificationController@index');
+    Route::get('unread', 'NotificationController@unread');
+    Route::get('read/{id}', 'NotificationController@markAsRead');
+    Route::get('read/all', 'NotificationController@markAllAsRead');
 });

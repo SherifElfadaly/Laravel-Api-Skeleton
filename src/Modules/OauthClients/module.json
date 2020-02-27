@@ -1,0 +1,8 @@
+{
+	"name": "Oauthclients",
+	"slug": "oauth-clients",
+	"version": "1.0",
+	"description": "This is the description for the OauthClients module.",
+	"enabled": true,
+	"order" : 1
+}

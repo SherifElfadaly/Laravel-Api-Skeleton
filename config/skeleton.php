@@ -78,7 +78,7 @@ return [
     */
     
     'relations' => [
-        'users' => [
+        'user' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -90,7 +90,7 @@ return [
             'group'      => [],
             'deleted'    => [],
         ],
-        'permissions' => [
+        'permission' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -100,7 +100,7 @@ return [
             'search'     => [],
             'deleted'    => [],
         ],
-        'groups' => [
+        'group' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -110,7 +110,7 @@ return [
             'search'     => [],
             'deleted'    => [],
         ],
-        'oauthClients' => [
+        'oauthClient' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -122,11 +122,11 @@ return [
             'group'      => [],
             'deleted'    => [],
         ],
-        'notifications' => [
+        'notification' => [
             'list'   => [],
             'unread' => [],
         ],
-        'pushNotificationDevices' => [
+        'pushNotificationDevice' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -136,7 +136,7 @@ return [
             'search'     => [],
             'deleted'    => [],
         ],
-        'reports' => [
+        'report' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -146,7 +146,7 @@ return [
             'search'     => [],
             'deleted'    => [],
         ],
-        'settings' => [
+        'setting' => [
             'list'       => [],
             'find'       => [],
             'findby'     => [],
@@ -168,7 +168,7 @@ return [
     */
 
     'cache_config' => [
-        'oauthClients' => [
+        'oauthClient' => [
             'cache' => [
                 'all',
                 'find',
@@ -189,7 +189,7 @@ return [
                 'regenerateSecret' => ['oauthClients', 'users', 'groups'],
             ],
         ],
-        'settings' => [
+        'setting' => [
             'cache' => [
                 'all',
                 'find',

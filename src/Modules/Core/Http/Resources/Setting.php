@@ -21,6 +21,10 @@ class Setting extends JsonResource
      */
     public function toArray($request)
     {
+        if (! $this->resource) {
+            return [];
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,

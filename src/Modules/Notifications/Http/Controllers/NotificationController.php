@@ -37,7 +37,7 @@ class NotificationController extends BaseApiController
      */
     public function index(Request $request)
     {
-        return $this->modelResource::collection($this->repo->all($request->query('perPage')));
+        return $this->modelResource::collection($this->repo->my($request->query('perPage')));
     }
 
     /**

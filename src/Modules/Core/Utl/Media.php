@@ -1,4 +1,4 @@
-<?php namespace App\Modules\V1\Core\Utl;
+<?php namespace App\Modules\Core\Utl;
 
 class Media
 {

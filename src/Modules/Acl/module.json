@@ -1,8 +1,0 @@
-{
-	"name": "Acl",
-	"slug": "acl",
-	"version": "1.0",
-	"description": "This is the description for the Acl module.",
-	"enabled": true,
-	"order" : 1
-}

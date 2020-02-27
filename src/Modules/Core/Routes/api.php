@@ -11,16 +11,13 @@
 |
 */
 
-Route::group(['prefix' => 'core'], function () {
-
-    Route::group(['prefix' => 'settings'], function () {
+Route::group(['prefix' => 'settings'], function () {
         
-        Route::get('/', 'SettingController@index');
-        Route::get('/{id}', 'SettingController@find');
-        Route::put('/', 'SettingController@update');
-        Route::delete('/{id}', 'SettingController@delete');
-        Route::get('list/deleted', 'SettingController@deleted');
-        Route::patch('restore/{id}', 'SettingController@restore');
-        Route::post('save/many', 'SettingController@saveMany');
-    });
+    Route::get('/', 'SettingController@index');
+    Route::get('/{id}', 'SettingController@find');
+    Route::put('/', 'SettingController@update');
+    Route::delete('/{id}', 'SettingController@delete');
+    Route::get('list/deleted', 'SettingController@deleted');
+    Route::patch('restore/{id}', 'SettingController@restore');
+    Route::post('save/many', 'SettingController@saveMany');
 });

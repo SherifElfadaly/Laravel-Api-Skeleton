@@ -55,6 +55,7 @@ class GenerateDoc extends Command
                     $skipLoginCheck   = Arr::get($classProperties, 'skipLoginCheck', false);
                     $validationRules  = Arr::get($classProperties, 'validationRules', false);
 
+                    dd($classProperties);
                     $this->processDocBlock($route, $reflectionMethod);
                     $this->getHeaders($route, $method, $skipLoginCheck);
                     $this->getPostData($route, $reflectionMethod, $validationRules);
@@ -158,7 +159,7 @@ class GenerateDoc extends Command
                 if ($match[1] == '$this->validationRules') {
                     $route['body'] = $validationRules;
                 } else {
-                    $route['body'] = eval('return '.str_replace(',\'.$request->get(\'id\')', '$this->get('id')\'', $match[1]).';');
+                    $route['body'] = eval('return '.str_replace(',\'.$request->get(\'id\')', ',{id}\'', $match[1]).';');
                 }
 
                 foreach ($route['body'] as &$rule) {

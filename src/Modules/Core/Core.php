@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Core;
 
 use App\Modules\Core\Interfaces\BaseFactoryInterface;
-use App\Modules\Core\Decorators\CachingDecorator;
 
 class Core implements BaseFactoryInterface
 {
@@ -21,14 +20,8 @@ class Core implements BaseFactoryInterface
             $nameSpace = 'App\\Modules\\' . $module['basename'] ;
             $model = ucfirst(\Str::singular($name));
             $class = $nameSpace . '\\Repositories\\' . $model . 'Repository';
-            $decoratedClass = $class . '\\Decorated';
 
             if (class_exists($class)) {
-                $classObj = \App::make($class);
-                \App::singleton($class, function ($app) use ($classObj) {
-                    return new CachingDecorator($classObj, $app['cache.store']);
-                });
-
                 return \App::make($class);
             }
         }

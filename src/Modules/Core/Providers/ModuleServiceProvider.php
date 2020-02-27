@@ -16,8 +16,8 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../Resources/Lang', 'core');
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'core');
 
-        $factory = app('Illuminate\Database\Eloquent\Factory');
-        $factory->load(__DIR__.'/../Database/Factories');
+        $this->loadMigrationsFrom(module_path('core', 'Database/Migrations', 'app'));
+        $this->loadFactoriesFrom(module_path('core', 'Database/Factories', 'app'));
     }
 
     /**
@@ -27,28 +27,28 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //Bind Core Facade to the IoC Container
-        \App::bind('Core', function () {
+        //Bind Core Facade to the Service Container
+        $this->app->singleton('Core', function () {
             return new \App\Modules\Core\Core;
         });
 
-        //Bind ErrorHandler Facade to the IoC Container
-        \App::bind('ErrorHandler', function () {
+        //Bind ErrorHandler Facade to the Service Container
+        $this->app->singleton('ErrorHandler', function () {
             return new \App\Modules\Core\Utl\ErrorHandler;
         });
 
-        //Bind CoreConfig Facade to the IoC Container
-        \App::bind('CoreConfig', function () {
+        //Bind CoreConfig Facade to the Service Container
+        $this->app->singleton('CoreConfig', function () {
             return new \App\Modules\Core\Utl\CoreConfig;
         });
 
-        //Bind Mpgs Facade to the IoC Container
-        \App::bind('Media', function () {
+        //Bind Media Facade to the Service Container
+        $this->app->singleton('Media', function () {
             return new \App\Modules\Core\Utl\Media;
         });
 
-        //Bind Mpgs Facade to the IoC Container
-        \App::bind('ApiConsumer', function () {
+        //Bind ApiConsumer Facade to the Service Container
+        $this->app->singleton('ApiConsumer', function () {
             $app = app();
             return new \App\Modules\Core\Utl\ApiConsumer($app, $app['request'], $app['router']);
         });

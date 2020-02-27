@@ -22,7 +22,7 @@ class NotificationRepository extends BaseRepository
      * @param  integer $perPage
      * @return Collection
      */
-    public function all($perPage)
+    public function my($perPage)
     {
         return \Auth::user()->notifications()->paginate($perPage);
     }

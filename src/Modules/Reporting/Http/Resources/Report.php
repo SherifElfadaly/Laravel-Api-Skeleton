@@ -14,6 +14,10 @@ class Report extends JsonResource
      */
     public function toArray($request)
     {
+        if (! $this->resource) {
+            return [];
+        }
+
         return [
             'id' => $this->id,
             'report_name' => $this->report_name,

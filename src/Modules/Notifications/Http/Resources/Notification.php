@@ -14,6 +14,10 @@ class Notification extends JsonResource
      */
     public function toArray($request)
     {
+        if (! $this->resource) {
+            return [];
+        }
+
         return [
             'id' => $this->id,
             'type' => $this->type,

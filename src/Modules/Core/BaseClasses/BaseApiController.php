@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use App\Modules\Core\Decorators\CachingDecorator;
 
 class BaseApiController extends Controller
 {
@@ -40,7 +41,7 @@ class BaseApiController extends Controller
      */
     public function __construct($repo, $config, $modelResource)
     {
-        $this->repo = $repo;
+        $this->repo = new CachingDecorator($repo, \App::make('Illuminate\Contracts\Cache\Repository'));
         $this->modelResource = $modelResource;
         $this->config = $config->getConfig();
         $this->modelName = explode('\\', get_called_class());
@@ -123,7 +124,6 @@ class BaseApiController extends Controller
         
         if (! in_array($permission, $this->skipLoginCheck) && $user = \Auth::user()) {
             $user             = \Auth::user();
-            $permission       = $permission !== 'index' ? $permission : 'list';
             $isPasswordClient = $user->token()->client->password_client;
             $this->updateLocaleAndTimezone($user);
 
