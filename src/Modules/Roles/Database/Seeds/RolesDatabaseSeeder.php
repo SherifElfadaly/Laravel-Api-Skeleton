@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Notifications\Database\Seeds;
+namespace App\Modules\Roles\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 
-class NotificationsDatabaseSeeder extends Seeder
+class RolesDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class NotificationsDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(ClearDataSeeder::class);
-        $this->call(NotificationsTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
         $this->call(AssignRelationsSeeder::class);
     }
 }
