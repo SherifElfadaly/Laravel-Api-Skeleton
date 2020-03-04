@@ -54,7 +54,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      *
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  integer $desc
+     * @param  boolean $desc
      * @param  array   $columns
      * @return collection
      */
@@ -72,7 +72,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  integer $perPage
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  integer $desc
+     * @param  boolean $desc
      * @param  array   $columns
      * @return collection
      */
@@ -174,7 +174,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  integer $perPage
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  integer $desc
+     * @param  boolean $desc
      * @param  array   $columns
      * @return collection
      */
@@ -192,7 +192,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  integer $perPage
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  integer $desc
+     * @param  boolean $desc
      * @param  array   $columns
      * @return collection
      */
@@ -207,220 +207,19 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * Save the given model to the storage.
      *
      * @param  array $data
-     * @return boolean
+     * @return mixed
      */
     public function save(array $data)
     {
         \Session::put('locale', 'all');
         $model      = false;
-        $modelClass = $this->model;
         $relations  = [];
 
-        \DB::transaction(function () use (&$model, &$relations, $data, $modelClass) {
-            /**
-             * If the id is present in the data then select the model for updating,
-             * else create new model.
-             * @var array
-             */
-            $model = Arr::has($data, 'id') ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
-            if (! $model) {
-                \ErrorHandler::notFound(class_basename($modelClass).' with id : '.$data['id']);
-            }
-
-            /**
-             * Construct the model object with the given data,
-             * and if there is a relation add it to relations array,
-             * then save the model.
-             */
-            foreach ($data as $key => $value) {
-                /**
-                 * If the attribute is a relation.
-                 */
-                $relation = \Str::camel($key);
-                if (method_exists($model, $relation) && \Core::$relation()) {
-                    /**
-                     * Check if the relation is a collection.
-                     */
-                    if (class_basename($model->$relation) == 'Collection') {
-                        /**
-                         * If the relation has no value then marke the relation data
-                         * related to the model to be deleted.
-                         */
-                        if (! $value || ! count($value)) {
-                            $relations[$relation] = 'delete';
-                        }
-                    }
-                    if (is_array($value)) {
-                        /**
-                         * Loop through the relation data.
-                         */
-                        foreach ($value as $attr => $val) {
-                            /**
-                             * Get the relation model.
-                             */
-                            $relationBaseModel = \Core::$relation()->model;
-
-                            /**
-                             * Check if the relation is a collection.
-                             */
-                            if (class_basename($model->$relation) == 'Collection') {
-                                /**
-                                 * If the id is present in the data then select the relation model for updating,
-                                 * else create new model.
-                                 */
-                                $relationModel = Arr::has($val, 'id') ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
-
-                                /**
-                                 * If model doesn't exists.
-                                 */
-                                if (! $relationModel) {
-                                    \ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$val['id']);
-                                }
-
-                                /**
-                                 * Loop through the relation attributes.
-                                 */
-                                foreach ($val as $attr => $val) {
-                                    /**
-                                     * Prevent the sub relations or attributes not in the fillable.
-                                     */
-                                    if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false) {
-                                        $relationModel->$attr = $val;
-                                    }
-                                }
-
-                                $relations[$relation][] = $relationModel;
-                            } else {
-                                /**
-                                 * Prevent the sub relations.
-                                 */
-                                if (gettype($val) !== 'object' && gettype($val) !== 'array') {
-                                    /**
-                                     * If the id is present in the data then select the relation model for updating,
-                                     * else create new model.
-                                     */
-                                    $relationModel = Arr::has($value, 'id') ? $relationBaseModel->lockForUpdate()->find($value['id']) : new $relationBaseModel;
-
-                                    /**
-                                     * If model doesn't exists.
-                                     */
-                                    if (! $relationModel) {
-                                        \ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$value['id']);
-                                    }
-
-                                    foreach ($value as $relationAttribute => $relationValue) {
-                                        /**
-                                         * Prevent attributes not in the fillable.
-                                         */
-                                        if (array_search($relationAttribute, $relationModel->getFillable(), true) !== false) {
-                                            $relationModel->$relationAttribute = $relationValue;
-                                        }
-                                    }
-
-                                    $relations[$relation] = $relationModel;
-                                }
-                            }
-                        }
-                    }
-                } elseif (array_search($key, $model->getFillable(), true) !== false) {
-                    /**
-                     * If the attribute isn't a relation and prevent attributes not in the fillable.
-                     */
-                    $model->$key = $value;
-                }
-            }
-
-            /**
-             * Loop through the relations array.
-             */
-            foreach ($relations as $key => $value) {
-                /**
-                 * If the relation is marked for delete then delete it.
-                 */
-                if ($value == 'delete' && $model->$key()->count()) {
-                    $model->$key()->delete();
-                } elseif (gettype($value) == 'array') {
-                    /**
-                     * Save the model.
-                     */
-                    $model->save();
-                    $ids = [];
-
-                    /**
-                     * Loop through the relations.
-                     */
-                    foreach ($value as $val) {
-                        switch (class_basename($model->$key())) {
-                            /**
-                             * If the relation is one to many then update it's foreign key with
-                             * the model id and save it then add its id to ids array to delete all
-                             * relations who's id isn't in the ids array.
-                             */
-                            case 'HasMany':
-                                $foreignKeyName       = $model->$key()->getForeignKeyName();
-                                $val->$foreignKeyName = $model->id;
-                                $val->save();
-                                $ids[] = $val->id;
-                                break;
-
-                            /**
-                             * If the relation is many to many then add it's id to the ids array to
-                             * attache these ids to the model.
-                             */
-                            case 'BelongsToMany':
-                                $val->save();
-                                $ids[] = $val->id;
-                                break;
-                        }
-                    }
-                    switch (class_basename($model->$key())) {
-                        /**
-                         * If the relation is one to many then delete all
-                         * relations who's id isn't in the ids array.
-                         */
-                        case 'HasMany':
-                            $model->$key()->whereNotIn('id', $ids)->delete();
-                            break;
-
-                        /**
-                         * If the relation is many to many then
-                         * detach the previous data and attach
-                         * the ids array to the model.
-                         */
-                        case 'BelongsToMany':
-                            $model->$key()->detach();
-                            $model->$key()->attach($ids);
-                            break;
-                    }
-                } else {
-                    switch (class_basename($model->$key())) {
-                        /**
-                         * If the relation is one to one.
-                         */
-                        case 'HasOne':
-                            /**
-                             * Save the model.
-                             */
-                            $model->save();
-                            $foreignKeyName         = $model->$key()->getForeignKeyName();
-                            $value->$foreignKeyName = $model->id;
-                            $value->save();
-                            break;
-                        case 'BelongsTo':
-                            /**
-                             * Save the model.
-                             */
-                            $value->save();
-                            $model->$key()->associate($value);
-                            break;
-                    }
-                }
-            }
-
-            /**
-             * Save the model.
-             */
-            $model->save();
+        \DB::transaction(function () use (&$model, $relations, $data) {
+            
+            $model     = $this->prepareModel($data);
+            $relations = $this->prepareRelations($data, $model);
+            $model     = $this->saveModel($model, $relations);
         });
             
         return $model;
@@ -475,7 +274,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  array   $conditions array of conditions
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  integer $desc
+     * @param  boolean $desc
      * @param  array   $columns
      * @return collection
      */
@@ -507,7 +306,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  array   $conditions array of conditions
      * @param  integer $perPage
      * @param  string  $sortBy
-     * @param  integer $desc
+     * @param  boolean $desc
      * @param  array   $columns
      * @return collection
      */
@@ -543,6 +342,258 @@ abstract class BaseRepository implements BaseRepositoryInterface
         }
 
         $model->restore();
+    }
+
+    /**
+     * Fill the model with the given data.
+     *
+     * @param   array  $data
+     *
+     * @return  object
+     */
+    public function prepareModel($data) {
+        $modelClass = $this->model;
+
+        /**
+         * If the id is present in the data then select the model for updating,
+         * else create new model.
+         * @var array
+         */
+        $model = Arr::has($data, 'id') ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
+        if (! $model) {
+            \ErrorHandler::notFound(class_basename($modelClass).' with id : '.$data['id']);
+        }
+
+        /**
+         * Construct the model object with the given data,
+         * and if there is a relation add it to relations array,
+         * then save the model.
+         */
+        foreach ($data as $key => $value) {
+            if (array_search($key, $model->getFillable(), true) !== false) {
+                /**
+                 * If the attribute isn't a relation and prevent attributes not in the fillable.
+                 */
+                $model->$key = $value;
+            }
+        }
+
+        return $model;
+    }
+    
+    /**
+     * Prepare related models based on the given data for the given model.
+     *
+     * @param   array  $data
+     * @param   object $model
+     *
+     * @return  array
+     */
+    public function prepareRelations($data, $model) {
+        /**
+         * Construct the model object with the given data,
+         * and if there is a relation add it to relations array,
+         * then save the model.
+         */
+        foreach ($data as $key => $value) {
+            /**
+             * If the attribute is a relation.
+             */
+            $relation = \Str::camel($key);
+            if (method_exists($model, $relation) && \Core::$relation()) {
+                /**
+                 * Check if the relation is a collection.
+                 */
+                if (class_basename($model->$relation) == 'Collection') {
+                    /**
+                     * If the relation has no value then marke the relation data
+                     * related to the model to be deleted.
+                     */
+                    if (! $value || ! count($value)) {
+                        $relations[$relation] = 'delete';
+                    }
+                }
+                if (is_array($value)) {
+                    /**
+                     * Loop through the relation data.
+                     */
+                    foreach ($value as $attr => $val) {
+                        /**
+                         * Get the relation model.
+                         */
+                        $relationBaseModel = \Core::$relation()->model;
+
+                        /**
+                         * Check if the relation is a collection.
+                         */
+                        if (class_basename($model->$relation) == 'Collection') {
+                            /**
+                             * If the id is present in the data then select the relation model for updating,
+                             * else create new model.
+                             */
+                            $relationModel = Arr::has($val, 'id') ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
+
+                            /**
+                             * If model doesn't exists.
+                             */
+                            if (! $relationModel) {
+                                \ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$val['id']);
+                            }
+
+                            /**
+                             * Loop through the relation attributes.
+                             */
+                            foreach ($val as $attr => $val) {
+                                /**
+                                 * Prevent the sub relations or attributes not in the fillable.
+                                 */
+                                if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false) {
+                                    $relationModel->$attr = $val;
+                                }
+                            }
+
+                            $relations[$relation][] = $relationModel;
+                        } else {
+                            /**
+                             * Prevent the sub relations.
+                             */
+                            if (gettype($val) !== 'object' && gettype($val) !== 'array') {
+                                /**
+                                 * If the id is present in the data then select the relation model for updating,
+                                 * else create new model.
+                                 */
+                                $relationModel = Arr::has($value, 'id') ? $relationBaseModel->lockForUpdate()->find($value['id']) : new $relationBaseModel;
+
+                                /**
+                                 * If model doesn't exists.
+                                 */
+                                if (! $relationModel) {
+                                    \ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$value['id']);
+                                }
+
+                                foreach ($value as $relationAttribute => $relationValue) {
+                                    /**
+                                     * Prevent attributes not in the fillable.
+                                     */
+                                    if (array_search($relationAttribute, $relationModel->getFillable(), true) !== false) {
+                                        $relationModel->$relationAttribute = $relationValue;
+                                    }
+                                }
+
+                                $relations[$relation] = $relationModel;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $relations;
+    }
+
+    /**
+     * Save the model with related models.
+     *
+     * @param   object  $model
+     * @param   array   $relations
+     *
+     * @return  object
+     */
+    public function saveModel($model, $relations) {
+
+        /**
+         * Loop through the relations array.
+         */
+        foreach ($relations as $key => $value) {
+            /**
+             * If the relation is marked for delete then delete it.
+             */
+            if ($value == 'delete' && $model->$key()->count()) {
+                $model->$key()->delete();
+            } elseif (gettype($value) == 'array') {
+                /**
+                 * Save the model.
+                 */
+                $model->save();
+                $ids = [];
+
+                /**
+                 * Loop through the relations.
+                 */
+                foreach ($value as $val) {
+                    switch (class_basename($model->$key())) {
+                        /**
+                         * If the relation is one to many then update it's foreign key with
+                         * the model id and save it then add its id to ids array to delete all
+                         * relations who's id isn't in the ids array.
+                         */
+                        case 'HasMany':
+                            $foreignKeyName       = $model->$key()->getForeignKeyName();
+                            $val->$foreignKeyName = $model->id;
+                            $val->save();
+                            $ids[] = $val->id;
+                            break;
+
+                        /**
+                         * If the relation is many to many then add it's id to the ids array to
+                         * attache these ids to the model.
+                         */
+                        case 'BelongsToMany':
+                            $val->save();
+                            $ids[] = $val->id;
+                            break;
+                    }
+                }
+                switch (class_basename($model->$key())) {
+                    /**
+                     * If the relation is one to many then delete all
+                     * relations who's id isn't in the ids array.
+                     */
+                    case 'HasMany':
+                        $model->$key()->whereNotIn('id', $ids)->delete();
+                        break;
+
+                    /**
+                     * If the relation is many to many then
+                     * detach the previous data and attach
+                     * the ids array to the model.
+                     */
+                    case 'BelongsToMany':
+                        $model->$key()->detach();
+                        $model->$key()->attach($ids);
+                        break;
+                }
+            } else {
+                switch (class_basename($model->$key())) {
+                    /**
+                     * If the relation is one to one.
+                     */
+                    case 'HasOne':
+                        /**
+                         * Save the model.
+                         */
+                        $model->save();
+                        $foreignKeyName         = $model->$key()->getForeignKeyName();
+                        $value->$foreignKeyName = $model->id;
+                        $value->save();
+                        break;
+                    case 'BelongsTo':
+                        /**
+                         * Save the model.
+                         */
+                        $value->save();
+                        $model->$key()->associate($value);
+                        break;
+                }
+            }
+        }
+
+        /**
+         * Save the model.
+         */
+        $model->save();
+
+        return $model;
     }
 
     /**

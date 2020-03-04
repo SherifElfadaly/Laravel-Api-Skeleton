@@ -28,6 +28,10 @@ class ApiConsumer
     }
 
     /**
+     * @param  string $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @param  string $content
      * @return \Illuminate\Http\Response
      */
     public function get()
@@ -36,6 +40,10 @@ class ApiConsumer
     }
 
     /**
+     * @param  string $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @param  string $content
      * @return \Illuminate\Http\Response
      */
     public function post()
@@ -44,6 +52,10 @@ class ApiConsumer
     }
 
     /**
+     * @param  string $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @param  string $content
      * @return \Illuminate\Http\Response
      */
     public function put()
@@ -52,6 +64,10 @@ class ApiConsumer
     }
 
     /**
+     * @param  string $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @param  string $content
      * @return \Illuminate\Http\Response
      */
     public function delete()

@@ -202,7 +202,7 @@ class GenerateDoc extends Command
     /**
      * Get the given method body code.
      *
-     * @param  \ReflectionMethod $reflectionMethod
+     * @param  object $reflectionMethod
      * @return string
      */
     protected function getMethodBody($reflectionMethod)

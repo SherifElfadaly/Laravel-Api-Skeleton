@@ -33,7 +33,7 @@ class ReportController extends BaseApiController
      *
      * @param Request $request
      * @param  string $reportName Name of the requested report
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function getReport(Request $request, $reportName)
     {

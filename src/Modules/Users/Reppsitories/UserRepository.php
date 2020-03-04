@@ -144,7 +144,7 @@ class UserRepository extends BaseRepository
      *
      * @param  array   $credentials
      * @param  boolean $skipConfirmEmail
-     * @return boolean
+     * @return array
      */
     public function register($credentials, $skipConfirmEmail = false)
     {
@@ -344,7 +344,7 @@ class UserRepository extends BaseRepository
      * Save the given data to the logged in user.
      *
      * @param  array $data
-     * @return boolean
+     * @return void
      */
     public function saveProfile($data)
     {

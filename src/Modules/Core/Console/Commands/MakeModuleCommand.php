@@ -183,11 +183,6 @@ class MakeModuleCommand extends Command
         }
     }
 
-    /**
-     * @param string $contents
-     *
-     * @return string
-     */
     protected function replacePlaceholders($contents)
     {
         $modelName = \Str::camel($this->container['slug']);
