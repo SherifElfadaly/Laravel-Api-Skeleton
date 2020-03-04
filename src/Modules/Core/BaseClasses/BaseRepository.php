@@ -351,7 +351,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
      *
      * @return  object
      */
-    public function prepareModel($data) {
+    public function prepareModel($data)
+    {
         $modelClass = $this->model;
 
         /**
@@ -389,7 +390,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
      *
      * @return  array
      */
-    public function prepareRelations($data, $model) {
+    public function prepareRelations($data, $model)
+    {
         /**
          * Construct the model object with the given data,
          * and if there is a relation add it to relations array,
@@ -499,7 +501,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
      *
      * @return  object
      */
-    public function saveModel($model, $relations) {
+    public function saveModel($model, $relations)
+    {
 
         /**
          * Loop through the relations array.
