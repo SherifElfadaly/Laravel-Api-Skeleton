@@ -23,7 +23,7 @@ class PushNotificationDeviceRepository extends BaseRepository
      * Register the given device to the logged in user.
      *
      * @param  array $data
-     * @return void
+     * @return boolean
      */
     public function registerDevice($data)
     {

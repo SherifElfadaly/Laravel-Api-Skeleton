@@ -35,7 +35,7 @@ class BaseApiController extends Controller
      * Init new object.
      *
      * @param   mixed      $repo
-     * @param   CoreConfig $config
+     * @param   \App\Modules\Core\Utl\CoreConfig $config
      * @param   string     $modelResource
      * @return  void
      */
