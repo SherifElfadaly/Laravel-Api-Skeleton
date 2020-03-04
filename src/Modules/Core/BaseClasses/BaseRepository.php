@@ -54,7 +54,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      *
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $desc
      * @param  array   $columns
      * @return collection
      */
@@ -72,7 +72,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  integer $perPage
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $desc
      * @param  array   $columns
      * @return collection
      */
@@ -174,7 +174,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  integer $perPage
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $desc
      * @param  array   $columns
      * @return collection
      */
@@ -192,7 +192,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  integer $perPage
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $desc
      * @param  array   $columns
      * @return collection
      */
@@ -207,7 +207,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * Save the given model to the storage.
      *
      * @param  array $data
-     * @return mixed
+     * @return boolean
      */
     public function save(array $data)
     {
@@ -475,7 +475,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  array   $conditions array of conditions
      * @param  array   $relations
      * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $desc
      * @param  array   $columns
      * @return collection
      */
@@ -507,7 +507,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  array   $conditions array of conditions
      * @param  integer $perPage
      * @param  string  $sortBy
-     * @param  boolean $desc
+     * @param  integer $desc
      * @param  array   $columns
      * @return collection
      */

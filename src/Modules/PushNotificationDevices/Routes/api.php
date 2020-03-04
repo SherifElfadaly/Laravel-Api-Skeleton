@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,12 +13,12 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'push/notification/devices'], function () {
         
-    Route::get('/', 'PushNotificationDeviceController@index');
-    Route::get('/{id}', 'PushNotificationDeviceController@find');
-    Route::post('/', 'PushNotificationDeviceController@insert');
-    Route::put('/', 'PushNotificationDeviceController@update');
-    Route::delete('/{id}', 'PushNotificationDeviceController@delete');
-    Route::get('list/deleted', 'PushNotificationDeviceController@deleted');
-    Route::patch('restore/{id}', 'PushNotificationDeviceController@restore');
-    Route::post('register/device', 'PushNotificationDeviceController@registerDevice');
+	Route::get('/', 'PushNotificationDeviceController@index');
+	Route::get('/{id}', 'PushNotificationDeviceController@find');
+	Route::post('/', 'PushNotificationDeviceController@insert');
+	Route::put('/', 'PushNotificationDeviceController@update');
+	Route::delete('/{id}', 'PushNotificationDeviceController@delete');
+	Route::get('list/deleted', 'PushNotificationDeviceController@deleted');
+	Route::patch('restore/{id}', 'PushNotificationDeviceController@restore');
+	Route::post('register/device', 'PushNotificationDeviceController@registerDevice');
 });
