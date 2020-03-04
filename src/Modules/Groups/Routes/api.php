@@ -13,12 +13,12 @@
 
 Route::group(['prefix' => 'groups'], function () {
 
-	Route::get('/', 'GroupController@index');
-	Route::get('/{id}', 'GroupController@find');
-	Route::post('/', 'GroupController@insert');
-	Route::put('/', 'GroupController@update');
-	Route::delete('/{id}', 'GroupController@delete');
-	Route::get('list/deleted', 'GroupController@deleted');
-	Route::patch('restore/{id}', 'GroupController@restore');
-	Route::post('assign/permissions', 'GroupController@assignPermissions');
+    Route::get('/', 'GroupController@index');
+    Route::get('/{id}', 'GroupController@find');
+    Route::post('/', 'GroupController@insert');
+    Route::put('/', 'GroupController@update');
+    Route::delete('/{id}', 'GroupController@delete');
+    Route::get('list/deleted', 'GroupController@deleted');
+    Route::patch('restore/{id}', 'GroupController@restore');
+    Route::post('assign/permissions', 'GroupController@assignPermissions');
 });
