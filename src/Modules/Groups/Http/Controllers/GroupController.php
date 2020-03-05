@@ -4,7 +4,6 @@ namespace App\Modules\Groups\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Groups\Repositories\GroupRepository;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Groups\Http\Requests\AssignPermissions;
 use App\Modules\Groups\Http\Requests\InsertGroup;
 use App\Modules\Groups\Http\Requests\UpdateGroup;
@@ -15,12 +14,11 @@ class GroupController extends BaseApiController
      * Init new object.
      *
      * @param   GroupRepository $repo
-     * @param   CoreConfig      $config
      * @return  void
      */
-    public function __construct(GroupRepository $repo, CoreConfig $config)
+    public function __construct(GroupRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\Groups\Http\Resources\AclGroup');
+        parent::__construct($repo, 'App\Modules\Groups\Http\Resources\AclGroup');
     }
 
     /**

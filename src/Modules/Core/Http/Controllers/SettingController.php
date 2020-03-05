@@ -5,7 +5,6 @@ namespace App\Modules\Core\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Core\Repositories\SettingRepository;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use App\Modules\Core\Http\Requests\UpdateSetting;
 
@@ -15,12 +14,11 @@ class SettingController extends BaseApiController
      * Init new object.
      *
      * @param   SettingRepository $repo
-     * @param   CoreConfig        $config
      * @return  void
      */
-    public function __construct(SettingRepository $repo, CoreConfig $config)
+    public function __construct(SettingRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\Core\Http\Resources\Setting');
+        parent::__construct($repo, 'App\Modules\Core\Http\Resources\Setting');
     }
 
     /**

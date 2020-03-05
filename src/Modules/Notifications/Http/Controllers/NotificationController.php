@@ -5,7 +5,6 @@ namespace App\Modules\Notifications\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Notifications\Repositories\NotificationRepository;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 
 class NotificationController extends BaseApiController
@@ -21,12 +20,11 @@ class NotificationController extends BaseApiController
      * Init new object.
      *
      * @param   NotificationRepository $repo
-     * @param   CoreConfig             $config
      * @return  void
      */
-    public function __construct(NotificationRepository $repo, CoreConfig $config)
+    public function __construct(NotificationRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\Notifications\Http\Resources\Notification');
+        parent::__construct($repo, 'App\Modules\Notifications\Http\Resources\Notification');
     }
 
     /**

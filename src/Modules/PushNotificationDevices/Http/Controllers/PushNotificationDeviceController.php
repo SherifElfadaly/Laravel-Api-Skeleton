@@ -4,7 +4,6 @@ namespace App\Modules\PushNotificationDevices\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepository;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\PushNotificationDevices\Http\Requests\RegisterDevice;
 use App\Modules\PushNotificationDevices\Http\Requests\InsertPushNotificationDevice;
 use App\Modules\PushNotificationDevices\Http\Requests\UpdatePushNotificationDevice;
@@ -22,12 +21,11 @@ class PushNotificationDeviceController extends BaseApiController
      * Init new object.
      *
      * @param   PushNotificationDeviceRepository $repo
-     * @param   CoreConfig                       $config
      * @return  void
      */
-    public function __construct(PushNotificationDeviceRepository $repo, CoreConfig $config)
+    public function __construct(PushNotificationDeviceRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\PushNotificationDevices\Http\Resources\PushNotificationDevice');
+        parent::__construct($repo, 'App\Modules\PushNotificationDevices\Http\Resources\PushNotificationDevice');
     }
 
     /**

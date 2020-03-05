@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Users\Repositories\UserRepository;
 use App\Modules\Users\Proxy\LoginProxy;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use Illuminate\Support\Facades\App;
 use App\Modules\Users\Http\Requests\AssignGroups;
@@ -30,7 +29,7 @@ class UserController extends BaseApiController
      * will skip permissions check for them.
      * @var array
      */
-    protected $skipPermissionCheck = ['account', 'logout', 'changePassword', 'saveProfile', 'account'];
+    protected $skipPermissionCheck = ['account', 'logout', 'changePassword', 'saveProfile'];
 
     /**
      * List of all route actions that the base api controller
@@ -51,13 +50,12 @@ class UserController extends BaseApiController
      *
      * @param   LoginProxy     $loginProxy
      * @param   UserRepository $repo
-     * @param   CoreConfig     $config
      * @return  void
      */
-    public function __construct(LoginProxy $loginProxy, UserRepository $repo, CoreConfig $config)
+    public function __construct(LoginProxy $loginProxy, UserRepository $repo)
     {
         $this->loginProxy = $loginProxy;
-        parent::__construct($repo, $config, 'App\Modules\Users\Http\Resources\AclUser');
+        parent::__construct($repo, 'App\Modules\Users\Http\Resources\AclUser');
     }
 
     /**
@@ -85,11 +83,12 @@ class UserController extends BaseApiController
     /**
      * Return the logged in user account.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function account()
+    public function account(Request $request)
     {
-        return new $this->modelResource($this->repo->account($this->relations));
+        return new $this->modelResource($this->repo->account($request->relations));
     }
 
     /**
@@ -247,7 +246,7 @@ class UserController extends BaseApiController
      */
     public function group(Request $request, $groupName)
     {
-        return $this->modelResource::collection($this->repo->group($request->all(), $groupName, $this->relations, $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
+        return $this->modelResource::collection($this->repo->group($request->all(), $groupName, $request->relations, $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**

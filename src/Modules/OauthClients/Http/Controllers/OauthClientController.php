@@ -4,7 +4,6 @@ namespace App\Modules\OauthClients\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\OauthClients\Repositories\OauthClientRepository;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use App\Modules\OauthClients\Http\Requests\InsertOauthClient;
 use App\Modules\OauthClients\Http\Requests\UpdateOauthClient;
@@ -15,12 +14,11 @@ class OauthClientController extends BaseApiController
      * Init new object.
      *
      * @param   OauthClientRepository $repo
-     * @param   CoreConfig            $config
      * @return  void
      */
-    public function __construct(OauthClientRepository $repo, CoreConfig $config)
+    public function __construct(OauthClientRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\OauthClients\Http\Resources\OauthClient');
+        parent::__construct($repo, 'App\Modules\OauthClients\Http\Resources\OauthClient');
     }
 
     /**

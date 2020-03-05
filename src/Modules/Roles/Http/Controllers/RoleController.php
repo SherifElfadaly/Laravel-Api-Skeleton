@@ -4,7 +4,6 @@ namespace App\Modules\Roles\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Roles\Repositories\RoleRepository;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\Roles\Http\Requests\InsertRole;
 use App\Modules\Roles\Http\Requests\UpdateRole;
 
@@ -28,12 +27,11 @@ class RoleController extends BaseApiController
      * Init new object.
      *
      * @param   RoleRepository $repo
-     * @param   CoreConfig      $config
      * @return  void
      */
-    public function __construct(RoleRepository $repo, CoreConfig $config)
+    public function __construct(RoleRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\Roles\Http\Resources\Role');
+        parent::__construct($repo, 'App\Modules\Roles\Http\Resources\Role');
     }
 
     /**

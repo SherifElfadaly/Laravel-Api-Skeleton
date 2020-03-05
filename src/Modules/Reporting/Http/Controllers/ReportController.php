@@ -5,7 +5,6 @@ namespace App\Modules\Reporting\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Reporting\Repositories\ReportRepository;
-use App\Modules\Core\Utl\CoreConfig;
 
 class ReportController extends BaseApiController
 {
@@ -20,12 +19,11 @@ class ReportController extends BaseApiController
      * Init new object.
      *
      * @param   ReportRepository $repo
-     * @param   CoreConfig       $config
      * @return  void
      */
-    public function __construct(ReportRepository $repo, CoreConfig $config)
+    public function __construct(ReportRepository $repo)
     {
-        parent::__construct($repo, $config, 'App\Modules\Reporting\Http\Resources\Report');
+        parent::__construct($repo, 'App\Modules\Reporting\Http\Resources\Report');
     }
 
     /**
