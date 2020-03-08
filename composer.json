@@ -17,7 +17,6 @@
         }
     ],
     "require": {
-        "barryvdh/laravel-cors": "^1.0",
         "intervention/image": "^2.5",
         "benwilkins/laravel-fcm-notification": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.0",

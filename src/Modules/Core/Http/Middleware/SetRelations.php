@@ -10,6 +10,8 @@ use App\Modules\Core\Utl\CoreConfig as Config;
 class SetRelations
 {
     protected $arr;
+    protected $route;
+    protected $config;
     
     /**
      * Init new object.

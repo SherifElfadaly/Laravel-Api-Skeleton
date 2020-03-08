@@ -53,19 +53,20 @@ class GenerateDoc extends Command
                     $reflectionMethod = $reflectionClass->getMethod($method);
                     $classProperties  = $reflectionClass->getDefaultProperties();
                     $skipLoginCheck   = Arr::get($classProperties, 'skipLoginCheck', false);
-                    $validationRules  = Arr::get($classProperties, 'validationRules', false);
+                    $modelName        = explode('\\', $controller);
+                    $modelName        = lcfirst(str_replace('Controller', '', end($modelName)));
 
-                    dd($classProperties);
                     $this->processDocBlock($route, $reflectionMethod);
                     $this->getHeaders($route, $method, $skipLoginCheck);
-                    $this->getPostData($route, $reflectionMethod, $validationRules);
+                    $this->getPostData($route, $reflectionMethod);
 
-                    $route['response'] = $this->getResponseObject($classProperties['model'], $route['name'], $route['returnDocBlock']);
+                    $route['response'] = $this->getResponseObject($modelName, $route['name'], $route['returnDocBlock']);
 
-                    preg_match('/api\/([^#]+)\//iU', $route['uri'], $module);
-                    $docData['modules'][$module[1]][substr($route['prefix'], strlen('/api/'.$module[1].'/') - 1)][] = $route;
+                    $module = $route['prefix'];
+                    $module = \Str::camel(str_replace('/', '_', str_replace('api', '', $module)));
+                    $docData['modules'][$module][] = $route;
 
-                    $this->getModels($classProperties['model'], $docData);
+                    $this->getModels($modelName, $docData, $reflectionClass);
                 }
             }
         }
@@ -133,11 +134,18 @@ class GenerateDoc extends Command
         $route['description']    = trim(preg_replace('/\s+/', ' ', $docblock->getSummary()));
         $params                  = $docblock->getTagsByName('param');
         $route['returnDocBlock'] = $docblock->getTagsByName('return')[0]->getType()->getFqsen()->getName();
+
         foreach ($params as $param) {
             $name = $param->getVariableName();
             if ($name !== 'request') {
                 $route['parametars'][$param->getVariableName()] = $param->getDescription()->render();
             }
+        }
+
+        if ($route['name'] === 'list') {
+            $route['parametars']['perPage'] = 'perPage';
+            $route['parametars']['sortBy']  = 'sortBy';
+            $route['parametars']['desc']    = 'desc';
         }
     }
 
@@ -146,31 +154,28 @@ class GenerateDoc extends Command
      *
      * @param  array  &$route
      * @param  \ReflectionMethod $reflectionMethod
-     * @param  array  $validationRules
      * @return void
      */
-    protected function getPostData(&$route, $reflectionMethod, $validationRules)
+    protected function getPostData(&$route, $reflectionMethod)
     {
-        if ($route['method'] == 'POST') {
-            $body = $this->getMethodBody($reflectionMethod);
-
-            preg_match('/\$this->validate\(\$request,([^#]+)\);/iU', $body, $match);
-            if (count($match)) {
-                if ($match[1] == '$this->validationRules') {
-                    $route['body'] = $validationRules;
-                } else {
-                    $route['body'] = eval('return '.str_replace(',\'.$request->get(\'id\')', ',{id}\'', $match[1]).';');
-                }
-
-                foreach ($route['body'] as &$rule) {
-                    if (strpos($rule, 'unique')) {
-                        $rule = substr($rule, 0, strpos($rule, 'unique') + 6);
-                    } elseif (strpos($rule, 'exists')) {
-                        $rule = substr($rule, 0, strpos($rule, 'exists') - 1);
+        $parameters = $reflectionMethod->getParameters();
+        if (count($parameters)) {
+            $className = optional($reflectionMethod->getParameters()[0]->getType())->getName();
+            if ($className) {
+                $reflectionClass  = new \ReflectionClass($className);
+    
+                if ($reflectionClass->hasMethod('rules')) {
+                    $reflectionMethod = $reflectionClass->getMethod('rules');
+                    $route['body'] = $reflectionMethod->invoke(new $className);
+        
+                    foreach ($route['body'] as &$rule) {
+                        if (strpos($rule, 'unique')) {
+                            $rule = substr($rule, 0, strpos($rule, 'unique') + 6);
+                        } elseif (strpos($rule, 'exists')) {
+                            $rule = substr($rule, 0, strpos($rule, 'exists') - 1);
+                        }
                     }
                 }
-            } else {
-                $route['body'] = 'conditions';
             }
         }
     }
@@ -225,17 +230,22 @@ class GenerateDoc extends Command
      * @param  array  $docData
      * @return string
      */
-    protected function getModels($modelName, &$docData)
+    protected function getModels($modelName, &$docData, $reflectionClass)
     {
         if ($modelName && ! Arr::has($docData['models'], $modelName)) {
-            $modelClass = call_user_func_array("\Core::{$modelName}", [])->modelClass;
+            $modelClass = get_class(call_user_func_array("\Core::{$modelName}", [])->model);
             $model      = factory($modelClass)->make();
-            $modelArr   = $model->toArray();
 
-            if ($model->trans && ! $model->trans->count()) {
-                $modelArr['trans'] = [
-                    'en' => factory($modelClass.'Translation')->make()->toArray()
-                ];
+            $property = $reflectionClass->getProperty('modelResource');
+            $property->setAccessible(true);
+            $modelResource = $property->getValue(\App::make($reflectionClass->getName()));
+            $modelResource = new $modelResource($model);
+            $modelArr      = $modelResource->toArray([]);
+
+            foreach ($modelArr as $key => $attr) {
+                if (is_object($attr) && $attr->resource instanceof \Illuminate\Http\Resources\MissingValue) {
+                    unset($modelArr[$key]);
+                }
             }
 
             $docData['models'][$modelName] = json_encode($modelArr, JSON_PRETTY_PRINT);

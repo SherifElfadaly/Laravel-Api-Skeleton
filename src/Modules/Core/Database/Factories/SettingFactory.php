@@ -1,6 +1,6 @@
 <?php
 
-$factory->define(App\Modules\Core\Settings::class, function (Faker\Generator $faker) {
+$factory->define(App\Modules\Core\Setting::class, function (Faker\Generator $faker) {
     return [
         'name'       => $faker->randomElement(['Company Name', 'Title', 'Header Image']),
         'value'      => $faker->word(),

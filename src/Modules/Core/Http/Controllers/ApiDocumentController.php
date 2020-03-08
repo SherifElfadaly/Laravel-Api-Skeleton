@@ -56,19 +56,30 @@ class ApiDocumentController extends Controller
         ];
 
         $paginateObject = [
-            'total'         => 50,
-            'per_page'      => 15,
-            'current_page'  => 1,
-            'last_page'     => 4,
-            'next_page_url' => 'apiUrl?page=2',
-            'prev_page_url' => null,
-            'from'          => 1,
-            'to'            => 15,
-            'data'          => ['The model object']
+            'data' => ['Array of model objects'],
+            "links" => [
+                "first" => "apiUrl?page=1",
+                "last" => "apiUrl?page=3",
+                "prev" => "apiUrl?page=2",
+                "next" => "apiUrl?page=3"
+            ],
+            "meta" => [
+                "current_page" => 2,
+                "from" => 6,
+                "last_page" => 3,
+                "path" => "apiUrl",
+                "per_page" => 5,
+                "to" => 10,
+                "total" => 15
+            ]
+        ];
+        
+        $responseObject = [
+            'data' => ['The model object']
         ];
 
         $avaialableReports = \Core::reports()->all();
 
-        return view('core::doc', ['modules' => $modules, 'reports' => $reports, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT), 'avaialableReports' => $avaialableReports]);
+        return view('core::doc', ['modules' => $modules, 'reports' => $reports, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT), 'responseObject' => json_encode($responseObject, JSON_PRETTY_PRINT), 'avaialableReports' => $avaialableReports]);
     }
 }

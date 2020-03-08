@@ -16,6 +16,8 @@ class CheckPermissions
     protected $auth;
     protected $errorHandler;
     protected $authMiddleware;
+    protected $core;
+    protected $arr;
     
     /**
      * Init new object.
@@ -51,8 +53,8 @@ class CheckPermissions
         $routeActions        = explode('@', $this->route->currentRouteAction());
         $reflectionClass     = new \ReflectionClass($routeActions[0]);
         $classProperties     = $reflectionClass->getDefaultProperties();
-        $skipPermissionCheck = $this->arr->get($classProperties, 'skipPermissionCheck', false);
-        $skipLoginCheck      = $this->arr->get($classProperties, 'skipLoginCheck', false);
+        $skipPermissionCheck = $this->arr->get($classProperties, 'skipPermissionCheck', []);
+        $skipLoginCheck      = $this->arr->get($classProperties, 'skipLoginCheck', []);
         $modelName           = explode('\\', $routeActions[0]);
         $modelName           = lcfirst(str_replace('Controller', '', end($modelName)));
         $permission          = $routeActions[1];
@@ -60,19 +62,17 @@ class CheckPermissions
         $this->auth->shouldUse('api');
         if (! in_array($permission, $skipLoginCheck)) {
             $this->authMiddleware->handle($request, function ($request) use ($modelName, $skipPermissionCheck, $skipLoginCheck, $permission) {
-                if ($user = $this->auth->user()) {
-                    $user             = $this->auth->user();
-                    $isPasswordClient = $user->token()->client->password_client;
-        
-                    if ($user->blocked) {
-                        $this->errorHandler->userIsBlocked();
-                    }
-        
-                    if ($isPasswordClient && (in_array($permission, $skipPermissionCheck) || $this->core->users()->can($permission, $modelName))) {
-                    } elseif (! $isPasswordClient && $user->tokenCan($modelName.'-'.$permission)) {
-                    } else {
-                        $this->errorHandler->noPermissions();
-                    }
+                $user             = $this->auth->user();
+                $isPasswordClient = $user->token()->client->password_client;
+    
+                if ($user->blocked) {
+                    $this->errorHandler->userIsBlocked();
+                }
+    
+                if ($isPasswordClient && (in_array($permission, $skipPermissionCheck) || $this->core->users()->can($permission, $modelName))) {
+                } elseif (! $isPasswordClient && $user->tokenCan($modelName.'-'.$permission)) {
+                } else {
+                    $this->errorHandler->noPermissions();
                 }
             });
         }

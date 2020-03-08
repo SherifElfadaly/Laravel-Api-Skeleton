@@ -59,32 +59,22 @@
             <div class="page-sidebar-wrapper">
                 <div class="page-sidebar navbar-collapse collapse">
                     <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                        @foreach ($modules as $moduleName => $module)
+                        @foreach ($modules as $moduleName => $model)
                         <li class="nav-item ">
                              <a href="#{{$moduleName}}" id="{{$moduleName}}-1" data-toggle="collapse" data-target="#{{$moduleName}}" aria-expanded="false" class="nav-link nav-toggle ">
                                 <i class="icon-docs"></i>
                                 <span class="title">{{ucfirst($moduleName)}}</span>
                                 <span class="arrow "></span>
                             </a>
-                            <ul class="sub-menu" id="{{$moduleName}}" role="menu" aria-labelledby="{{$moduleName}}-1">
-                                @foreach ($module as $modelName => $model)
-                                <li class="nav-item ">
-                                    <a href="#{{$modelName}}" data-toggle="collapse" data-target="#{{$modelName}}" aria-expanded="false" class="nav-link nav-toggle">
-                                        <span class="title">{{ucfirst($modelName)}}</span>
-                                        <span class="arrow "></span>
-                                    </a>
-                                    <ul class="sub-menu " id="{{$modelName}}" role="menu" aria-labelledby="{{$modelName}}-1">
-                                        @foreach ($model as $api)
-                                        <li class="nav-item ">
-                                            <a href="#{{$moduleName}}_{{$modelName}}_{{$api['name']}}" class="nav-link ">
-                                                <span class="title">{{ucfirst($api['name'])}}</span>
-                                            </a>
-                                        </li>
-                                        @endforeach
-                                    </ul>    
-                                </li>
+                            <ul class="sub-menu " id="{{$moduleName}}" role="menu" aria-labelledby="{{$moduleName}}-1">
+                                @foreach ($model as $api)
+                                    <li class="nav-item ">
+                                        <a href="#{{$moduleName}}_{{$api['name']}}" class="nav-link ">
+                                            <span class="title">{{ucfirst($api['name'])}}</span>
+                                        </a>
+                                    </li>
                                 @endforeach
-                            </ul>
+                            </ul>    
                         </li>
                         @endforeach
                         <li class="nav-item ">
@@ -127,173 +117,171 @@
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                     <div class="row">
-                        @foreach ($modules as $moduleName => $module)
-                        <div class="col-lg-12" id="{{$moduleName}}">
-                            <h1>{{ucfirst($moduleName)}}</h1>
+                        @foreach ($modules as $moduleName => $model)
+                            <div class="col-lg-12" id="{{$moduleName}}">
+                                <h1>{{ucfirst($moduleName)}}</h1>
 
-                            @foreach ($module as $modelName => $model)
-                            <h3 id="{{$modelName}}">{{ucfirst($modelName)}}</h3>
-
-                            @foreach ($model as $api)
-                            <div class="panel panel-default" id="{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
-                                <div class="panel-heading">{{ucfirst($api['name'])}} 
-                                    @if($api['method'] == 'GET')
-                                    <span class="label label-success">{{$api['method']}}</span>
-                                    @else
-                                    <span class="label label-danger">{{$api['method']}}</span>
-                                    @endif
-                                </div>
-                                <div class="panel-body">
-                                    <p>{{$api['description']}}</p>
-                                    <pre>{{url($api['uri'])}}</pre>
-
-                                    <h4>Headers</h4>
-                                    <table class="table table-bordered"> 
-                                        <thead> 
-                                            <tr> 
-                                                <th>Field</th> 
-                                                <th>Value</th> 
-                                            </tr> 
-                                        </thead> 
-                                        <tbody> 
-                                            @foreach ($api['headers'] as $headerName => $headerValue)
-                                            <tr> 
-                                                <td>{{$headerName}}</td> 
-                                                <td>{{$headerValue}}</td> 
-                                            </tr> 
-                                            @endforeach
-                                        </tbody> 
-                                    </table>
-
-                                    @if(array_key_exists('parametars', $api))
-                                    <h4>Parametars</h4>
-                                    <table class="table table-bordered"> 
-                                        <thead> 
-                                            <tr> 
-                                                <th>Field</th> 
-                                                <th>Value</th> 
-                                            </tr> 
-                                        </thead> 
-                                        <tbody> 
-                                            @foreach ($api['parametars'] as $parametarName => $parametarDescription)
-                                            <tr> 
-                                                <td>
-                                                    {{$parametarName}}
-                                                    @if(strpos($api['uri'], $parametarName . '?') !== false)
-                                                    <span class="label label-default">Optional</span>
-                                                    @else
-                                                    <span class="label label-danger">Required</span>
-                                                    @endif
-                                                </td> 
-                                                <td>{{$parametarDescription}}</td> 
-                                            </tr> 
-                                            @endforeach
-                                        </tbody> 
-                                    </table>
-                                    @endif
-
-                                    @if(array_key_exists('body', $api) && is_array($api['body']))
-                                    <h4>Body</h4>
-                                    <table class="table table-bordered"> 
-                                        <thead> 
-                                            <tr> 
-                                                <th>Field</th> 
-                                                <th>Rules</th> 
-                                            </tr> 
-                                        </thead> 
-                                        <tbody> 
-                                            @foreach ($api['body'] as $parametarName => $parametarRules)
-                                            <tr> 
-                                                <td>
-                                                    {{$parametarName}}
-                                                    @if(strpos($parametarRules, 'required') === false)
-                                                    <span class="label label-default">Optional</span>
-                                                    @else
-                                                    <span class="label label-danger">Required</span>
-                                                    @endif
-                                                </td> 
-                                                <td>{{$parametarRules}}</td>
-                                            </tr> 
-                                            @endforeach
-                                        </tbody> 
-                                    </table>
-                                    @elseif(array_key_exists('body', $api) && $api['body'] == 'conditions')
-                                    <h4>Body</h4>
-                                    <p>This examples applied on users only change them based on the requested api.</p>
-                                    <ul class="nav nav-tabs" role="tablist"  id="conditionsTabs">
-                                        @foreach ($conditions as $key => $condition)
-                                        @if($key == 0)
-                                        <li class="active">
-                                        @else
-                                        <li>
-                                        @endif
-                                            <a href=".{{$key}}" data-toggle="tab">{{$condition['title']}}</a>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                    <div class="tab-content">
-                                        @foreach ($conditions as $key => $condition)
-                                        @if($key == 0)
-                                        <div class="tab-pane active {{$key}}">
-                                        @else
-                                        <div class="tab-pane {{$key}}">
-                                        @endif
-                                            <pre>{{json_encode($condition['content'], JSON_PRETTY_PRINT)}}</pre>
+                                @foreach ($model as $api)
+                                    <div class="panel panel-default" id="{{$moduleName}}_{{$api['name']}}">
+                                        <div class="panel-heading">{{ucfirst($api['name'])}} 
+                                            @if($api['method'] == 'GET')
+                                            <span class="label label-success">{{$api['method']}}</span>
+                                            @else
+                                            <span class="label label-danger">{{$api['method']}}</span>
+                                            @endif
                                         </div>
-                                        @endforeach
-                                    </div>
-                                    @endif
-                                    @if($api['response'])
-                                    <span id="apiResponse{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
-                                        @foreach($api['response'] as $object => $relations)
-                                        @if(array_key_exists('parametars', $api) && array_key_exists('perPage', $api['parametars']))
-                                        <h4>Paginate Object</h4>
-                                        <pre>{{$paginateObject}}</pre>
-                                        @endif
-                                        <h4>Response</h4>
-                                        <table class="table table-bordered"> 
-                                            <thead> 
-                                                <tr> 
-                                                    <th>Model</th> 
-                                                    @if(count($relations))
-                                                    <th>Rlations</th> 
-                                                    @endif
-                                                </tr> 
-                                            </thead> 
-                                            <tbody> 
-                                                <tr> 
-                                                    <td>
-                                                        <a href="#model_{{$object}}">{{ucfirst(\Illuminate\Support\Str::singular($object))}}</a>
-                                                    </td> 
-                                                    @if(count($relations))
-                                                    <td>
-                                                        @foreach ($relations as $relation)
-                                                        @if($relation == 'item')
-                                                        {{ucfirst($relation)}}: could be any model ex (User, Group....).
-                                                        @elseif(\Illuminate\Support\Str::singular($relation) !== $relation)
-                                                        Array of <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
-                                                        @else
-                                                        <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
-                                                        @endif
-                                                        <br>
-                                                        @endforeach
-                                                    </td> 
-                                                    @endif
-                                                </tr> 
-                                            </tbody> 
-                                        </table>
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </div>
-                            @endforeach
+                                        <div class="panel-body">
+                                            <p>{{$api['description']}}</p>
+                                            <pre>{{url($api['uri'])}}</pre>
 
-                            @endforeach
-                        </div>
+                                            <h4>Headers</h4>
+                                            <table class="table table-bordered"> 
+                                                <thead> 
+                                                    <tr> 
+                                                        <th>Field</th> 
+                                                        <th>Value</th> 
+                                                    </tr> 
+                                                </thead> 
+                                                <tbody> 
+                                                    @foreach ($api['headers'] as $headerName => $headerValue)
+                                                    <tr> 
+                                                        <td>{{$headerName}}</td> 
+                                                        <td>{{$headerValue}}</td> 
+                                                    </tr> 
+                                                    @endforeach
+                                                </tbody> 
+                                            </table>
+
+                                            @if(array_key_exists('parametars', $api))
+                                            <h4>Parametars</h4>
+                                            <table class="table table-bordered"> 
+                                                <thead> 
+                                                    <tr> 
+                                                        <th>Field</th> 
+                                                        <th>Value</th> 
+                                                    </tr> 
+                                                </thead> 
+                                                <tbody> 
+                                                    @foreach ($api['parametars'] as $parametarName => $parametarDescription)
+                                                    <tr> 
+                                                        <td>
+                                                            {{$parametarName}}
+                                                            @if(strpos($api['uri'], $parametarName . '?') !== false)
+                                                            <span class="label label-default">Optional</span>
+                                                            @else
+                                                            <span class="label label-danger">Required</span>
+                                                            @endif
+                                                        </td> 
+                                                        <td>{{$parametarDescription}}</td> 
+                                                    </tr> 
+                                                    @endforeach
+                                                </tbody> 
+                                            </table>
+                                            @endif
+
+                                            @if(array_key_exists('body', $api) && is_array($api['body']))
+                                            <h4>Body</h4>
+                                            <table class="table table-bordered"> 
+                                                <thead> 
+                                                    <tr> 
+                                                        <th>Field</th> 
+                                                        <th>Rules</th> 
+                                                    </tr> 
+                                                </thead> 
+                                                <tbody> 
+                                                    @foreach ($api['body'] as $parametarName => $parametarRules)
+                                                    <tr> 
+                                                        <td>
+                                                            {{$parametarName}}
+                                                            @if(strpos($parametarRules, 'required') === false)
+                                                            <span class="label label-default">Optional</span>
+                                                            @else
+                                                            <span class="label label-danger">Required</span>
+                                                            @endif
+                                                        </td> 
+                                                        <td>{{$parametarRules}}</td>
+                                                    </tr> 
+                                                    @endforeach
+                                                </tbody> 
+                                            </table>
+                                            @elseif(array_key_exists('body', $api) && $api['body'] == 'conditions')
+                                            <h4>Body</h4>
+                                            <p>This examples applied on users only change them based on the requested api.</p>
+                                            <ul class="nav nav-tabs" role="tablist"  id="conditionsTabs">
+                                                @foreach ($conditions as $key => $condition)
+                                                @if($key == 0)
+                                                <li class="active">
+                                                @else
+                                                <li>
+                                                @endif
+                                                    <a href=".{{$key}}" data-toggle="tab">{{$condition['title']}}</a>
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                            <div class="tab-content">
+                                                @foreach ($conditions as $key => $condition)
+                                                @if($key == 0)
+                                                <div class="tab-pane active {{$key}}">
+                                                @else
+                                                <div class="tab-pane {{$key}}">
+                                                @endif
+                                                    <pre>{{json_encode($condition['content'], JSON_PRETTY_PRINT)}}</pre>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            @endif
+                                            @if($api['response'])
+                                            <span id="apiResponse{{$moduleName}}_{{$api['name']}}">
+                                                @foreach($api['response'] as $object => $relations)
+                                                <h4>Response</h4>
+                                                @if(array_key_exists('parametars', $api) && array_key_exists('perPage', $api['parametars']))
+                                                <pre>{{$paginateObject}}</pre>
+                                                @else
+                                                <pre>{{$responseObject}}</pre>
+                                                @endif
+                                                <h4>Response</h4>
+                                                <table class="table table-bordered"> 
+                                                    <thead> 
+                                                        <tr> 
+                                                            <th>Model</th> 
+                                                            @if(count($relations))
+                                                            <th>Rlations</th> 
+                                                            @endif
+                                                        </tr> 
+                                                    </thead> 
+                                                    <tbody> 
+                                                        <tr> 
+                                                            <td>
+                                                                <a href="#model_{{$object}}">{{ucfirst(\Illuminate\Support\Str::singular($object))}}</a>
+                                                            </td> 
+                                                            @if(count($relations))
+                                                            <td>
+                                                                @foreach ($relations as $relation)
+                                                                @if($relation == 'item')
+                                                                {{ucfirst($relation)}}: could be any model ex (User, Group....).
+                                                                @elseif(\Illuminate\Support\Str::singular($relation) !== $relation)
+                                                                Array of <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
+                                                                @else
+                                                                <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
+                                                                @endif
+                                                                <br>
+                                                                @endforeach
+                                                            </td> 
+                                                            @endif
+                                                        </tr> 
+                                                    </tbody> 
+                                                </table>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                            </div>
                         @endforeach
                         <div class="col-lg-12" id="errors">
                             <h1>Available error codes</h1>
-                            <div class="panel panel-default" id="{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
+                            <div class="panel panel-default" id="{{$moduleName}}_{{$api['name']}}">
                                 <div class="panel-body">
                                     <table class="table table-bordered"> 
                                         <thead> 
@@ -320,7 +308,7 @@
                         </div>
                         <div class="col-lg-12" id="available-reports">
                             <h1>Available reports</h1>
-                            <div class="panel panel-default" id="{{$moduleName}}_{{$modelName}}_{{$api['name']}}">
+                            <div class="panel panel-default" id="{{$moduleName}}_{{$api['name']}}">
                                 <div class="panel-body">
                                     <table class="table table-bordered"> 
                                         <thead> 

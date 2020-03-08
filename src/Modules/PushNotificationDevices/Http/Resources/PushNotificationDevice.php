@@ -3,7 +3,7 @@
 namespace App\Modules\PushNotificationDevices\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Modules\Acl\Http\Resources\AclUser as UserResource;
+use App\Modules\Users\Http\Resources\AclUser as UserResource;
 
 class PushNotificationDevice extends JsonResource
 {

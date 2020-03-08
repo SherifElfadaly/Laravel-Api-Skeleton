@@ -24,6 +24,13 @@ class BaseApiController extends Controller
     protected $repo;
 
     /**
+     * The modelResource implementation.
+     *
+     * @var object
+     */
+    protected $modelResource;
+
+    /**
      * Init new object.
      *
      * @param   mixed      $repo
