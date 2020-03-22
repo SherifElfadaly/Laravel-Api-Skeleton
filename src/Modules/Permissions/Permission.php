@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AclPermission extends Model
+class Permission extends Model
 {
 
     use SoftDeletes;
@@ -29,14 +29,14 @@ class AclPermission extends Model
         return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
     }
     
-    public function groups()
+    public function roles()
     {
-        return $this->belongsToMany('App\Modules\Groups\AclGroup', 'groups_permissions', 'permission_id', 'group_id')->whereNull('groups_permissions.deleted_at')->withTimestamps();
+        return $this->belongsToMany('App\Modules\Roles\Role', 'roles_permissions', 'permission_id', 'role_id')->whereNull('roles_permissions.deleted_at')->withTimestamps();
     }
 
     public static function boot()
     {
         parent::boot();
-        AclPermission::observe(\App::make('App\Modules\Permissions\ModelObservers\AclPermissionObserver'));
+        Permission::observe(\App::make('App\Modules\Permissions\ModelObservers\PermissionObserver'));
     }
 }

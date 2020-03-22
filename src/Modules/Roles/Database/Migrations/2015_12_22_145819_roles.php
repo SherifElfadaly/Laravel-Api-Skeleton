@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Groups extends Migration
+class Roles extends Migration
 {
     /**
      * Run the migrations.
@@ -12,27 +12,28 @@ class Groups extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100)->unique();
             $table->softDeletes();
             $table->timestamps();
         });
         
-        Schema::create('users_groups', function (Blueprint $table) {
+        Schema::create('users_roles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('group_id');
+            $table->integer('role_id');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['user_id']);
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
         
         /**
-         * Create Default groups.
+         * Create Default roles.
          */
-        \DB::table('groups')->insert(
+        \DB::table('roles')->insert(
             [
                 [
                     'name'       => 'Admin',
@@ -43,14 +44,14 @@ class Groups extends Migration
         );
         
         /**
-         * Assign default users to admin groups.
+         * Assign default users to admin roles.
          */
-        $adminGroupId = \DB::table('groups')->where('name', 'admin')->select('id')->first()->id;
+        $adminRoleId = \DB::table('roles')->where('name', 'admin')->select('id')->first()->id;
         $adminUserId  = \DB::table('users')->where('email', 'admin@user.com')->select('id')->first()->id;
-        \DB::table('users_groups')->insert(
+        \DB::table('users_roles')->insert(
             [
             'user_id'    => $adminUserId,
-            'group_id'   => $adminGroupId,
+            'role_id'   => $adminRoleId,
             'created_at' => \DB::raw('NOW()'),
             'updated_at' => \DB::raw('NOW()')
             ]
@@ -64,7 +65,7 @@ class Groups extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
-        Schema::dropIfExists('users_groups');
+        Schema::dropIfExists('roles');
+        Schema::dropIfExists('users_roles');
     }
 }

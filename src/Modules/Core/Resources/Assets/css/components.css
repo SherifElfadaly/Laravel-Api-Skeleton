@@ -154,21 +154,21 @@ body {
     opacity: 0 !important;
     transform: scale(2.5); } }
 
-.form-group.form-md-line-input {
+.form-role.form-md-line-input {
   position: relative;
   margin: 0 0 35px 0;
   padding-top: 20px; }
-  .form-horizontal .form-group.form-md-line-input {
+  .form-horizontal .form-role.form-md-line-input {
     padding-top: 10px;
     margin-bottom: 20px;
     margin: 0 -15px 20px -15px; }
-  .form-horizontal .form-group.form-md-line-input > label {
+  .form-horizontal .form-role.form-md-line-input > label {
     padding-top: 5px;
     font-size: 14px;
     color: #888888;
     opacity: 1 ;
     filter: alpha(opacity=100) ; }
-  .form-group.form-md-line-input .form-control {
+  .form-role.form-md-line-input .form-control {
     background: none;
     border: 0;
     border-bottom: 1px solid #c2cad8;
@@ -182,35 +182,35 @@ body {
     padding-left: 0;
     padding-right: 0;
     font-size: 14px; }
-    .form-group.form-md-line-input .form-control::-moz-placeholder {
+    .form-role.form-md-line-input .form-control::-moz-placeholder {
       color: #999;
       opacity: 1; }
-    .form-group.form-md-line-input .form-control:-ms-input-placeholder {
+    .form-role.form-md-line-input .form-control:-ms-input-placeholder {
       color: #999; }
-    .form-group.form-md-line-input .form-control::-webkit-input-placeholder {
+    .form-role.form-md-line-input .form-control::-webkit-input-placeholder {
       color: #999; }
-    .form-group.form-md-line-input .form-control.form-control-static {
+    .form-role.form-md-line-input .form-control.form-control-static {
       border-bottom: 0; }
-    .form-group.form-md-line-input .form-control.input-sm {
+    .form-role.form-md-line-input .form-control.input-sm {
       font-size: 14px;
       padding: 6px 0; }
-    .form-group.form-md-line-input .form-control.input-lg {
+    .form-role.form-md-line-input .form-control.input-lg {
       font-size: 20px;
       padding: 14px 0; }
-    .form-group.form-md-line-input .form-control ~ label,
-    .form-group.form-md-line-input .form-control ~ .form-control-focus {
+    .form-role.form-md-line-input .form-control ~ label,
+    .form-role.form-md-line-input .form-control ~ .form-control-focus {
       width: 100%;
       position: absolute;
       left: 0;
       bottom: 0;
       pointer-events: none; }
-      .form-horizontal .form-group.form-md-line-input .form-control ~ label, .form-horizontal
-      .form-group.form-md-line-input .form-control ~ .form-control-focus {
+      .form-horizontal .form-role.form-md-line-input .form-control ~ label, .form-horizontal
+      .form-role.form-md-line-input .form-control ~ .form-control-focus {
         width: auto;
         left: 15px;
         right: 15px; }
-      .form-group.form-md-line-input .form-control ~ label:after,
-      .form-group.form-md-line-input .form-control ~ .form-control-focus:after {
+      .form-role.form-md-line-input .form-control ~ label:after,
+      .form-role.form-md-line-input .form-control ~ .form-control-focus:after {
         content: '';
         position: absolute;
         z-index: 5;
@@ -221,112 +221,112 @@ body {
         width: 0;
         visibility: hidden;
         transition: 0.2s ease all; }
-    .form-group.form-md-line-input .form-control ~ label {
+    .form-role.form-md-line-input .form-control ~ label {
       top: 0;
       margin-bottom: 0;
       font-size: 14px;
       color: #888888;
       opacity: 1 ;
       filter: alpha(opacity=100) ; }
-    .form-group.form-md-line-input .form-control ~ .help-block-error {
+    .form-role.form-md-line-input .form-control ~ .help-block-error {
       opacity: 1 ;
       filter: alpha(opacity=100) ; }
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus {
+    .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ label,
+    .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus, .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ label,
+    .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus {
       color: #888888; }
-      .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label:after,
-      .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label:after,
-      .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
+      .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ label:after,
+      .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ label:after,
+      .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after {
         visibility: visible;
         left: 0;
         width: 100%;
         background: #36c6d3; }
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label {
+    .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ label, .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ label {
       opacity: 1 ;
       filter: alpha(opacity=100) ; }
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block {
+    .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block, .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block {
       color: #36c6d3;
       opacity: 1 ;
       filter: alpha(opacity=100) ; }
-    .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block-error, .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block-error {
+    .form-role.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block-error, .form-role.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block-error {
       opacity: 0 ;
       filter: alpha(opacity=0) ; }
-    .form-group.form-md-line-input .form-control.edited:not([readonly]):not(:focus) ~ .help-block {
+    .form-role.form-md-line-input .form-control.edited:not([readonly]):not(:focus) ~ .help-block {
       opacity: 0 ;
       filter: alpha(opacity=0) ; }
-    .form-group.form-md-line-input .form-control.edited:not([readonly]):not(:focus) ~ .help-block-error {
+    .form-role.form-md-line-input .form-control.edited:not([readonly]):not(:focus) ~ .help-block-error {
       opacity: 0 ;
       filter: alpha(opacity=0) ; }
-    .form-group.form-md-line-input .form-control[readonly], .form-group.form-md-line-input .form-control[disabled],
-    fieldset[disabled] .form-group.form-md-line-input .form-control {
+    .form-role.form-md-line-input .form-control[readonly], .form-role.form-md-line-input .form-control[disabled],
+    fieldset[disabled] .form-role.form-md-line-input .form-control {
       background: none;
       cursor: not-allowed;
       border-bottom: 1px dashed #c2cad8; }
-  .form-group.form-md-line-input.form-md-floating-label .form-control ~ label {
+  .form-role.form-md-line-input.form-md-floating-label .form-control ~ label {
     font-size: 16px;
     top: 25px;
     transition: 0.2s ease all;
     color: #999; }
-  .form-group.form-md-line-input.form-md-floating-label .form-control[readonly] ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.edited ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.form-control-static ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control:focus:not([readonly]) ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.focus:not([readonly]) ~ label {
+  .form-role.form-md-line-input.form-md-floating-label .form-control[readonly] ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.edited ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.form-control-static ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control:focus:not([readonly]) ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.focus:not([readonly]) ~ label {
     top: 0;
     font-size: 13px; }
-  .form-group.form-md-line-input.form-md-floating-label .form-control.input-sm ~ label {
+  .form-role.form-md-line-input.form-md-floating-label .form-control.input-sm ~ label {
     font-size: 14px;
     top: 24px; }
-  .form-group.form-md-line-input.form-md-floating-label .form-control.input-sm[readonly] ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-sm.form-control-static ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-sm.edited ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-sm:focus:not([readonly]) ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-sm.focus:not([readonly]) ~ label {
+  .form-role.form-md-line-input.form-md-floating-label .form-control.input-sm[readonly] ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-sm.form-control-static ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-sm.edited ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-sm:focus:not([readonly]) ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-sm.focus:not([readonly]) ~ label {
     top: 0;
     font-size: 13px; }
-  .form-group.form-md-line-input.form-md-floating-label .form-control.input-lg ~ label {
+  .form-role.form-md-line-input.form-md-floating-label .form-control.input-lg ~ label {
     font-size: 20px;
     top: 30px; }
-  .form-group.form-md-line-input.form-md-floating-label .form-control.input-lg[readonly] ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-lg.edited ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-lg.form-control-static ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-lg:focus:not([readonly]) ~ label, .form-group.form-md-line-input.form-md-floating-label .form-control.input-lg.focus:not([readonly]) ~ label {
+  .form-role.form-md-line-input.form-md-floating-label .form-control.input-lg[readonly] ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-lg.edited ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-lg.form-control-static ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-lg:focus:not([readonly]) ~ label, .form-role.form-md-line-input.form-md-floating-label .form-control.input-lg.focus:not([readonly]) ~ label {
     top: 0;
     font-size: 13px; }
-  .form-group.form-md-line-input.form-md-floating-label .input-icon > label {
+  .form-role.form-md-line-input.form-md-floating-label .input-icon > label {
     padding-left: 34px; }
-  .form-group.form-md-line-input.form-md-floating-label .input-icon.right > label {
+  .form-role.form-md-line-input.form-md-floating-label .input-icon.right > label {
     padding-left: 0;
     padding-right: 34px; }
-  .form-group.form-md-line-input.form-md-floating-label .input-group.left-addon label {
+  .form-role.form-md-line-input.form-md-floating-label .input-role.left-addon label {
     padding-left: 34px; }
-  .form-group.form-md-line-input.form-md-floating-label .input-group.right-addon label {
+  .form-role.form-md-line-input.form-md-floating-label .input-role.right-addon label {
     padding-right: 34px; }
-  .form-group.form-md-line-input + .input-icon {
+  .form-role.form-md-line-input + .input-icon {
     padding-top: 0; }
-  .form-group.form-md-line-input .help-block {
+  .form-role.form-md-line-input .help-block {
     position: absolute;
     margin: 2px 0 0 0;
     opacity: 0 ;
     filter: alpha(opacity=0) ;
     font-size: 13px; }
-  .form-group.form-md-line-input > .input-icon > i {
+  .form-role.form-md-line-input > .input-icon > i {
     left: 0;
     bottom: 0;
     margin: 9px 2px 10px 10px;
     color: #888888; }
-  .form-group.form-md-line-input > .input-icon.input-icon-lg > i {
+  .form-role.form-md-line-input > .input-icon.input-icon-lg > i {
     top: 6px; }
-  .form-group.form-md-line-input > .input-icon.input-icon-sm > i {
+  .form-role.form-md-line-input > .input-icon.input-icon-sm > i {
     top: -1px; }
-  .form-group.form-md-line-input > .input-icon .form-control {
+  .form-role.form-md-line-input > .input-icon .form-control {
     padding-left: 34px; }
-  .form-group.form-md-line-input > .input-icon > label {
+  .form-role.form-md-line-input > .input-icon > label {
     margin-top: -20px; }
-  .form-group.form-md-line-input > .input-icon.right .form-control {
+  .form-role.form-md-line-input > .input-icon.right .form-control {
     padding-left: 0;
     padding-right: 34px; }
-  .form-group.form-md-line-input > .input-icon.right > i {
+  .form-role.form-md-line-input > .input-icon.right > i {
     left: auto;
     right: 8px;
     margin: 11px 2px 10px 10px; }
-  .form-group.form-md-line-input + .input-group {
+  .form-role.form-md-line-input + .input-role {
     padding-top: 0; }
-  .form-group.form-md-line-input .input-group {
+  .form-role.form-md-line-input .input-role {
     padding-top: 0; }
-    .form-group.form-md-line-input .input-group > label {
+    .form-role.form-md-line-input .input-role > label {
       margin-top: -20px; }
-    .form-group.form-md-line-input .input-group .input-group-addon {
+    .form-role.form-md-line-input .input-role .input-role-addon {
       -webkit-border-radius: 0;
       -moz-border-radius: 0;
       -ms-border-radius: 0;
@@ -335,106 +335,106 @@ body {
       background: none;
       border: 0;
       border-bottom: 1px solid #c2cad8; }
-    .form-group.form-md-line-input .input-group + .input-group-control {
+    .form-role.form-md-line-input .input-role + .input-role-control {
       padding-top: 0; }
-    .form-group.form-md-line-input .input-group .input-group-control {
+    .form-role.form-md-line-input .input-role .input-role-control {
       padding-top: 0;
       position: relative;
       display: table-cell;
       vertical-align: bottom; }
-      .form-group.form-md-line-input .input-group .input-group-control > label {
+      .form-role.form-md-line-input .input-role .input-role-control > label {
         margin-top: -20px; }
-    .form-group.form-md-line-input .input-group .input-group-btn .btn {
+    .form-role.form-md-line-input .input-role .input-role-btn .btn {
       -webkit-border-radius: 4px;
       -moz-border-radius: 4px;
       -ms-border-radius: 4px;
       -o-border-radius: 4px;
       border-radius: 4px; }
-    .form-group.form-md-line-input .input-group .input-group-btn.btn-left .btn {
+    .form-role.form-md-line-input .input-role .input-role-btn.btn-left .btn {
       margin-right: 10px; }
-    .form-group.form-md-line-input .input-group .input-group-btn.btn-right .btn {
+    .form-role.form-md-line-input .input-role .input-role-btn.btn-right .btn {
       margin-left: 10px; }
-    .form-group.form-md-line-input .input-group .help-block {
+    .form-role.form-md-line-input .input-role .help-block {
       margin-top: 35px; }
-    .form-group.form-md-line-input .input-group.input-group-sm .help-block {
+    .form-role.form-md-line-input .input-role.input-role-sm .help-block {
       margin-top: 30px; }
-    .form-group.form-md-line-input .input-group.input-group-lg .help-block {
+    .form-role.form-md-line-input .input-role.input-role-lg .help-block {
       margin-top: 47px; }
-  .form-group.form-md-line-input.has-success .form-control {
+  .form-role.form-md-line-input.has-success .form-control {
     border-bottom: 1px solid #27a4b0; }
-    .form-group.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-success .form-control.form-control-static ~ label:after,
-    .form-group.form-md-line-input.has-success .form-control.form-control-static ~ .form-control-focus:after, .form-group.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ .form-control-focus:after {
+    .form-role.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-success .form-control.form-control-static ~ label:after,
+    .form-role.form-md-line-input.has-success .form-control.form-control-static ~ .form-control-focus:after, .form-role.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ .form-control-focus:after {
       background: #27a4b0; }
-    .form-group.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ label, .form-group.form-md-line-input.has-success .form-control.form-control-static ~ label, .form-group.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ label, .form-group.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ label {
+    .form-role.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ label, .form-role.form-md-line-input.has-success .form-control.form-control-static ~ label, .form-role.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ label, .form-role.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ label {
       color: #27a4b0; }
-    .form-group.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ i, .form-group.form-md-line-input.has-success .form-control.form-control-static ~ i, .form-group.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ i, .form-group.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ i {
+    .form-role.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ i, .form-role.form-md-line-input.has-success .form-control.form-control-static ~ i, .form-role.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ i, .form-role.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ i {
       color: #27a4b0; }
-    .form-group.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-success .form-control.form-control-static ~ .help-block, .form-group.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ .help-block {
+    .form-role.form-md-line-input.has-success .form-control.edited:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-success .form-control.form-control-static ~ .help-block, .form-role.form-md-line-input.has-success .form-control:focus:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-success .form-control.focus:not([readonly]) ~ .help-block {
       color: #27a4b0; }
-  .form-group.form-md-line-input.has-success .input-group-addon {
+  .form-role.form-md-line-input.has-success .input-role-addon {
     color: #27a4b0;
     border-bottom: 1px solid #27a4b0; }
-  .form-group.form-md-line-input.has-success label {
+  .form-role.form-md-line-input.has-success label {
     color: #27a4b0; }
-  .form-group.form-md-line-input.has-warning .form-control {
+  .form-role.form-md-line-input.has-warning .form-control {
     border-bottom: 1px solid #c29d0b; }
-    .form-group.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-warning .form-control.form-control-static ~ label:after,
-    .form-group.form-md-line-input.has-warning .form-control.form-control-static ~ .form-control-focus:after, .form-group.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ .form-control-focus:after {
+    .form-role.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-warning .form-control.form-control-static ~ label:after,
+    .form-role.form-md-line-input.has-warning .form-control.form-control-static ~ .form-control-focus:after, .form-role.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ .form-control-focus:after {
       background: #c29d0b; }
-    .form-group.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ label, .form-group.form-md-line-input.has-warning .form-control.form-control-static ~ label, .form-group.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ label, .form-group.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ label {
+    .form-role.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ label, .form-role.form-md-line-input.has-warning .form-control.form-control-static ~ label, .form-role.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ label, .form-role.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ label {
       color: #c29d0b; }
-    .form-group.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ i, .form-group.form-md-line-input.has-warning .form-control.form-control-static ~ i, .form-group.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ i, .form-group.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ i {
+    .form-role.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ i, .form-role.form-md-line-input.has-warning .form-control.form-control-static ~ i, .form-role.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ i, .form-role.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ i {
       color: #c29d0b; }
-    .form-group.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-warning .form-control.form-control-static ~ .help-block, .form-group.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ .help-block {
+    .form-role.form-md-line-input.has-warning .form-control.edited:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-warning .form-control.form-control-static ~ .help-block, .form-role.form-md-line-input.has-warning .form-control:focus:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-warning .form-control.focus:not([readonly]) ~ .help-block {
       color: #c29d0b; }
-  .form-group.form-md-line-input.has-warning .input-group-addon {
+  .form-role.form-md-line-input.has-warning .input-role-addon {
     color: #c29d0b;
     border-bottom: 1px solid #c29d0b; }
-  .form-group.form-md-line-input.has-warning label {
+  .form-role.form-md-line-input.has-warning label {
     color: #c29d0b; }
-  .form-group.form-md-line-input.has-error .form-control {
+  .form-role.form-md-line-input.has-error .form-control {
     border-bottom: 1px solid #e73d4a; }
-    .form-group.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-error .form-control.form-control-static ~ label:after,
-    .form-group.form-md-line-input.has-error .form-control.form-control-static ~ .form-control-focus:after, .form-group.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ .form-control-focus:after {
+    .form-role.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-error .form-control.form-control-static ~ label:after,
+    .form-role.form-md-line-input.has-error .form-control.form-control-static ~ .form-control-focus:after, .form-role.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ .form-control-focus:after {
       background: #e73d4a; }
-    .form-group.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ label, .form-group.form-md-line-input.has-error .form-control.form-control-static ~ label, .form-group.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ label, .form-group.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ label {
+    .form-role.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ label, .form-role.form-md-line-input.has-error .form-control.form-control-static ~ label, .form-role.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ label, .form-role.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ label {
       color: #e73d4a; }
-    .form-group.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ i, .form-group.form-md-line-input.has-error .form-control.form-control-static ~ i, .form-group.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ i, .form-group.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ i {
+    .form-role.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ i, .form-role.form-md-line-input.has-error .form-control.form-control-static ~ i, .form-role.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ i, .form-role.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ i {
       color: #e73d4a; }
-    .form-group.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-error .form-control.form-control-static ~ .help-block, .form-group.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ .help-block {
+    .form-role.form-md-line-input.has-error .form-control.edited:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-error .form-control.form-control-static ~ .help-block, .form-role.form-md-line-input.has-error .form-control:focus:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-error .form-control.focus:not([readonly]) ~ .help-block {
       color: #e73d4a; }
-  .form-group.form-md-line-input.has-error .input-group-addon {
+  .form-role.form-md-line-input.has-error .input-role-addon {
     color: #e73d4a;
     border-bottom: 1px solid #e73d4a; }
-  .form-group.form-md-line-input.has-error label {
+  .form-role.form-md-line-input.has-error label {
     color: #e73d4a; }
-  .form-group.form-md-line-input.has-info .form-control {
+  .form-role.form-md-line-input.has-info .form-control {
     border-bottom: 1px solid #327ad5; }
-    .form-group.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-info .form-control.form-control-static ~ label:after,
-    .form-group.form-md-line-input.has-info .form-control.form-control-static ~ .form-control-focus:after, .form-group.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-group.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ label:after,
-    .form-group.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ .form-control-focus:after {
+    .form-role.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-info .form-control.form-control-static ~ label:after,
+    .form-role.form-md-line-input.has-info .form-control.form-control-static ~ .form-control-focus:after, .form-role.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ .form-control-focus:after, .form-role.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ label:after,
+    .form-role.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ .form-control-focus:after {
       background: #327ad5; }
-    .form-group.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ label, .form-group.form-md-line-input.has-info .form-control.form-control-static ~ label, .form-group.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ label, .form-group.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ label {
+    .form-role.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ label, .form-role.form-md-line-input.has-info .form-control.form-control-static ~ label, .form-role.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ label, .form-role.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ label {
       color: #327ad5; }
-    .form-group.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ i, .form-group.form-md-line-input.has-info .form-control.form-control-static ~ i, .form-group.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ i, .form-group.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ i {
+    .form-role.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ i, .form-role.form-md-line-input.has-info .form-control.form-control-static ~ i, .form-role.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ i, .form-role.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ i {
       color: #327ad5; }
-    .form-group.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-info .form-control.form-control-static ~ .help-block, .form-group.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ .help-block, .form-group.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ .help-block {
+    .form-role.form-md-line-input.has-info .form-control.edited:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-info .form-control.form-control-static ~ .help-block, .form-role.form-md-line-input.has-info .form-control:focus:not([readonly]) ~ .help-block, .form-role.form-md-line-input.has-info .form-control.focus:not([readonly]) ~ .help-block {
       color: #327ad5; }
-  .form-group.form-md-line-input.has-info .input-group-addon {
+  .form-role.form-md-line-input.has-info .input-role-addon {
     color: #327ad5;
     border-bottom: 1px solid #327ad5; }
-  .form-group.form-md-line-input.has-info label {
+  .form-role.form-md-line-input.has-info label {
     color: #327ad5; }
 
 .form-inline .form-md-line-input {
@@ -444,30 +444,30 @@ body {
   .form-inline .form-md-line-input > .input-icon {
     padding: 0; }
 
-.form-horizontal .form-group.form-md-line-input .input-icon .form-control {
+.form-horizontal .form-role.form-md-line-input .input-icon .form-control {
   padding-left: 33px; }
 
-.form-horizontal .form-group.form-md-line-input .input-icon > i {
+.form-horizontal .form-role.form-md-line-input .input-icon > i {
   top: 0; }
 
-.form-horizontal .form-group.form-md-line-input .input-icon.right .form-control {
+.form-horizontal .form-role.form-md-line-input .input-icon.right .form-control {
   padding-left: 0;
   padding-right: 33px; }
 
-.form-horizontal .form-group.form-md-line-input .input-icon > .form-control-focus {
+.form-horizontal .form-role.form-md-line-input .input-icon > .form-control-focus {
   left: 0 !important;
   right: 0 !important; }
 
-.form-horizontal .form-group.form-md-line-input .input-group {
+.form-horizontal .form-role.form-md-line-input .input-role {
   padding-top: 0; }
-  .form-horizontal .form-group.form-md-line-input .input-group > .input-group-btn .btn {
+  .form-horizontal .form-role.form-md-line-input .input-role > .input-role-btn .btn {
     margin-bottom: 0 !important; }
-  .form-horizontal .form-group.form-md-line-input .input-group > .input-group-control {
+  .form-horizontal .form-role.form-md-line-input .input-role > .input-role-control {
     padding-top: 0; }
-    .form-horizontal .form-group.form-md-line-input .input-group > .input-group-control > .form-control-focus {
+    .form-horizontal .form-role.form-md-line-input .input-role > .input-role-control > .form-control-focus {
       left: 0 !important;
       right: 0 !important; }
-  .form-horizontal .form-group.form-md-line-input .input-group > .form-control-focus {
+  .form-horizontal .form-role.form-md-line-input .input-role > .form-control-focus {
     left: 0 !important;
     right: 0 !important; }
 
@@ -1143,7 +1143,7 @@ Demo Utils
 .util-btn-margin-bottom-5 .btn {
   margin-bottom: 5px !important; }
 
-.util-btn-group-margin-bottom-5 .btn-group {
+.util-btn-role-margin-bottom-5 .btn-role {
   margin-bottom: 5px !important; }
 
 .padding-tb-10 {
@@ -4670,21 +4670,21 @@ Custom color buttons
     text-align: center;
     margin-top: 2px; }
 
-.btn-group.btn-group-circle > .btn:first-child {
+.btn-role.btn-role-circle > .btn:first-child {
   border-radius: 25px 0 0 25px !important; }
 
-.btn-group.btn-group-circle > .btn:last-child {
+.btn-role.btn-role-circle > .btn:last-child {
   border-radius: 0 25px 25px 0 !important; }
 
-.btn-group.btn-group-devided > .btn {
+.btn-role.btn-role-devided > .btn {
   margin-right: 5px; }
-  .btn-group.btn-group-devided > .btn:last-child {
+  .btn-role.btn-role-devided > .btn:last-child {
     margin-right: 0; }
 
-.btn-group-vertical.btn-group-vertical-circle > .btn:first-child {
+.btn-role-vertical.btn-role-vertical-circle > .btn:first-child {
   border-radius: 25px 25px 0 0 !important; }
 
-.btn-group-vertical.btn-group-vertical-circle > .btn:last-child {
+.btn-role-vertical.btn-role-vertical-circle > .btn:last-child {
   border-radius: 0 0 25px 25px !important; }
 
 /***
@@ -4993,11 +4993,11 @@ Dropdown Menu
 
 .dropdown > .dropdown-menu,
 .dropdown-toggle > .dropdown-menu,
-.btn-group > .dropdown-menu {
+.btn-role > .dropdown-menu {
   margin-top: 10px; }
   .dropdown > .dropdown-menu:before,
   .dropdown-toggle > .dropdown-menu:before,
-  .btn-group > .dropdown-menu:before {
+  .btn-role > .dropdown-menu:before {
     position: absolute;
     top: -8px;
     left: 9px;
@@ -5009,7 +5009,7 @@ Dropdown Menu
     content: ''; }
   .dropdown > .dropdown-menu:after,
   .dropdown-toggle > .dropdown-menu:after,
-  .btn-group > .dropdown-menu:after {
+  .btn-role > .dropdown-menu:after {
     position: absolute;
     top: -7px;
     left: 10px;
@@ -5021,35 +5021,35 @@ Dropdown Menu
     content: ''; }
   .dropdown > .dropdown-menu.pull-left:before,
   .dropdown-toggle > .dropdown-menu.pull-left:before,
-  .btn-group > .dropdown-menu.pull-left:before {
+  .btn-role > .dropdown-menu.pull-left:before {
     left: auto;
     right: 9px; }
   .dropdown > .dropdown-menu.pull-left:after,
   .dropdown-toggle > .dropdown-menu.pull-left:after,
-  .btn-group > .dropdown-menu.pull-left:after {
+  .btn-role > .dropdown-menu.pull-left:after {
     left: auto;
     right: 10px; }
   .dropdown > .dropdown-menu.pull-right:before,
   .dropdown-toggle > .dropdown-menu.pull-right:before,
-  .btn-group > .dropdown-menu.pull-right:before {
+  .btn-role > .dropdown-menu.pull-right:before {
     left: auto;
     right: 9px; }
   .dropdown > .dropdown-menu.pull-right:after,
   .dropdown-toggle > .dropdown-menu.pull-right:after,
-  .btn-group > .dropdown-menu.pull-right:after {
+  .btn-role > .dropdown-menu.pull-right:after {
     left: auto;
     right: 10px; }
 
 .dropdown.dropup > .dropdown-menu,
 .dropdown-toggle.dropup > .dropdown-menu,
-.btn-group.dropup > .dropdown-menu {
+.btn-role.dropup > .dropdown-menu {
   margin-top: 0px;
   margin-bottom: 10px; }
   .dropdown.dropup > .dropdown-menu:after, .dropdown.dropup > .dropdown-menu:before,
   .dropdown-toggle.dropup > .dropdown-menu:after,
   .dropdown-toggle.dropup > .dropdown-menu:before,
-  .btn-group.dropup > .dropdown-menu:after,
-  .btn-group.dropup > .dropdown-menu:before {
+  .btn-role.dropup > .dropdown-menu:after,
+  .btn-role.dropup > .dropdown-menu:before {
     display: none !important; }
 
 .dropdown-toggle:after {
@@ -5345,7 +5345,7 @@ Form Layouts
   font-weight: normal; }
 
 .control-label .required,
-.form-group .required {
+.form-role .required {
   color: #e02222;
   font-size: 12px;
   padding-left: 2px; }
@@ -5479,15 +5479,15 @@ Form Layouts
 .form .form-row-seperated .portlet-body {
   padding: 0; }
 
-.form .form-row-seperated .form-group {
+.form .form-row-seperated .form-role {
   margin: 0;
   border-bottom: 1px solid #efefef;
   padding: 15px 0; }
-  .form .form-row-seperated .form-group.last {
+  .form .form-row-seperated .form-role.last {
     border-bottom: 0;
     margin-bottom: 0;
     padding-bottom: 13px; }
-  .form .form-row-seperated .form-group .help-block {
+  .form .form-row-seperated .form-role .help-block {
     margin-bottom: 0; }
 
 .form .form-row-seperated .form-body {
@@ -5498,27 +5498,27 @@ Form Layouts
   padding-right: 15px !important; }
 
 /* Form bordered */
-.form .form-bordered .form-group {
+.form .form-bordered .form-role {
   margin: 0;
   border-bottom: 1px solid #efefef; }
-  .form .form-bordered .form-group > div {
+  .form .form-bordered .form-role > div {
     padding: 15px;
     border-left: 1px solid #efefef; }
     @media (max-width: 991px) {
-      .form .form-bordered .form-group > div {
+      .form .form-bordered .form-role > div {
         /* 991px */
         border-left: 0; } }
-  .form .form-bordered .form-group.last {
+  .form .form-bordered .form-role.last {
     border-bottom: 0; }
-  .form .form-bordered .form-group .control-label {
+  .form .form-bordered .form-role .control-label {
     padding-top: 20px; }
     @media (max-width: 991px) {
-      .form .form-bordered .form-group .control-label {
+      .form .form-bordered .form-role .control-label {
         /* 991px */
         padding-top: 10px; } }
-  .form .form-bordered .form-group .help-block {
+  .form .form-bordered .form-role .help-block {
     margin-bottom: 0; }
-  .form .form-bordered .form-group .form-control {
+  .form .form-bordered .form-role .form-control {
     margin: 0; }
 
 .form .form-bordered .form-body {
@@ -5536,25 +5536,25 @@ Form Layouts
       padding-right: 15px !important; } }
 
 /* Horizontal bordered form */
-.form .form-horizontal.form-bordered.form-row-stripped .form-group:nth-child(even) {
+.form .form-horizontal.form-bordered.form-row-stripped .form-role:nth-child(even) {
   background-color: #fcfcfc; }
 
 .form .form-horizontal.form-bordered.form-row-stripped .form-control {
   background: #fff !important; }
 
-.form .form-horizontal.form-bordered.form-label-stripped .form-group:nth-child(even) {
+.form .form-horizontal.form-bordered.form-label-stripped .form-role:nth-child(even) {
   background-color: #fcfcfc; }
-  .form .form-horizontal.form-bordered.form-label-stripped .form-group:nth-child(even) > div {
+  .form .form-horizontal.form-bordered.form-label-stripped .form-role:nth-child(even) > div {
     background-color: #ffffff; }
 
-.form .form-horizontal.form-bordered.form-label-stripped .form-group:nth-child(even) {
+.form .form-horizontal.form-bordered.form-label-stripped .form-role:nth-child(even) {
   background-color: #fcfcfc; }
 
 /* Horizontal form small input issue */
-.form-horizontal .form-group .input-sm {
+.form-horizontal .form-role .input-sm {
   margin-top: 3px; }
 
-.form-horizontal .form-group .form-control-static {
+.form-horizontal .form-role .form-control-static {
   margin-top: 1px; }
 
 /***
@@ -5632,7 +5632,7 @@ Forms
   .form-control.height-auto {
     height: auto; }
 
-.input-group-addon > i {
+.input-role-addon > i {
   color: #c5cdda; }
 
 /***
@@ -6169,7 +6169,7 @@ Custom color buttons
 .input-fixed {
   overflow: hidden; }
 
-.form-group .input-inline {
+.form-role .input-inline {
   margin-right: 5px; }
 
 @media (max-width: 768px) {
@@ -6342,7 +6342,7 @@ td > .mt-checkbox.mt-checkbox-single {
 .mt-checkbox-list,
 .mt-radio-list {
   padding: 10px 0; }
-  .form-horizontal .form-group .mt-checkbox-list, .form-horizontal .form-group
+  .form-horizontal .form-role .mt-checkbox-list, .form-horizontal .form-role
   .mt-radio-list {
     padding-top: 0; }
   .mt-checkbox-list .mt-checkbox,
@@ -6354,7 +6354,7 @@ td > .mt-checkbox.mt-checkbox-single {
 .mt-checkbox-inline,
 .mt-radio-inline {
   padding: 10px 0; }
-  .form-horizontal .form-group .mt-checkbox-inline, .form-horizontal .form-group
+  .form-horizontal .form-role .mt-checkbox-inline, .form-horizontal .form-role
   .mt-radio-inline {
     padding-top: 8px; }
   .mt-checkbox-inline .mt-checkbox,
@@ -6453,7 +6453,7 @@ Input icons
   left: 0; }
   .input-icon > .form-control {
     padding-left: 33px; }
-    .input-group .input-icon > .form-control {
+    .input-role .input-icon > .form-control {
       -webkit-border-radius: 4px 0 0 4px;
       -moz-border-radius: 4px 0 0 4px;
       -ms-border-radius: 4px 0 0 4px;
@@ -6485,7 +6485,7 @@ Input icons
     .input-icon.right > .form-control {
       padding-right: 33px;
       padding-left: 12px; }
-      .input-group .input-icon.right > .form-control {
+      .input-role .input-icon.right > .form-control {
         -webkit-border-radius: 0 4px 4px 0;
         -moz-border-radius: 0 4px 4px 0;
         -ms-border-radius: 0 4px 4px 0;
@@ -6589,105 +6589,105 @@ Text states
   color: #ed6b75; }
 
 /***
-Customized List Group
+Customized List Role
 ***/
 /* Contextual variants */
-.list-group > li:first-child {
+.list-role > li:first-child {
   border-radius-topleft: 4px;
   border-radius-topright: 4px; }
 
-.list-group > li:last-child {
+.list-role > li:last-child {
   border-radius-bottomleft: 4px;
   border-radius-bottomright: 4px; }
 
-.list-group .list-group-item-success {
+.list-role .list-role-item-success {
   color: #27a4b0;
   background-color: #abe7ed; }
 
-.list-group a.list-group-item-success,
-.list-group button.list-group-item-success {
+.list-role a.list-role-item-success,
+.list-role button.list-role-item-success {
   color: #27a4b0; }
-  .list-group a.list-group-item-success .list-group-item-heading,
-  .list-group button.list-group-item-success .list-group-item-heading {
+  .list-role a.list-role-item-success .list-role-item-heading,
+  .list-role button.list-role-item-success .list-role-item-heading {
     color: inherit; }
-  .list-group a.list-group-item-success:hover, .list-group a.list-group-item-success:focus,
-  .list-group button.list-group-item-success:hover,
-  .list-group button.list-group-item-success:focus {
+  .list-role a.list-role-item-success:hover, .list-role a.list-role-item-success:focus,
+  .list-role button.list-role-item-success:hover,
+  .list-role button.list-role-item-success:focus {
     color: #27a4b0;
     background-color: #96e1e8; }
-  .list-group a.list-group-item-success.active, .list-group a.list-group-item-success.active:hover, .list-group a.list-group-item-success.active:focus,
-  .list-group button.list-group-item-success.active,
-  .list-group button.list-group-item-success.active:hover,
-  .list-group button.list-group-item-success.active:focus {
+  .list-role a.list-role-item-success.active, .list-role a.list-role-item-success.active:hover, .list-role a.list-role-item-success.active:focus,
+  .list-role button.list-role-item-success.active,
+  .list-role button.list-role-item-success.active:hover,
+  .list-role button.list-role-item-success.active:focus {
     color: #fff;
     background-color: #27a4b0;
     border-color: #27a4b0; }
 
-.list-group .list-group-item-info {
+.list-role .list-role-item-info {
   color: #327ad5;
   background-color: #e0ebf9; }
 
-.list-group a.list-group-item-info,
-.list-group button.list-group-item-info {
+.list-role a.list-role-item-info,
+.list-role button.list-role-item-info {
   color: #327ad5; }
-  .list-group a.list-group-item-info .list-group-item-heading,
-  .list-group button.list-group-item-info .list-group-item-heading {
+  .list-role a.list-role-item-info .list-role-item-heading,
+  .list-role button.list-role-item-info .list-role-item-heading {
     color: inherit; }
-  .list-group a.list-group-item-info:hover, .list-group a.list-group-item-info:focus,
-  .list-group button.list-group-item-info:hover,
-  .list-group button.list-group-item-info:focus {
+  .list-role a.list-role-item-info:hover, .list-role a.list-role-item-info:focus,
+  .list-role button.list-role-item-info:hover,
+  .list-role button.list-role-item-info:focus {
     color: #327ad5;
     background-color: #caddf4; }
-  .list-group a.list-group-item-info.active, .list-group a.list-group-item-info.active:hover, .list-group a.list-group-item-info.active:focus,
-  .list-group button.list-group-item-info.active,
-  .list-group button.list-group-item-info.active:hover,
-  .list-group button.list-group-item-info.active:focus {
+  .list-role a.list-role-item-info.active, .list-role a.list-role-item-info.active:hover, .list-role a.list-role-item-info.active:focus,
+  .list-role button.list-role-item-info.active,
+  .list-role button.list-role-item-info.active:hover,
+  .list-role button.list-role-item-info.active:focus {
     color: #fff;
     background-color: #327ad5;
     border-color: #327ad5; }
 
-.list-group .list-group-item-warning {
+.list-role .list-role-item-warning {
   color: #c29d0b;
   background-color: #f9e491; }
 
-.list-group a.list-group-item-warning,
-.list-group button.list-group-item-warning {
+.list-role a.list-role-item-warning,
+.list-role button.list-role-item-warning {
   color: #c29d0b; }
-  .list-group a.list-group-item-warning .list-group-item-heading,
-  .list-group button.list-group-item-warning .list-group-item-heading {
+  .list-role a.list-role-item-warning .list-role-item-heading,
+  .list-role button.list-role-item-warning .list-role-item-heading {
     color: inherit; }
-  .list-group a.list-group-item-warning:hover, .list-group a.list-group-item-warning:focus,
-  .list-group button.list-group-item-warning:hover,
-  .list-group button.list-group-item-warning:focus {
+  .list-role a.list-role-item-warning:hover, .list-role a.list-role-item-warning:focus,
+  .list-role button.list-role-item-warning:hover,
+  .list-role button.list-role-item-warning:focus {
     color: #c29d0b;
     background-color: #f7de79; }
-  .list-group a.list-group-item-warning.active, .list-group a.list-group-item-warning.active:hover, .list-group a.list-group-item-warning.active:focus,
-  .list-group button.list-group-item-warning.active,
-  .list-group button.list-group-item-warning.active:hover,
-  .list-group button.list-group-item-warning.active:focus {
+  .list-role a.list-role-item-warning.active, .list-role a.list-role-item-warning.active:hover, .list-role a.list-role-item-warning.active:focus,
+  .list-role button.list-role-item-warning.active,
+  .list-role button.list-role-item-warning.active:hover,
+  .list-role button.list-role-item-warning.active:focus {
     color: #fff;
     background-color: #c29d0b;
     border-color: #c29d0b; }
 
-.list-group .list-group-item-danger {
+.list-role .list-role-item-danger {
   color: #e73d4a;
   background-color: #fbe1e3; }
 
-.list-group a.list-group-item-danger,
-.list-group button.list-group-item-danger {
+.list-role a.list-role-item-danger,
+.list-role button.list-role-item-danger {
   color: #e73d4a; }
-  .list-group a.list-group-item-danger .list-group-item-heading,
-  .list-group button.list-group-item-danger .list-group-item-heading {
+  .list-role a.list-role-item-danger .list-role-item-heading,
+  .list-role button.list-role-item-danger .list-role-item-heading {
     color: inherit; }
-  .list-group a.list-group-item-danger:hover, .list-group a.list-group-item-danger:focus,
-  .list-group button.list-group-item-danger:hover,
-  .list-group button.list-group-item-danger:focus {
+  .list-role a.list-role-item-danger:hover, .list-role a.list-role-item-danger:focus,
+  .list-role button.list-role-item-danger:hover,
+  .list-role button.list-role-item-danger:focus {
     color: #e73d4a;
     background-color: #f8cace; }
-  .list-group a.list-group-item-danger.active, .list-group a.list-group-item-danger.active:hover, .list-group a.list-group-item-danger.active:focus,
-  .list-group button.list-group-item-danger.active,
-  .list-group button.list-group-item-danger.active:hover,
-  .list-group button.list-group-item-danger.active:focus {
+  .list-role a.list-role-item-danger.active, .list-role a.list-role-item-danger.active:hover, .list-role a.list-role-item-danger.active:focus,
+  .list-role button.list-role-item-danger.active,
+  .list-role button.list-role-item-danger.active:hover,
+  .list-role button.list-role-item-danger.active:focus {
     color: #fff;
     background-color: #e73d4a;
     border-color: #e73d4a; }
@@ -7037,7 +7037,7 @@ Customized Bootstrap Panels
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important; }
-  .panel-group .panel {
+  .panel-role .panel {
     overflow: visible; }
   .panel .panel-body {
     font-size: 13px; }
@@ -7161,20 +7161,20 @@ Portlets
         color: #555555; }
       .portlet > .portlet-title > .actions > .btn,
       .portlet > .portlet-title > .actions > .btn.btn-sm,
-      .portlet > .portlet-title > .actions > .btn-group > .btn,
-      .portlet > .portlet-title > .actions > .btn-group > .btn.btn-sm {
+      .portlet > .portlet-title > .actions > .btn-role > .btn,
+      .portlet > .portlet-title > .actions > .btn-role > .btn.btn-sm {
         padding: 4px 10px;
         font-size: 13px;
         line-height: 1.5; }
         .portlet > .portlet-title > .actions > .btn.btn-default,
         .portlet > .portlet-title > .actions > .btn.btn-sm.btn-default,
-        .portlet > .portlet-title > .actions > .btn-group > .btn.btn-default,
-        .portlet > .portlet-title > .actions > .btn-group > .btn.btn-sm.btn-default {
+        .portlet > .portlet-title > .actions > .btn-role > .btn.btn-default,
+        .portlet > .portlet-title > .actions > .btn-role > .btn.btn-sm.btn-default {
           padding: 3px 9px; }
         .portlet > .portlet-title > .actions > .btn > i,
         .portlet > .portlet-title > .actions > .btn.btn-sm > i,
-        .portlet > .portlet-title > .actions > .btn-group > .btn > i,
-        .portlet > .portlet-title > .actions > .btn-group > .btn.btn-sm > i {
+        .portlet > .portlet-title > .actions > .btn-role > .btn > i,
+        .portlet > .portlet-title > .actions > .btn-role > .btn.btn-sm > i {
           font-size: 13px; }
       .portlet > .portlet-title > .actions .btn-icon-only {
         padding: 5px 7px 3px 7px; }
@@ -13748,7 +13748,7 @@ Timeline
     margin-left: 10px; }
   .timeline .timeline-body-head-actions {
     float: right; }
-  .timeline .timeline-body-head-actions .btn-group {
+  .timeline .timeline-body-head-actions .btn-role {
     margin-top: -2px; }
   .timeline .timeline-body-content {
     font-size: 14px;
@@ -13989,7 +13989,7 @@ Timeline 2
 
 @media (max-width: 480px) {
   .mt-timeline-2 .btn.pull-right,
-  .mt-timeline-2 .btn-group.pull-right {
+  .mt-timeline-2 .btn-role.pull-right {
     float: none !important;
     margin: 0 5px 10px 0 !important; } }
 
@@ -14394,7 +14394,7 @@ Horizontal Timeline
         margin: 0 15px 15px 0; }
       .mt-timeline-horizontal .events-content ol li .mt-content img.pull-right {
         margin: 0 0 15px 15px; }
-      .mt-timeline-horizontal .events-content ol li .mt-content .btn-group .dropdown-menu {
+      .mt-timeline-horizontal .events-content ol li .mt-content .btn-role .dropdown-menu {
         margin-right: 5px; }
 
 @media (max-width: 480px) {
@@ -14649,24 +14649,24 @@ Tasks Widget
     font-size: 13px; }
   .mt-widget-1 .mt-body .mt-stats {
     margin: 30px 0px 0px 0px; }
-    .mt-widget-1 .mt-body .mt-stats .btn-group {
+    .mt-widget-1 .mt-body .mt-stats .btn-role {
       border-top: 1px solid #e7ecf1; }
-      .mt-widget-1 .mt-body .mt-stats .btn-group .btn {
+      .mt-widget-1 .mt-body .mt-stats .btn-role .btn {
         padding: 10px 10px;
         font-size: 14px;
         border-right: 1px solid #e7ecf1; }
-        .mt-widget-1 .mt-body .mt-stats .btn-group .btn:hover {
+        .mt-widget-1 .mt-body .mt-stats .btn-role .btn:hover {
           background-color: #e7ecf1; }
-        .mt-widget-1 .mt-body .mt-stats .btn-group .btn:last-child {
+        .mt-widget-1 .mt-body .mt-stats .btn-role .btn:last-child {
           border: 0; }
-        .mt-widget-1 .mt-body .mt-stats .btn-group .btn > i {
+        .mt-widget-1 .mt-body .mt-stats .btn-role .btn > i {
           position: relative;
           top: 3px;
           right: 2px;
           font-size: 16px; }
-        .mt-widget-1 .mt-body .mt-stats .btn-group .btn:first-child {
+        .mt-widget-1 .mt-body .mt-stats .btn-role .btn:first-child {
           border-bottom-left-radius: 4px !important; }
-        .mt-widget-1 .mt-body .mt-stats .btn-group .btn:last-child {
+        .mt-widget-1 .mt-body .mt-stats .btn-role .btn:last-child {
           border-bottom-right-radius: 4px !important; }
 
 .mt-widget-2 {
@@ -14780,9 +14780,9 @@ Tasks Widget
       padding: 20px; }
       .mt-widget-3 .mt-head .mt-head-button > button {
         width: 90px; }
-  .mt-widget-3 .mt-body-actions-icons .btn-group {
+  .mt-widget-3 .mt-body-actions-icons .btn-role {
     margin-bottom: 20px; }
-    .mt-widget-3 .mt-body-actions-icons .btn-group .mt-icon {
+    .mt-widget-3 .mt-body-actions-icons .btn-role .mt-icon {
       display: block;
       position: relative;
       padding: 5px;
@@ -15389,16 +15389,16 @@ body.stop-scrolling {
     .mt-element-list .list-default.ext-1.mt-list-container ul > .mt-list-item > .list-icon-container {
       border: none; }
 
-.mt-element-list .list-default.group .list-toggle-container:hover, .mt-element-list .list-default.group .list-toggle-container:focus, .mt-element-list .list-default.group .list-toggle-container:active {
+.mt-element-list .list-default.role .list-toggle-container:hover, .mt-element-list .list-default.role .list-toggle-container:focus, .mt-element-list .list-default.role .list-toggle-container:active {
   text-decoration: none; }
 
-.mt-element-list .list-default.group .list-toggle-container .list-toggle {
+.mt-element-list .list-default.role .list-toggle-container .list-toggle {
   padding: 15px;
   background-color: #2F353B;
   font-weight: 700;
   color: #fff;
   text-decoration: none; }
-  .mt-element-list .list-default.group .list-toggle-container .list-toggle.done {
+  .mt-element-list .list-default.role .list-toggle-container .list-toggle.done {
     background-color: #26C281; }
 
 .mt-element-list .list-simple.mt-list-head {
@@ -15487,16 +15487,16 @@ body.stop-scrolling {
       .mt-element-list .list-simple.ext-1.mt-list-container ul > .mt-list-item.done:hover {
         background-color: #96ebc8; }
 
-.mt-element-list .list-simple.group .list-toggle-container:hover, .mt-element-list .list-simple.group .list-toggle-container:focus, .mt-element-list .list-simple.group .list-toggle-container:active {
+.mt-element-list .list-simple.role .list-toggle-container:hover, .mt-element-list .list-simple.role .list-toggle-container:focus, .mt-element-list .list-simple.role .list-toggle-container:active {
   text-decoration: none; }
 
-.mt-element-list .list-simple.group .list-toggle-container .list-toggle {
+.mt-element-list .list-simple.role .list-toggle-container .list-toggle {
   padding: 15px;
   background-color: #34495e;
   font-weight: 700;
   color: #fff;
   text-decoration: none; }
-  .mt-element-list .list-simple.group .list-toggle-container .list-toggle.done {
+  .mt-element-list .list-simple.role .list-toggle-container .list-toggle.done {
     background-color: #26C281; }
 
 .mt-element-list .list-news.mt-list-head {

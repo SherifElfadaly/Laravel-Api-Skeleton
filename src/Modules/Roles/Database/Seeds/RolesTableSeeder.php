@@ -14,12 +14,12 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         /**
-         * Insert the permissions related to role table.
+         * Insert the permissions related to roles table.
          */
         \DB::table('permissions')->insert(
             [
                 /**
-                 * role model permissions.
+                 * Roles model permissions.
                  */
                 [
                 'name'       => 'index',
@@ -62,7 +62,13 @@ class RolesTableSeeder extends Seeder
                 'model'      => 'role',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
-                ]
+                ],
+                [
+                'name'       => 'assignPermissions',
+                'model'      => 'role',
+                'created_at' => \DB::raw('NOW()'),
+                'updated_at' => \DB::raw('NOW()')
+                ],
             ]
         );
     }

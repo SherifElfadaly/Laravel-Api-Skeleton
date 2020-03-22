@@ -20,14 +20,15 @@ class Permissions extends Migration
             $table->timestamps();
             $table->unique(array('name', 'model'));
         });
-        Schema::create('groups_permissions', function (Blueprint $table) {
+        Schema::create('roles_permissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('group_id');
+            $table->integer('role_id');
             $table->integer('permission_id');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['group_id']);
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('permission_id')->references('id')->on('permissions');
         });
     }
 
@@ -39,6 +40,6 @@ class Permissions extends Migration
     public function down()
     {
         Schema::dropIfExists('permissions');
-        Schema::dropIfExists('groups_permissions');
+        Schema::dropIfExists('roles_permissions');
     }
 }

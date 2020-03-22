@@ -698,7 +698,7 @@
 .fa-arrows-alt:before {
   content: "\f0b2";
 }
-.fa-group:before,
+.fa-role:before,
 .fa-users:before {
   content: "\f0c0";
 }
@@ -1856,10 +1856,10 @@
 .fa-i-cursor:before {
   content: "\f246";
 }
-.fa-object-group:before {
+.fa-object-role:before {
   content: "\f247";
 }
-.fa-object-ungroup:before {
+.fa-object-unrole:before {
   content: "\f248";
 }
 .fa-sticky-note:before {

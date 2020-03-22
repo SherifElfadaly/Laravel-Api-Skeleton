@@ -74,9 +74,9 @@ class AclUser extends User
         return $this->notifications()->whereNull('read_at');
     }
 
-    public function groups()
+    public function roles()
     {
-        return $this->belongsToMany('App\Modules\Groups\AclGroup', 'users_groups', 'user_id', 'group_id')->whereNull('users_groups.deleted_at')->withTimestamps();
+        return $this->belongsToMany('App\Modules\Roles\Role', 'users_roles', 'user_id', 'role_id')->whereNull('users_roles.deleted_at')->withTimestamps();
     }
 
     public function oauthClients()

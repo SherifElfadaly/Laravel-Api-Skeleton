@@ -102,16 +102,16 @@
       background: #26344b; }
   .page-header.navbar .search-form {
     background: #fff; }
-    .page-header.navbar .search-form .input-group .form-control {
+    .page-header.navbar .search-form .input-role .form-control {
       color: #7f96ac; }
-      .page-header.navbar .search-form .input-group .form-control::-moz-placeholder {
+      .page-header.navbar .search-form .input-role .form-control::-moz-placeholder {
         color: #7c94aa;
         opacity: 1; }
-      .page-header.navbar .search-form .input-group .form-control:-ms-input-placeholder {
+      .page-header.navbar .search-form .input-role .form-control:-ms-input-placeholder {
         color: #7c94aa; }
-      .page-header.navbar .search-form .input-group .form-control::-webkit-input-placeholder {
+      .page-header.navbar .search-form .input-role .form-control::-webkit-input-placeholder {
         color: #7c94aa; }
-    .page-header.navbar .search-form .input-group .input-group-btn .btn.submit > i {
+    .page-header.navbar .search-form .input-role .input-role-btn .btn.submit > i {
       color: #7f96ac; }
 
 /* Page sidebar */

@@ -15,7 +15,7 @@ class CreateOauthClientsTable extends Migration
     {
         Schema::create('oauth_clients', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->index()->nullable();
+            $table->integer('user_id')->nullable();
             $table->string('name');
             $table->string('secret', 100);
             $table->text('redirect');
@@ -23,6 +23,8 @@ class CreateOauthClientsTable extends Migration
             $table->boolean('password_client')->default(0);
             $table->boolean('revoked')->default(0);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

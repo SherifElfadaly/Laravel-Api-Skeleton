@@ -4,7 +4,7 @@ namespace App\Modules\Users\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AssignGroups extends FormRequest
+class AssignRoles extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class AssignGroups extends FormRequest
     public function rules()
     {
         return [
-            'group_ids' => 'required|exists:groups,id',
+            'role_ids' => 'required|exists:roles,id',
             'user_id'   => 'required|exists:users,id'
         ];
     }

@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your module. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| routes are loaded by the RouteServiceProvider within a role which
+| is assigned the "api" middleware role. Enjoy building your API!
 |
 */
 
-Route::group(['prefix' => 'roles'], function () {
+Route::role(['prefix' => 'roles'], function () {
 
     Route::get('/', 'RoleController@index');
     Route::get('/{id}', 'RoleController@find');
@@ -22,4 +22,5 @@ Route::group(['prefix' => 'roles'], function () {
     Route::delete('/{id}', 'RoleController@delete');
     Route::get('list/deleted', 'RoleController@deleted');
     Route::patch('restore/{id}', 'RoleController@restore');
+    Route::post('assign/permissions', 'RoleController@assignPermissions');
 });

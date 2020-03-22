@@ -1,9 +1,9 @@
-<?php namespace App\Modules\Groups\ModelObservers;
+<?php namespace App\Modules\Permissions\ModelObservers;
 
 /**
  * Handling of model events,
  */
-class AclGroupObserver
+class PermissionObserver
 {
 
     public function saving($model)
@@ -26,17 +26,9 @@ class AclGroupObserver
         //
     }
 
-    /**
-     * Prevent updating of the admin group.
-     *
-     * @param  object $model the model beign updated.
-     * @return void
-     */
     public function updating($model)
     {
-        if ($model->getOriginal('name') == 'Admin') {
-            \ErrorHandler::noPermissions();
-        }
+        //
     }
 
     public function updated($model)
@@ -44,17 +36,9 @@ class AclGroupObserver
         //
     }
 
-    /**
-     * Prevent deleting the admin group.
-     *
-     * @param  object $model the delted model.
-     * @return void
-     */
     public function deleting($model)
     {
-        if ($model->getOriginal('name') == 'Admin') {
-            \ErrorHandler::noPermissions();
-        }
+        //
     }
 
     public function deleted($model)

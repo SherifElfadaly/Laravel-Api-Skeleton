@@ -27,8 +27,8 @@ class UserRepository extends BaseRepository
     {
         $permissions = [];
         $user        = $this->find(\Auth::id(), $relations);
-        foreach ($user->groups()->get() as $group) {
-            $group->permissions->each(function ($permission) use (&$permissions) {
+        foreach ($user->roles()->get() as $role) {
+            $role->permissions->each(function ($permission) use (&$permissions) {
                 $permissions[$permission->model][$permission->id] = $permission->name;
             });
         }
@@ -48,10 +48,10 @@ class UserRepository extends BaseRepository
      */
     public function can($nameOfPermission, $model, $user = false)
     {
-        $user        = $user ?: $this->find(\Auth::id(), ['groups.permissions']);
+        $user        = $user ?: $this->find(\Auth::id(), ['roles.permissions']);
         $permissions = [];
 
-        $user->groups->pluck('permissions')->each(function ($permission) use (&$permissions, $model) {
+        $user->roles->pluck('permissions')->each(function ($permission) use (&$permissions, $model) {
             $permissions = array_merge($permissions, $permission->where('model', $model)->pluck('name')->toArray());
         });
 
@@ -59,31 +59,31 @@ class UserRepository extends BaseRepository
     }
 
     /**
-     * Check if the logged in user has the given group.
+     * Check if the logged in user has the given role.
      *
-     * @param  string[] $groups
+     * @param  string[] $roles
      * @param  mixed $user
      * @return boolean
      */
-    public function hasGroup($groups, $user = false)
+    public function hasRole($roles, $user = false)
     {
         $user = $user ?: $this->find(\Auth::id());
-        return $user->groups->whereIn('name', $groups)->count() ? true : false;
+        return $user->roles->whereIn('name', $roles)->count() ? true : false;
     }
 
     /**
-     * Assign the given group ids to the given user.
+     * Assign the given role ids to the given user.
      *
      * @param  integer $userId
-     * @param  array   $groupIds
+     * @param  array   $roleIds
      * @return object
      */
-    public function assignGroups($userId, $groupIds)
+    public function assignRoles($userId, $roleIds)
     {
-        \DB::transaction(function () use ($userId, $groupIds) {
+        \DB::transaction(function () use ($userId, $roleIds) {
             $user = $this->find($userId);
-            $user->groups()->detach();
-            $user->groups()->attach($groupIds);
+            $user->roles()->detach();
+            $user->roles()->attach($roleIds);
         });
 
         return $this->find($userId);
@@ -101,9 +101,9 @@ class UserRepository extends BaseRepository
     {
         if (! $user = $this->first(['email' => $credentials['email']])) {
             \ErrorHandler::loginFailed();
-        } elseif ($adminLogin && ! $user->groups->whereIn('name', ['Admin'])->count()) {
+        } elseif ($adminLogin && ! $user->roles->whereIn('name', ['Admin'])->count()) {
             \ErrorHandler::loginFailed();
-        } elseif (! $adminLogin && $user->groups->whereIn('name', ['Admin'])->count()) {
+        } elseif (! $adminLogin && $user->roles->whereIn('name', ['Admin'])->count()) {
             \ErrorHandler::loginFailed();
         } elseif ($user->blocked) {
             \ErrorHandler::userIsBlocked();
@@ -171,11 +171,11 @@ class UserRepository extends BaseRepository
         if (! $user = $this->find($userId)) {
             \ErrorHandler::notFound('user');
         }
-        if (! $this->hasGroup(['Admin'])) {
+        if (! $this->hasRole(['Admin'])) {
             \ErrorHandler::noPermissions();
         } elseif (\Auth::id() == $userId) {
             \ErrorHandler::noPermissions();
-        } elseif ($user->groups->pluck('name')->search('Admin', true) !== false) {
+        } elseif ($user->roles->pluck('name')->search('Admin', true) !== false) {
             \ErrorHandler::noPermissions();
         }
 
@@ -193,7 +193,7 @@ class UserRepository extends BaseRepository
      */
     public function unblock($userId)
     {
-        if (! $this->hasGroup(['Admin'])) {
+        if (! $this->hasRole(['Admin'])) {
             \ErrorHandler::noPermissions();
         }
 
@@ -308,24 +308,24 @@ class UserRepository extends BaseRepository
     }
 
     /**
-     * Paginate all users in the given group based on the given conditions.
+     * Paginate all users in the given role based on the given conditions.
      *
-     * @param  string  $groupName
+     * @param  string  $roleName
      * @param  array   $relations
      * @param  integer $perPage
      * @param  string  $sortBy
      * @param  boolean $desc
      * @return \Illuminate\Http\Response
      */
-    public function group($conditions, $groupName, $relations, $perPage, $sortBy, $desc)
+    public function role($conditions, $roleName, $relations, $perPage, $sortBy, $desc)
     {
         unset($conditions['page']);
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         $model      = $this->model->with($relations);
 
-        $model->whereHas('groups', function ($q) use ($groupName) {
-            $q->where('name', $groupName);
+        $model->whereHas('roles', function ($q) use ($roleName) {
+            $q->where('name', $roleName);
         });
 
         

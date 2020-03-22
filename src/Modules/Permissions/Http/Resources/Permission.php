@@ -3,9 +3,9 @@
 namespace App\Modules\Permissions\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Modules\Groups\Http\Resources\AclGroup as GroupResource;
+use App\Modules\Roles\Http\Resources\Role as RoleResource;
 
-class AclPermission extends JsonResource
+class Permission extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,7 +22,7 @@ class AclPermission extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'groups' => GroupResource::collection($this->whenLoaded('groups')),
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

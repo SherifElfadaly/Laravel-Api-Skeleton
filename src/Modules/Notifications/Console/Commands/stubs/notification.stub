@@ -48,7 +48,7 @@ class DummyClass extends Notification implements ShouldQueue
     }
 
     /**
-     * Send to fcm message, topic or group.
+     * Send to fcm message, topic or role.
      *
      * @param  mixed  $notifiable
      * @return Object

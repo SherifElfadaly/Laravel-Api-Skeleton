@@ -64,7 +64,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'assignGroups',
+                'name'       => 'assignRoles',
                 'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
@@ -82,7 +82,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'group',
+                'name'       => 'role',
                 'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

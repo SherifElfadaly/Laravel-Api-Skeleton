@@ -20,6 +20,9 @@ class CreateOauthAuthCodesTable extends Migration
             $table->text('scopes')->nullable();
             $table->boolean('revoked');
             $table->dateTime('expires_at')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('client_id')->references('id')->on('oauth_clients');
         });
     }
 

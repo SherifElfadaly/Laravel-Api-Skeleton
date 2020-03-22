@@ -3,7 +3,7 @@
 namespace App\Modules\Users\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Modules\Groups\Http\Resources\AclGroup as AclGroupResource;
+use App\Modules\Roles\Http\Resources\Role as RoleResource;
 use App\Modules\OauthClients\Http\Resources\OauthClient as OauthClientResource;
 use App\Modules\Notifications\Http\Resources\Notification as NotificationResource;
 
@@ -29,7 +29,7 @@ class AclUser extends JsonResource
             'notifications' => NotificationResource::collection($this->whenLoaded('notifications')),
             'readNotifications' => NotificationResource::collection($this->whenLoaded('readNotifications')),
             'unreadNotifications' => NotificationResource::collection($this->whenLoaded('unreadNotifications')),
-            'groups' => AclGroupResource::collection($this->whenLoaded('groups')),
+            'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'oauthClients' => OauthClientResource::collection($this->whenLoaded('oauthClients')),
             'locale' => $this->locale,
             'timezone' => $this->timezone,

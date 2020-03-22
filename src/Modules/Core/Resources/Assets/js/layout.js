@@ -313,7 +313,7 @@ var Layout = function () {
 
         // handle close on body click
         if ($('.sidebar-search').size() !== 0) {
-            $('.sidebar-search .input-group').on('click', function(e){
+            $('.sidebar-search .input-role').on('click', function(e){
                 e.stopPropagation();
             });
 

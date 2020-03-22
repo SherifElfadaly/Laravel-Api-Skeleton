@@ -2,7 +2,7 @@
 
 $factory->define(App\Modules\Roles\Role::class, function (Faker\Generator $faker) {
     return [
-        // Add factory attributes
+        'name'       => $faker->unique->word(),
         'created_at' => $faker->dateTimeBetween('-1 years', 'now'),
         'updated_at' => $faker->dateTimeBetween('-1 years', 'now')
     ];

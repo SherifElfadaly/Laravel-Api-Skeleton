@@ -50,8 +50,8 @@ class ApiDocumentController extends Controller
                 'content' => ['name' => ['op' => 'not null']]
             ],
             [
-                'title'   => 'user has group admin:',
-                'content' => ['groups' => ['op' => 'has', 'val' => ['name' => 'Admin']]]
+                'title'   => 'user has role admin:',
+                'content' => ['roles' => ['op' => 'has', 'val' => ['name' => 'Admin']]]
             ]
         ];
 

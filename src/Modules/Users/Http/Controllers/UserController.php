@@ -8,7 +8,7 @@ use App\Modules\Users\Repositories\UserRepository;
 use App\Modules\Users\Proxy\LoginProxy;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use Illuminate\Support\Facades\App;
-use App\Modules\Users\Http\Requests\AssignGroups;
+use App\Modules\Users\Http\Requests\AssignRoles;
 use App\Modules\Users\Http\Requests\ChangePassword;
 use App\Modules\Users\Http\Requests\Login;
 use App\Modules\Users\Http\Requests\LoginSocial;
@@ -161,14 +161,14 @@ class UserController extends BaseApiController
     }
 
     /**
-     * Assign the given groups to the given user.
+     * Assign the given roles to the given user.
      *
-     * @param AssignGroups $request
+     * @param AssignRoles $request
      * @return \Illuminate\Http\Response
      */
-    public function assignGroups(AssignGroups $request)
+    public function assignRoles(AssignRoles $request)
     {
-        return new $this->modelResource($this->repo->assignGroups($request->get('user_id'), $request->get('group_ids')));
+        return new $this->modelResource($this->repo->assignRoles($request->get('user_id'), $request->get('role_ids')));
     }
 
     /**
@@ -238,15 +238,15 @@ class UserController extends BaseApiController
     }
 
     /**
-     * Paginate all users with in the given group.
+     * Paginate all users with in the given role.
      *
      * @param Request $request
-     * @param  string $groupName The name of the requested group.
+     * @param  string $roleName The name of the requested role.
      * @return \Illuminate\Http\Response
      */
-    public function group(Request $request, $groupName)
+    public function role(Request $request, $roleName)
     {
-        return $this->modelResource::collection($this->repo->group($request->all(), $groupName, $request->relations, $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
+        return $this->modelResource::collection($this->repo->role($request->all(), $roleName, $request->relations, $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**

@@ -4,25 +4,12 @@ namespace App\Modules\Roles\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Roles\Repositories\RoleRepository;
+use App\Modules\Roles\Http\Requests\AssignPermissions;
 use App\Modules\Roles\Http\Requests\InsertRole;
 use App\Modules\Roles\Http\Requests\UpdateRole;
 
 class RoleController extends BaseApiController
 {
-    /**
-     * List of all route actions that the base api controller
-     * will skip permissions check for them.
-     * @var array
-     */
-    protected $skipPermissionCheck = [];
-
-    /**
-     * List of all route actions that the base api controller
-     * will skip login check for them.
-     * @var array
-     */
-    protected $skipLoginCheck = [];
-
     /**
      * Init new object.
      *
@@ -54,5 +41,16 @@ class RoleController extends BaseApiController
     public function update(UpdateRole $request)
     {
         return new $this->modelResource($this->repo->save($request->all()));
+    }
+
+    /**
+     * Handle an assign permissions to role request.
+     *
+     * @param  AssignPermissions $request
+     * @return \Illuminate\Http\Response
+     */
+    public function assignPermissions(AssignPermissions $request)
+    {
+        return new $this->modelResource($this->repo->assignPermissions($request->get('role_id'), $request->get('permission_ids')));
     }
 }

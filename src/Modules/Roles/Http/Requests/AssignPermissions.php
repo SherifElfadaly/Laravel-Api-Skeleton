@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Groups\Http\Requests;
+namespace App\Modules\Roles\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InsertGroup extends FormRequest
+class AssignPermissions extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class InsertGroup extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:100|unique:groups,name,'.$this->get('id')
+            'permission_ids' => 'required|exists:permissions,id',
+            'role_id'       => 'required|array|exists:roles,id'
         ];
     }
 }

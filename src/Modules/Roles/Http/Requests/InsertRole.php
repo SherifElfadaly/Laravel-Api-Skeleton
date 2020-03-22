@@ -24,7 +24,7 @@ class InsertRole extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:100|unique:roles,name,'.$this->get('id')
         ];
     }
 }

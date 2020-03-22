@@ -13,16 +13,16 @@ class AssignRelationsSeeder extends Seeder
      */
     public function run()
     {
-        $adminGroupId = \DB::table('groups')->where('name', 'admin')->select('id')->first()->id;
+        $adminRoleId = \DB::table('roles')->where('name', 'admin')->select('id')->first()->id;
 
         /**
-         * Assign the permissions to the admin group.
+         * Assign the permissions to the admin role.
          */
-        \DB::table('permissions')->orderBy('created_at', 'asc')->whereIn('model', ['notification', 'pushNotificationDevice'])->each(function ($permission) use ($adminGroupId) {
-            \DB::table('groups_permissions')->insert(
+        \DB::table('permissions')->orderBy('created_at', 'asc')->whereIn('model', ['notification', 'pushNotificationDevice'])->each(function ($permission) use ($adminRoleId) {
+            \DB::table('roles_permissions')->insert(
                 [
                 'permission_id' => $permission->id,
-                'group_id'      => $adminGroupId,
+                'role_id'      => $adminRoleId,
                 'created_at'    => \DB::raw('NOW()'),
                 'updated_at'    => \DB::raw('NOW()')
                 ]

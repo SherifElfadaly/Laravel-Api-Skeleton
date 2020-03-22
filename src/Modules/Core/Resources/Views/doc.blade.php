@@ -258,7 +258,7 @@
                                                             <td>
                                                                 @foreach ($relations as $relation)
                                                                 @if($relation == 'item')
-                                                                {{ucfirst($relation)}}: could be any model ex (User, Group....).
+                                                                {{ucfirst($relation)}}: could be any model ex (User, Role....).
                                                                 @elseif(\Illuminate\Support\Str::singular($relation) !== $relation)
                                                                 Array of <a href="#model_{{\Illuminate\Support\Str::plural($relation)}}">{{ucfirst($relation)}}</a>
                                                                 @else

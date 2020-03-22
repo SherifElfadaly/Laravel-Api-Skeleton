@@ -15,6 +15,6 @@ class PermissionController extends BaseApiController
      */
     public function __construct(PermissionRepository $repo)
     {
-        parent::__construct($repo, 'App\Modules\Permissions\Http\Resources\AclPermission');
+        parent::__construct($repo, 'App\Modules\Permissions\Http\Resources\Permission');
     }
 }

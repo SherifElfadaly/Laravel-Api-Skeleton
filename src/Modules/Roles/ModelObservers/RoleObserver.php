@@ -26,9 +26,17 @@ class RoleObserver
         //
     }
 
+    /**
+     * Prevent updating of the admin role.
+     *
+     * @param  object $model the model beign updated.
+     * @return void
+     */
     public function updating($model)
     {
-        //
+        if ($model->getOriginal('name') == 'Admin') {
+            \ErrorHandler::noPermissions();
+        }
     }
 
     public function updated($model)
@@ -36,9 +44,17 @@ class RoleObserver
         //
     }
 
+    /**
+     * Prevent deleting the admin role.
+     *
+     * @param  object $model the delted model.
+     * @return void
+     */
     public function deleting($model)
     {
-        //
+        if ($model->getOriginal('name') == 'Admin') {
+            \ErrorHandler::noPermissions();
+        }
     }
 
     public function deleted($model)

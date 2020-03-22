@@ -468,7 +468,7 @@ var App = function() {
 
         if ($(".fancybox-button").size() > 0) {
             $(".fancybox-button").fancybox({
-                groupAttr: 'data-rel',
+                roleAttr: 'data-rel',
                 prevEffect: 'none',
                 nextEffect: 'none',
                 closeBtn: true,
@@ -532,7 +532,7 @@ var App = function() {
         }
     };
 
-    // handle group element heights
+    // handle role element heights
    var handleHeight = function() {
        $('[data-auto-height]').each(function() {
             var parent = $(this);
@@ -601,7 +601,7 @@ var App = function() {
             handleTextareaAutosize(); // handle autosize textareas
             handleCounterup(); // handle counterup instances
 
-            //Handle group element heights
+            //Handle role element heights
             this.addResizeHandler(handleHeight); // handle auto calculating height on window resize
 
             // Hacks
