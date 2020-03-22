@@ -3,6 +3,8 @@
 namespace App\Modules\Roles\Database\Seeds;
 
 use Illuminate\Database\Seeder;
+use App\Modules\Roles\Role;
+use App\Modules\Users\AclUser;
 
 class RolesTableSeeder extends Seeder
 {
@@ -12,7 +14,17 @@ class RolesTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {        
+        /**
+         * Assign default users to admin roles.
+         */
+        $adminRoleId = Role::where('name', 'Admin')->select('id')->first()->id;;
+        $adminUserId = AclUser::where('email', 'admin@user.com')->select('id')->first()->id;
+        \DB::table('users_roles')->updateOrInsert([
+            'user_id' => $adminUserId,
+            'role_id' => $adminRoleId,
+        ],[]);
+
         /**
          * Insert the permissions related to roles table.
          */

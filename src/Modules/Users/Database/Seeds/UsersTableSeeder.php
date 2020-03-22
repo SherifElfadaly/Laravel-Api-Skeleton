@@ -3,6 +3,8 @@
 namespace App\Modules\Users\Database\Seeds;
 
 use Illuminate\Database\Seeder;
+use App\Modules\Users\AclUser;
+use App\Modules\Roles\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,6 +15,29 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * Create Default roles.
+         */
+        $role = Role::updateOrInsert([
+            'name' => 'Admin',
+        ],[
+            'created_at' => \DB::raw('NOW()'),
+            'updated_at' => \DB::raw('NOW()')
+        ]);
+
+        /**
+         * Create Default user.
+         */
+        AclUser::updateOrInsert([
+            'email' => 'admin@user.com',
+        ],[
+            'name'       => 'Admin',
+            'password'   => bcrypt('123456'),
+            'confirmed'  => 1,
+            'created_at' => \DB::raw('NOW()'),
+            'updated_at' => \DB::raw('NOW()')
+        ]);
+
         /**
          * Insert the permissions related to users table.
          */

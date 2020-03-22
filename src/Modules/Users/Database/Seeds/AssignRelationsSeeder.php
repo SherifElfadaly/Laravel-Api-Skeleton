@@ -22,7 +22,7 @@ class AssignRelationsSeeder extends Seeder
             \DB::table('roles_permissions')->insert(
                 [
                 'permission_id' => $permission->id,
-                'role_id'      => $adminRoleId,
+                'role_id'       => $adminRoleId,
                 'created_at'    => \DB::raw('NOW()'),
                 'updated_at'    => \DB::raw('NOW()')
                 ]

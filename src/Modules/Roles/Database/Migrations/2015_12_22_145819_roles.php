@@ -29,33 +29,6 @@ class Roles extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('role_id')->references('id')->on('roles');
         });
-        
-        /**
-         * Create Default roles.
-         */
-        \DB::table('roles')->insert(
-            [
-                [
-                    'name'       => 'Admin',
-                    'created_at' => \DB::raw('NOW()'),
-                    'updated_at' => \DB::raw('NOW()')
-                ]
-            ]
-        );
-        
-        /**
-         * Assign default users to admin roles.
-         */
-        $adminRoleId = \DB::table('roles')->where('name', 'admin')->select('id')->first()->id;
-        $adminUserId  = \DB::table('users')->where('email', 'admin@user.com')->select('id')->first()->id;
-        \DB::table('users_roles')->insert(
-            [
-            'user_id'    => $adminUserId,
-            'role_id'   => $adminRoleId,
-            'created_at' => \DB::raw('NOW()'),
-            'updated_at' => \DB::raw('NOW()')
-            ]
-        );
     }
 
     /**
