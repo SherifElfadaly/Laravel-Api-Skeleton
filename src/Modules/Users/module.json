@@ -2,5 +2,7 @@
     "name": "Users",
     "slug": "users",
     "version": "1.0",
-    "description": "This is the description for the Users module."
+    "description": "This is the description for the Users module.",
+	"enabled": true,
+	"order" : 1
 }

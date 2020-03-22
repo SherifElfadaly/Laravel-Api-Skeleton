@@ -4,5 +4,5 @@
 	"version": "1.0",
 	"description": "This is the description for the Reporting module.",
 	"enabled": true,
-	"order" : 100000
+	"order" : 7
 }

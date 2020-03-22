@@ -11,7 +11,7 @@
 |
 */
 
-Route::role(['prefix' => 'settings'], function () {
+Route::group(['prefix' => 'settings'], function () {
         
     Route::get('/', 'SettingController@index');
     Route::get('/{id}', 'SettingController@find');

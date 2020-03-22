@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::role(['prefix' => 'permissions'], function () {
+Route::group(['prefix' => 'permissions'], function () {
         
     Route::get('/', 'PermissionController@index');
     Route::get('/{id}', 'PermissionController@find');

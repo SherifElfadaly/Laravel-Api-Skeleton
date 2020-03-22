@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::role(['prefix' => 'DummyRoutePrefix'], function () {
+Route::group(['prefix' => 'DummyRoutePrefix'], function () {
 
     Route::get('/', 'DummyController@index');
     Route::get('/{id}', 'DummyController@find');

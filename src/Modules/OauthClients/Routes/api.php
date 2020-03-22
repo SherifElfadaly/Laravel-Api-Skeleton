@@ -11,7 +11,7 @@
 |
 */
 
-Route::role(['prefix' => 'oauth/clients'], function () {
+Route::group(['prefix' => 'oauth/clients'], function () {
         
     Route::get('/', 'OauthClientController@index');
     Route::get('/{id}', 'OauthClientController@find');

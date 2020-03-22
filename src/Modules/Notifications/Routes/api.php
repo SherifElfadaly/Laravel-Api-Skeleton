@@ -11,7 +11,7 @@
 |
 */
 
-Route::role(['prefix' => 'notifications'], function () {
+Route::group(['prefix' => 'notifications'], function () {
 
     Route::get('/', 'NotificationController@index');
     Route::get('unread', 'NotificationController@unread');

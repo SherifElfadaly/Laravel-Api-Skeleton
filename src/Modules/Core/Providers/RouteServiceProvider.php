@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::role([
+        Route::group([
             'middleware' => 'web',
             'namespace'  => $this->namespace,
         ], function ($router) {
@@ -68,7 +68,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::role([
+        Route::group([
             'middleware' => 'api',
             'namespace'  => $this->namespace,
             'prefix'     => 'api',

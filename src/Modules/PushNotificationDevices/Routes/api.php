@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::role(['prefix' => 'push/notification/devices'], function () {
+Route::group(['prefix' => 'push/notification/devices'], function () {
         
     Route::get('/', 'PushNotificationDeviceController@index');
     Route::get('/{id}', 'PushNotificationDeviceController@find');

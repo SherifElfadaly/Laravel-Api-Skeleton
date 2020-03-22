@@ -11,7 +11,7 @@
 |
 */
 
-Route::role(['prefix' => 'reports'], function () {
+Route::group(['prefix' => 'reports'], function () {
         
     Route::get('/', 'ReportController@index');
     Route::get('/{id}', 'ReportController@find');

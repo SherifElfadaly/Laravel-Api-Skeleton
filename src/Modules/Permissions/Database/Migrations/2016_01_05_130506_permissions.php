@@ -22,8 +22,8 @@ class Permissions extends Migration
         });
         Schema::create('roles_permissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('role_id');
-            $table->integer('permission_id');
+            $table->unsignedInteger('role_id');
+            $table->unsignedInteger('permission_id');
             $table->softDeletes();
             $table->timestamps();
 

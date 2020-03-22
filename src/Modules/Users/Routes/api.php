@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::role(['prefix' => 'users'], function () {
+Route::group(['prefix' => 'users'], function () {
 
     Route::get('/', 'UserController@index');
     Route::get('/{id}', 'UserController@find');
@@ -27,7 +27,7 @@ Route::role(['prefix' => 'users'], function () {
     Route::post('assign/roles', 'UserController@assignRoles');
     Route::post('role/{roleName}', 'UserController@role');
 
-    Route::role(['prefix' => 'account'], function () {
+    Route::group(['prefix' => 'account'], function () {
 
         Route::get('my', 'UserController@account');
         Route::get('logout', 'UserController@logout');
