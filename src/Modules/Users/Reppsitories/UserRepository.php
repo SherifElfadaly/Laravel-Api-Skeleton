@@ -223,12 +223,20 @@ class UserRepository extends BaseRepository
     /**
      * Reset the given user's password.
      *
-     * @param  array  $credentials
-     * @return string|null
+     * @param   string  $email
+     * @param   string  $password
+     * @param   string  $passwordConfirmation
+     * @param   string  $token
+     * @return string|void
      */
-    public function resetPassword($credentials)
+    public function resetPassword($email, $password, $passwordConfirmation, $token)
     {
-        $response = \Password::reset($credentials, function ($user, $password) {
+        $response = \Password::reset([
+            'email'                 => $email, 
+            'password'              => $password, 
+            'password_confirmation' => $passwordConfirmation, 
+            'token'                 => $token
+        ], function ($user, $password) {
             $user->password = $password;
             $user->save();
         });
@@ -257,17 +265,18 @@ class UserRepository extends BaseRepository
     /**
      * Change the logged in user password.
      *
-     * @param  array  $credentials
+     * @param  string  $password
+     * @param  string  $oldPassword
      * @return void
      */
-    public function changePassword($credentials)
+    public function changePassword($password, $oldPassword)
     {
         $user = \Auth::user();
-        if (! \Hash::check($credentials['old_password'], $user->password)) {
+        if (! \Hash::check($oldPassword, $user->password)) {
             \ErrorHandler::invalidOldPassword();
         }
 
-        $user->password = $credentials['password'];
+        $user->password = $password;
         $user->save();
     }
 

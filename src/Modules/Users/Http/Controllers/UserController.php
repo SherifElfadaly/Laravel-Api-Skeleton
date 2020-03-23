@@ -190,7 +190,7 @@ class UserController extends BaseApiController
      */
     public function resetPassword(ResetPassword $request)
     {
-        return new GeneralResource($this->repo->resetPassword($request->only('email', 'password', 'password_confirmation', 'token')));
+        return new GeneralResource($this->repo->resetPassword($request->get('email'), $request->get('password'), $request->get('password_confirmation'), $request->get('token')));
     }
 
     /**
@@ -201,7 +201,7 @@ class UserController extends BaseApiController
      */
     public function changePassword(ChangePassword $request)
     {
-        return new GeneralResource($this->repo->changePassword($request->only('old_password', 'password', 'password_confirmation')));
+        return new GeneralResource($this->repo->changePassword($request->get('password') , $request->get('old_password')));
     }
 
     /**
