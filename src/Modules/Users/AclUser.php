@@ -3,6 +3,9 @@
 use App\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
+use App\Modules\Notifications\Notification;
+use App\Modules\Roles\Role;
+use App\Modules\OauthClients\OauthClient;
 
 class AclUser extends User
 {
@@ -47,7 +50,7 @@ class AclUser extends User
      */
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = bcrypt($value);
+        $this->attributes['password'] = \Hash::make($value);
     }
 
     /**
@@ -55,7 +58,7 @@ class AclUser extends User
      */
     public function notifications()
     {
-        return $this->morphMany('App\Modules\Notifications\Notification', 'notifiable')->orderBy('created_at', 'desc');
+        return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
     }
 
     /**
@@ -76,12 +79,12 @@ class AclUser extends User
 
     public function roles()
     {
-        return $this->belongsToMany('App\Modules\Roles\Role', 'users_roles', 'user_id', 'role_id')->whereNull('users_roles.deleted_at')->withTimestamps();
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id')->whereNull('role_user.deleted_at')->withTimestamps();
     }
 
     public function oauthClients()
     {
-        return $this->hasMany('App\Modules\OauthClients\OauthClient', 'user_id');
+        return $this->hasMany(OauthClient::class, 'user_id');
     }
 
     /**
@@ -95,7 +98,7 @@ class AclUser extends User
         $tokens  = [];
 
         foreach ($devices as $device) {
-            if (\Core::users()->accessTokenExpiredOrRevoked($device->access_token)) {
+            if (\Core::oauthClients()->accessTokenExpiredOrRevoked($device->access_token)) {
                 $device->forceDelete();
                 continue;
             }

@@ -5,42 +5,37 @@ namespace App\Modules\Core\BaseClasses;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
-use App\Modules\Core\Decorators\CachingDecorator;
 
 class BaseApiController extends Controller
 {
     /**
-     * The relations implementation.
+     * Array of eager loaded relations.
      *
      * @var array
      */
     protected $relations;
 
     /**
-     * The repo implementation.
-     *
      * @var object
      */
-    protected $repo;
+    protected $service;
 
     /**
-     * The modelResource implementation.
+     * Path of the model resource.
      *
-     * @var object
+     * @var string
      */
     protected $modelResource;
 
     /**
      * Init new object.
      *
-     * @param   mixed      $repo
-     * @param   string     $modelResource
+     * @param   mixed      $service
      * @return  void
      */
-    public function __construct($repo, $modelResource)
+    public function __construct($service)
     {
-        $this->repo = new CachingDecorator($repo, \App::make('Illuminate\Contracts\Cache\Repository'));
-        $this->modelResource = $modelResource;
+        $this->service = $service;
     }
 
     /**
@@ -51,7 +46,7 @@ class BaseApiController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->modelResource::collection($this->repo->list($request->relations, $request->query(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
+        return $this->modelResource::collection($this->service->list($request->relations, $request->query(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**
@@ -63,7 +58,7 @@ class BaseApiController extends Controller
      */
     public function find(Request $request, $id)
     {
-        return new $this->modelResource($this->repo->find($id, $request->relations));
+        return new $this->modelResource($this->service->find($id, $request->relations));
     }
 
     /**
@@ -74,7 +69,7 @@ class BaseApiController extends Controller
      */
     public function delete($id)
     {
-        return new GeneralResource($this->repo->delete($id));
+        return new GeneralResource($this->service->delete($id));
     }
 
     /**
@@ -85,7 +80,7 @@ class BaseApiController extends Controller
      */
     public function deleted(Request $request)
     {
-        return $this->modelResource::collection($this->repo->deleted($request->all(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
+        return $this->modelResource::collection($this->service->deleted($request->all(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
     }
 
     /**
@@ -96,6 +91,6 @@ class BaseApiController extends Controller
      */
     public function restore($id)
     {
-        return new GeneralResource($this->repo->restore($id));
+        return new GeneralResource($this->service->restore($id));
     }
 }

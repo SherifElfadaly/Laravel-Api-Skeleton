@@ -60,18 +60,4 @@ class NotificationRepository extends BaseRepository
     {
         \Auth::user()->unreadNotifications()->update(['read_at' => now()]);
     }
-
-    /**
-     * Notify th given user with the given notification.
-     *
-     * @param  collection $users
-     * @param  string     $notification
-     * @param  object     $notificationData
-     * @return void
-     */
-    public function notify($users, $notification, $notificationData = false)
-    {
-        $notification = 'App\Modules\Notifications\Notifications\\'.$notification;
-        \Notification::send($users, new $notification($notificationData));
-    }
 }

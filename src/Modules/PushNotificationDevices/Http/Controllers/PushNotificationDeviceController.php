@@ -3,13 +3,20 @@
 namespace App\Modules\PushNotificationDevices\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepository;
+use App\Modules\PushNotificationDevices\Services\PushNotificationDeviceService;
 use App\Modules\PushNotificationDevices\Http\Requests\RegisterDevice;
 use App\Modules\PushNotificationDevices\Http\Requests\InsertPushNotificationDevice;
 use App\Modules\PushNotificationDevices\Http\Requests\UpdatePushNotificationDevice;
 
 class PushNotificationDeviceController extends BaseApiController
 {
+    /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\PushNotificationDevices\Http\Resources\PushNotificationDevice';
+
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
@@ -20,12 +27,12 @@ class PushNotificationDeviceController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   PushNotificationDeviceRepository $repo
+     * @param   PushNotificationDeviceService $service
      * @return  void
      */
-    public function __construct(PushNotificationDeviceRepository $repo)
+    public function __construct(PushNotificationDeviceService $service)
     {
-        parent::__construct($repo, 'App\Modules\PushNotificationDevices\Http\Resources\PushNotificationDevice');
+        parent::__construct($service);
     }
 
     /**
@@ -36,7 +43,7 @@ class PushNotificationDeviceController extends BaseApiController
      */
     public function insert(InsertPushNotificationDevice $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -47,7 +54,7 @@ class PushNotificationDeviceController extends BaseApiController
      */
     public function update(UpdatePushNotificationDevice $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -58,6 +65,6 @@ class PushNotificationDeviceController extends BaseApiController
      */
     public function registerDevice(RegisterDevice $request)
     {
-        return new $this->modelResource($this->repo->registerDevice($request->all()));
+        return new $this->modelResource($this->service->registerDevice($request->all()));
     }
 }

@@ -32,6 +32,6 @@ class PushNotificationDevices extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('push_notifications_devices');
+        Schema::dropIfExists('push_notification_devices');
     }
 }

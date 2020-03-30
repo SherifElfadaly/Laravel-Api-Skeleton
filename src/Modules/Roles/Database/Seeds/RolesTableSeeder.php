@@ -20,7 +20,7 @@ class RolesTableSeeder extends Seeder
          */
         $adminRoleId = Role::where('name', 'Admin')->select('id')->first()->id;;
         $adminUserId = AclUser::where('email', 'admin@user.com')->select('id')->first()->id;
-        \DB::table('users_roles')->updateOrInsert([
+        \DB::table('role_user')->updateOrInsert([
             'user_id' => $adminUserId,
             'role_id' => $adminRoleId,
         ],[]);

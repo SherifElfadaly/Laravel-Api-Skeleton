@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\Roles\Role;
 
 class Permission extends Model
 {
@@ -31,7 +32,7 @@ class Permission extends Model
     
     public function roles()
     {
-        return $this->belongsToMany('App\Modules\Roles\Role', 'roles_permissions', 'permission_id', 'role_id')->whereNull('roles_permissions.deleted_at')->withTimestamps();
+        return $this->belongsToMany(Role::class, 'permission_role', 'permission_id', 'role_id')->whereNull('permission_role.deleted_at')->withTimestamps();
     }
 
     public static function boot()

@@ -20,34 +20,14 @@ class ReportRepository extends BaseRepository
      * Render the given report db view based on the given
      * condition.
      *
-     * @param  string  $reportName
+     * @param  mixed   $report
      * @param  array   $conditions
      * @param  integer $perPage
-     * @param  array   $relations
-     * @param  boolean $skipPermission
      * @return object
      */
-    public function getReport($reportName, $conditions = [], $perPage = 0, $relations = [], $skipPermission = false)
+    public function renderReport($report, $conditions = [], $perPage = 0)
     {
-        /**
-         * Fetch the report from db.
-         */
-        $reportConditions = $this->constructConditions(['report_name' => $reportName], $this->model);
-        $report           = $this->model->with($relations)
-        ->whereRaw(
-            $reportConditions['conditionString'],
-            $reportConditions['conditionValues']
-        )->first();
-        
-        /**
-         * Check report existance and permission.
-         */
-        if (! $report) {
-            \ErrorHandler::notFound('report');
-        } elseif (! $skipPermission && ! \Core::users()->can($report->view_name, 'reports')) {
-            \ErrorHandler::noPermissions();
-        }
-
+        $report = ! is_int($report) ? $report : $this->find($report);
         /**
          * Fetch data from the report based on the given conditions.
          */

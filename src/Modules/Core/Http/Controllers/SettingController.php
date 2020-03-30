@@ -4,21 +4,28 @@ namespace App\Modules\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Core\Repositories\SettingRepository;
+use App\Modules\Core\Services\SettingService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use App\Modules\Core\Http\Requests\UpdateSetting;
 
 class SettingController extends BaseApiController
 {
     /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\Core\Http\Resources\Setting';
+
+    /**
      * Init new object.
      *
-     * @param   SettingRepository $repo
+     * @param   SettingService $service
      * @return  void
      */
-    public function __construct(SettingRepository $repo)
+    public function __construct(SettingService $service)
     {
-        parent::__construct($repo, 'App\Modules\Core\Http\Resources\Setting');
+        parent::__construct($service);
     }
 
     /**
@@ -29,7 +36,7 @@ class SettingController extends BaseApiController
      */
     public function update(UpdateSetting $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -40,6 +47,6 @@ class SettingController extends BaseApiController
      */
     public function saveMany(Request $request)
     {
-        return new GeneralResource($this->repo->saveMany($request->all()));
+        return new GeneralResource($this->service->saveMany($request->all()));
     }
 }

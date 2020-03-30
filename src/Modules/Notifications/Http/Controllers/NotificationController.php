@@ -4,11 +4,18 @@ namespace App\Modules\Notifications\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Notifications\Repositories\NotificationRepository;
+use App\Modules\Notifications\Services\NotificationService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 
 class NotificationController extends BaseApiController
 {
+    /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\Notifications\Http\Resources\Notification';
+
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
@@ -19,12 +26,12 @@ class NotificationController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   NotificationRepository $repo
+     * @param   NotificationService $service
      * @return  void
      */
-    public function __construct(NotificationRepository $repo)
+    public function __construct(NotificationService $service)
     {
-        parent::__construct($repo, 'App\Modules\Notifications\Http\Resources\Notification');
+        parent::__construct($service);
     }
 
     /**
@@ -35,7 +42,7 @@ class NotificationController extends BaseApiController
      */
     public function index(Request $request)
     {
-        return $this->modelResource::collection($this->repo->my($request->query('perPage')));
+        return $this->modelResource::collection($this->service->my($request->query('perPage')));
     }
 
     /**
@@ -46,7 +53,7 @@ class NotificationController extends BaseApiController
      */
     public function unread(Request $request)
     {
-        return $this->modelResource::collection($this->repo->unread($request->query('perPage')));
+        return $this->modelResource::collection($this->service->unread($request->query('perPage')));
     }
 
     /**
@@ -57,7 +64,7 @@ class NotificationController extends BaseApiController
      */
     public function markAsRead($id)
     {
-        return new GeneralResource($this->repo->markAsRead($id));
+        return new GeneralResource($this->service->markAsRead($id));
     }
 
     /**
@@ -67,6 +74,6 @@ class NotificationController extends BaseApiController
      */
     public function markAllAsRead()
     {
-        return new GeneralResource($this->repo->markAllAsRead());
+        return new GeneralResource($this->service->markAllAsRead());
     }
 }

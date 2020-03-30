@@ -19,7 +19,7 @@ class AssignRelationsSeeder extends Seeder
          * Assign the permissions to the admin role.
          */
         \DB::table('permissions')->orderBy('created_at', 'asc')->whereIn('model', ['DummyModelName'])->each(function ($permission) use ($adminRoleId) {
-            \DB::table('roles_permissions')->insert(
+            \DB::table('permission_role')->insert(
                 [
                 'permission_id' => $permission->id,
                 'role_id'      => $adminRoleId,

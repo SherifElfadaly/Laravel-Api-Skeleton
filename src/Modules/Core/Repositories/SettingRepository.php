@@ -15,19 +15,4 @@ class SettingRepository extends BaseRepository
     {
         parent::__construct($model);
     }
-
-    /**
-     * Save list of settings.
-     *
-     * @param  array   $data
-     * @return void
-     */
-    public function saveMany(array $data)
-    {
-        \DB::transaction(function () use ($data) {
-            foreach ($data as $value) {
-                $this->save($value);
-            }
-        });
-    }
 }

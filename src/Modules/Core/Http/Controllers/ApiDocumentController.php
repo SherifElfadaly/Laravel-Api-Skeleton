@@ -2,9 +2,25 @@
 namespace App\Modules\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Reporting\Services\ReportService;
 
 class ApiDocumentController extends Controller
 {
+    /**
+     * @var ReprotService
+     */
+    protected $reportService;
+
+    /**
+     * Init new object.
+     *
+     * @return  void
+     */
+    public function __construct(ReportService $reportService)
+    {
+        $this->reportService = $reportService;
+    }
+
     public function index()
     {
         $jsonDoc    = json_decode(file_get_contents(app_path('Modules/Core/Resources/api.json')), true);
@@ -78,7 +94,7 @@ class ApiDocumentController extends Controller
             'data' => ['The model object']
         ];
 
-        $avaialableReports = \Core::reports()->all();
+        $avaialableReports = $this->reportService->all();
 
         return view('core::doc', ['modules' => $modules, 'reports' => $reports, 'errors' => $errors, 'conditions' => $conditions, 'models' => $models, 'paginateObject' => json_encode($paginateObject, JSON_PRETTY_PRINT), 'responseObject' => json_encode($responseObject, JSON_PRETTY_PRINT), 'avaialableReports' => $avaialableReports]);
     }

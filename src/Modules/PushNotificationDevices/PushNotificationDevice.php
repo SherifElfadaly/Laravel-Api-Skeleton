@@ -2,12 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\Users\AclUser;
 
 class PushNotificationDevice extends Model
 {
 
     use SoftDeletes;
-    protected $table    = 'push_notifications_devices';
+    protected $table    = 'push_notification_devices';
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden   = ['deleted_at', 'access_token'];
     protected $guarded  = ['id'];
@@ -31,7 +32,7 @@ class PushNotificationDevice extends Model
     
     public function user()
     {
-        return $this->belongsTo('App\Modules\Users\AclUser');
+        return $this->belongsTo(AclUser::class);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Modules\Roles\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Roles\Repositories\RoleRepository;
+use App\Modules\Roles\Services\RoleService;
 use App\Modules\Roles\Http\Requests\AssignPermissions;
 use App\Modules\Roles\Http\Requests\InsertRole;
 use App\Modules\Roles\Http\Requests\UpdateRole;
@@ -11,14 +11,21 @@ use App\Modules\Roles\Http\Requests\UpdateRole;
 class RoleController extends BaseApiController
 {
     /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\Roles\Http\Resources\Role';
+
+    /**
      * Init new object.
      *
-     * @param   RoleRepository $repo
+     * @param   RoleService $service
      * @return  void
      */
-    public function __construct(RoleRepository $repo)
+    public function __construct(RoleService $service)
     {
-        parent::__construct($repo, 'App\Modules\Roles\Http\Resources\Role');
+        parent::__construct($service);
     }
 
     /**
@@ -29,7 +36,7 @@ class RoleController extends BaseApiController
      */
     public function insert(InsertRole $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -40,7 +47,7 @@ class RoleController extends BaseApiController
      */
     public function update(UpdateRole $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -51,6 +58,6 @@ class RoleController extends BaseApiController
      */
     public function assignPermissions(AssignPermissions $request)
     {
-        return new $this->modelResource($this->repo->assignPermissions($request->get('role_id'), $request->get('permission_ids')));
+        return new $this->modelResource($this->service->assignPermissions($request->get('role_id'), $request->get('permission_ids')));
     }
 }

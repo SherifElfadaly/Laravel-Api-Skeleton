@@ -6,50 +6,36 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 class CachingDecorator
 {
     /**
-     * The repo implementation.
-     *
      * @var string
      */
     public $repo;
 
     /**
-     * The cache implementation.
-     *
-     * @var object
+     * @var Cache
      */
     protected $cache;
 
     /**
-     * The modelKey implementation.
-     *
      * @var string
      */
     public $modelKey;
 
     /**
-     * The model implementation.
-     *
      * @var string
      */
     public $model;
 
     /**
-     * The modelClass implementation.
-     *
      * @var string
      */
     public $modelClass;
 
     /**
-     * The cacheConfig implementation.
-     *
      * @var mixed
      */
     public $cacheConfig;
 
     /**
-     * The cacheTag implementation.
-     *
      * @var string
      */
     public $cacheTag;

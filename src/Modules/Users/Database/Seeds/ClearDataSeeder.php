@@ -14,7 +14,7 @@ class ClearDataSeeder extends Seeder
     public function run()
     {
         $permissions = \DB::table('permissions')->whereIn('model', ['user']);
-        \DB::table('roles_permissions')->whereIn('permission_id', $permissions->pluck('id'))->delete();
+        \DB::table('permission_role')->whereIn('permission_id', $permissions->pluck('id'))->delete();
         $permissions->delete();
     }
 }

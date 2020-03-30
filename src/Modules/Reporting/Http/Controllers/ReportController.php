@@ -4,10 +4,18 @@ namespace App\Modules\Reporting\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Reporting\Repositories\ReportRepository;
+use App\Modules\Reporting\Services\ReportService;
+use App\Modules\Reporting\Http\Resources\View as ViewResource;
 
 class ReportController extends BaseApiController
 {
+    /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\Reporting\Http\Resources\Report';
+
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
@@ -18,23 +26,23 @@ class ReportController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   ReportRepository $repo
+     * @param   ReportService $service
      * @return  void
      */
-    public function __construct(ReportRepository $repo)
+    public function __construct(ReportService $service)
     {
-        parent::__construct($repo, 'App\Modules\Reporting\Http\Resources\Report');
+        parent::__construct($service);
     }
 
     /**
-     * Render the given report name with the given conditions.
+     * Render the given servicert name with the given conditions.
      *
      * @param Request $request
-     * @param  string $reportName Name of the requested report
+     * @param  string $reportName Name of the requested servicert
      * @return \Illuminate\Http\Response
      */
     public function getReport(Request $request, $reportName)
     {
-        return \Response::json($this->repo->getReport($reportName, $request->all(), $request->query('perPage')), 200);
+        return new ViewResource($this->service->getReport($reportName, $request->all(), $request->query('perPage')));
     }
 }

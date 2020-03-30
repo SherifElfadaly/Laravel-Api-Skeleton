@@ -19,7 +19,7 @@ class Roles extends Migration
             $table->timestamps();
         });
         
-        Schema::create('users_roles', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('role_id');
@@ -39,6 +39,6 @@ class Roles extends Migration
     public function down()
     {
         Schema::dropIfExists('roles');
-        Schema::dropIfExists('users_roles');
+        Schema::dropIfExists('role_user');
     }
 }

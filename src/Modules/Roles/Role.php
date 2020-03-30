@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\Users\AclUser;
+use App\Modules\Permissions\Permission;
 
 class Role extends Model
 {
@@ -31,12 +33,12 @@ class Role extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\Modules\Users\AclUser', 'users_roles', 'role_id', 'user_id')->whereNull('users_roles.deleted_at')->withTimestamps();
+        return $this->belongsToMany(AclUser::class, 'role_user', 'role_id', 'user_id')->whereNull('role_user.deleted_at')->withTimestamps();
     }
 
     public function permissions()
     {
-        return $this->belongsToMany('App\Modules\Permissions\Permission', 'roles_permissions', 'role_id', 'permission_id')->whereNull('roles_permissions.deleted_at')->withTimestamps();
+        return $this->belongsToMany(Permission::class, 'permission_role', 'role_id', 'permission_id')->whereNull('permission_role.deleted_at')->withTimestamps();
     }
 
     public static function boot()

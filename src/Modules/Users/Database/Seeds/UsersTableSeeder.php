@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@user.com',
         ],[
             'name'       => 'Admin',
-            'password'   => bcrypt('123456'),
+            'password'   => \Hash::make('123456'),
             'confirmed'  => 1,
             'created_at' => \DB::raw('NOW()'),
             'updated_at' => \DB::raw('NOW()')
@@ -102,12 +102,6 @@ class UsersTableSeeder extends Seeder
                 ],
                 [
                 'name'       => 'unblock',
-                'model'      => 'user',
-                'created_at' => \DB::raw('NOW()'),
-                'updated_at' => \DB::raw('NOW()')
-                ],
-                [
-                'name'       => 'role',
                 'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

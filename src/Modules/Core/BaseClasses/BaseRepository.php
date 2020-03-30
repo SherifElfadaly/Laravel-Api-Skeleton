@@ -7,8 +7,6 @@ use Illuminate\Support\Str;
 abstract class BaseRepository implements BaseRepositoryInterface
 {
     /**
-     * The model implementation.
-     *
      * @var object
      */
     public $model;
@@ -36,7 +34,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true)
     {
-        unset($conditions['page']);
         unset($conditions['perPage']);
         unset($conditions['sortBy']);
         unset($conditions['sort']);

@@ -3,7 +3,7 @@
 namespace App\Modules\OauthClients\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\OauthClients\Repositories\OauthClientRepository;
+use App\Modules\OauthClients\Services\OauthClientService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use App\Modules\OauthClients\Http\Requests\InsertOauthClient;
 use App\Modules\OauthClients\Http\Requests\UpdateOauthClient;
@@ -11,14 +11,21 @@ use App\Modules\OauthClients\Http\Requests\UpdateOauthClient;
 class OauthClientController extends BaseApiController
 {
     /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\OauthClients\Http\Resources\OauthClient';
+
+    /**
      * Init new object.
      *
-     * @param   OauthClientRepository $repo
+     * @param   OauthClientService $service
      * @return  void
      */
-    public function __construct(OauthClientRepository $repo)
+    public function __construct(OauthClientService $service)
     {
-        parent::__construct($repo, 'App\Modules\OauthClients\Http\Resources\OauthClient');
+        parent::__construct($service);
     }
 
     /**
@@ -29,7 +36,7 @@ class OauthClientController extends BaseApiController
      */
     public function insert(InsertOauthClient $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -40,7 +47,7 @@ class OauthClientController extends BaseApiController
      */
     public function update(UpdateOauthClient $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -51,7 +58,7 @@ class OauthClientController extends BaseApiController
      */
     public function revoke($clientId)
     {
-        return new GeneralResource($this->repo->revoke($clientId));
+        return new GeneralResource($this->service->revoke($clientId));
     }
 
     /**
@@ -62,6 +69,6 @@ class OauthClientController extends BaseApiController
      */
     public function unRevoke($clientId)
     {
-        return new GeneralResource($this->repo->unRevoke($clientId));
+        return new GeneralResource($this->service->unRevoke($clientId));
     }
 }

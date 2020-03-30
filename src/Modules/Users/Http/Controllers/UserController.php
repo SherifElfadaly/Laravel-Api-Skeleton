@@ -4,7 +4,7 @@ namespace App\Modules\Users\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Users\Repositories\UserRepository;
+use App\Modules\Users\Services\UserService;
 use App\Modules\Users\Proxy\LoginProxy;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use Illuminate\Support\Facades\App;
@@ -25,6 +25,13 @@ use App\Modules\Users\Http\Requests\UpdateUser;
 class UserController extends BaseApiController
 {
     /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\Users\Http\Resources\AclUser';
+
+    /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
      * @var array
@@ -39,23 +46,14 @@ class UserController extends BaseApiController
     protected $skipLoginCheck = ['login', 'loginSocial', 'register', 'sendReset', 'resetPassword', 'refreshToken', 'confirmEmail', 'resendEmailConfirmation'];
 
     /**
-     * The loginProxy implementation.
-     *
-     * @var App\Modules\Users\Proxy\LoginProxy
-     */
-    protected $loginProxy;
-
-    /**
      * Init new object.
      *
-     * @param   LoginProxy     $loginProxy
-     * @param   UserRepository $repo
+     * @param   UserService $service
      * @return  void
      */
-    public function __construct(LoginProxy $loginProxy, UserRepository $repo)
+    public function __construct(UserService $service)
     {
-        $this->loginProxy = $loginProxy;
-        parent::__construct($repo, 'App\Modules\Users\Http\Resources\AclUser');
+        parent::__construct($service);
     }
 
     /**
@@ -66,7 +64,7 @@ class UserController extends BaseApiController
      */
     public function insert(InsertUser $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -77,7 +75,7 @@ class UserController extends BaseApiController
      */
     public function update(UpdateUser $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -88,7 +86,7 @@ class UserController extends BaseApiController
      */
     public function account(Request $request)
     {
-        return new $this->modelResource($this->repo->account($request->relations));
+        return new $this->modelResource($this->service->account($request->relations));
     }
 
     /**
@@ -99,7 +97,7 @@ class UserController extends BaseApiController
      */
     public function block($id)
     {
-        return new $this->modelResource($this->repo->block($id));
+        return new $this->modelResource($this->service->block($id));
     }
 
     /**
@@ -110,7 +108,7 @@ class UserController extends BaseApiController
      */
     public function unblock($id)
     {
-        return new $this->modelResource($this->repo->unblock($id));
+        return new $this->modelResource($this->service->unblock($id));
     }
 
     /**
@@ -120,7 +118,7 @@ class UserController extends BaseApiController
      */
     public function logout()
     {
-        return new GeneralResource($this->loginProxy->logout());
+        return new GeneralResource($this->service->logout());
     }
 
     /**
@@ -131,7 +129,7 @@ class UserController extends BaseApiController
      */
     public function register(Register $request)
     {
-        return new $this->modelResource($this->repo->register($request->only('name', 'email', 'password')));
+        return new $this->modelResource($this->service->register($request->get('name'), $request->get('email'), $request->get('password')));
     }
 
     /**
@@ -142,7 +140,7 @@ class UserController extends BaseApiController
      */
     public function login(Login $request)
     {
-        $result = $this->loginProxy->login($request->only('email', 'password'), $request->get('admin'));
+        $result = $this->service->login($request->get('email'), $request->get('password'), $request->get('admin'));
 
         return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
@@ -155,7 +153,7 @@ class UserController extends BaseApiController
      */
     public function loginSocial(LoginSocial $request)
     {
-        $result = $this->repo->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type'));
+        $result = $this->service->loginSocial($request->get('auth_code'), $request->get('access_token'), $request->get('type'));
 
         return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
@@ -168,7 +166,7 @@ class UserController extends BaseApiController
      */
     public function assignRoles(AssignRoles $request)
     {
-        return new $this->modelResource($this->repo->assignRoles($request->get('user_id'), $request->get('role_ids')));
+        return new $this->modelResource($this->service->assignRoles($request->get('user_id'), $request->get('role_ids')));
     }
 
     /**
@@ -179,7 +177,7 @@ class UserController extends BaseApiController
      */
     public function sendReset(SendReset $request)
     {
-        return new GeneralResource($this->repo->sendReset($request->get('email')));
+        return new GeneralResource($this->service->sendReset($request->get('email')));
     }
 
     /**
@@ -190,7 +188,7 @@ class UserController extends BaseApiController
      */
     public function resetPassword(ResetPassword $request)
     {
-        return new GeneralResource($this->repo->resetPassword($request->get('email'), $request->get('password'), $request->get('password_confirmation'), $request->get('token')));
+        return new GeneralResource($this->service->resetPassword($request->get('email'), $request->get('password'), $request->get('password_confirmation'), $request->get('token')));
     }
 
     /**
@@ -201,7 +199,7 @@ class UserController extends BaseApiController
      */
     public function changePassword(ChangePassword $request)
     {
-        return new GeneralResource($this->repo->changePassword($request->get('password') , $request->get('old_password')));
+        return new GeneralResource($this->service->changePassword($request->get('password') , $request->get('old_password')));
     }
 
     /**
@@ -212,7 +210,7 @@ class UserController extends BaseApiController
      */
     public function confirmEmail(ConfirmEmail $request)
     {
-        return new GeneralResource($this->repo->confirmEmail($request->only('confirmation_code')));
+        return new GeneralResource($this->service->confirmEmail($request->only('confirmation_code')));
     }
 
     /**
@@ -223,7 +221,7 @@ class UserController extends BaseApiController
      */
     public function resendEmailConfirmation(ResendEmailConfirmation $request)
     {
-        return new GeneralResource($this->repo->sendConfirmationEmail($request->get('email')));
+        return new GeneralResource($this->service->sendConfirmationEmail($request->get('email')));
     }
 
     /**
@@ -234,19 +232,7 @@ class UserController extends BaseApiController
      */
     public function refreshToken(RefreshToken $request)
     {
-        return new GeneralResource($this->loginProxy->refreshToken($request->get('refresh_token')));
-    }
-
-    /**
-     * Paginate all users with in the given role.
-     *
-     * @param Request $request
-     * @param  string $roleName The name of the requested role.
-     * @return \Illuminate\Http\Response
-     */
-    public function role(Request $request, $roleName)
-    {
-        return $this->modelResource::collection($this->repo->role($request->all(), $roleName, $request->relations, $request->query('perPage'), $request->query('sortBy'), $request->query('desc')));
+        return new GeneralResource($this->service->refreshToken($request->get('refresh_token')));
     }
 
     /**
@@ -257,6 +243,6 @@ class UserController extends BaseApiController
      */
     public function saveProfile(SaveProfile $request)
     {
-        return new $this->modelResource($this->repo->saveProfile($request->only('name', 'email', 'profile_picture')));
+        return new $this->modelResource($this->service->saveProfile($request->get('name'), $request->get('email'), $request->get('profile_picture')));
     }
 }

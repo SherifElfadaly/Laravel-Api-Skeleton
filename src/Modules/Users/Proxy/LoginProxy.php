@@ -1,27 +1,27 @@
 <?php namespace App\Modules\Users\Proxy;
 
+use App\Modules\Users\Services\UserService;
+use App\Modules\OauthClients\Services\OauthClientService;
+
 class LoginProxy
 {
     /**
      * Attempt to create an access token using user credentials.
      *
-     * @param  array   $credentials
-     * @param  boolean $adminLogin
+     * @param  string  $email
+     * @param  string  $password
      * @return array
      */
-    public function login($credentials, $adminLogin = false)
+    public function login($email, $password)
     {
-        $user = \Core::users()->login($credentials, $adminLogin);
-        $tokens = $this->proxy('password', [
-            'username' => $credentials['email'],
-            'password' => $credentials['password']
+        return $this->proxy('password', [
+            'username' => $email,
+            'password' => $password
         ]);
-
-        return compact('user', 'tokens');
     }
 
     /**
-     * Attempt to refresh the access token useing the given refresh token.
+     * Attempt to refresh the access token using the given refresh token.
      *
      * @param  string $refreshToken
      * @return array
@@ -64,15 +64,5 @@ class LoginProxy
             'refresh_token' => $data->refresh_token,
             'expires_in'    => $data->expires_in
         ];
-    }
-
-    /**
-     * Logs out the user. We revoke access token and refresh token.
-     *
-     * @return void
-     */
-    public function logout()
-    {
-        \Core::users()->revokeAccessToken(\Auth::user()->token());
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Modules\OauthClients;
 
 use Laravel\Passport\Client;
+use App\Modules\Users\AclUser;
 
 class OauthClient extends Client
 {
@@ -22,7 +23,7 @@ class OauthClient extends Client
     
     public function user()
     {
-        return $this->belongsTo('App\Modules\Users\AclUser');
+        return $this->belongsTo(AclUser::class);
     }
     
     public static function boot()

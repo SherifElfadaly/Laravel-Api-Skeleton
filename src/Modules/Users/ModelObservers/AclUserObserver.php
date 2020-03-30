@@ -38,7 +38,7 @@ class AclUserObserver
         if ($model->isDirty('blocked') && $model->blocked) {
             $model->tokens()->each(function ($token) {
 
-                \Core::users()->revokeAccessToken($token);
+                \Core::oauthClients()->revokeAccessToken($token);
             });
         }
     }

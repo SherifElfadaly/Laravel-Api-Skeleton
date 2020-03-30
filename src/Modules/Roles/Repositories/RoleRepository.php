@@ -17,20 +17,27 @@ class RoleRepository extends BaseRepository
     }
 
     /**
-     * Assign the given permission ids to the given role.
+     * Detach all permissions from the given role.
      *
-     * @param  integer $roleId
-     * @param  array   $permissionIds
+     * @param  mixed $role
      * @return object
      */
-    public function assignPermissions($roleId, $permissionIds)
+    public function detachPermissions($role)
     {
-        \DB::transaction(function () use ($roleId, $permissionIds) {
-            $role = $this->find($roleId);
-            $role->permissions()->detach();
-            $role->permissions()->attach($permissionIds);
-        });
+        $role = ! is_int($role) ? $role : $this->find($role);
+        $role->permissions()->detach();
+    }
 
-        return $this->find($roleId);
+    /**
+     * Attach permission ids to the given role.
+     *
+     * @param  mixed $role
+     * @param  array $permissionIds
+     * @return object
+     */
+    public function attachPermissions($role, $permissionIds)
+    {
+        $role = ! is_int($role) ? $role : $this->find($role);
+        $role->permissions()->attach($permissionIds);
     }
 }

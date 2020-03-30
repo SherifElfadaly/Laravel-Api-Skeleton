@@ -7,7 +7,7 @@ use Illuminate\Routing\Router as Route;
 use Illuminate\Auth\AuthManager as Auth;
 use \Illuminate\Auth\Middleware\Authenticate as AuthMiddleware;
 use App\Modules\Core\Utl\ErrorHandler;
-use App\Modules\Core\Core;
+use App\Modules\Users\Services\UserService;
 use Illuminate\Support\Arr;
 
 class CheckPermissions
@@ -16,7 +16,7 @@ class CheckPermissions
     protected $auth;
     protected $errorHandler;
     protected $authMiddleware;
-    protected $core;
+    protected $userService;
     protected $arr;
     
     /**
@@ -26,18 +26,18 @@ class CheckPermissions
      * @param   Auth           $auth
      * @param   ErrorHandler   $errorHandler
      * @param   AuthMiddleware $authMiddleware
-     * @param   Core           $core
+     * @param   UserService    $userService
      * @param   Arr            $arr
      *
      * @return  void
      */
-    public function __construct(Route $route, Auth $auth, ErrorHandler $errorHandler, AuthMiddleware $authMiddleware, Core $core, Arr $arr)
+    public function __construct(Route $route, Auth $auth, ErrorHandler $errorHandler, AuthMiddleware $authMiddleware, UserService $userService, Arr $arr)
     {
         $this->route = $route;
         $this->auth = $auth;
         $this->errorHandler = $errorHandler;
         $this->authMiddleware = $authMiddleware;
-        $this->core = $core;
+        $this->userService = $userService;
         $this->arr = $arr;
     }
 
@@ -69,7 +69,7 @@ class CheckPermissions
                     $this->errorHandler->userIsBlocked();
                 }
     
-                if ($isPasswordClient && (in_array($permission, $skipPermissionCheck) || $this->core->users()->can($permission, $modelName))) {
+                if ($isPasswordClient && (in_array($permission, $skipPermissionCheck) || $this->userService->can($permission, $modelName))) {
                 } elseif (! $isPasswordClient && $user->tokenCan($modelName.'-'.$permission)) {
                 } else {
                     $this->errorHandler->noPermissions();

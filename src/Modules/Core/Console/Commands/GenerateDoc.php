@@ -4,6 +4,7 @@ namespace App\Modules\Core\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use App\Modules\Reporting\Services\ReportService;
 
 class GenerateDoc extends Command
 {
@@ -22,12 +23,18 @@ class GenerateDoc extends Command
     protected $description = 'Generate api documentation';
 
     /**
+     * @var ReprotService
+     */
+    protected $reportService;
+
+    /**
      * Init new object.
      *
      * @return  void
      */
-    public function __construct()
+    public function __construct(ReportService $reportService)
     {
+        $this->reportService = $reportService;
         parent::__construct();
     }
 
@@ -72,7 +79,7 @@ class GenerateDoc extends Command
         }
         
         $docData['errors']  = $this->getErrors();
-        $docData['reports'] = \Core::reports()->all();
+        $docData['reports'] = $this->reportService->all();
         \File::put(app_path('Modules/Core/Resources/api.json'), json_encode($docData));
     }
 

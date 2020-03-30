@@ -17,26 +17,52 @@ class OauthClientRepository extends BaseRepository
     }
 
     /**
-     * Revoke the given client.
+     * Revoke the given client tokens.
      *
-     * @param  integer  $clientId
+     * @param  mixed  $client
      * @return void
      */
-    public function revoke($clientId)
+    public function revokeClientTokens($client)
     {
-        $client = $this->find($clientId);
+        $client = is_int($client) ? $client : $this->find($client);
         $client->tokens()->update(['revoked' => true]);
-        $this->save(['id'=> $clientId, 'revoked' => true]);
     }
 
     /**
-     * Un revoke the given client.
+     * Ensure access token hasn't expired or revoked.
      *
-     * @param  integer  $clientId
+     * @param  string $accessToken
+     * @return boolean
+     */
+    public function accessTokenExpiredOrRevoked($accessToken)
+    {
+        $accessTokenId = json_decode($accessToken, true)['id'];
+        $accessToken   = \DB::table('oauth_access_tokens')
+                ->where('id', $accessTokenId)
+                ->first();
+        
+        if (\Carbon\Carbon::parse($accessToken->expires_at)->isPast() || $accessToken->revoked) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Revoke the given access token and all
+     * associated refresh tokens.
+     *
+     * @param  oject $accessToken
      * @return void
      */
-    public function unRevoke($clientId)
+    public function revokeAccessToken($accessToken)
     {
-        $this->save(['id'=> $clientId, 'revoked' => false]);
+        \DB::table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update([
+                'revoked' => true
+            ]);
+
+        $accessToken->revoke();
     }
 }

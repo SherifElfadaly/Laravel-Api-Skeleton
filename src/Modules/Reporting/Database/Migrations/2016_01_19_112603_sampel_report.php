@@ -14,7 +14,7 @@ class SampelReport extends Migration
     {
         DB::statement("CREATE VIEW admin_count AS  
 			select count(u.id)
-			from users u, roles g ,users_roles ug
+			from users u, roles g ,role_user ug
 			where
 			ug.user_id  = u.id and
 			ug.role_id = g.id 

@@ -25,7 +25,6 @@ Route::group(['prefix' => 'users'], function () {
     Route::get('block/{id}', 'UserController@block');
     Route::get('unblock/{id}', 'UserController@unblock');
     Route::post('assign/roles', 'UserController@assignRoles');
-    Route::post('role/{roleName}', 'UserController@role');
 
     Route::group(['prefix' => 'account'], function () {
 

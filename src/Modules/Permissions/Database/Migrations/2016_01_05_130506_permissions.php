@@ -20,7 +20,7 @@ class Permissions extends Migration
             $table->timestamps();
             $table->unique(array('name', 'model'));
         });
-        Schema::create('roles_permissions', function (Blueprint $table) {
+        Schema::create('permission_role', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('permission_id');
@@ -40,6 +40,6 @@ class Permissions extends Migration
     public function down()
     {
         Schema::dropIfExists('permissions');
-        Schema::dropIfExists('roles_permissions');
+        Schema::dropIfExists('permission_role');
     }
 }
