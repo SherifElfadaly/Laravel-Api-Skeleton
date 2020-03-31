@@ -17,7 +17,6 @@ class AclUser extends User
     protected $hidden   = ['password', 'remember_token', 'deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone'];
-    public $searchable  = ['name', 'email'];
     
     public function getCreatedAtAttribute($value)
     {

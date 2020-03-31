@@ -14,7 +14,6 @@ class PushNotificationDevice extends Model
     protected $hidden   = ['deleted_at', 'access_token'];
     protected $guarded  = ['id'];
     protected $fillable = ['device_token', 'user_id', 'access_token'];
-    public $searchable  = ['device_token'];
 
     public function getCreatedAtAttribute($value)
     {

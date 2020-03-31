@@ -48,11 +48,6 @@ class SetSessions
                 $this->session->put('locale', 'ar');
                 break;
 
-            case 'all':
-                $this->app->setLocale('en');
-                $this->session->put('locale', 'all');
-                break;
-
             default:
                 $this->app->setLocale('en');
                 $this->session->put('locale', 'en');

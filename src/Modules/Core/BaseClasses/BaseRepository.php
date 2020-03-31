@@ -23,30 +23,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Fetch records with relations based on the given params.
-     *
-     * @param   string  $relations
-     * @param   array   $conditions
-     * @param   integer $perPage
-     * @param   string  $sortBy
-     * @param   boolean $desc
-     * @return collection
-     */
-    public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true)
-    {
-        unset($conditions['perPage']);
-        unset($conditions['sortBy']);
-        unset($conditions['sort']);
-        unset($conditions['page']);
-
-        if (count($conditions)) {
-            return $this->paginateBy(['and' => $conditions], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
-        }
-
-        return $this->paginate($perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
-    }
-
-    /**
      * Fetch all records with relations from the storage.
      *
      * @param  array   $relations
@@ -59,110 +35,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
     {
         $sort = $desc ? 'desc' : 'asc';
         return $this->model->with($relations)->orderBy($sortBy, $sort)->get($columns);
-    }
-
-    /**
-     * Fetch all records with relations from storage in pages
-     * that matche the given query.
-     *
-     * @param  string  $query
-     * @param  integer $perPage
-     * @param  array   $relations
-     * @param  string  $sortBy
-     * @param  boolean $desc
-     * @param  array   $columns
-     * @return collection
-     */
-    public function search($query, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
-    {
-        $model            = $this->model->with($relations);
-        $conditionColumns = $this->model->searchable;
-        $sort             = $desc ? 'desc' : 'asc';
-
-        /**
-         * Construct the select conditions for the model.
-         */
-        $model->where(function ($q) use ($query, $conditionColumns, $relations) {
-
-            if (count($conditionColumns)) {
-                $column = 'LOWER('.array_shift($conditionColumns).')';
-                if (Str::contains($column, '->')) {
-                    $column = $this->wrapJsonSelector($column);
-                }
-
-                /**
-                 * Use the first element in the model columns to construct the first condition.
-                 */
-                $q->where(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
-            }
-
-            /**
-             * Loop through the rest of the columns to construct or where conditions.
-             */
-            foreach ($conditionColumns as $column) {
-                $column = 'LOWER('.$column.')';
-                if (Str::contains($column, '->')) {
-                    $column = $this->wrapJsonSelector($column);
-                }
-
-                $q->orWhere(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
-            }
-
-            /**
-             * Loop through the model relations.
-             */
-            foreach ($relations as $relation) {
-                /**
-                 * Remove the sub relation if exists.
-                 */
-                $relation = explode('.', $relation)[0];
-
-                /**
-                 * Try to fetch the relation repository from the core.
-                 */
-                if (\Core::$relation()) {
-                    /**
-                     * Construct the relation condition.
-                     */
-                    $q->orWhereHas($relation, function ($subModel) use ($query, $relation) {
-
-                        $subModel->where(function ($q) use ($query, $relation) {
-
-                            /**
-                             * Get columns of the relation.
-                             */
-                            $subConditionColumns = \Core::$relation()->model->searchable;
-
-                            if (count($subConditionColumns)) {
-                                $column = 'LOWER('.array_shift($subConditionColumns).')';
-                                if (Str::contains($column, '->')) {
-                                    $column = $this->wrapJsonSelector($column);
-                                }
-
-                                /**
-                                 * Use the first element in the relation model columns to construct the first condition.
-                                 */
-                                $q->where(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
-                            }
-
-                            /**
-                             * Loop through the rest of the columns to construct or where conditions.
-                             */
-                            foreach ($subConditionColumns as $subConditionColumn) {
-                                $column = 'LOWER('.$subConditionColumn.')';
-                                if (Str::contains($column, '->')) {
-                                    $column = $this->wrapJsonSelector($column);
-                                }
-                                
-                                $q->orWhere(\DB::raw($column), 'LIKE', '%'.strtolower($query).'%');
-                            }
-                        });
-                    });
-                }
-            }
-        });
-        
-        return $model->orderBy($sortBy, $sort)->paginate($perPage, $columns);
     }
     
     /**
@@ -232,22 +104,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function delete($value, $attribute = 'id')
     {
-        if ($attribute == 'id') {
-            \DB::transaction(function () use ($value) {
-                $model = $this->model->lockForUpdate()->find($value);
-                if (! $model) {
-                    \Errors::notFound(class_basename($this->model).' with id : '.$value);
-                }
-                
+        \DB::transaction(function () use ($value, $attribute) {
+            $this->model->where($attribute, '=', $value)->lockForUpdate()->get()->each(function ($model) {
                 $model->delete();
             });
-        } else {
-            \DB::transaction(function () use ($value, $attribute) {
-                $this->model->where($attribute, '=', $value)->lockForUpdate()->get()->each(function ($model) {
-                    $model->delete();
-                });
-            });
-        }
+        });
     }
     
     /**

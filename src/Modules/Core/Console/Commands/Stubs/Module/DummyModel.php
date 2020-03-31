@@ -12,7 +12,6 @@ class DummyModel extends Model
     protected $hidden   = ['deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = []; // Add attributes here
-    public $searchable  = []; // Add earchable attributes here
     
     public function getCreatedAtAttribute($value)
     {

@@ -35,7 +35,16 @@ abstract class BaseService implements BaseServiceInterface
      */
     public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true)
     {
-        return $this->repo->list($relations, $conditions, $perPage, $sortBy, $desc);
+        unset($conditions['perPage']);
+        unset($conditions['sortBy']);
+        unset($conditions['sort']);
+        unset($conditions['page']);
+
+        if (count($conditions)) {
+            return $this->repo->paginateBy(['and' => $conditions], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
+        }
+
+        return $this->repo->paginate($perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
     }
 
     /**
@@ -50,23 +59,6 @@ abstract class BaseService implements BaseServiceInterface
     public function all($relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
     {
         return $this->repo->all($relations, $sortBy, $desc, $columns);
-    }
-
-    /**
-     * Fetch all records with relations from storage in pages
-     * that matche the given query.
-     *
-     * @param  string  $query
-     * @param  integer $perPage
-     * @param  array   $relations
-     * @param  string  $sortBy
-     * @param  boolean $desc
-     * @param  array   $columns
-     * @return collection
-     */
-    public function search($query, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 1, $columns = ['*'])
-    {
-        return $this->repo->search($query, $perPage, $relations, $sortBy, $desc, $columns);
     }
     
     /**

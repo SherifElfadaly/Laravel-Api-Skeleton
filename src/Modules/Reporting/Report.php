@@ -13,7 +13,6 @@ class Report extends Model
     protected $hidden   = ['deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['report_name', 'view_name'];
-    public $searchable  = ['report_name', 'view_name'];
 
     public function getCreatedAtAttribute($value)
     {
