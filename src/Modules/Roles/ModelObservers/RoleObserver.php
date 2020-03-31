@@ -35,7 +35,7 @@ class RoleObserver
     public function updating($model)
     {
         if ($model->getOriginal('name') == 'Admin') {
-            \ErrorHandler::noPermissions();
+            \Errors::noPermissions();
         }
     }
 
@@ -53,7 +53,7 @@ class RoleObserver
     public function deleting($model)
     {
         if ($model->getOriginal('name') == 'Admin') {
-            \ErrorHandler::noPermissions();
+            \Errors::noPermissions();
         }
     }
 

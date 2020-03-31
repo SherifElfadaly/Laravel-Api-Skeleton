@@ -32,9 +32,9 @@ class ModuleServiceProvider extends ServiceProvider
             return new \App\Modules\Core\Core;
         });
 
-        //Bind ErrorHandler Facade to the Service Container
-        $this->app->singleton('ErrorHandler', function () {
-            return new \App\Modules\Core\Utl\ErrorHandler;
+        //Bind Errors Facade to the Service Container
+        $this->app->singleton('Errors', function () {
+            return new \App\Modules\Core\Utl\Errors;
         });
 
         //Bind CoreConfig Facade to the Service Container

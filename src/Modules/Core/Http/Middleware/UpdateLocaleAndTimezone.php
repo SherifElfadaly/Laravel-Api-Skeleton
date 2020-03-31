@@ -16,7 +16,7 @@ class UpdateLocaleAndTimezone
      *
      * @param   Session      $session
      * @param   Auth         $auth
-     * @param   ErrorHandler $errorHandler
+     * @param   Errors       $errors
      *
      * @return  void
      */

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\Core\ModelObservers\SettingsObserver;
 
 class Setting extends Model
 {
@@ -37,6 +38,6 @@ class Setting extends Model
     public static function boot()
     {
         parent::boot();
-        Setting::observe(\App::make('App\Modules\Core\ModelObservers\SettingsObserver'));
+        Setting::observe(SettingsObserver::class);
     }
 }

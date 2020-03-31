@@ -7,7 +7,6 @@ use App\Modules\Permissions\Services\PermissionService;
 use App\Modules\OauthClients\Services\OauthClientService;
 use App\Modules\Notifications\Services\NotificationService;
 use App\Modules\Users\Proxy\LoginProxy;
-use App\Modules\Core\Utl\Media;
 
 class UserService extends BaseService
 {
@@ -20,11 +19,6 @@ class UserService extends BaseService
      * @var LoginProxy
      */
     protected $loginProxy;
-
-    /**
-     * @var Media
-     */
-    protected $media;
 
     /**
      * @var NotificationService
@@ -42,7 +36,6 @@ class UserService extends BaseService
      * @param   UserRepository       $repo
      * @param   PermissionService    $permissionService
      * @param   LoginProxy           $loginProxy
-     * @param   Media                $media
      * @param   NotificationService  $notificationService
      * @param   OauthClientService   $oauthClientService
      * @return  void
@@ -51,13 +44,11 @@ class UserService extends BaseService
         UserRepository $repo, 
         PermissionService $permissionService, 
         LoginProxy $loginProxy, 
-        Media $media, 
         NotificationService $notificationService,
         OauthClientService $oauthClientService)
     {
         $this->permissionService   = $permissionService;
         $this->loginProxy          = $loginProxy;
-        $this->media               = $media;
         $this->notificationService = $notificationService;
         $this->oauthClientService  = $oauthClientService;
         parent::__construct($repo);
@@ -157,15 +148,15 @@ class UserService extends BaseService
     public function login($email, $password, $adminLogin = false)
     {
         if (! $user = $this->repo->first(['email' => $email])) {
-            \ErrorHandler::loginFailed();
+            \Errors::loginFailed();
         } elseif ($adminLogin && ! $this->hasRoles(['Admin'], $user)) {
-            \ErrorHandler::loginFailed();
+            \Errors::loginFailed();
         } elseif (! $adminLogin && $this->hasRoles(['Admin'], $user)) {
-            \ErrorHandler::loginFailed();
+            \Errors::loginFailed();
         } elseif ($user->blocked) {
-            \ErrorHandler::userIsBlocked();
+            \Errors::userIsBlocked();
         } elseif (! config('skeleton.disable_confirm_email') && ! $user->confirmed) {
-            \ErrorHandler::emailNotConfirmed();
+            \Errors::emailNotConfirmed();
         }
 
         return ['user' => $user, 'tokens' => $this->loginProxy->login($user->email, $password)];
@@ -185,7 +176,7 @@ class UserService extends BaseService
         $user         = \Socialite::driver($type)->userFromToken($access_token);
 
         if (! $user->email) {
-            \ErrorHandler::noSocialEmail();
+            \Errors::noSocialEmail();
         }
 
         if (! $this->repo->first(['email' => $user->email])) {
@@ -229,7 +220,7 @@ class UserService extends BaseService
     public function block($userId)
     {
         if (\Auth::id() == $userId || $this->hasRoles(['Admin'], $user) !== false) {
-            \ErrorHandler::noPermissions();
+            \Errors::noPermissions();
         }
         
         return $this->repo->save(['id' => $userId, 'blocked' => 1]);
@@ -255,7 +246,7 @@ class UserService extends BaseService
     public function sendReset($email)
     {
         if (! $user = $this->repo->first(['email' => $email])) {
-            \ErrorHandler::notFound('email');
+            \Errors::notFound('email');
         }
 
         $token = \Password::getService()->create($user);
@@ -288,19 +279,19 @@ class UserService extends BaseService
                 break;
 
             case \Password::INVALID_TOKEN:
-                \ErrorHandler::invalidResetToken('token');
+                \Errors::invalidResetToken('token');
                 break;
 
             case \Password::INVALID_PASSWORD:
-                \ErrorHandler::invalidResetPassword('email');
+                \Errors::invalidResetPassword('email');
                 break;
 
             case \Password::INVALID_USER:
-                \ErrorHandler::notFound('user');
+                \Errors::notFound('user');
                 break;
 
             default:
-                \ErrorHandler::generalError();
+                \Errors::generalError();
                 break;
         }
     }
@@ -316,7 +307,7 @@ class UserService extends BaseService
     {
         $user = \Auth::user();
         if (! \Hash::check($oldPassword, $user->password)) {
-            \ErrorHandler::invalidOldPassword();
+            \Errors::invalidOldPassword();
         }
 
         $this->repo->save(['id' => $user->id, 'password' => $password]);
@@ -331,7 +322,7 @@ class UserService extends BaseService
     public function confirmEmail($confirmationCode)
     {
         if (! $user = $this->repo->first(['confirmation_code' => $confirmationCode])) {
-            \ErrorHandler::invalidConfirmationCode();
+            \Errors::invalidConfirmationCode();
         }
 
         $this->repo->save(['id' => $user->id, 'confirmed' => 1, 'confirmation_code' => null]);
@@ -347,7 +338,7 @@ class UserService extends BaseService
     {
         $user = $this->repo->first(['email' => $email]);
         if ($user->confirmed) {
-            \ErrorHandler::emailAlreadyConfirmed();
+            \Errors::emailAlreadyConfirmed();
         }
 
         $this->repo->save(['id' => $user->id, 'confirmation_code' => sha1(microtime())]);
@@ -365,7 +356,7 @@ class UserService extends BaseService
     public function saveProfile($name, $email, $profilePicture = false)
     {
         if ($profilePicture) {
-            $data['profile_picture'] = $this->media->uploadImageBas64($profilePicture, 'admins/profile_pictures');
+            $data['profile_picture'] = \Media::uploadImageBas64($profilePicture, 'admins/profile_pictures');
         }
         
         $data['id'] = \Auth::id();

@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use App\Modules\Notifications\Notification;
 use App\Modules\Roles\Role;
 use App\Modules\OauthClients\OauthClient;
+use App\Modules\Users\ModelObservers\AclUserObserver;
 
 class AclUser extends User
 {
@@ -137,6 +138,6 @@ class AclUser extends User
     public static function boot()
     {
         parent::boot();
-        AclUser::observe(\App::make('App\Modules\Users\ModelObservers\AclUserObserver'));
+        AclUser::observe(AclUserObserver::class);
     }
 }

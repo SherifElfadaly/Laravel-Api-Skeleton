@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Users\AclUser;
+use App\Modules\PushNotificationDevices\ModelObservers\PushNotificationDeviceObserver;
 
 class PushNotificationDevice extends Model
 {
@@ -49,6 +50,6 @@ class PushNotificationDevice extends Model
     public static function boot()
     {
         parent::boot();
-        PushNotificationDevice::observe(\App::make('App\Modules\PushNotificationDevices\ModelObservers\PushNotificationDeviceObserver'));
+        PushNotificationDevice::observe(PushNotificationDeviceObserver::class);
     }
 }

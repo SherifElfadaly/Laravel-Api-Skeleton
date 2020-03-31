@@ -195,7 +195,7 @@ class GenerateDoc extends Command
     protected function getErrors()
     {
         $errors          = [];
-        $reflectionClass = new \ReflectionClass('App\Modules\Core\Utl\ErrorHandler');
+        $reflectionClass = new \ReflectionClass('App\Modules\Core\Utl\Errors');
         foreach ($reflectionClass->getMethods() as $method) {
             $methodName       = $method->name;
             $reflectionMethod = $reflectionClass->getMethod($methodName);

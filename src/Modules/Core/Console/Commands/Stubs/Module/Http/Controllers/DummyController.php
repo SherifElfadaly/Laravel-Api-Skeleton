@@ -3,13 +3,20 @@
 namespace App\Modules\DummyModule\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\DummyModule\Repositories\DummyRepository;
+use App\Modules\DummyModule\Services\DummyService;
 use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\DummyModule\Http\Requests\InsertDummy;
 use App\Modules\DummyModule\Http\Requests\UpdateDummy;
 
 class DummyController extends BaseApiController
 {
+    /**
+     * Path of the model resource
+     *
+     * @var string
+     */
+    protected $modelResource = 'App\Modules\DummyModule\Http\Resources\DummyModel';
+
     /**
      * List of all route actions that the base api controller
      * will skip permissions check for them.
@@ -27,13 +34,12 @@ class DummyController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   DummyRepository $repo
-     * @param   CoreConfig      $config
+     * @param   DummyService $service
      * @return  void
      */
-    public function __construct(DummyRepository $repo, CoreConfig $config)
+    public function __construct(DummyService $service)
     {
-        parent::__construct($repo, $config, 'App\Modules\DummyModule\Http\Resources\DummyModel');
+        parent::__construct($service);
     }
 
     /**
@@ -44,7 +50,7 @@ class DummyController extends BaseApiController
      */
     public function insert(InsertDummy $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -55,6 +61,6 @@ class DummyController extends BaseApiController
      */
     public function update(UpdateDummy $request)
     {
-        return new $this->modelResource($this->repo->save($request->all()));
+        return new $this->modelResource($this->service->save($request->all()));
     }
 }

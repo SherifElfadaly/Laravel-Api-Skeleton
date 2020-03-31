@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\Reporting\ModelObservers\ReportObserver;
 
 class Report extends Model
 {
@@ -32,6 +33,6 @@ class Report extends Model
     public static function boot()
     {
         parent::boot();
-        Report::observe(\App::make('App\Modules\Reporting\ModelObservers\ReprotObserver'));
+        Report::observe(ReportObserver::class);
     }
 }

@@ -3,7 +3,7 @@
 /**
  * Handling of model events,
  */
-class ReprotObserver
+class ReportObserver
 {
 
     public function saving($model)

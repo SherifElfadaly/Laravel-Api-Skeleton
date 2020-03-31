@@ -59,8 +59,11 @@ Add php code sniffer command to composer.json
 "phpcbf" :"./vendor/bin/phpcbf ./",
 ```
 
-## Usage
-Check the [wiki][link-wiki].
+Generate module
+run 
+``` bash
+php artisan generate:module {slug}
+```
 
 ## Credits
 
@@ -83,4 +86,3 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/api-skeleton/api-skeleton
 [link-author]: https://github.com/SherifElfadaly
 [link-contributors]: ../../contributors 
-[link-wiki]: https://github.com/SherifElfadaly/Laravel-Api-Skeleton/wiki

@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Roles\Role;
+use App\Modules\Permissions\ModelObservers\PermissionObserver;
 
 class Permission extends Model
 {
@@ -38,6 +39,6 @@ class Permission extends Model
     public static function boot()
     {
         parent::boot();
-        Permission::observe(\App::make('App\Modules\Permissions\ModelObservers\PermissionObserver'));
+        Permission::observe(PermissionObserver::class);
     }
 }

@@ -1,6 +1,6 @@
 <?php namespace App\Modules\Core\Utl;
 
-class ErrorHandler
+class Errors
 {
     public function unAuthorized()
     {

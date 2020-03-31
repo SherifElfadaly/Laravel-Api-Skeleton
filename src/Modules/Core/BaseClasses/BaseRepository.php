@@ -236,7 +236,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
             \DB::transaction(function () use ($value) {
                 $model = $this->model->lockForUpdate()->find($value);
                 if (! $model) {
-                    \ErrorHandler::notFound(class_basename($this->model).' with id : '.$value);
+                    \Errors::notFound(class_basename($this->model).' with id : '.$value);
                 }
                 
                 $model->delete();
@@ -335,7 +335,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $model = $this->model->onlyTrashed()->find($id);
 
         if (! $model) {
-            \ErrorHandler::notFound(class_basename($this->model).' with id : '.$id);
+            \Errors::notFound(class_basename($this->model).' with id : '.$id);
         }
 
         $model->restore();
@@ -359,7 +359,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
          */
         $model = Arr::has($data, 'id') ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
         if (! $model) {
-            \ErrorHandler::notFound(class_basename($modelClass).' with id : '.$data['id']);
+            \Errors::notFound(class_basename($modelClass).' with id : '.$data['id']);
         }
 
         /**
@@ -436,7 +436,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                              * If model doesn't exists.
                              */
                             if (! $relationModel) {
-                                \ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$val['id']);
+                                \Errors::notFound(class_basename($relationBaseModel).' with id : '.$val['id']);
                             }
 
                             /**
@@ -467,7 +467,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                                  * If model doesn't exists.
                                  */
                                 if (! $relationModel) {
-                                    \ErrorHandler::notFound(class_basename($relationBaseModel).' with id : '.$value['id']);
+                                    \Errors::notFound(class_basename($relationBaseModel).' with id : '.$value['id']);
                                 }
 
                                 foreach ($value as $relationAttribute => $relationValue) {

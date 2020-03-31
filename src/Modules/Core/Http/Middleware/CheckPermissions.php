@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Routing\Router as Route;
 use Illuminate\Auth\AuthManager as Auth;
 use \Illuminate\Auth\Middleware\Authenticate as AuthMiddleware;
-use App\Modules\Core\Utl\ErrorHandler;
 use App\Modules\Users\Services\UserService;
 use Illuminate\Support\Arr;
 
@@ -14,7 +13,6 @@ class CheckPermissions
 {
     protected $route;
     protected $auth;
-    protected $errorHandler;
     protected $authMiddleware;
     protected $userService;
     protected $arr;
@@ -24,18 +22,16 @@ class CheckPermissions
      *
      * @param   Route          $route
      * @param   Auth           $auth
-     * @param   ErrorHandler   $errorHandler
      * @param   AuthMiddleware $authMiddleware
      * @param   UserService    $userService
      * @param   Arr            $arr
      *
      * @return  void
      */
-    public function __construct(Route $route, Auth $auth, ErrorHandler $errorHandler, AuthMiddleware $authMiddleware, UserService $userService, Arr $arr)
+    public function __construct(Route $route, Auth $auth, AuthMiddleware $authMiddleware, UserService $userService, Arr $arr)
     {
         $this->route = $route;
         $this->auth = $auth;
-        $this->errorHandler = $errorHandler;
         $this->authMiddleware = $authMiddleware;
         $this->userService = $userService;
         $this->arr = $arr;
@@ -66,19 +62,17 @@ class CheckPermissions
                 $isPasswordClient = $user->token()->client->password_client;
     
                 if ($user->blocked) {
-                    $this->errorHandler->userIsBlocked();
+                    \Errors::userIsBlocked();
                 }
     
                 if ($isPasswordClient && (in_array($permission, $skipPermissionCheck) || $this->userService->can($permission, $modelName))) {
                 } elseif (! $isPasswordClient && $user->tokenCan($modelName.'-'.$permission)) {
                 } else {
-                    $this->errorHandler->noPermissions();
+                    \Errors::noPermissions();
                 }
             });
         }
 
         return $next($request);
-
-        //$this->middleware('auth:api', ['except' => $skipLoginCheck]);
     }
 }

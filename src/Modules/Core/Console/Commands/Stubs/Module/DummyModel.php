@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\DummyModule\ModelObservers\DummyObserver;
 
 class DummyModel extends Model
 {
@@ -31,6 +32,6 @@ class DummyModel extends Model
     public static function boot()
     {
         parent::boot();
-        DummyModel::observe(\App::make('App\Modules\DummyModule\ModelObservers\DummyObserver'));
+        DummyModel::observe(DummyObserver::class);
     }
 }

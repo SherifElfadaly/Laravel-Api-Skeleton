@@ -61,6 +61,7 @@ class MakeModuleCommand extends Command
         'ModelObservers'      => 'ModelObservers',
         'Providers'           => 'Providers',
         'Repositories'        => 'Repositories',
+        'Services'            => 'Services',
         'Routes'              => 'Routes'
     ];
 
@@ -197,6 +198,7 @@ class MakeModuleCommand extends Command
             'DummyDatabaseSeeder',
             'DummyTableSeeder',
             'DummyController',
+            'DummyService',
             'DummyRepository',
             'InsertDummy',
             'UpdateDummy',
@@ -215,6 +217,7 @@ class MakeModuleCommand extends Command
             ucfirst($modelName) . 'DatabaseSeeder',
             ucfirst($modelName) . 'TableSeeder',
             ucfirst($modelNameSingular) . 'Controller',
+            ucfirst($modelNameSingular) . 'Service',
             ucfirst($modelNameSingular) . 'Repository',
             'Insert' . ucfirst($modelNameSingular),
             'Update' . ucfirst($modelNameSingular),

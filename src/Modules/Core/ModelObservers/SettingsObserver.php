@@ -24,7 +24,7 @@ class SettingsObserver
      */
     public function creating($model)
     {
-        \ErrorHandler::cannotCreateSetting();
+        \Errors::cannotCreateSetting();
     }
 
     public function created($model)
@@ -41,7 +41,7 @@ class SettingsObserver
     public function updating($model)
     {
         if ($model->getOriginal('key') !== $model->key) {
-            \ErrorHandler::cannotUpdateSettingKey();
+            \Errors::cannotUpdateSettingKey();
         }
     }
 

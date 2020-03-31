@@ -4,6 +4,7 @@ namespace App\Modules\OauthClients;
 
 use Laravel\Passport\Client;
 use App\Modules\Users\AclUser;
+use App\Modules\OauthClients\ModelObservers\OauthClientObserver;
 
 class OauthClient extends Client
 {
@@ -29,6 +30,6 @@ class OauthClient extends Client
     public static function boot()
     {
         parent::boot();
-        OauthClient::observe(\App::make('App\Modules\OauthClients\ModelObservers\OauthClientObserver'));
+        OauthClient::observe(OauthClientObserver::class);
     }
 }

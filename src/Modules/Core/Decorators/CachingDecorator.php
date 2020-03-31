@@ -77,7 +77,7 @@ class CachingDecorator
             return $this->cache->tags([$this->cacheTag])->rememberForever($cacheKey, function () use ($arguments, $name) {
                 return call_user_func_array([$this->repo, $name], $arguments);
             });
-        } elseif ($this->cacheConfig) {
+        } elseif ($this->cacheConfig && $this->cacheConfig == 'clear') {
             $this->cache->tags($this->cacheConfig)->flush();
             return call_user_func_array([$this->repo, $name], $arguments);
         }

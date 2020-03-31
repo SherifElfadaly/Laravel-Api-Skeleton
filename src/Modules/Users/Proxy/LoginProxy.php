@@ -51,10 +51,10 @@ class LoginProxy
 
         if (! $response->isSuccessful()) {
             if ($grantType == 'refresh_token') {
-                \ErrorHandler::invalidRefreshToken();
+                \Errors::invalidRefreshToken();
             }
 
-            \ErrorHandler::loginFailed();
+            \Errors::loginFailed();
         }
 
         $data = json_decode($response->getContent());

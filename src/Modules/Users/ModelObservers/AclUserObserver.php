@@ -37,7 +37,6 @@ class AclUserObserver
     {
         if ($model->isDirty('blocked') && $model->blocked) {
             $model->tokens()->each(function ($token) {
-
                 \Core::oauthClients()->revokeAccessToken($token);
             });
         }
@@ -46,7 +45,7 @@ class AclUserObserver
     public function deleting($model)
     {
         if ($model->getOriginal('id') == \Auth::id()) {
-            \ErrorHandler::noPermissions();
+            \Errors::noPermissions();
         }
     }
 

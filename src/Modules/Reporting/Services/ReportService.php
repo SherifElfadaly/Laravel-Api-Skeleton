@@ -44,9 +44,9 @@ class ReportService extends BaseService
          * Check report existance and permission.
          */
         if (! $report) {
-            \ErrorHandler::notFound('report');
+            \Errors::notFound('report');
         } elseif (! $skipPermission && ! $this->userService->can($report->view_name, 'report')) {
-            \ErrorHandler::noPermissions();
+            \Errors::noPermissions();
         }
 
        return $this->repo->renderReport($report, $conditions, $perPage);

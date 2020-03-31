@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Facade;
 
-class ErrorHandler extends Facade
+class Errors extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'ErrorHandler';
+        return 'Errors';
     }
 }

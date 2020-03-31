@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Users\AclUser;
 use App\Modules\Permissions\Permission;
+use App\Modules\Roles\ModelObservers\RoleObserver;
 
 class Role extends Model
 {
@@ -44,6 +45,6 @@ class Role extends Model
     public static function boot()
     {
         parent::boot();
-        Role::observe(\App::make('App\Modules\Roles\ModelObservers\RoleObserver'));
+        Role::observe(RoleObserver::class);
     }
 }
