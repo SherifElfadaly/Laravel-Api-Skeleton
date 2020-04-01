@@ -11,21 +11,7 @@ interface BaseServiceInterface
      * @param  array  $columns
      * @return collection
      */
-    public function all($relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
-    
-    /**
-     * Fetch all records with relations from storage in pages
-     * that matche the given query.
-     *
-     * @param  string  $query
-     * @param  integer $perPage
-     * @param  array   $relations
-     * @param  array   $sortBy
-     * @param  array   $desc
-     * @param  array   $columns
-     * @return collection
-     */
-    public function search($query, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
+    public function all($relations = [], $sortBy = 'created_at', $desc = 0, $columns = ['*']);
 
     /**
      * Fetch all records with relations from storage in pages.
@@ -37,7 +23,7 @@ interface BaseServiceInterface
      * @param  array   $columns
      * @return collection
      */
-    public function paginate($perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
+    public function paginate($perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = ['*']);
     
     /**
      * Fetch all records with relations based on
@@ -51,7 +37,7 @@ interface BaseServiceInterface
      * @param  array   $columns
      * @return collection
      */
-    public function paginateBy($conditions, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
+    public function paginateBy($conditions, $perPage = 15, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = ['*']);
 
      /**
       * Save the given model/models to the storage.
@@ -80,7 +66,7 @@ interface BaseServiceInterface
      * @param  array   $columns
      * @return object
      */
-    public function find($id, $relations = [], $columns = array('*'));
+    public function find($id, $relations = [], $columns = ['*']);
     
     /**
      * Fetch records from the storage based on the given
@@ -93,7 +79,7 @@ interface BaseServiceInterface
      * @param  array   $columns
      * @return collection
      */
-    public function findBy($conditions, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = array('*'));
+    public function findBy($conditions, $relations = [], $sortBy = 'created_at', $desc = 0, $columns = ['*']);
 
     /**
      * Fetch the first record fro the storage based on the given
@@ -104,5 +90,5 @@ interface BaseServiceInterface
      * @param  array   $columns
      * @return object
      */
-    public function first($conditions, $relations = [], $columns = array('*'));
+    public function first($conditions, $relations = [], $columns = ['*']);
 }
