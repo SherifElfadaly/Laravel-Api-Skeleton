@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Core\Traits;
+<?php
+
+namespace App\Modules\Core\Traits;
 
 trait Translatable
 {

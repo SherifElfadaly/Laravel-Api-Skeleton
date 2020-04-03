@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users;
+<?php
+
+namespace App\Modules\Users;
 
 use App\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +12,6 @@ use App\Modules\Users\ModelObservers\AclUserObserver;
 
 class AclUser extends User
 {
-
     use SoftDeletes, HasApiTokens;
     protected $table    = 'users';
     protected $dates    = ['created_at', 'updated_at', 'deleted_at'];

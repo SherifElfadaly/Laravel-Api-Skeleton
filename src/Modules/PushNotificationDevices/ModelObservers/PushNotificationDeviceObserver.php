@@ -1,4 +1,6 @@
-<?php namespace App\Modules\PushNotificationDevices\ModelObservers;
+<?php
+
+namespace App\Modules\PushNotificationDevices\ModelObservers;
 
 /**
  * Handling of model events,

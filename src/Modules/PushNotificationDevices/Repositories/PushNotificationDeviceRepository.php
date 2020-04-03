@@ -1,4 +1,6 @@
-<?php namespace App\Modules\PushNotificationDevices\Repositories;
+<?php
+
+namespace App\Modules\PushNotificationDevices\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use LaravelFCM\Message\OptionsBuilder;

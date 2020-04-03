@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Permissions\Repositories;
+<?php
+
+namespace App\Modules\Permissions\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Permissions\Permission;

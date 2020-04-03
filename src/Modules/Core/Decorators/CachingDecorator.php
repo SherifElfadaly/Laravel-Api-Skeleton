@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Core\Decorators;
+<?php
+
+namespace App\Modules\Core\Decorators;
 
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Cache\Repository as Cache;

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Notifications;
+<?php
+
+namespace App\Modules\Notifications;
 
 use Illuminate\Notifications\DatabaseNotification;
 

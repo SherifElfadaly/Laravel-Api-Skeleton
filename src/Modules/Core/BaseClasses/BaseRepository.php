@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Core\BaseClasses;
+<?php
+
+namespace App\Modules\Core\BaseClasses;
 
 use App\Modules\Core\Interfaces\BaseRepositoryInterface;
 use Illuminate\Support\Arr;

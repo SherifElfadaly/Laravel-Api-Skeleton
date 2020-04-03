@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Core\Services;
+<?php
+
+namespace App\Modules\Core\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Core\Repositories\SettingRepository;

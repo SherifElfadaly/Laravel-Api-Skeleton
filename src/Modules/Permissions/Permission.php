@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Permissions;
+<?php
+
+namespace App\Modules\Permissions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

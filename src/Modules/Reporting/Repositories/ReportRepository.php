@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Reporting\Repositories;
+<?php
+
+namespace App\Modules\Reporting\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Reporting\Report;

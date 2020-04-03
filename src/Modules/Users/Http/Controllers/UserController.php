@@ -199,7 +199,7 @@ class UserController extends BaseApiController
      */
     public function changePassword(ChangePassword $request)
     {
-        return new GeneralResource($this->service->changePassword($request->get('password') , $request->get('old_password')));
+        return new GeneralResource($this->service->changePassword($request->get('password'), $request->get('old_password')));
     }
 
     /**

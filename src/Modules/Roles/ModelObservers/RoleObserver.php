@@ -1,11 +1,12 @@
-<?php namespace App\Modules\Roles\ModelObservers;
+<?php
+
+namespace App\Modules\Roles\ModelObservers;
 
 /**
  * Handling of model events,
  */
 class RoleObserver
 {
-
     public function saving($model)
     {
         //

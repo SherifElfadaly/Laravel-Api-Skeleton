@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Roles\Repositories;
+<?php
+
+namespace App\Modules\Roles\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Roles\Role;

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users\Services;
+<?php
+
+namespace App\Modules\Users\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use Illuminate\Support\Arr;
@@ -41,12 +43,12 @@ class UserService extends BaseService
      * @return  void
      */
     public function __construct(
-        UserRepository $repo, 
-        PermissionService $permissionService, 
-        LoginProxy $loginProxy, 
+        UserRepository $repo,
+        PermissionService $permissionService,
+        LoginProxy $loginProxy,
         NotificationService $notificationService,
-        OauthClientService $oauthClientService)
-    {
+        OauthClientService $oauthClientService
+    ) {
         $this->permissionService   = $permissionService;
         $this->loginProxy          = $loginProxy;
         $this->notificationService = $notificationService;
@@ -128,7 +130,7 @@ class UserService extends BaseService
     public function assignRoles($userId, $roleIds)
     {
         $user = false;
-        \DB::transaction(function () use ($userId, $permissionIds, &$user) {
+        \DB::transaction(function () use ($userId, $roleIds, &$user) {
             $user = $this->repo->find($userId);
             $this->repo->detachPermissions($userId);
             $this->repo->attachPermissions($userId, $roleIds);
@@ -180,7 +182,7 @@ class UserService extends BaseService
         }
 
         if (! $this->repo->first(['email' => $user->email])) {
-            $this->register(['email' => $user->email, 'password' => ''], true);
+            $this->register($user->email, '', true);
         }
 
         return $this->loginProxy->login($user->email, config('skeleton.social_pass'));
@@ -265,9 +267,9 @@ class UserService extends BaseService
     public function resetPassword($email, $password, $passwordConfirmation, $token)
     {
         $response = \Password::reset([
-            'email'                 => $email, 
-            'password'              => $password, 
-            'password_confirmation' => $passwordConfirmation, 
+            'email'                 => $email,
+            'password'              => $password,
+            'password_confirmation' => $passwordConfirmation,
             'token'                 => $token
         ], function ($user, $password) {
             $this->repo->save(['id' => $user->id, 'password' => $password]);

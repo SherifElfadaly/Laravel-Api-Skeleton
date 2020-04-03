@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Core\Interfaces;
+<?php
+
+namespace App\Modules\Core\Interfaces;
 
 interface BaseRepositoryInterface
 {

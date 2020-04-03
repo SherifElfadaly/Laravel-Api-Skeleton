@@ -1,4 +1,6 @@
-<?php namespace App\Modules\DummyModule\ModelObservers;
+<?php
+
+namespace App\Modules\DummyModule\ModelObservers;
 
 /**
  * Handling of model events,

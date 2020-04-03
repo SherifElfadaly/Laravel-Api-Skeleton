@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users\Proxy;
+<?php
+
+namespace App\Modules\Users\Proxy;
 
 use App\Modules\Users\Services\UserService;
 use App\Modules\OauthClients\Services\OauthClientService;

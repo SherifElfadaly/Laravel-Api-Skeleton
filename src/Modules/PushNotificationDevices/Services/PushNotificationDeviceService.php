@@ -1,4 +1,6 @@
-<?php namespace App\Modules\PushNotificationDevices\Services;
+<?php
+
+namespace App\Modules\PushNotificationDevices\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use LaravelFCM\Message\OptionsBuilder;
@@ -31,7 +33,7 @@ class PushNotificationDeviceService extends BaseService
         $data['user_id']      = \Auth::id();
         $device               = $this->repo->first([
             'and' => [
-                'device_token' => $data['device_token'], 
+                'device_token' => $data['device_token'],
                 'user_id' => $data['user_id']
                 ]
             ]);

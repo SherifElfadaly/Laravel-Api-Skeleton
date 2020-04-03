@@ -50,14 +50,14 @@ class Handler extends ExceptionHandler
     {
         if ($request->wantsJson()) {
             if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
-                \ErrorHandler::unAuthorized();
+                \Errors::unAuthorized();
             }
             if ($exception instanceof \Illuminate\Database\QueryException) {
-                \ErrorHandler::dbQueryError();
+                \Errors::dbQueryError();
             } elseif ($exception instanceof \predis\connection\connectionexception) {
-                \ErrorHandler::redisNotRunning();
+                \Errors::redisNotRunning();
             } elseif ($exception instanceof \GuzzleHttp\Exception\ClientException) {
-                \ErrorHandler::connectionError();
+                \Errors::connectionError();
             } elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
                 $errors = $exception->getStatusCode() === 404 ? 'not found' : $exception->getMessage();
                 return \Response::json(['errors' => [$errors]], $exception->getStatusCode());

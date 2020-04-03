@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Reporting\Services;
+<?php
+
+namespace App\Modules\Reporting\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Reporting\Repositories\ReportRepository;
@@ -49,6 +51,6 @@ class ReportService extends BaseService
             \Errors::noPermissions();
         }
 
-       return $this->repo->renderReport($report, $conditions, $perPage);
+        return $this->repo->renderReport($report, $conditions, $perPage);
     }
 }

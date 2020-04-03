@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Core;
+<?php
+
+namespace App\Modules\Core;
 
 use App\Modules\Core\Interfaces\BaseFactoryInterface;
 

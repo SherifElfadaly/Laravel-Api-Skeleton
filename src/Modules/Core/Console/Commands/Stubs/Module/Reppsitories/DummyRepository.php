@@ -1,4 +1,6 @@
-<?php namespace App\Modules\DummyModule\Repositories;
+<?php
+
+namespace App\Modules\DummyModule\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\DummyModule\DummyModel;

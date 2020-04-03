@@ -194,17 +194,21 @@ class GenerateDoc extends Command
      */
     protected function getErrors()
     {
-        $errors          = [];
-        $reflectionClass = new \ReflectionClass('App\Modules\Core\Utl\Errors');
-        foreach ($reflectionClass->getMethods() as $method) {
-            $methodName       = $method->name;
-            $reflectionMethod = $reflectionClass->getMethod($methodName);
-            $body             = $this->getMethodBody($reflectionMethod);
+        $errors = [];
+        foreach (\Module::all() as $module) {
+            $nameSpace = 'App\\Modules\\' . $module['basename'] ;
+            $class = $nameSpace . '\\Errors\\'  . $module['basename'] . 'Errors';
+            $reflectionClass = new \ReflectionClass($class);
+            foreach ($reflectionClass->getMethods() as $method) {
+                $methodName       = $method->name;
+                $reflectionMethod = $reflectionClass->getMethod($methodName);
+                $body             = $this->getMethodBody($reflectionMethod);
 
-            preg_match('/\$error=\[\'status\'=>([^#]+)\,/iU', $body, $match);
+                preg_match('/\$error=\[\'status\'=>([^#]+)\,/iU', $body, $match);
 
-            if (count($match)) {
-                $errors[$match[1]][] = $methodName;
+                if (count($match)) {
+                    $errors[$match[1]][] = $methodName;
+                }
             }
         }
 

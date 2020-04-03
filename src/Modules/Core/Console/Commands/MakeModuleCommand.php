@@ -62,7 +62,8 @@ class MakeModuleCommand extends Command
         'Providers'           => 'Providers',
         'Repositories'        => 'Repositories',
         'Services'            => 'Services',
-        'Routes'              => 'Routes'
+        'Routes'              => 'Routes',
+        'Errors'              => 'Errors',
     ];
 
     /**
@@ -200,6 +201,7 @@ class MakeModuleCommand extends Command
             'DummyController',
             'DummyService',
             'DummyRepository',
+            'DummyErrors',
             'InsertDummy',
             'UpdateDummy',
             'DummyResource',
@@ -219,6 +221,7 @@ class MakeModuleCommand extends Command
             ucfirst($modelNameSingular) . 'Controller',
             ucfirst($modelNameSingular) . 'Service',
             ucfirst($modelNameSingular) . 'Repository',
+            ucfirst($modelName) . 'Errors',
             'Insert' . ucfirst($modelNameSingular),
             'Update' . ucfirst($modelNameSingular),
             ucfirst($modelNameSingular),

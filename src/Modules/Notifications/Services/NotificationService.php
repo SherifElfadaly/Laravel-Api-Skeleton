@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Notifications\Services;
+<?php
+
+namespace App\Modules\Notifications\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Notifications\Repositories\NotificationRepository;

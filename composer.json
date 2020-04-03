@@ -62,9 +62,8 @@
             ],
             "aliases": {
                 "Core"        : "App\\Modules\\Core\\Facades\\Core",
-                "ErrorHandler": "App\\Modules\\Core\\Facades\\ErrorHandler",
+                "Errors"      : "App\\Modules\\Core\\Facades\\Errors",
                 "CoreConfig"  : "App\\Modules\\Core\\Facades\\CoreConfig",
-                "Logging"     : "App\\Modules\\Core\\Facades\\Logging",
                 "Media"       : "App\\Modules\\Core\\Facades\\Media",
                 "ApiConsumer" : "App\\Modules\\Core\\Facades\\ApiConsumer"
             }

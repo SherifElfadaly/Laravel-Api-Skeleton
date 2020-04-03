@@ -1,4 +1,6 @@
-<?php namespace App\Modules\OauthClients\Services;
+<?php
+
+namespace App\Modules\OauthClients\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\OauthClients\Repositories\OauthClientRepository;

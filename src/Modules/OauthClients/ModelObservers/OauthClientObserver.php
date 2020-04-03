@@ -1,4 +1,6 @@
-<?php namespace App\Modules\OauthClients\ModelObservers;
+<?php
+
+namespace App\Modules\OauthClients\ModelObservers;
 
 use Illuminate\Support\Str;
 

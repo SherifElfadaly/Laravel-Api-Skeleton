@@ -1,4 +1,6 @@
-<?php namespace App\Modules\DummyModule;
+<?php
+
+namespace App\Modules\DummyModule;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
