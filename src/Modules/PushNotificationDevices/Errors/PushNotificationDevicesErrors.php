@@ -2,7 +2,7 @@
 
 namespace App\Modules\PushNotificationDevices\Errors;
 
-class PushNotificationDeviceErrors
+class PushNotificationDevicesErrors
 {
 
 }

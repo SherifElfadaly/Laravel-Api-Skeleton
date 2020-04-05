@@ -1,0 +1,136 @@
+FROM php:7.4-apache
+
+# set main params
+ENV APP_HOME /var/www/html
+
+# development packages
+RUN apt-get update
+RUN apt-get install -y \
+    git \
+    zip \
+    curl \
+    sudo \
+    unzip \
+    libicu-dev \
+    libbz2-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libmcrypt-dev \
+    libreadline-dev \
+    libfreetype6-dev \
+    libonig-dev\
+    libzip-dev\
+    g++
+
+# disable default site and delete all default files inside APP_HOME
+RUN a2dissite 000-default.conf
+RUN rm -r $APP_HOME
+
+# create document root
+RUN mkdir -p $APP_HOME/public
+
+# change uid and gid of apache to docker user uid/gid
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+RUN chown -R www-data:www-data $APP_HOME
+
+# apache configs + document root
+COPY docker/app/laravel.conf /etc/apache2/sites-available/laravel.conf
+COPY docker/app/laravel-ssl.conf /etc/apache2/sites-available/laravel-ssl.conf
+RUN a2ensite laravel.conf && a2ensite laravel-ssl
+
+# mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers like Access-Control-Allow-Origin-
+RUN a2enmod rewrite headers
+
+# mod_ssl for serving https
+RUN a2enmod ssl
+
+# generate certificates
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=example.com"
+
+# start with base php config, then add extensions
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+RUN docker-php-ext-install \
+    bz2 \
+    intl \
+    iconv \
+    bcmath \
+    opcache \
+    calendar \
+    mbstring \
+    pdo_mysql \
+    zip
+
+RUN docker-php-source extract && \
+    pecl install redis && \
+    docker-php-ext-enable redis && \
+    docker-php-source delete
+
+# copy files
+COPY . .
+
+# composer
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer && composer global require hirak/prestissimo --no-plugins --no-scripts
+
+# composer install
+COPY composer.json composer.json
+
+# set working directory
+WORKDIR $APP_HOME
+
+ARG env
+# RUN if [ "$env" = "prod" ]; \
+#     then  composer update nothing --no-dev --optimize-autoloader; \
+# 	else  composer update nothing --optimize-autoloader;  \
+# 	fi
+RUN if [ "$env" = "prod" ]; \
+    then  composer install --no-dev --optimize-autoloader; \
+	else  composer install --optimize-autoloader;  \
+	fi
+
+RUN rm -rf /root/.composer
+
+# create env file based on env variable
+RUN if [ "$env" = "prod" ]; \
+    then  cp docker/app/.env-prod .env; \
+	else  cp docker/app/.env-dev .env;  \
+	fi
+    
+# create laravel-echo-server file based on env variable
+RUN if [ "$env" = "prod" ]; \
+    then  cp docker/app/laravel-echo-server-prod.json laravel-echo-server.json; \
+	else  cp docker/app/laravel-echo-server-dev.json laravel-echo-server.json;  \
+	fi
+
+# install cron
+RUN apt-get -y install cron
+RUN touch /etc/cron.d/crons
+RUN touch /var/log/cron.log
+RUN chmod 0644 /etc/cron.d/crons
+
+# register laravel scheduler
+COPY docker/app/crons crons
+
+# node image
+FROM node:12
+
+# install laravel echo server
+RUN npm install -g laravel-echo-server
+
+# clear cach, run migrations and restart queue
+CMD service apache2 restart && \
+    composer dump-autoload -a && \
+    php artisan module:optimize && \
+    php artisan key:generate && \ 
+    php artisan clear-compiled && \
+    php artisan view:clear && \
+    php artisan route:clear && \
+    php artisan cache:clear && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan queue:restart && \
+    php artisan module:migrate && \
+    php artisan module:seed && \
+    php artisan storage:link && \
+    laravel-echo-server start && \
+    php artisan queue:work redis --sleep=3 --tries=3

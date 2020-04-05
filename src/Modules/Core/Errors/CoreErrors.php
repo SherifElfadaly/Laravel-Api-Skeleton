@@ -6,43 +6,31 @@ class CoreErrors
 {
     public function connectionError()
     {
-        $error = ['status' => 400, 'message' => trans('core::errors.connectionError')];
-        abort($error['status'], $error['message']);
+        abort(500, trans('core::errors.connectionError'));
     }
 
     public function redisNotRunning()
     {
-        $error = ['status' => 400, 'message' => trans('core::errors.redisNotRunning')];
-        abort($error['status'], $error['message']);
+        abort(500, trans('core::errors.redisNotRunning'));
     }
 
     public function dbQueryError()
     {
-        $error = ['status' => 400, 'message' => trans('core::errors.dbQueryError')];
-        abort($error['status'], $error['message']);
+        abort(500, trans('core::errors.dbQueryError'));
     }
 
     public function cannotCreateSetting()
     {
-        $error = ['status' => 400, 'message' => trans('core::errors.cannotCreateSetting')];
-        abort($error['status'], $error['message']);
+        abort(400, trans('core::errors.cannotCreateSetting'));
     }
 
     public function cannotUpdateSettingKey()
     {
-        $error = ['status' => 400, 'message' => trans('core::errors.cannotUpdateSettingKey')];
-        abort($error['status'], $error['message']);
+        abort(400, trans('core::errors.cannotUpdateSettingKey'));
     }
 
     public function notFound($text)
     {
-        $error = ['status' => 404, 'message' => trans('core::errors.notFound', ['replace' => $text])];
-        abort($error['status'], $error['message']);
-    }
-
-    public function generalError()
-    {
-        $error = ['status' => 400, 'message' => trans('core::errors.generalError')];
-        abort($error['status'], $error['message']);
+        abort(404, trans('core::errors.notFound', ['replace' => $text]));
     }
 }

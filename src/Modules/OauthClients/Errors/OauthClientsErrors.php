@@ -2,7 +2,7 @@
 
 namespace App\Modules\OauthClients\Errors;
 
-class OauthClientErrors
+class OauthClientsErrors
 {
 
 }

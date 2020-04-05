@@ -2,7 +2,7 @@
 
 namespace App\Modules\Roles\Errors;
 
-class RoleErrors
+class RolesErrors
 {
 
 }

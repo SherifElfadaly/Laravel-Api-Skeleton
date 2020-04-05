@@ -20,11 +20,11 @@ class Errors implements BaseFactoryInterface
     {
         foreach (\Module::all() as $module) {
             $nameSpace = 'App\\Modules\\' . $module['basename'];
-            $class = $nameSpace . '\\Errors\\' . \Str::singular($module['basename']) . 'Errors';
+            $class = $nameSpace . '\\Errors\\' . $module['basename'] . 'Errors';
 
             if (class_exists($class)) {
                 $class = \App::make($class);
-                $class->$name($arguments);
+                if (method_exists($class, $name)) return call_user_func_array([$class, $name], $arguments);
             }
         }
     }

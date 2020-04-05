@@ -281,19 +281,15 @@ class UserService extends BaseService
                 break;
 
             case \Password::INVALID_TOKEN:
-                \Errors::invalidResetToken('token');
+                \Errors::invalidResetToken();
                 break;
 
             case \Password::INVALID_PASSWORD:
-                \Errors::invalidResetPassword('email');
+                \Errors::invalidResetPassword();
                 break;
 
             case \Password::INVALID_USER:
                 \Errors::notFound('user');
-                break;
-
-            default:
-                \Errors::generalError();
                 break;
         }
     }

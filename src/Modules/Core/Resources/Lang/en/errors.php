@@ -10,7 +10,6 @@ return [
     'dbQueryError'            => 'Please check the given inputes',
     'cannotCreateSetting'     => 'Can\'t create setting',
     'cannotUpdateSettingKey'  => 'Can\'t update setting key',
-    'notFound'                => 'The requested :replace not found',
-    'generalError'            => 'Something went wrong',
+    'notFound'                => 'The requested :replace not found'
 
 ];

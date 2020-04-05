@@ -2,7 +2,7 @@
 
 namespace App\Modules\Permissions\Errors;
 
-class PermissionErrors
+class PermissionsErrors
 {
 
 }

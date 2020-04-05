@@ -10,7 +10,6 @@ return [
     'dbQueryError'            => 'خطا في البيانات',
     'cannotCreateSetting'     => 'لا يمكن اضافة اعدادات',
     'cannotUpdateSettingKey'  => 'لا يمكن تعديل اعدادات',
-    'notFound'                => 'ال :replace المطلوب غير موجود',
-    'generalError'            => 'حدث خطا ما',
+    'notFound'                => 'ال :replace المطلوب غير موجود'
 
 ];
