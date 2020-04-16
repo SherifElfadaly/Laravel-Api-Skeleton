@@ -1,0 +1,78 @@
+version: '3.2'
+
+services:
+    skeleton_redis:
+      container_name: 'skeleton_redis'
+      image: redis:latest
+      networks:
+        - backend
+      ports:
+        - 8002:6379
+      restart: always
+
+    skeleton_mysql:
+      container_name: 'skeleton_mysql'
+      image: mysql:5.7
+      volumes:
+        - ./run/var:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=skeleton
+        - MYSQL_USER=skeleton
+        - MYSQL_PASSWORD=1
+      networks:
+        - backend
+      ports:
+        - 8001:3306
+      restart: always
+
+    skeleton_app:
+      container_name: 'skeleton'
+      volumes:
+        - ./:/var/www/html/
+      build:
+        context: './'
+        dockerfile: './docker/app/dockerfile'
+      env_file: './docker/.env.prod'
+      depends_on:
+        - 'skeleton_mysql'
+        - 'skeleton_redis'
+      networks:
+        - backend
+      restart: always
+      
+    skeleton_apache:
+      container_name: 'skeleton_apache'
+      volumes:
+        - ./:/var/www/html/
+      build:
+        context: './'
+        dockerfile: './docker/apache/dockerfile'
+      env_file: './docker/.env.prod'
+      depends_on:
+        - skeleton_app
+      networks:
+        - backend
+      ports:
+        - "8000:80"
+      restart: always
+
+    skeleton_echo:
+      container_name: 'skeleton_echo'
+      volumes:
+        - ./:/var/www/html/
+      build:
+        context: './'
+        dockerfile: './docker/echo/dockerfile'
+      env_file: './docker/.env.prod'
+      depends_on:
+        - skeleton_app
+        - skeleton_redis
+      networks:
+        - backend
+      ports:
+        - "8003:6001"
+      restart: always
+
+networks:
+  backend:

@@ -1,0 +1,80 @@
+FROM php:7.4-fpm
+
+WORKDIR /var/www/html/
+
+# development packages
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    curl \
+    sudo \
+    unzip \
+    libicu-dev \
+    libbz2-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libmcrypt-dev \
+    libreadline-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libzip-dev \
+    g++ \
+    cron
+
+# add php configurations
+COPY docker/app/php.ini /usr/local/etc/php/conf.d
+COPY docker/app/laravel.ini /usr/local/etc/php/conf.d
+COPY docker/app/opcache.ini /usr/local/etc/php/conf.d
+COPY docker/app/xlaravel.pool.conf /usr/local/etc/php-fpm.d
+
+RUN docker-php-ext-install \
+    bz2 \
+    intl \
+    iconv \
+    bcmath \
+    opcache \
+    calendar \
+    mbstring \
+    pdo_mysql \
+    zip
+
+RUN docker-php-source extract && \
+    pecl install redis && \
+    docker-php-ext-enable redis && \
+    docker-php-source delete
+
+# composer
+RUN curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer && \
+    composer global require hirak/prestissimo --no-plugins --no-scripts
+
+# configure cron
+RUN touch /etc/cron.d/crons
+RUN touch /var/log/cron.log
+RUN chmod 0644 /etc/cron.d/crons
+
+# register laravel scheduler
+COPY docker/app/crons crons
+
+RUN sudo chown -R www-data:www-data /var/www/html && \ 
+    sudo find /var/www/html -type f -exec chmod 664 {} \; && \
+    sudo find /var/www/html -type d -exec chmod 775 {} \;
+
+
+# start server, clear cach, run migrations and restart queue
+CMD php-fpm -D && \
+    composer update nothing --prefer-dist --lock && \
+    composer install --prefer-dist --optimize-autoloader && \
+    php artisan module:optimize && \
+    php artisan key:generate && \ 
+    php artisan clear-compiled && \
+    php artisan view:clear && \
+    php artisan route:clear && \
+    php artisan cache:clear && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan queue:restart && \
+    php artisan module:migrate && \
+    php artisan module:seed && \
+    php artisan storage:link && \
+    php artisan queue:work redis --sleep=3 --tries=3

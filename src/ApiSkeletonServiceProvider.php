@@ -23,10 +23,11 @@ class ApiSkeletonServiceProvider extends ServiceProvider
             __DIR__.'/../files/Kernel.php'                   => app_path('Console/Kernel.php'),
             __DIR__.'/../files/HttpKernel.php'               => app_path('Http/Kernel.php'),
             __DIR__.'/../files/channels.php'                 => base_path('routes/channels.php'),
-            __DIR__.'/../phpcs.xml'                          => base_path('/phpcs.xml'),
-            __DIR__.'/../docker'                             => base_path('/docker'),
-            __DIR__.'/../docker-compose.yml'                 => base_path('/docker-compose.yml'),
-            __DIR__.'/../.dockerignore'                      => base_path('/.dockerignore'),
+            __DIR__.'/../files/phpcs.xml'                    => base_path('/phpcs.xml'),
+            __DIR__.'/../files/docker'                       => base_path('/docker'),
+            __DIR__.'/../files/docker-compose.dev.yml'       => base_path('/docker-compose.dev.yml'),
+            __DIR__.'/../files/docker-compose.prod.yml'      => base_path('/docker-compose.prod.yml'),
+            __DIR__.'/../files/.dockerignore'                => base_path('/.dockerignore'),
         ]);
 
         $this->publishes([
