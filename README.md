@@ -45,22 +45,35 @@ Put your client id and client secret in .env
 PASSWORD_CLIENT_ID=xxxxxx
 PASSWORD_CLIENT_SECRET=xxxxxx
 ```
+
 run 
 ``` bash
 php artisan doc:generate
 ```
+
 Install php code sniffer
 ``` bash
 composer require --dev squizlabs/php_codesniffer
 ```
+
 Add php code sniffer command to composer.json
 ``` bash
 "phpcs" :"./vendor/bin/phpcs ./",
 "phpcbf" :"./vendor/bin/phpcbf ./",
 ```
 
+Install telescope
+``` bash
+php artisan telescope:install
+php artisan telescope:publish
+```
+
+Add telespone prune in kernle
+``` bash
+$schedule->command('telescope:prune')->daily();
+```
+
 Generate module
-run 
 ``` bash
 php artisan generate:module {slug}
 ```

@@ -35,8 +35,8 @@ class UpdateLocaleAndTimezone
      */
     public function handle($request, Closure $next)
     {
-        $update   = false;
-        $user     = $this->auth->user();
+        $update = false;
+        $user   = $this->auth->user();
         if ($user) {
             $locale   = $this->session->get('locale');
             $timezone = $this->session->get('time-zone');
@@ -47,7 +47,7 @@ class UpdateLocaleAndTimezone
     
             if ($timezone && $timezone !== $user->timezone) {
                 $user->timezone = $timezone;
-                $update       = true;
+                $update         = true;
             }
     
             if ($update) {

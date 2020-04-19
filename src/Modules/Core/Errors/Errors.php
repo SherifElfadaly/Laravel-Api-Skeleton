@@ -24,7 +24,9 @@ class Errors implements BaseFactoryInterface
 
             if (class_exists($class)) {
                 $class = \App::make($class);
-                if (method_exists($class, $name)) return call_user_func_array([$class, $name], $arguments);
+                if (method_exists($class, $name)) {
+                    return call_user_func_array([$class, $name], $arguments);
+                }
             }
         }
     }

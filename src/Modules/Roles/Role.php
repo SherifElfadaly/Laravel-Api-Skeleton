@@ -18,21 +18,6 @@ class Role extends Model
     protected $guarded  = ['id'];
     protected $fillable = ['name'];
 
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getDeletedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
     public function users()
     {
         return $this->belongsToMany(AclUser::class, 'role_user', 'role_id', 'user_id')->whereNull('role_user.deleted_at')->withTimestamps();

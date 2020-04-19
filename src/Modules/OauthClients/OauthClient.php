@@ -11,16 +11,6 @@ class OauthClient extends Client
     protected $dates    = ['created_at', 'updated_at'];
     protected $fillable = ['name', 'redirect', 'user_id', 'personal_access_client', 'password_client', 'revoked'];
     
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-    
     public function user()
     {
         return $this->belongsTo(AclUser::class);

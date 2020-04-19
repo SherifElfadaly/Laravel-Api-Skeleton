@@ -15,21 +15,6 @@ class Report extends Model
     protected $hidden   = ['deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['report_name', 'view_name'];
-
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getDeletedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
     
     public static function boot()
     {

@@ -86,13 +86,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $model      = false;
         $relations  = [];
 
-        \DB::transaction(function () use (&$model, $relations, $data) {
+        \DB::transaction(function () use (&$model, &$relations, $data) {
             
             $model     = $this->prepareModel($data);
             $relations = $this->prepareRelations($data, $model);
             $model     = $this->saveModel($model, $relations);
         });
-            
+        
+        if (count($relations)) {
+            $model->load(...array_keys($relations));
+        }
+
         return $model;
     }
 
@@ -252,6 +256,13 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function prepareRelations($data, $model)
     {
+        /**
+         * Init the relation array
+         *
+         * @var array
+         */
+        $relations = [];
+
         /**
          * Construct the model object with the given data,
          * and if there is a relation add it to relations array,

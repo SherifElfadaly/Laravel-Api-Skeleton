@@ -13,5 +13,5 @@ COPY docker/apache/laravel-ssl.conf /usr/local/apache2/conf/extra/laravel-ssl.co
 COPY docker/apache/laravel-proxy.conf /usr/local/apache2/conf/extra/laravel-proxy.conf
 COPY docker/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
 
-# # generate certificates
+# generate certificates
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert.key -out /etc/ssl/certs/ssl-cert.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=$APP_DOMAIN"

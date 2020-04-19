@@ -34,25 +34,13 @@ class SetSessions
      */
     public function handle($request, Closure $next)
     {
-        $this->session->put('time-zone', $request->header('time-zone') ?: 0);
+        $locale = $request->header('locale', 'en');
+        $timeZone = $request->header('time-zone', 0);
 
-        $locale = $request->header('locale');
-        switch ($locale) {
-            case 'en':
-                $this->app->setLocale('en');
-                $this->session->put('locale', 'en');
-                break;
+        $this->session->put('time-zone', $timeZone);
+        $this->session->put('locale', $locale);
+        $this->app->setLocale($locale);
 
-            case 'ar':
-                $this->app->setLocale('ar');
-                $this->session->put('locale', 'ar');
-                break;
-
-            default:
-                $this->app->setLocale('en');
-                $this->session->put('locale', 'en');
-                break;
-        }
         return $next($request);
     }
 }

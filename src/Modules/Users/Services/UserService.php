@@ -140,20 +140,16 @@ class UserService extends BaseService
     }
 
     /**
-     * Handle a login request to the application.
+     * Handle the login request to the application.
      *
      * @param  string  $email
      * @param  string  $password
-     * @param  boolean $adminLogin
+     * @param  string  $role
      * @return object
      */
-    public function login($email, $password, $adminLogin = false)
+    public function login($email, $password, $role = false)
     {
         if (! $user = $this->repo->first(['email' => $email])) {
-            \Errors::loginFailed();
-        } elseif ($adminLogin && ! $this->hasRoles(['Admin'], $user)) {
-            \Errors::loginFailed();
-        } elseif (! $adminLogin && $this->hasRoles(['Admin'], $user)) {
             \Errors::loginFailed();
         } elseif ($user->blocked) {
             \Errors::userIsBlocked();
@@ -165,11 +161,10 @@ class UserService extends BaseService
     }
 
     /**
-     * Handle a social login request of the none admin to the application.
+     * Handle the social login request to the application.
      *
      * @param  string $authCode
      * @param  string $accessToken
-     * @param  string $type
      * @return array
      */
     public function loginSocial($authCode, $accessToken, $type)
@@ -189,7 +184,7 @@ class UserService extends BaseService
     }
     
     /**
-     * Handle a registration request.
+     * Handle the registration request.
      *
      * @param  string  $name
      * @param  string  $email
@@ -221,7 +216,7 @@ class UserService extends BaseService
      */
     public function block($userId)
     {
-        if (\Auth::id() == $userId || $this->hasRoles(['Admin'], $user) !== false) {
+        if (\Auth::id() == $userId) {
             \Errors::noPermissions();
         }
         
@@ -354,7 +349,7 @@ class UserService extends BaseService
     public function saveProfile($name, $email, $profilePicture = false)
     {
         if ($profilePicture) {
-            $data['profile_picture'] = \Media::uploadImageBas64($profilePicture, 'admins/profile_pictures');
+            $data['profile_picture'] = \Media::uploadImageBas64($profilePicture, 'users/profile_pictures');
         }
         
         $data['id'] = \Auth::id();

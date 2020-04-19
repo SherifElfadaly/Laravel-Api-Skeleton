@@ -16,21 +16,6 @@ class Setting extends Model
     protected $guarded  = ['id', 'key'];
     protected $fillable = ['name', 'value'];
     
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getDeletedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-    
     public function newCollection(array $models = [])
     {
         return parent::newCollection($models)->keyBy('key');

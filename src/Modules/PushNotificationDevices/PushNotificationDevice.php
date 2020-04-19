@@ -16,21 +16,6 @@ class PushNotificationDevice extends Model
     protected $hidden   = ['deleted_at', 'access_token'];
     protected $guarded  = ['id'];
     protected $fillable = ['device_token', 'user_id', 'access_token'];
-
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getDeletedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
     
     public function user()
     {

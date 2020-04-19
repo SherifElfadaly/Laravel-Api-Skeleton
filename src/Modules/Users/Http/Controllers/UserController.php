@@ -122,7 +122,7 @@ class UserController extends BaseApiController
     }
 
     /**
-     * Handle a registration request.
+     * Handle the registration request.
      *
      * @param Register $request
      * @return \Illuminate\Http\Response
@@ -133,20 +133,20 @@ class UserController extends BaseApiController
     }
 
     /**
-     * Handle a login request to the application.
+     * Handle the login request to the application.
      *
      * @param Login $request
      * @return \Illuminate\Http\Response
      */
     public function login(Login $request)
     {
-        $result = $this->service->login($request->get('email'), $request->get('password'), $request->get('admin'));
+        $result = $this->service->login($request->get('email'), $request->get('password'));
 
         return (new $this->modelResource($result['user']))->additional(['meta' => $result['tokens']]);
     }
 
     /**
-     * Handle a social login request of the none admin to the application.
+     * Handle the social login request the application.
      *
      * @param LoginSocial $request
      * @return \Illuminate\Http\Response

@@ -25,8 +25,7 @@ class Login extends FormRequest
     {
         return [
             'email'    => 'required|email',
-            'password' => 'required|min:6',
-            'admin'    => 'nullable|boolean'
+            'password' => 'required|min:6'
         ];
     }
 }

@@ -18,21 +18,6 @@ class AclUser extends User
     protected $hidden   = ['password', 'remember_token', 'deleted_at'];
     protected $guarded  = ['id'];
     protected $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone'];
-    
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
-
-    public function getDeletedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->tz(\Session::get('time-zone'))->toDateTimeString();
-    }
 
     /**
      * Get the profile picture url.
