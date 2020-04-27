@@ -22,7 +22,7 @@ class NotificationsTableSeeder extends Seeder
                  * notifications model permissions.
                  */
                 [
-                'name'       => 'all',
+                'name'       => 'index',
                 'model'      => 'notification',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

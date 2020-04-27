@@ -16,10 +16,9 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'DummyRoutePrefix'], function () {
 
     Route::get('/', 'DummyController@index');
-    Route::get('/{id}', 'DummyController@find');
-    Route::post('/', 'DummyController@insert');
-    Route::put('/', 'DummyController@update');
-    Route::delete('/{id}', 'DummyController@delete');
-    Route::get('list/deleted', 'DummyController@deleted');
+    Route::get('{id}', 'DummyController@show');
+    Route::post('/', 'DummyController@store');
+    Route::patch('{id}', 'DummyController@update');
+    Route::delete('{id}', 'DummyController@destroy');
     Route::patch('restore/{id}', 'DummyController@restore');
 });

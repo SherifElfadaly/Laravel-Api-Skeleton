@@ -11,6 +11,13 @@ use App\Modules\Roles\Http\Requests\UpdateRole;
 class RoleController extends BaseApiController
 {
     /**
+     * Path of the sotre form request.
+     *
+     * @var string
+     */
+    protected $storeFormRequest = 'App\Modules\Roles\Http\Requests\StoreRole';
+
+    /**
      * Path of the model resource
      *
      * @var string
@@ -29,35 +36,14 @@ class RoleController extends BaseApiController
     }
 
     /**
-     * Insert the given model to storage.
-     *
-     * @param InsertRole $request
-     * @return \Illuminate\Http\Response
-     */
-    public function insert(InsertRole $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
-    }
-
-    /**
-     * Update the given model to storage.
-     *
-     * @param UpdateRole $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateRole $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
-    }
-
-    /**
      * Handle an assign permissions to role request.
      *
      * @param  AssignPermissions $request
+     * @param  integer           $id
      * @return \Illuminate\Http\Response
      */
-    public function assignPermissions(AssignPermissions $request)
+    public function assignPermissions(AssignPermissions $request, $id)
     {
-        return new $this->modelResource($this->service->assignPermissions($request->get('role_id'), $request->get('permission_ids')));
+        return new $this->modelResource($this->service->assignPermissions($id, $request->get('permission_ids')));
     }
 }

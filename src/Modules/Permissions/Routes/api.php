@@ -16,5 +16,5 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'permissions'], function () {
         
     Route::get('/', 'PermissionController@index');
-    Route::get('/{id}', 'PermissionController@find');
+    Route::get('/{id}', 'PermissionController@show');
 });

@@ -31,20 +31,25 @@ abstract class BaseService implements BaseServiceInterface
      * @param   integer $perPage
      * @param   string  $sortBy
      * @param   boolean $desc
+     * @param   boolean $trashed
      * @return collection
      */
-    public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true)
+    public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true, $trashed = false)
     {
         unset($conditions['perPage']);
         unset($conditions['sortBy']);
         unset($conditions['sort']);
         unset($conditions['page']);
 
+        if ($trashed) {
+            return $this->deleted(['and' => $conditions], $perPage ?? 15, $sortBy ?? 'created_at', $desc ?? true);
+        }
+        
         if (count($conditions)) {
-            return $this->repo->paginateBy(['and' => $conditions], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
+            return $this->paginateBy(['and' => $conditions], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
         }
 
-        return $this->repo->paginate($perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
+        return $this->paginate($perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
     }
 
     /**

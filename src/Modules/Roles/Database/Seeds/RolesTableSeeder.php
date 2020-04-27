@@ -40,13 +40,13 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'find',
+                'name'       => 'show',
                 'model'      => 'role',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'insert',
+                'name'       => 'store',
                 'model'      => 'role',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
@@ -58,7 +58,7 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'delete',
+                'name'       => 'destroy',
                 'model'      => 'role',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

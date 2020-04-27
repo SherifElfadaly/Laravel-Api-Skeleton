@@ -24,8 +24,7 @@ class AssignRoles extends FormRequest
     public function rules()
     {
         return [
-            'role_ids' => 'required|exists:roles,id',
-            'user_id'   => 'required|exists:users,id'
+            'role_ids' => 'required|exists:roles,id'
         ];
     }
 }

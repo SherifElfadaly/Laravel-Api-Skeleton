@@ -28,7 +28,7 @@ class SettingsTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'find',
+                'name'       => 'show',
                 'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
@@ -40,7 +40,7 @@ class SettingsTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'delete',
+                'name'       => 'destroy',
                 'model'      => 'setting',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

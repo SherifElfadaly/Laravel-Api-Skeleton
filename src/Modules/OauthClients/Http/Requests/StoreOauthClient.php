@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Core\Http\Requests;
+namespace App\Modules\OauthClients\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSetting extends FormRequest
+class StoreOauthClient extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,10 @@ class UpdateSetting extends FormRequest
     public function rules()
     {
         return [
-            'id'    => 'required|exists:settings,id',
-            'value' => 'required|string'
+            'name'     => 'required|max:255',
+            'redirect' => 'required|url',
+            'user_id'  => 'required|exists:users,id',
+            'revoked'  => 'boolean'
         ];
     }
 }

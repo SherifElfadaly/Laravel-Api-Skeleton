@@ -14,6 +14,6 @@
 Route::group(['prefix' => 'reports'], function () {
         
     Route::get('/', 'ReportController@index');
-    Route::get('/{id}', 'ReportController@find');
+    Route::get('/{id}', 'ReportController@show');
     Route::post('get/{reportName}', 'ReportController@getReport');
 });

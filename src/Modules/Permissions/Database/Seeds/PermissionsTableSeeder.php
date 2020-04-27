@@ -28,7 +28,7 @@ class PermissionsTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'find',
+                'name'       => 'show',
                 'model'      => 'permission',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

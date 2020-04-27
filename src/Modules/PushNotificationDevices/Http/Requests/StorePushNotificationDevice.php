@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Roles\Http\Requests;
+namespace App\Modules\PushNotificationDevices\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InsertRole extends FormRequest
+class StorePushNotificationDevice extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class InsertRole extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:100|unique:roles,name,'.$this->get('id')
+            'device_token' => 'required|string|max:255',
+            'user_id'      => 'required|exists:users,id'
         ];
     }
 }

@@ -28,13 +28,13 @@ class OauthClientsTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'find',
+                'name'       => 'show',
                 'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'insert',
+                'name'       => 'store',
                 'model'      => 'oauthClient',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

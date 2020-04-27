@@ -53,13 +53,13 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'find',
+                'name'       => 'show',
                 'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'insert',
+                'name'       => 'store',
                 'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')
@@ -71,7 +71,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'delete',
+                'name'       => 'destroy',
                 'model'      => 'user',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

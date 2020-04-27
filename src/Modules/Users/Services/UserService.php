@@ -144,10 +144,9 @@ class UserService extends BaseService
      *
      * @param  string  $email
      * @param  string  $password
-     * @param  string  $role
      * @return object
      */
-    public function login($email, $password, $role = false)
+    public function login($email, $password)
     {
         if (! $user = $this->repo->first(['email' => $email])) {
             \Errors::loginFailed();

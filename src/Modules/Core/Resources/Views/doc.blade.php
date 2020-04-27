@@ -166,7 +166,8 @@
                                                     <tr> 
                                                         <td>
                                                             {{$parametarName}}
-                                                            @if(strpos($api['uri'], $parametarName . '?') !== false)
+                                                            @if(strpos($api['uri'], $parametarName . '?') !== false || 
+                                                                strpos($parametarDescription, '?') !== false)
                                                             <span class="label label-default">Optional</span>
                                                             @else
                                                             <span class="label label-danger">Required</span>

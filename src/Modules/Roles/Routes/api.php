@@ -16,11 +16,10 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'roles'], function () {
 
     Route::get('/', 'RoleController@index');
-    Route::get('/{id}', 'RoleController@find');
-    Route::post('/', 'RoleController@insert');
-    Route::put('/', 'RoleController@update');
-    Route::delete('/{id}', 'RoleController@delete');
-    Route::get('list/deleted', 'RoleController@deleted');
-    Route::patch('restore/{id}', 'RoleController@restore');
-    Route::post('assign/permissions', 'RoleController@assignPermissions');
+    Route::get('{id}', 'RoleController@show');
+    Route::post('/', 'RoleController@store');
+    Route::patch('{id}', 'RoleController@update');
+    Route::delete('{id}', 'RoleController@destroy');
+    Route::patch('{id}/restore', 'RoleController@restore');
+    Route::patch('{id}/assign/permissions', 'RoleController@assignPermissions');
 });

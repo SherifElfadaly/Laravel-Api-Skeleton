@@ -62,17 +62,6 @@ Add php code sniffer command to composer.json
 "phpcbf" :"./vendor/bin/phpcbf ./",
 ```
 
-Install telescope
-``` bash
-php artisan telescope:install
-php artisan telescope:publish
-```
-
-Add telespone prune in kernle
-``` bash
-$schedule->command('telescope:prune')->daily();
-```
-
 Generate module
 ``` bash
 php artisan generate:module {slug}

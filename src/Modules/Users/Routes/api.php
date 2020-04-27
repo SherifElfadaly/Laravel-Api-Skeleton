@@ -14,17 +14,16 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'users'], function () {
-
+    
     Route::get('/', 'UserController@index');
-    Route::get('/{id}', 'UserController@find');
-    Route::post('/', 'UserController@insert');
-    Route::put('/', 'UserController@update');
-    Route::delete('/{id}', 'UserController@delete');
-    Route::get('list/deleted', 'UserController@deleted');
-    Route::patch('restore/{id}', 'UserController@restore');
-    Route::get('block/{id}', 'UserController@block');
-    Route::get('unblock/{id}', 'UserController@unblock');
-    Route::post('assign/roles', 'UserController@assignRoles');
+    Route::get('{id}', 'UserController@show');
+    Route::post('/', 'UserController@store');
+    Route::patch('{id}', 'UserController@update');
+    Route::delete('{id}', 'UserController@destroy');
+    Route::patch('{id}/restore', 'UserController@restore');
+    Route::patch('{id}/block', 'UserController@block');
+    Route::patch('{id}/unblock', 'UserController@unblock');
+    Route::patch('{id}/assign/roles', 'UserController@assignRoles');
 
     Route::group(['prefix' => 'account'], function () {
 

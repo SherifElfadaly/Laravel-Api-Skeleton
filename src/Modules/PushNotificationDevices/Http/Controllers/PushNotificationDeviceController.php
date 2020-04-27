@@ -5,11 +5,16 @@ namespace App\Modules\PushNotificationDevices\Http\Controllers;
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\PushNotificationDevices\Services\PushNotificationDeviceService;
 use App\Modules\PushNotificationDevices\Http\Requests\RegisterDevice;
-use App\Modules\PushNotificationDevices\Http\Requests\InsertPushNotificationDevice;
-use App\Modules\PushNotificationDevices\Http\Requests\UpdatePushNotificationDevice;
 
 class PushNotificationDeviceController extends BaseApiController
 {
+    /**
+     * Path of the sotre form request.
+     *
+     * @var string
+     */
+    protected $storeFormRequest = 'App\Modules\Users\Http\PushNotificationDevices\StorePushNotificationDevice';
+
     /**
      * Path of the model resource
      *
@@ -33,28 +38,6 @@ class PushNotificationDeviceController extends BaseApiController
     public function __construct(PushNotificationDeviceService $service)
     {
         parent::__construct($service);
-    }
-
-    /**
-     * Insert the given model to storage.
-     *
-     * @param InsertPushNotificationDevice $request
-     * @return \Illuminate\Http\Response
-     */
-    public function insert(InsertPushNotificationDevice $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
-    }
-
-    /**
-     * Update the given model to storage.
-     *
-     * @param UpdatePushNotificationDevice $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePushNotificationDevice $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**

@@ -16,11 +16,10 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'push/notification/devices'], function () {
         
     Route::get('/', 'PushNotificationDeviceController@index');
-    Route::get('/{id}', 'PushNotificationDeviceController@find');
-    Route::post('/', 'PushNotificationDeviceController@insert');
-    Route::put('/', 'PushNotificationDeviceController@update');
-    Route::delete('/{id}', 'PushNotificationDeviceController@delete');
-    Route::get('list/deleted', 'PushNotificationDeviceController@deleted');
-    Route::patch('restore/{id}', 'PushNotificationDeviceController@restore');
+    Route::get('{id}', 'PushNotificationDeviceController@show');
+    Route::post('/', 'PushNotificationDeviceController@store');
+    Route::patch('{id}', 'PushNotificationDeviceController@update');
+    Route::delete('{id}', 'PushNotificationDeviceController@destroy');
+    Route::patch('{id}/restore', 'PushNotificationDeviceController@restore');
     Route::post('register/device', 'PushNotificationDeviceController@registerDevice');
 });

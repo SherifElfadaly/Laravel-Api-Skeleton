@@ -22,7 +22,6 @@
         "phpdocumentor/reflection-docblock": "^5.1",
         "laravel/socialite": "^4.3",
         "laravel/passport": "^8.4",
-        "laravel/telescope": "^3.2",
         "caffeinated/modules": "^6.2",
         "predis/predis": "^1.1",
         "php" : "~7.0|~7.4"

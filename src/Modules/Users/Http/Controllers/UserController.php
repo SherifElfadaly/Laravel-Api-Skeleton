@@ -5,9 +5,7 @@ namespace App\Modules\Users\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\Users\Services\UserService;
-use App\Modules\Users\Proxy\LoginProxy;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
-use Illuminate\Support\Facades\App;
 use App\Modules\Users\Http\Requests\AssignRoles;
 use App\Modules\Users\Http\Requests\ChangePassword;
 use App\Modules\Users\Http\Requests\Login;
@@ -19,13 +17,18 @@ use App\Modules\Users\Http\Requests\ResetPassword;
 use App\Modules\Users\Http\Requests\SaveProfile;
 use App\Modules\Users\Http\Requests\SendReset;
 use App\Modules\Users\Http\Requests\ConfirmEmail;
-use App\Modules\Users\Http\Requests\InsertUser;
-use App\Modules\Users\Http\Requests\UpdateUser;
 
 class UserController extends BaseApiController
 {
     /**
-     * Path of the model resource
+     * Path of the sotre form request.
+     *
+     * @var string
+     */
+    protected $storeFormRequest = 'App\Modules\Users\Http\Requests\StoreUser';
+
+    /**
+     * Path of the model resource.
      *
      * @var string
      */
@@ -54,28 +57,6 @@ class UserController extends BaseApiController
     public function __construct(UserService $service)
     {
         parent::__construct($service);
-    }
-
-    /**
-     * Insert the given model to storage.
-     *
-     * @param InsertUser $request
-     * @return \Illuminate\Http\Response
-     */
-    public function insert(InsertUser $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
-    }
-
-    /**
-     * Update the given model to storage.
-     *
-     * @param UpdateUser $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateUser $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
     }
 
     /**
@@ -162,11 +143,12 @@ class UserController extends BaseApiController
      * Assign the given roles to the given user.
      *
      * @param AssignRoles $request
+     * @param integer     $id
      * @return \Illuminate\Http\Response
      */
-    public function assignRoles(AssignRoles $request)
+    public function assignRoles(AssignRoles $request, $id)
     {
-        return new $this->modelResource($this->service->assignRoles($request->get('user_id'), $request->get('role_ids')));
+        return new $this->modelResource($this->service->assignRoles($id, $request->get('role_ids')));
     }
 
     /**

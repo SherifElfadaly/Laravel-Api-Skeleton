@@ -52,6 +52,13 @@ class GenerateDoc extends Command
             if ($route) {
                 $actoinArray = explode('@', $route['action']);
                 if (Arr::get($actoinArray, 1, false)) {
+
+                    $prefix = $route['prefix'];
+                    $module = \Str::camel(str_replace('/', '_', str_replace('api', '', $prefix)));
+                    if($prefix === 'telescope') {
+                        continue;
+                    }
+
                     $controller       = $actoinArray[0];
                     $method           = $actoinArray[1];
                     $route['name']    = $method !== 'index' ? $method : 'list';
@@ -68,9 +75,6 @@ class GenerateDoc extends Command
                     $this->getPostData($route, $reflectionMethod);
 
                     $route['response'] = $this->getResponseObject($modelName, $route['name'], $route['returnDocBlock']);
-
-                    $module = $route['prefix'];
-                    $module = \Str::camel(str_replace('/', '_', str_replace('api', '', $module)));
                     $docData['modules'][$module][] = $route;
 
                     $this->getModels($modelName, $docData, $reflectionClass);
@@ -150,9 +154,10 @@ class GenerateDoc extends Command
         }
 
         if ($route['name'] === 'list') {
-            $route['parametars']['perPage'] = 'perPage';
-            $route['parametars']['sortBy']  = 'sortBy';
-            $route['parametars']['desc']    = 'desc';
+            $route['parametars']['perPage'] = 'perPage?';
+            $route['parametars']['sortBy']  = 'sortBy?';
+            $route['parametars']['desc']    = 'desc?';
+            $route['parametars']['trashed'] = 'trashed?';
         }
     }
 
@@ -254,7 +259,7 @@ class GenerateDoc extends Command
             $modelArr      = $modelResource->toArray([]);
 
             foreach ($modelArr as $key => $attr) {
-                if (is_object($attr) && $attr->resource instanceof \Illuminate\Http\Resources\MissingValue) {
+                if (is_object($attr) && property_exists($attr, 'resource') && $attr->resource instanceof \Illuminate\Http\Resources\MissingValue) {
                     unset($modelArr[$key]);
                 }
             }
