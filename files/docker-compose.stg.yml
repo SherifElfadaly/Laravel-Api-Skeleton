@@ -30,10 +30,10 @@ services:
       container_name: 'skeleton'
       volumes:
         - ./:/var/www/html/
+        - ./docker/.env.prod:/var/www/html/.env
       build:
         context: './'
         dockerfile: './docker/app/dockerfile'
-      env_file: './docker/.env.dev'
       depends_on:
         - 'skeleton_mysql'
         - 'skeleton_redis'
@@ -45,10 +45,10 @@ services:
       container_name: 'skeleton_apache'
       volumes:
         - ./:/var/www/html/
+        - ./docker/.env.prod:/var/www/html/.env
       build:
         context: './'
         dockerfile: './docker/apache/dockerfile'
-      env_file: './docker/.env.dev'
       depends_on:
         - skeleton_app
       networks:
@@ -61,10 +61,10 @@ services:
       container_name: 'skeleton_echo'
       volumes:
         - ./:/var/www/html/
+        - ./docker/.env.prod:/var/www/html/.env
       build:
         context: './'
         dockerfile: './docker/echo/dockerfile'
-      env_file: './docker/.env.dev'
       depends_on:
         - skeleton_app
         - skeleton_redis

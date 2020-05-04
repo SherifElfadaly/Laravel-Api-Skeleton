@@ -25,7 +25,7 @@ class AclUser extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'profilePicture' => $this->profile_picture,
+            'profilePicture' => $this->profile_picture ? url(\Storage::url($this->profile_picture)) : null,
             'notifications' => NotificationResource::collection($this->whenLoaded('notifications')),
             'readNotifications' => NotificationResource::collection($this->whenLoaded('readNotifications')),
             'unreadNotifications' => NotificationResource::collection($this->whenLoaded('unreadNotifications')),

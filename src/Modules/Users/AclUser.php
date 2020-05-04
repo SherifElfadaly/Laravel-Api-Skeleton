@@ -20,15 +20,6 @@ class AclUser extends User
     protected $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone'];
 
     /**
-     * Get the profile picture url.
-     * @return string
-     */
-    public function getProfilePictureAttribute($value)
-    {
-        return url(\Storage::url($value));
-    }
-
-    /**
      * Encrypt the password attribute before
      * saving it in the storage.
      *

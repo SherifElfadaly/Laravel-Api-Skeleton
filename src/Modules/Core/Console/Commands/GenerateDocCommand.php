@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use App\Modules\Reporting\Services\ReportService;
 
-class GenerateDoc extends Command
+class GenerateDocCommand extends Command
 {
     /**
      * The name and signature of the console command.

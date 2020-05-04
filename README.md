@@ -37,13 +37,19 @@ php artisan module:seed
 
 Install passport
 ``` bash
-php artisan passport:install
+php artisan module:passport:install
 ```
 
 Put your client id and client secret in .env
 ``` bash
 PASSWORD_CLIENT_ID=xxxxxx
 PASSWORD_CLIENT_SECRET=xxxxxx
+```
+
+Put token and refresh token duration in .env
+``` bash
+TOKEN_EXPIRE_IN=xxxxxx
+REFRESH_TOKEN_EXPIRE_IN=xxxxxx
 ```
 
 run 

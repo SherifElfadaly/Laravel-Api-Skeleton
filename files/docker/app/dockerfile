@@ -69,12 +69,10 @@ CMD php-fpm -D && \
     php artisan key:generate && \ 
     php artisan clear-compiled && \
     php artisan view:clear && \
-    php artisan route:clear && \
-    php artisan cache:clear && \
-    php artisan config:cache && \
-    php artisan route:cache && \
+    php artisan optimize && \
     php artisan queue:restart && \
     php artisan module:migrate && \
     php artisan module:seed && \
     php artisan storage:link && \
+    php artisan module:passport:install && \
     php artisan queue:work redis --sleep=3 --tries=3
