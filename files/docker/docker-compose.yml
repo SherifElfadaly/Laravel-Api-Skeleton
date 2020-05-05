@@ -57,22 +57,5 @@ services:
         - "${APACHE_EXTERNAL_PORT}:${APACHE_PORT}"
       restart: always
 
-    skeleton_echo:
-      container_name: 'skeleton_echo'
-      volumes:
-        - ../:/var/www/html/
-        - ./.env:/var/www/html/.env
-      build:
-        context: './'
-        dockerfile: './echo/dockerfile'
-      depends_on:
-        - skeleton_app
-        - skeleton_redis
-      networks:
-        - backend
-      ports:
-        - "${LARAVEL_ECHO_EXTERNAL_PORT}:${LARAVEL_ECHO_SERVER_PORT}"
-      restart: always
-
 networks:
   backend:

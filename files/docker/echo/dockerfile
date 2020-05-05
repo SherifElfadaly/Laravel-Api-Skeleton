@@ -1,8 +1,0 @@
-FROM node:12
-
-WORKDIR /var/www/html/
-
-# install laravel echo server
-RUN npm install -g laravel-echo-server
-
-CMD laravel-echo-server start --force
