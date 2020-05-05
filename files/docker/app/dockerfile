@@ -22,10 +22,10 @@ RUN apt-get update && apt-get install -y \
     cron
 
 # add php configurations
-COPY docker/app/php.ini /usr/local/etc/php/conf.d
-COPY docker/app/laravel.ini /usr/local/etc/php/conf.d
-COPY docker/app/opcache.ini /usr/local/etc/php/conf.d
-COPY docker/app/xlaravel.pool.conf /usr/local/etc/php-fpm.d
+COPY app/php.ini /usr/local/etc/php/conf.d
+COPY app/laravel.ini /usr/local/etc/php/conf.d
+COPY app/opcache.ini /usr/local/etc/php/conf.d
+COPY app/xlaravel.pool.conf /usr/local/etc/php-fpm.d
 
 RUN docker-php-ext-install \
     bz2 \
@@ -54,7 +54,7 @@ RUN touch /var/log/cron.log
 RUN chmod 0644 /etc/cron.d/crons
 
 # register laravel scheduler
-COPY docker/app/crons crons
+COPY app/crons crons
 
 RUN sudo chown -R www-data:www-data /var/www/html && \ 
     sudo find /var/www/html -type f -exec chmod 664 {} \; && \

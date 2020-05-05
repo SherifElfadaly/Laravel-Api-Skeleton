@@ -1,38 +1,16 @@
 pipeline {
     agent any
     stages {
-        stage('Build - Staging') {
-            when {
-                branch 'staging'
-            }
+        stage('Build') {
             steps {
+                sh 'cp /var/www/configs/skeleton/.env .env'
                 sh 'sudo docker image prune -f'
-                sh 'sudo docker-compose -f docker-compose.stg.yml build'
+                sh 'sudo docker-compose -f docker/docker-compose.yml build'
             }
         }
-        stage('Build - Production') {
-            when {
-                branch 'master'
-            }
+        stage('Deploy') {
             steps {
-                sh 'sudo docker image prune -f'
-                sh 'sudo docker-compose -f docker-compose.prod.yml build'
-            }
-        }
-        stage('Deploy - Staging') {
-            when {
-                branch 'staging'
-            }
-            steps {
-                sh 'sudo docker-compose -f docker-compose.stg.yml up -d'
-            }
-        }
-        stage('Deploy - Production') {
-            when {
-                branch 'master'
-            }
-            steps {
-                sh 'sudo docker-compose -f docker-compose.prod.yml up -d'
+                sh 'sudo docker-compose -f docker/docker-compose.yml up -d'
             }
         }
     }

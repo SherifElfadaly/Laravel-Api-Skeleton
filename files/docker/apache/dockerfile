@@ -8,10 +8,10 @@ RUN apk update; \
     apk add openssl;
 
 # apache configs
-COPY docker/apache/laravel.conf /usr/local/apache2/conf/extra/laravel.conf
-COPY docker/apache/laravel-ssl.conf /usr/local/apache2/conf/extra/laravel-ssl.conf
-COPY docker/apache/laravel-proxy.conf /usr/local/apache2/conf/extra/laravel-proxy.conf
-COPY docker/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY apache/laravel.conf /usr/local/apache2/conf/extra/laravel.conf
+COPY apache/laravel-ssl.conf /usr/local/apache2/conf/extra/laravel-ssl.conf
+COPY apache/laravel-proxy.conf /usr/local/apache2/conf/extra/laravel-proxy.conf
+COPY apache/httpd.conf /usr/local/apache2/conf/httpd.conf
 
 # generate certificates
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert.key -out /etc/ssl/certs/ssl-cert.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=$APP_DOMAIN"

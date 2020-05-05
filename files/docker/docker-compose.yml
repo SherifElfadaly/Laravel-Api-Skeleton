@@ -7,7 +7,7 @@ services:
       networks:
         - backend
       ports:
-        - 8002:6379
+        - "${REDIS_EXTERNAL_PORT}:${REDIS_PORT}"
       restart: always
 
     skeleton_mysql:
@@ -16,24 +16,24 @@ services:
       volumes:
         - ./run/var:/var/lib/mysql
       environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_DATABASE=skeleton
-        - MYSQL_USER=skeleton
-        - MYSQL_PASSWORD=1
+        - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+        - MYSQL_DATABASE=${DB_DATABASE}
+        - MYSQL_USER=${DB_USERNAME}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
       networks:
         - backend
       ports:
-        - 8001:3306
+        - "${MYSQL_EXTERNAL_PORT}:${DB_PORT}"
       restart: always
 
     skeleton_app:
       container_name: 'skeleton'
       volumes:
-        - ./:/var/www/html/
+        - ../:/var/www/html/
+        - ./.env:/var/www/html/.env
       build:
         context: './'
-        dockerfile: './docker/app/dockerfile'
-      env_file: './docker/.env.prod'
+        dockerfile: './app/dockerfile'
       depends_on:
         - 'skeleton_mysql'
         - 'skeleton_redis'
@@ -44,34 +44,34 @@ services:
     skeleton_apache:
       container_name: 'skeleton_apache'
       volumes:
-        - ./:/var/www/html/
+        - ../:/var/www/html/
+        - ./.env:/var/www/html/.env
       build:
         context: './'
-        dockerfile: './docker/apache/dockerfile'
-      env_file: './docker/.env.prod'
+        dockerfile: './apache/dockerfile'
       depends_on:
         - skeleton_app
       networks:
         - backend
       ports:
-        - "8000:80"
+        - "${APACHE_EXTERNAL_PORT}:${APACHE_PORT}"
       restart: always
 
     skeleton_echo:
       container_name: 'skeleton_echo'
       volumes:
-        - ./:/var/www/html/
+        - ../:/var/www/html/
+        - ./.env:/var/www/html/.env
       build:
         context: './'
-        dockerfile: './docker/echo/dockerfile'
-      env_file: './docker/.env.prod'
+        dockerfile: './echo/dockerfile'
       depends_on:
         - skeleton_app
         - skeleton_redis
       networks:
         - backend
       ports:
-        - "8003:6001"
+        - "${LARAVEL_ECHO_EXTERNAL_PORT}:${LARAVEL_ECHO_SERVER_PORT}"
       restart: always
 
 networks:
