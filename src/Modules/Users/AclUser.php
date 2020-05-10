@@ -104,7 +104,7 @@ class AclUser extends User
      */
     public function validateForPassportPasswordGrant($password)
     {
-        if ($password == config('skeleton.social_pass')) {
+        if ($password == config('user.social_pass')) {
             return true;
         }
 

@@ -95,8 +95,7 @@ class CachingDecorator
      */
     private function setCacheConfig($name)
     {
-        $config            = \CoreConfig::getConfig();
-        $cacheConfig       = Arr::get($config['cacheConfig'], $this->cacheTag, false);
+        $cacheConfig       = Arr::get(config('core.cache_config'), $this->cacheTag, false);
         $this->cacheConfig = false;
 
         if ($cacheConfig && in_array($name, $cacheConfig['cache'])) {

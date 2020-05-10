@@ -18,6 +18,9 @@ class ModuleServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(module_path('reporting', 'Database/Migrations', 'app'));
         $this->loadFactoriesFrom(module_path('reporting', 'Database/Factories', 'app'));
+        if(!$this->app->configurationIsCached()) {
+            $this->loadConfigsFrom(module_path('reporting', 'Config', 'app'));
+        }
     }
 
     /**

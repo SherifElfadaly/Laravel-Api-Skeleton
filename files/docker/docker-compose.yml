@@ -30,7 +30,7 @@ services:
       container_name: 'skeleton'
       volumes:
         - ../:/var/www/html/
-        - ./.env:/var/www/html/.env
+        - ./.env.example:/var/www/html/.env
       build:
         context: './'
         dockerfile: './app/dockerfile'
@@ -45,7 +45,7 @@ services:
       container_name: 'skeleton_apache'
       volumes:
         - ../:/var/www/html/
-        - ./.env:/var/www/html/.env
+        - ./.env.example:/var/www/html/.env
       build:
         context: './'
         dockerfile: './apache/dockerfile'

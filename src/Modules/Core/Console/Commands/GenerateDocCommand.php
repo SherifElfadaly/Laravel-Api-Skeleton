@@ -278,8 +278,8 @@ class GenerateDocCommand extends Command
      */
     protected function getResponseObject($modelName, $method, $returnDocBlock)
     {
-        $config    = \CoreConfig::getConfig();
-        $relations = Arr::has($config['relations'], $modelName) ? Arr::has($config['relations'][$modelName], $method) ? $config['relations'][$modelName] : false : false;
+        $relations = config('core.relations');
+        $relations = Arr::has($relations, $modelName) ? Arr::has($relations[$modelName], $method) ? $relations[$modelName] : false : false;
         $modelName = call_user_func_array("\Core::{$returnDocBlock}", []) ? $returnDocBlock : $modelName;
 
         return $relations ? [$modelName => $relations && $relations[$method] ? $relations[$method] : []] : false;

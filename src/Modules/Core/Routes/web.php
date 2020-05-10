@@ -10,6 +10,6 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
-
-Route::get('/docs', 'ApiDocumentController@index');
+if (\App::environment('local')) {
+    Route::get('/docs', 'ApiDocumentController@index');    
+}

@@ -4,7 +4,6 @@ namespace App\Modules\DummyModule\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\DummyModule\Services\DummyService;
-use App\Modules\Core\Utl\CoreConfig;
 use App\Modules\DummyModule\Http\Requests\InsertDummy;
 use App\Modules\DummyModule\Http\Requests\UpdateDummy;
 

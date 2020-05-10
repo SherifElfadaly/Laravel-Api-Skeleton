@@ -152,7 +152,7 @@ class UserService extends BaseService
             \Errors::loginFailed();
         } elseif ($user->blocked) {
             \Errors::userIsBlocked();
-        } elseif (! config('skeleton.disable_confirm_email') && ! $user->confirmed) {
+        } elseif (! config('user.disable_confirm_email') && ! $user->confirmed) {
             \Errors::emailNotConfirmed();
         }
 
@@ -179,7 +179,7 @@ class UserService extends BaseService
             $this->register($user->email, '', true);
         }
 
-        return $this->loginProxy->login($user->email, config('skeleton.social_pass'));
+        return $this->loginProxy->login($user->email, config('user.social_pass'));
     }
     
     /**
@@ -200,7 +200,7 @@ class UserService extends BaseService
             'confirmed' => $skipConfirmEmail
         ]);
 
-        if (! $skipConfirmEmail && ! config('skeleton.disable_confirm_email')) {
+        if (! $skipConfirmEmail && ! config('user.disable_confirm_email')) {
             $this->sendConfirmationEmail($user->email);
         }
 

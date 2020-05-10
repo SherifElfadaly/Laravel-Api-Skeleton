@@ -31,7 +31,7 @@ class PassportInstallCommand extends Command
     public function handle(ClientRepository $client)
     {
         $this->call('passport:keys', ['--force' => $this->option('force'), '--length' => $this->option('length')]);
-        if( ! \Core::oauthCLients()->first(['password_client' => 1])->count()) {
+        if( ! \Core::oauthCLients()->first(['password_client' => 1])) {
     
             $client = $client->createPasswordGrantClient(
                 null, config('app.name'), 'http://localhost'

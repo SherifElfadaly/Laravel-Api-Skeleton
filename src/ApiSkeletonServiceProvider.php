@@ -31,7 +31,6 @@ class ApiSkeletonServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
             __DIR__.'/../files/auth.php'      => config_path('auth.php'),
         ], 'config');
     }

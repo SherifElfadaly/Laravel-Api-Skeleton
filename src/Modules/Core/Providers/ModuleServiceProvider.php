@@ -18,6 +18,9 @@ class ModuleServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(module_path('core', 'Database/Migrations', 'app'));
         $this->loadFactoriesFrom(module_path('core', 'Database/Factories', 'app'));
+        if(!$this->app->configurationIsCached()) {
+            $this->loadConfigsFrom(module_path('core', 'Config', 'app'));
+        }
     }
 
     /**
@@ -35,11 +38,6 @@ class ModuleServiceProvider extends ServiceProvider
         //Bind Errors Facade to the Service Container
         $this->app->singleton('Errors', function () {
             return new \App\Modules\Core\Errors\Errors;
-        });
-
-        //Bind CoreConfig Facade to the Service Container
-        $this->app->singleton('CoreConfig', function () {
-            return new \App\Modules\Core\Utl\CoreConfig;
         });
 
         //Bind Media Facade to the Service Container

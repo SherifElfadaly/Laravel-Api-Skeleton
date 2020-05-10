@@ -7,7 +7,7 @@ use App\Modules\Core\Interfaces\BaseFactoryInterface;
 class Errors implements BaseFactoryInterface
 {
     /**
-     * Construct the repository class name based on
+     * Construct the config class name based on
      * the method name called, search in the
      * given namespaces for the class and
      * return an instance.

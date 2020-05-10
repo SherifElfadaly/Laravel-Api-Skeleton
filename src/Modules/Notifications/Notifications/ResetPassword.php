@@ -46,6 +46,6 @@ class ResetPassword extends Notification implements ShouldQueue
             ->subject('Reset passowrd')
             ->line('Reset passowrd')
             ->line('To reset your password click on the button below')
-            ->action('Reset password', config('skeleton.reset_password_url').'/'.$this->token);
+            ->action('Reset password', config('user.reset_password_url').'/'.$this->token);
     }
 }
