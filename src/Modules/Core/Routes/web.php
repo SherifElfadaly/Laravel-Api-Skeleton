@@ -11,5 +11,5 @@
 |
 */
 if (\App::environment('local')) {
-    Route::get('/docs', 'ApiDocumentController@index');    
+    Route::get('/docs', 'ApiDocumentController@index');
 }

@@ -18,7 +18,7 @@ class ModuleServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(module_path('users', 'Database/Migrations', 'app'));
         $this->loadFactoriesFrom(module_path('users', 'Database/Factories', 'app'));
-        if(!$this->app->configurationIsCached()) {
+        if (!$this->app->configurationIsCached()) {
             $this->loadConfigsFrom(module_path('users', 'Config', 'app'));
         }
     }

@@ -52,10 +52,9 @@ class GenerateDocCommand extends Command
             if ($route) {
                 $actoinArray = explode('@', $route['action']);
                 if (Arr::get($actoinArray, 1, false)) {
-
                     $prefix = $route['prefix'];
                     $module = \Str::camel(str_replace('/', '_', str_replace('api', '', $prefix)));
-                    if($prefix === 'telescope') {
+                    if ($prefix === 'telescope') {
                         continue;
                     }
 
