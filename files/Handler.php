@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -31,43 +31,43 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $e
      * @return void
      */
-    public function report(Exception $exception)
+    public function report(Throwable $e)
     {
-        parent::report($exception);
+        parent::report($e);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $e)
     {
         if ($request->wantsJson()) {
-            if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
-                \Errors::unAuthorized();
+            if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                \ErrorHandler::unAuthorized();
             }
-            if ($exception instanceof \Illuminate\Database\QueryException) {
-                \Errors::dbQueryError();
-            } elseif ($exception instanceof \predis\connection\connectionexception) {
-                \Errors::redisNotRunning();
-            } elseif ($exception instanceof \GuzzleHttp\Exception\ClientException) {
-                \Errors::connectionError();
-            } elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
-                $errors = $exception->getStatusCode() === 404 ? 'not found' : $exception->getMessage();
-                return \Response::json(['errors' => [$errors]], $exception->getStatusCode());
-            } elseif ($exception instanceof \Illuminate\Validation\ValidationException) {
-                return \Response::json(['errors' => $exception->errors()], 422);
-            } elseif (! $exception instanceof \Symfony\Component\ErrorHandler\Error\FatalError) {
-                return parent::render($request, $exception);
+            if ($e instanceof \Illuminate\Database\QueryException) {
+                \ErrorHandler::dbQueryError();
+            } elseif ($e instanceof \predis\connection\connectionexception) {
+                \ErrorHandler::redisNotRunning();
+            } elseif ($e instanceof \GuzzleHttp\Exception\ClientException) {
+                \ErrorHandler::connectionError();
+            } elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                $errors = $e->getStatusCode() === 404 ? 'not found' : $e->getMessage();
+                return \Response::json(['errors' => [$errors]], $e->getStatusCode());
+            } elseif ($e instanceof \Illuminate\Validation\ValidationException) {
+                return \Response::json(['errors' => $e->errors()], 422);
+            } elseif (! $e instanceof \Symfony\Component\ErrorHandler\Error\FatalError) {
+                return parent::render($request, $e);
             }
         }
         
-        return parent::render($request, $exception);
+        return parent::render($request, $e);
     }
 }

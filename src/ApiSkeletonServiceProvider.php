@@ -31,7 +31,7 @@ class ApiSkeletonServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__.'/../files/auth.php'      => config_path('auth.php'),
+            __DIR__.'/../files/auth.php' => config_path('auth.php'),
         ], 'config');
     }
 
@@ -42,9 +42,6 @@ class ApiSkeletonServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/skeleton.php',
-            'skeleton'
-        );
+        //
     }
 }
