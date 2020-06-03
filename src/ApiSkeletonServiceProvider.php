@@ -23,6 +23,7 @@ class ApiSkeletonServiceProvider extends ServiceProvider
             __DIR__.'/../files/Kernel.php'                   => app_path('Console/Kernel.php'),
             __DIR__.'/../files/HttpKernel.php'               => app_path('Http/Kernel.php'),
             __DIR__.'/../files/channels.php'                 => base_path('routes/channels.php'),
+            __DIR__.'/../files/Jenkinsfile'                    => base_path('/Jenkinsfile'),
             __DIR__.'/../files/phpcs.xml'                    => base_path('/phpcs.xml'),
             __DIR__.'/../files/docker'                       => base_path('/docker'),
             __DIR__.'/../files/.dockerignore'                => base_path('/.dockerignore'),
