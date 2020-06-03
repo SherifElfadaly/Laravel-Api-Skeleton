@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -29,24 +29,26 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Throwable  $e
+     * @param  \Throwable  $exception
      * @return void
+     *
+     * @throws \Exception
      */
-    public function report(Throwable $e)
+    public function report(Throwable $exception)
     {
-        parent::report($e);
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
-     * @return \Illuminate\Http\Response
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $exception)
     {
         if ($request->wantsJson()) {
             if ($e instanceof \Illuminate\Auth\AuthenticationException) {
