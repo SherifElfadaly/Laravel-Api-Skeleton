@@ -25,7 +25,6 @@ class ApiSkeletonServiceProvider extends ServiceProvider
             __DIR__.'/../files/channels.php'                 => base_path('routes/channels.php'),
             __DIR__.'/../files/phpcs.xml'                    => base_path('/phpcs.xml'),
             __DIR__.'/../files/docker'                       => base_path('/docker'),
-            __DIR__.'/../files/docker/docker-compose.yml'    => base_path('/docker-compose.yml'),
             __DIR__.'/../files/.dockerignore'                => base_path('/.dockerignore'),
         ]);
 
