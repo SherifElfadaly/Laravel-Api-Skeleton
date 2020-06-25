@@ -202,8 +202,7 @@ class MakeModuleCommand extends Command
             'DummyService',
             'DummyRepository',
             'DummyErrors',
-            'InsertDummy',
-            'UpdateDummy',
+            'StoreDummy',
             'DummyResource',
             'DummyObserver',
             'DummyTableName',
@@ -222,11 +221,10 @@ class MakeModuleCommand extends Command
             ucfirst($modelNameSingular) . 'Service',
             ucfirst($modelNameSingular) . 'Repository',
             ucfirst($modelName) . 'Errors',
-            'Insert' . ucfirst($modelNameSingular),
-            'Update' . ucfirst($modelNameSingular),
+            'Store' . ucfirst($modelNameSingular),
             ucfirst($modelNameSingular),
             ucfirst($modelNameSingular) . 'Observer',
-            $modelName,
+            \Str::snake($modelName),
             $modelName,
         ];
 
@@ -247,6 +245,8 @@ class MakeModuleCommand extends Command
     protected function generateMigration()
     {
         $modelName = $this->container['slug'];
-        return $this->callSilent('make:module:migration', ['slug' => $modelName, 'name' => 'create_' . $modelName . '_table']);
+        $migrationName = \Str::camel($modelName);
+        $migrationName = \Str::snake($migrationName);
+        return $this->callSilent('make:module:migration', ['slug' => $modelName, 'name' => 'create_' . $migrationName . '_table']);
     }
 }

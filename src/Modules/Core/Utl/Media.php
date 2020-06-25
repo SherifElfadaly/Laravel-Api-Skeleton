@@ -30,8 +30,16 @@ class Media
             return null;
         }
 
-        $base  = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
-        $image = \Image::make($base);
+        if(filter_var($image, FILTER_VALIDATE_URL)) {
+            return $image;
+        }
+        
+        try {
+            $base  = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
+            $image = \Image::make($base);
+        } catch (\Exception $e) {
+            \Errors::cannotUploadImage();
+        }
 
         return $this->saveImage($image, $dir);
     }

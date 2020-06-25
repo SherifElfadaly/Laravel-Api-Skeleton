@@ -57,7 +57,7 @@ class CheckPermissions
 
         $this->auth->shouldUse('api');
         if (! in_array($permission, $skipLoginCheck)) {
-            $this->authMiddleware->handle($request, function ($request) use ($modelName, $skipPermissionCheck, $skipLoginCheck, $permission) {
+            $this->authMiddleware->handle($request, function ($request) use ($modelName, $skipPermissionCheck, $permission) {
                 $user             = $this->auth->user();
                 $isPasswordClient = $user->token()->client->password_client;
     

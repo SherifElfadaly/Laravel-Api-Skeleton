@@ -18,6 +18,6 @@ Route::group(['prefix' => 'oauth/clients'], function () {
     Route::post('/', 'OauthClientController@store');
     Route::patch('{id}', 'OauthClientController@update');
     Route::delete('{id}', 'OauthClientController@destroy');
-    Route::patch('{id}/revoke', 'OauthClientController@revoke');
-    Route::patch('{id}/unrevoke', 'OauthClientController@unRevoke');
+    Route::patch('revoke/{id}', 'OauthClientController@revoke');
+    Route::patch('unrevoke/{id}', 'OauthClientController@unRevoke');
 });

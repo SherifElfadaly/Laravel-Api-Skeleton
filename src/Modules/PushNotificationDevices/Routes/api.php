@@ -20,6 +20,6 @@ Route::group(['prefix' => 'push/notification/devices'], function () {
     Route::post('/', 'PushNotificationDeviceController@store');
     Route::patch('{id}', 'PushNotificationDeviceController@update');
     Route::delete('{id}', 'PushNotificationDeviceController@destroy');
-    Route::patch('{id}/restore', 'PushNotificationDeviceController@restore');
+    Route::patch('restore/{id}', 'PushNotificationDeviceController@restore');
     Route::post('register/device', 'PushNotificationDeviceController@registerDevice');
 });

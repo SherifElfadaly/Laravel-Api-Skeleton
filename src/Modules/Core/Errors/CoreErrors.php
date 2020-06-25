@@ -33,4 +33,9 @@ class CoreErrors
     {
         abort(404, trans('core::errors.notFound', ['replace' => $text]));
     }
+
+    public function cannotUploadImage()
+    {
+        abort(400, trans('core::errors.cannotUploadImage'));
+    }
 }

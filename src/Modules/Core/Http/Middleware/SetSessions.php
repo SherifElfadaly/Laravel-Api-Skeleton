@@ -34,7 +34,8 @@ class SetSessions
      */
     public function handle($request, Closure $next)
     {
-        $locale = $request->header('locale', 'en');
+        $locale = $request->header('Accept-Language', 'en');
+        $locale = $locale == 'ar' || $locale == 'all' ? $locale : 'en';
         $timeZone = $request->header('time-zone', 0);
 
         $this->session->put('time-zone', $timeZone);

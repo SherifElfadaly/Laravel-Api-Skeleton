@@ -73,6 +73,18 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $sort       = $desc ? 'desc' : 'asc';
         return $this->model->with($relations)->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->orderBy($sortBy, $sort)->paginate($perPage, $columns);
     }
+
+    /**
+     * Count all records based on the given condition from storage.
+     *
+     * @param  array   $conditions array of conditions
+     * @return collection
+     */
+    public function count($conditions)
+    {
+        $conditions = $this->constructConditions($conditions, $this->model);
+        return $this->model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->count();
+    }
     
     /**
      * Save the given model to the storage.
@@ -322,9 +334,12 @@ abstract class BaseRepository implements BaseRepositoryInterface
                                  */
                                 if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false) {
                                     $relationModel->$attr = $val;
+                                } elseif(gettype($val) !== 'object' && gettype($val) !== 'array' && $attr !== 'id') {
+                                    $extra[$attr] = $val;
                                 }
                             }
 
+                            if(isset($extra)) $relationModel->extra = $extra;
                             $relations[$relation][] = $relationModel;
                         } else {
                             /**
@@ -413,8 +428,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
                          * attache these ids to the model.
                          */
                         case 'BelongsToMany':
+                            $extra = $val->extra;
+                            unset($val->extra);
                             $val->save();
-                            $ids[] = $val->id;
+                            $ids[$val->id] = $extra ?? [];
                             break;
                     }
                 }

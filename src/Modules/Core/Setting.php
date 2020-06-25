@@ -10,11 +10,11 @@ class Setting extends Model
 {
 
     use SoftDeletes;
-    protected $table    = 'settings';
-    protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
-    protected $hidden   = ['deleted_at'];
-    protected $guarded  = ['id', 'key'];
-    protected $fillable = ['name', 'value'];
+    protected $table = 'settings';
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $hidden = ['deleted_at'];
+    protected $guarded = ['id', 'key'];
+    public $fillable = ['name', 'value'];
     
     public function newCollection(array $models = [])
     {

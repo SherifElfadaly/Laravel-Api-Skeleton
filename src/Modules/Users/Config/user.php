@@ -65,19 +65,6 @@ return [
     | Access Token Expire In minutes.
     |
     */
-   
-    'token_expire_in' => env('TOKEN_EXPIRE_IN', 10),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Refresh Token Expire In
-    |--------------------------------------------------------------------------
-    |
-    | Refresh Token Expire In minutes.
-    |
-    */
-   
-    'refresh_token_expire_in' => env('REFRESH_TOKEN_EXPIRE_IN', 14400),
 
     /*
     |--------------------------------------------------------------------------

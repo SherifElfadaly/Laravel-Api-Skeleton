@@ -10,11 +10,11 @@ class Report extends Model
 {
 
     use SoftDeletes;
-    protected $table    = 'reports';
-    protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
-    protected $hidden   = ['deleted_at'];
-    protected $guarded  = ['id'];
-    protected $fillable = ['report_name', 'view_name'];
+    protected $table = 'reports';
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $hidden = ['deleted_at'];
+    protected $guarded = ['id'];
+    public $fillable = ['report_name', 'view_name'];
     
     public static function boot()
     {

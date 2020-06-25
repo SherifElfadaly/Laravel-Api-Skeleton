@@ -38,7 +38,6 @@ class SetRelations
         $modelName          = explode('\\', $routeActions[0]);
         $modelName          = lcfirst(str_replace('Controller', '', end($modelName)));
         $route              = explode('@', $this->route->currentRouteAction())[1];
-        $route              = $route !== 'index' ? $route : 'list';
         $relations          = $this->arr->get(config('core.relations'), $modelName, false);
         $request->relations = $relations && isset($relations[$route]) ? $relations[$route] : [];
 

@@ -10,6 +10,7 @@ return [
     'dbQueryError'            => 'Please check the given inputes',
     'cannotCreateSetting'     => 'Can\'t create setting',
     'cannotUpdateSettingKey'  => 'Can\'t update setting key',
-    'notFound'                => 'The requested :replace not found'
+    'notFound'                => 'The requested :replace not found',
+    'cannotUploadImage'       => 'Can\'t upload the given image'
 
 ];

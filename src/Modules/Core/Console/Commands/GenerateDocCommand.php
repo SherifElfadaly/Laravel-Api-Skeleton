@@ -60,8 +60,7 @@ class GenerateDocCommand extends Command
 
                     $controller       = $actoinArray[0];
                     $method           = $actoinArray[1];
-                    $route['name']    = $method !== 'index' ? $method : 'list';
-                    
+                    $route['name']    = $method;
                     $reflectionClass  = new \ReflectionClass($controller);
                     $reflectionMethod = $reflectionClass->getMethod($method);
                     $classProperties  = $reflectionClass->getDefaultProperties();
@@ -71,7 +70,7 @@ class GenerateDocCommand extends Command
 
                     $this->processDocBlock($route, $reflectionMethod);
                     $this->getHeaders($route, $method, $skipLoginCheck);
-                    $this->getPostData($route, $reflectionMethod);
+                    $this->getPostData($route, $reflectionMethod, explode('\\', $reflectionClass->getName())[2], $modelName);
 
                     $route['response'] = $this->getResponseObject($modelName, $route['name'], $route['returnDocBlock']);
                     $docData['modules'][$module][] = $route;
@@ -117,10 +116,10 @@ class GenerateDocCommand extends Command
     protected function getHeaders(&$route, $method, $skipLoginCheck)
     {
         $route['headers'] = [
-        'Accept'       => 'application/json',
-        'Content-Type' => 'application/json',
-        'locale'       => 'The language of the returned data: ar, en or all.',
-        'time-zone'    => 'Your locale time zone',
+        'Accept'         => 'application/json',
+        'Content-Type'   => 'application/json',
+        'Accept-Language' => 'The language of the returned data: ar, en or all.',
+        'time-zone'       => 'Your locale time zone',
         ];
 
 
@@ -147,16 +146,22 @@ class GenerateDocCommand extends Command
 
         foreach ($params as $param) {
             $name = $param->getVariableName();
-            if ($name !== 'request') {
-                $route['parametars'][$param->getVariableName()] = $param->getDescription()->render();
+            if ($name == 'perPage') {
+                $route['parametars'][$name] = 'perPage? number of records per page default 15';
+            } elseif ($name == 'sortBy') {
+                $route['parametars'][$name] = 'sortBy? sort column default created_at';
+            } elseif ($name == 'desc') {
+                $route['parametars'][$name] = 'desc? sort descending or ascending default is descending';
+            } elseif ($name !== 'request') {
+                $route['parametars'][$name] = $param->getDescription()->render();
             }
         }
 
-        if ($route['name'] === 'list') {
-            $route['parametars']['perPage'] = 'perPage?';
-            $route['parametars']['sortBy']  = 'sortBy?';
-            $route['parametars']['desc']    = 'desc?';
-            $route['parametars']['trashed'] = 'trashed?';
+        if ($route['name'] === 'index') {
+            $route['parametars']['perPage'] = 'perPage? number of records per page default 15';
+            $route['parametars']['sortBy']  = 'sortBy? sort column default created_at';
+            $route['parametars']['desc']    = 'desc? sort descending or ascending default is descending';
+            $route['parametars']['trashed'] = 'trashed? retreive trashed or not default not';
         }
     }
 
@@ -165,27 +170,30 @@ class GenerateDocCommand extends Command
      *
      * @param  array  &$route
      * @param  \ReflectionMethod $reflectionMethod
+     * @param  string $module
+     * @param  string $modelName
      * @return void
      */
-    protected function getPostData(&$route, $reflectionMethod)
+    protected function getPostData(&$route, $reflectionMethod, $module, $modelName)
     {
         $parameters = $reflectionMethod->getParameters();
-        if (count($parameters)) {
-            $className = optional($reflectionMethod->getParameters()[0]->getType())->getName();
-            if ($className) {
-                $reflectionClass  = new \ReflectionClass($className);
-    
-                if ($reflectionClass->hasMethod('rules')) {
-                    $reflectionMethod = $reflectionClass->getMethod('rules');
-                    $route['body'] = $reflectionMethod->invoke(new $className);
-        
-                    foreach ($route['body'] as &$rule) {
-                        if (strpos($rule, 'unique')) {
-                            $rule = substr($rule, 0, strpos($rule, 'unique') + 6);
-                        } elseif (strpos($rule, 'exists')) {
-                            $rule = substr($rule, 0, strpos($rule, 'exists') - 1);
-                        }
-                    }
+        $className = optional(optional(\Arr::get($parameters, 0))->getType())->getName();
+        if ($className) {
+            $reflectionClass  = new \ReflectionClass($className);
+        } elseif (in_array($reflectionMethod->getName(), ['store', 'update'])) {
+            $className = 'App\\Modules\\' . ucfirst($module) . '\\Http\\Requests\\Store'  . ucfirst($modelName);
+            $reflectionClass  = new \ReflectionClass($className);
+        }
+
+        if (isset($reflectionClass) && $reflectionClass->hasMethod('rules')) {
+            $reflectionMethod = $reflectionClass->getMethod('rules');
+            $route['body'] = $reflectionMethod->invoke(new $className);
+
+            foreach ($route['body'] as &$rule) {
+                if (strpos($rule, 'unique')) {
+                    $rule = substr($rule, 0, strpos($rule, 'unique') + 6);
+                } elseif (strpos($rule, 'exists')) {
+                    $rule = substr($rule, 0, strpos($rule, 'exists') - 1);
                 }
             }
         }
@@ -200,7 +208,7 @@ class GenerateDocCommand extends Command
     {
         $errors = [];
         foreach (\Module::all() as $module) {
-            $nameSpace = 'App\\Modules\\' . $module['basename'] ;
+            $nameSpace = 'App\\Modules\\' . $module['basename'];
             $class = $nameSpace . '\\Errors\\'  . $module['basename'] . 'Errors';
             $reflectionClass = new \ReflectionClass($class);
             foreach ($reflectionClass->getMethods() as $method) {
@@ -208,7 +216,7 @@ class GenerateDocCommand extends Command
                 $reflectionMethod = $reflectionClass->getMethod($methodName);
                 $body             = $this->getMethodBody($reflectionMethod);
 
-                preg_match('/\$error=\[\'status\'=>([^#]+)\,/iU', $body, $match);
+                preg_match('/abort\(([^#]+)\,/iU', $body, $match);
 
                 if (count($match)) {
                     $errors[$match[1]][] = $methodName;
@@ -248,13 +256,33 @@ class GenerateDocCommand extends Command
     protected function getModels($modelName, &$docData, $reflectionClass)
     {
         if ($modelName && ! Arr::has($docData['models'], $modelName)) {
-            $modelClass = get_class(call_user_func_array("\Core::{$modelName}", [])->model);
+            $repo = call_user_func_array("\Core::{$modelName}", []);
+            if (! $repo) {
+                return;
+            }
+            
+            $modelClass = get_class($repo->model);
             $model      = factory($modelClass)->make();
 
             $property = $reflectionClass->getProperty('modelResource');
             $property->setAccessible(true);
             $modelResource = $property->getValue(\App::make($reflectionClass->getName()));
-            $modelResource = new $modelResource($model);
+
+            $relations = [];
+            $relationMethods = ['hasOne', 'hasMany', 'belongsTo', 'belongsToMany', 'morphToMany', 'morphTo'];
+            $reflector = new \ReflectionClass($model);
+            foreach ($reflector->getMethods() as $reflectionMethod) {
+                $body = $this->getMethodBody($reflectionMethod);
+                foreach ($relationMethods as $relationMethod) {
+                    $relation = $reflectionMethod->getName();
+                    if (strpos($body, '$this->' . $relationMethod) && $relation !== 'morphedByMany') {
+                        $relations[] = $relation;
+                        break;
+                    }
+                }
+            }
+
+            $modelResource = new $modelResource($model->load($relations));
             $modelArr      = $modelResource->toArray([]);
 
             foreach ($modelArr as $key => $attr) {

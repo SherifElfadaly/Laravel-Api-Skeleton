@@ -13,7 +13,7 @@ class Reports extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->increments('id');
+            increments('id');
             $table->string('report_name', 100);
             $table->string('view_name', 100);
             $table->softDeletes();

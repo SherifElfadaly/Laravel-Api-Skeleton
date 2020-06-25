@@ -51,25 +51,25 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($request->wantsJson()) {
-            if ($e instanceof \Illuminate\Auth\AuthenticationException) {
-                \ErrorHandler::unAuthorized();
+            if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+                \Errors::unAuthorized();
             }
-            if ($e instanceof \Illuminate\Database\QueryException) {
-                \ErrorHandler::dbQueryError();
-            } elseif ($e instanceof \predis\connection\connectionexception) {
-                \ErrorHandler::redisNotRunning();
-            } elseif ($e instanceof \GuzzleHttp\Exception\ClientException) {
-                \ErrorHandler::connectionError();
-            } elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
-                $errors = $e->getStatusCode() === 404 ? 'not found' : $e->getMessage();
-                return \Response::json(['errors' => [$errors]], $e->getStatusCode());
-            } elseif ($e instanceof \Illuminate\Validation\ValidationException) {
-                return \Response::json(['errors' => $e->errors()], 422);
-            } elseif (! $e instanceof \Symfony\Component\ErrorHandler\Error\FatalError) {
-                return parent::render($request, $e);
+            if ($exception instanceof \Illuminate\Database\QueryException) {
+                \Errors::dbQueryError();
+            } elseif ($exception instanceof \predis\connection\connectionexception) {
+                \Errors::redisNotRunning();
+            } elseif ($exception instanceof \GuzzleHttp\Exception\ClientException) {
+                \Errors::connectionError();
+            } elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                $errors = $exception-> getStatusCode() === 404 ? 'not found' : $exception-> getMessage();
+                return \Response::json(['errors' => [$errors]], $exception-> getStatusCode());
+            } elseif ($exception instanceof \Illuminate\Validation\ValidationException) {
+                return \Response::json(['errors' => $exception-> errors()], 422);
+            } elseif (! $exception instanceof \Symfony\Component\ErrorHandler\Error\FatalError) {
+                return parent::render($request, $exception);
             }
         }
         
-        return parent::render($request, $e);
+        return parent::render($request, $exception);
     }
 }

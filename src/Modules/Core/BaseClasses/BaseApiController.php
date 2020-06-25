@@ -3,6 +3,7 @@
 namespace App\Modules\Core\BaseClasses;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Core\Decorators\CachingDecorator;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 
@@ -42,7 +43,7 @@ class BaseApiController extends Controller
      */
     public function __construct($service)
     {
-        $this->service = $service;
+        $this->service = new CachingDecorator($service, \App::make('Illuminate\Contracts\Cache\Repository'));
     }
 
     /**

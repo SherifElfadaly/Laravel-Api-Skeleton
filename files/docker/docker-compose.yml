@@ -1,8 +1,8 @@
 version: '3.2'
 
 services:
-    skeleton_redis:
-      container_name: 'skeleton_redis'
+    abaza_redis:
+      container_name: 'abaza_redis'
       image: redis:latest
       networks:
         - backend
@@ -10,8 +10,8 @@ services:
         - "${REDIS_EXTERNAL_PORT}:${REDIS_PORT}"
       restart: always
 
-    skeleton_mysql:
-      container_name: 'skeleton_mysql'
+    abaza_mysql:
+      container_name: 'abaza_mysql'
       image: mysql:5.7
       volumes:
         - ./run/var:/var/lib/mysql
@@ -26,31 +26,31 @@ services:
         - "${MYSQL_EXTERNAL_PORT}:${DB_PORT}"
       restart: always
 
-    skeleton_app:
-      container_name: 'skeleton'
+    abaza_app:
+      container_name: 'abaza'
       volumes:
         - ../:/var/www/html/
-        - ./.env.example:/var/www/html/.env
+        - ../.env:/var/www/html/.env
       build:
         context: './'
         dockerfile: './app/dockerfile'
       depends_on:
-        - 'skeleton_mysql'
-        - 'skeleton_redis'
+        - 'abaza_mysql'
+        - 'abaza_redis'
       networks:
         - backend
       restart: always
       
-    skeleton_apache:
-      container_name: 'skeleton_apache'
+    abaza_apache:
+      container_name: 'abaza_apache'
       volumes:
         - ../:/var/www/html/
-        - ./.env.example:/var/www/html/.env
+        - ../.env:/var/www/html/.env
       build:
         context: './'
         dockerfile: './apache/dockerfile'
       depends_on:
-        - skeleton_app
+        - abaza_app
       networks:
         - backend
       ports:

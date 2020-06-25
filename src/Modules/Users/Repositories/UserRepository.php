@@ -20,28 +20,28 @@ class UserRepository extends BaseRepository
     }
 
     /**
-     * Detach all roles from the given role.
+     * Detach all roles from the given user.
      *
-     * @param  mixed $role
+     * @param  mixed $user
      * @return object
      */
-    public function detachRoles($role)
+    public function detachRoles($user)
     {
-        $role = ! is_int($role) ? $role : $this->find($role);
-        $role->roles()->detach();
+        $user = ! is_int($user) ? $user : $this->find($user);
+        $user->roles()->detach();
     }
 
     /**
-     * Attach role ids to the given role.
+     * Attach role ids to the given user.
      *
-     * @param  mixed $role
+     * @param  mixed $user
      * @param  array $roleIds
      * @return object
      */
-    public function attachRoles($role, $roleIds)
+    public function attachRoles($user, $roleIds)
     {
-        $role = ! is_int($role) ? $role : $this->find($role);
-        $role->roles()->attach($roleIds);
+        $user = ! is_int($user) ? $user : $this->find($user);
+        $user->roles()->attach($roleIds);
     }
 
     /**

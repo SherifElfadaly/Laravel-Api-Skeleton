@@ -20,10 +20,10 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('/', 'UserController@store');
     Route::patch('{id}', 'UserController@update');
     Route::delete('{id}', 'UserController@destroy');
-    Route::patch('{id}/restore', 'UserController@restore');
-    Route::patch('{id}/block', 'UserController@block');
-    Route::patch('{id}/unblock', 'UserController@unblock');
-    Route::patch('{id}/assign/roles', 'UserController@assignRoles');
+    Route::patch('restore/{id}', 'UserController@restore');
+    Route::patch('block/{id}', 'UserController@block');
+    Route::patch('unblock/{id}', 'UserController@unblock');
+    Route::patch('assign/roles/{id}', 'UserController@assignRoles');
 
     Route::group(['prefix' => 'account'], function () {
 

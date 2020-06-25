@@ -13,13 +13,16 @@ RUN apt-get update && apt-get install -y \
     libbz2-dev \
     libpng-dev \
     libjpeg-dev \
+    libwebp-dev \
+    libxpm-dev \
     libmcrypt-dev \
     libreadline-dev \
     libfreetype6-dev \
     libonig-dev \
     libzip-dev \
     g++ \
-    cron
+    cron \
+    nano
 
 # add php configurations
 COPY app/php.ini /usr/local/etc/php/conf.d
@@ -36,7 +39,15 @@ RUN docker-php-ext-install \
     calendar \
     mbstring \
     pdo_mysql \
-    zip
+    zip \
+    gd
+
+RUN docker-php-ext-configure gd \
+    --enable-gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-xpm \
+    --with-webp
 
 RUN docker-php-source extract && \
     pecl install redis && \
@@ -56,23 +67,22 @@ RUN chmod 0644 /etc/cron.d/crons
 # register laravel scheduler
 COPY app/crons crons
 
-RUN sudo chown -R www-data:www-data /var/www/html && \ 
-    sudo find /var/www/html -type f -exec chmod 664 {} \; && \
-    sudo find /var/www/html -type d -exec chmod 775 {} \;
-
 # start server, clear cach, run migrations and restart queue
 CMD php-fpm -D && \
     composer update nothing --prefer-dist --lock && \
     composer install --prefer-dist --optimize-autoloader && \
-    php artisan module:optimize && \
-    php artisan key:generate && \ 
-    php artisan clear-compiled && \
-    php artisan view:clear && \
-    php artisan optimize && \
-    php artisan queue:restart && \
-    php artisan module:migrate && \
-    php artisan module:seed && \
-    php artisan storage:link && \
-    php artisan module:passport:install && \
-    php artisan doc:generate && \
-    php artisan queue:work redis --sleep=3 --tries=3
+    sudo php artisan clear-compiled && \
+    sudo php artisan view:clear && \
+    sudo php artisan queue:restart && \
+    sudo php artisan module:optimize && \
+    sudo php artisan module:migrate && \
+    sudo php artisan module:seed && \
+    sudo php artisan storage:link && \
+    sudo php artisan module:passport:install && \
+    sudo php artisan module:optimize && \
+    sudo php artisan optimize && \
+    sudo php artisan doc:generate && \
+    sudo chown -R www-data:www-data /var/www/html && \ 
+    sudo find /var/www/html -type f -exec chmod 664 {} \; && \ 
+    sudo find /var/www/html -type d -exec chmod 775 {} \; && \
+    sudo php artisan queue:work redis --sleep=3 --tries=3

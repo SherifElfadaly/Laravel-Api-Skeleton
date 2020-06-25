@@ -3,14 +3,13 @@
 namespace App\Modules\Core\BaseClasses;
 
 use App\Modules\Core\Interfaces\BaseServiceInterface;
-use App\Modules\Core\Decorators\CachingDecorator;
 
 abstract class BaseService implements BaseServiceInterface
 {
     /**
      * @var object
      */
-    protected $repo;
+    public $repo;
 
     /**
      * Init new object.
@@ -20,13 +19,13 @@ abstract class BaseService implements BaseServiceInterface
      */
     public function __construct($repo)
     {
-        $this->repo = new CachingDecorator($repo, \App::make('Illuminate\Contracts\Cache\Repository'));
+        $this->repo = $repo;
     }
 
     /**
      * Fetch records with relations based on the given params.
      *
-     * @param   string  $relations
+     * @param   array   $relations
      * @param   array   $conditions
      * @param   integer $perPage
      * @param   string  $sortBy
@@ -36,17 +35,23 @@ abstract class BaseService implements BaseServiceInterface
      */
     public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true, $trashed = false)
     {
-        unset($conditions['perPage']);
-        unset($conditions['sortBy']);
-        unset($conditions['sort']);
-        unset($conditions['page']);
+        $filters = [];
+        $translatable = $this->repo->model->translatable ?? [];
+        foreach ($conditions as $key => $value) {
+            if($value && in_array($key, $this->repo->model->fillable ?? [])) {
+                $key = in_array($key, $translatable) ? $key . '->' . (\Session::get('locale') == 'all' ? 'en' : \Session::get('locale')) : $key;
+                $isBool = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null;
+                $filters[$key] = $isBool ? filter_var($value, FILTER_VALIDATE_BOOLEAN) : $value;
+            }
+        }
+        $sortBy = in_array($sortBy, $translatable) ? $sortBy . '->' . \Session::get('locale') : $sortBy;
 
         if ($trashed) {
-            return $this->deleted(['and' => $conditions], $perPage ?? 15, $sortBy ?? 'created_at', $desc ?? true);
+            return $this->deleted(['and' => $filters], $perPage ?? 15, $sortBy ?? 'created_at', $desc ?? true);
         }
         
-        if (count($conditions)) {
-            return $this->paginateBy(['and' => $conditions], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
+        if (count($filters)) {
+            return $this->paginateBy(['and' => $filters], $perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
         }
 
         return $this->paginate($perPage ?? 15, $relations, $sortBy ?? 'created_at', $desc ?? true);
@@ -119,7 +124,7 @@ abstract class BaseService implements BaseServiceInterface
      */
     public function delete($value, $attribute = 'id')
     {
-        return $this->repo->save($value, $attribute);
+        return $this->repo->delete($value, $attribute);
     }
     
     /**
@@ -127,7 +132,7 @@ abstract class BaseService implements BaseServiceInterface
      * id.
      *
      * @param  integer $id
-     * @param  string[]   $relations
+     * @param  array   $relations
      * @param  array   $columns
      * @return object
      */

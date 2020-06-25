@@ -20,6 +20,6 @@ Route::group(['prefix' => 'roles'], function () {
     Route::post('/', 'RoleController@store');
     Route::patch('{id}', 'RoleController@update');
     Route::delete('{id}', 'RoleController@destroy');
-    Route::patch('{id}/restore', 'RoleController@restore');
-    Route::patch('{id}/assign/permissions', 'RoleController@assignPermissions');
+    Route::patch('restore/{id}', 'RoleController@restore');
+    Route::patch('assign/permissions/{id}', 'RoleController@assignPermissions');
 });

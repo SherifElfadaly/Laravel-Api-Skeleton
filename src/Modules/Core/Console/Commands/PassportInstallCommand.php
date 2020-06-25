@@ -31,15 +31,16 @@ class PassportInstallCommand extends Command
     public function handle(ClientRepository $client)
     {
         $this->call('passport:keys', ['--force' => $this->option('force'), '--length' => $this->option('length')]);
-        if (! \Core::oauthCLients()->first(['password_client' => 1])) {
-            $client = $client->createPasswordGrantClient(
+        $oauthClient = \Core::oauthCLients()->first(['password_client' => 1]);
+        if (! $oauthClient) {
+            $oauthClient = $client->createPasswordGrantClient(
                 null,
                 config('app.name'),
                 'http://localhost'
             );
-            \DotenvEditor::setKey('PASSWORD_CLIENT_ID', $client->id);
-            \DotenvEditor::setKey('PASSWORD_CLIENT_SECRET', $client->secret);
-            \DotenvEditor::save();
         }
+        \DotenvEditor::setKey('PASSWORD_CLIENT_ID', $oauthClient->id);
+        \DotenvEditor::setKey('PASSWORD_CLIENT_SECRET', $oauthClient->secret);
+        \DotenvEditor::save();
     }
 }

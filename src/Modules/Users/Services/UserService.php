@@ -245,7 +245,7 @@ class UserService extends BaseService
             \Errors::notFound('email');
         }
 
-        $token = \Password::getService()->create($user);
+        $token = \Password::createToken($user);
         $this->notificationService->notify($user, 'ResetPassword', $token);
     }
 
@@ -347,10 +347,6 @@ class UserService extends BaseService
      */
     public function saveProfile($name, $email, $profilePicture = false)
     {
-        if ($profilePicture) {
-            $data['profile_picture'] = \Media::uploadImageBas64($profilePicture, 'users/profile_pictures');
-        }
-        
         $data['id'] = \Auth::id();
         return $this->repo->save([
             'id'             => \Auth::id(),

@@ -10,7 +10,7 @@ class CachingDecorator
     /**
      * @var string
      */
-    public $repo;
+    public $service;
 
     /**
      * @var Cache
@@ -45,20 +45,20 @@ class CachingDecorator
     /**
      * Init new object.
      *
-     * @param  string $repo
+     * @param  string $service
      * @param  Cache  $cache
      *
      * @return  void
      */
-    public function __construct($repo, Cache $cache)
+    public function __construct($service, Cache $cache)
     {
-        $this->repo       = $repo;
+        $this->service    = $service;
         $this->cache      = $cache;
-        $this->model      = $this->repo->model;
+        $this->model      = $this->service->repo->model;
         $this->modelClass = get_class($this->model);
-        $repoClass        = explode('\\', get_class($this->repo));
-        $repoName         = end($repoClass);
-        $this->cacheTag   = lcfirst(substr($repoName, 0, strpos($repoName, 'Repository')));
+        $serviceClass     = explode('\\', get_class($this->service));
+        $serviceName      = end($serviceClass);
+        $this->cacheTag   = lcfirst(substr($serviceName, 0, strpos($serviceName, 'Service')));
     }
 
     /**
@@ -77,14 +77,14 @@ class CachingDecorator
             $page     = \Request::get('page') !== null ? \Request::get('page') : '1';
             $cacheKey = $name.$page.\Session::get('locale').serialize($arguments);
             return $this->cache->tags([$this->cacheTag])->rememberForever($cacheKey, function () use ($arguments, $name) {
-                return call_user_func_array([$this->repo, $name], $arguments);
+                return call_user_func_array([$this->service, $name], $arguments);
             });
-        } elseif ($this->cacheConfig && $this->cacheConfig == 'clear') {
+        } elseif ($this->cacheConfig) {
             $this->cache->tags($this->cacheConfig)->flush();
-            return call_user_func_array([$this->repo, $name], $arguments);
+            return call_user_func_array([$this->service, $name], $arguments);
         }
 
-        return call_user_func_array([$this->repo, $name], $arguments);
+        return call_user_func_array([$this->service, $name], $arguments);
     }
 
     /**

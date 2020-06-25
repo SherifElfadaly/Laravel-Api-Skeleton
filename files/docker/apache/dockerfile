@@ -10,7 +10,6 @@ RUN apk update; \
 # apache configs
 COPY apache/laravel.conf /usr/local/apache2/conf/extra/laravel.conf
 COPY apache/laravel-ssl.conf /usr/local/apache2/conf/extra/laravel-ssl.conf
-COPY apache/laravel-proxy.conf /usr/local/apache2/conf/extra/laravel-proxy.conf
 COPY apache/httpd.conf /usr/local/apache2/conf/httpd.conf
 
 # generate certificates

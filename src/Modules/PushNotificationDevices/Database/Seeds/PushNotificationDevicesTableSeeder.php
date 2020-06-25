@@ -46,7 +46,7 @@ class PushNotificationDevicesTableSeeder extends Seeder
                 'updated_at' => \DB::raw('NOW()')
                 ],
                 [
-                'name'       => 'delete',
+                'name'       => 'destroy',
                 'model'      => 'pushNotificationDevice',
                 'created_at' => \DB::raw('NOW()'),
                 'updated_at' => \DB::raw('NOW()')

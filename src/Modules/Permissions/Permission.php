@@ -11,11 +11,11 @@ class Permission extends Model
 {
 
     use SoftDeletes;
-    protected $table    = 'permissions';
-    protected $dates    = ['created_at', 'updated_at', 'deleted_at'];
-    protected $hidden   = ['deleted_at'];
-    protected $guarded  = ['id'];
-    protected $fillable = ['name', 'model'];
+    protected $table = 'permissions';
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $hidden = ['deleted_at'];
+    protected $guarded = ['id'];
+    public $fillable = ['name', 'model'];
     
     public function roles()
     {

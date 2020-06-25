@@ -4,11 +4,17 @@ namespace App\Modules\DummyModule\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\DummyModule\Services\DummyService;
-use App\Modules\DummyModule\Http\Requests\InsertDummy;
-use App\Modules\DummyModule\Http\Requests\UpdateDummy;
+use App\Modules\DummyModule\Http\Requests\StoreDummy;
 
 class DummyController extends BaseApiController
 {
+    /**
+     * Path of the sotre form request.
+     *
+     * @var string
+     */
+    protected $storeFormRequest = 'App\Modules\DummyModule\Http\Requests\StoreDummy';
+    
     /**
      * Path of the model resource
      *
@@ -39,27 +45,5 @@ class DummyController extends BaseApiController
     public function __construct(DummyService $service)
     {
         parent::__construct($service);
-    }
-
-    /**
-     * Insert the given model to storage.
-     *
-     * @param InsertDummy $request
-     * @return \Illuminate\Http\Response
-     */
-    public function insert(InsertDummy $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
-    }
-
-    /**
-     * Update the given model to storage.
-     *
-     * @param UpdateDummy $request
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDummy $request)
-    {
-        return new $this->modelResource($this->service->save($request->all()));
     }
 }
