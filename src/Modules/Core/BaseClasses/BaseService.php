@@ -35,15 +35,8 @@ abstract class BaseService implements BaseServiceInterface
      */
     public function list($relations = [], $conditions = false, $perPage = 15, $sortBy = 'created_at', $desc = true, $trashed = false)
     {
-        $filters = [];
         $translatable = $this->repo->model->translatable ?? [];
-        foreach ($conditions as $key => $value) {
-            if($value && in_array($key, $this->repo->model->fillable ?? [])) {
-                $key = in_array($key, $translatable) ? $key . '->' . (\Session::get('locale') == 'all' ? 'en' : \Session::get('locale')) : $key;
-                $isBool = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null;
-                $filters[$key] = $isBool ? filter_var($value, FILTER_VALIDATE_BOOLEAN) : $value;
-            }
-        }
+        $filters = $this->constructFilters($conditions);
         $sortBy = in_array($sortBy, $translatable) ? $sortBy . '->' . \Session::get('locale') : $sortBy;
 
         if ($trashed) {
@@ -195,5 +188,41 @@ abstract class BaseService implements BaseServiceInterface
     public function restore($id)
     {
         return $this->repo->restore($id);
+    }
+
+    /**
+     * Prepare filters for repo.
+     *
+     * @param  array   $conditions
+     * @return array
+     */
+    public function constructFilters($conditions)
+    {
+        $filters = [];
+        $translatable = $this->repo->model->translatable ?? [];
+        foreach ($conditions as $key => $value) {
+            if ($value && (in_array($key, $this->repo->model->fillable ?? []) || method_exists($this->repo->model, $key) || in_array($key, ['or', 'and']))) {
+                $key = in_array($key, $translatable) ? $key . '->' . (\Session::get('locale') == 'all' ? 'en' : \Session::get('locale')) : $key;
+                if (filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null && strpos($key, '_id') === false) {
+                    $filters[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                } elseif (! is_array($value) && strpos($key, '_id')) {
+                    $filters[$key] = [
+                        'op' => 'in',
+                        'val' => explode(',', $value)
+                    ];
+                } elseif (is_array($value)) {
+                    $filters[$key] = $value;
+                } else {
+                    $key = 'LOWER(' . $key . ')';
+                    $value = strtolower($value);
+                    $filters[$key] = [
+                        'op' => 'like',
+                        'val' => '%' . $value . '%'
+                    ];
+                }
+            }
+        }
+
+        return $filters;
     }
 }

@@ -312,11 +312,15 @@ abstract class BaseRepository implements BaseRepositoryInterface
                          * Check if the relation is a collection.
                          */
                         if (class_basename($model->$relation) == 'Collection') {
-                            /**
-                             * If the id is present in the data then select the relation model for updating,
-                             * else create new model.
-                             */
-                            $relationModel = Arr::has($val, 'id') ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
+                            if (! is_array($val)) {
+                                $relationModel = $relationBaseModel->lockForUpdate()->find($val);
+                            } else {
+                                /**
+                                 * If the id is present in the data then select the relation model for updating,
+                                 * else create new model.
+                                 */
+                                $relationModel = Arr::has($val, 'id') ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
+                            }
 
                             /**
                              * If model doesn't exists.
@@ -325,21 +329,25 @@ abstract class BaseRepository implements BaseRepositoryInterface
                                 \Errors::notFound(class_basename($relationBaseModel).' with id : '.$val['id']);
                             }
 
-                            /**
-                             * Loop through the relation attributes.
-                             */
-                            foreach ($val as $attr => $val) {
+                            if (is_array($val)) {
                                 /**
-                                 * Prevent the sub relations or attributes not in the fillable.
+                                 * Loop through the relation attributes.
                                  */
-                                if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false) {
-                                    $relationModel->$attr = $val;
-                                } elseif(gettype($val) !== 'object' && gettype($val) !== 'array' && $attr !== 'id') {
-                                    $extra[$attr] = $val;
+                                foreach ($val as $attr => $val) {
+                                    /**
+                                     * Prevent the sub relations or attributes not in the fillable.
+                                     */
+                                    if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false) {
+                                        $relationModel->$attr = $val;
+                                    } elseif (gettype($val) !== 'object' && gettype($val) !== 'array' && $attr !== 'id') {
+                                        $extra[$attr] = $val;
+                                    }
                                 }
                             }
 
-                            if(isset($extra)) $relationModel->extra = $extra;
+                            if (isset($extra)) {
+                                $relationModel->extra = $extra;
+                            }
                             $relations[$relation][] = $relationModel;
                         } else {
                             /**
@@ -537,9 +545,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
                 } elseif (strtolower($operator) == 'not null') {
                     $conditionString .= $key.' is not null {op} ';
                 } elseif (strtolower($operator) == 'has') {
-                    $sql              = $model->withTrashed()->has($key)->toSql();
+                    $sql              = $model->withTrashed()->withoutGlobalScopes()->has($key)->toSql();
+                    $bindings         = $model->withTrashed()->withoutGlobalScopes()->has($key)->getBindings();
                     $conditions       = $this->constructConditions($value, $model->$key()->getRelated());
-                    $conditionString .= rtrim(substr($sql, strpos($sql, 'exists')), ')').' and '.$conditions['conditionString'].') {op} ';
+                    $conditionString .= substr(substr($sql, strpos($sql, 'exists')), 0, -1).' and '.$conditions['conditionString'].') {op} ';
+                    $conditionValues  = array_merge($conditionValues, $bindings);
                     $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
                 } else {
                     $conditionString  .= $key.' '.$operator.' ? {op} ';

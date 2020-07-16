@@ -88,8 +88,6 @@ return [
             ],
             'clear' => [
                 'save'     => ['setting'],
-                'delete'   => ['setting'],
-                'restore'  => ['setting'],
                 'saveMany' => ['setting'],
             ]
         ]

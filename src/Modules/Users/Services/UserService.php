@@ -168,18 +168,18 @@ class UserService extends BaseService
      */
     public function loginSocial($authCode, $accessToken, $type)
     {
-        $access_token = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
-        $user         = \Socialite::driver($type)->userFromToken($access_token);
+        $accessToken = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
+        $user        = \Socialite::driver($type)->userFromToken($accessToken)->user;
 
-        if (! $user->email) {
+        if (! \Arr::has($user, 'email')) {
             \Errors::noSocialEmail();
         }
 
-        if (! $this->repo->first(['email' => $user->email])) {
-            $this->register($user->email, '', true);
+        if (! $this->repo->first(['email' => $user['email']])) {
+            $this->register($user['name'], $user['email'], '', true);
         }
 
-        return $this->loginProxy->login($user->email, config('user.social_pass'));
+        return $this->login($user['email'], config('user.social_pass'));
     }
     
     /**
