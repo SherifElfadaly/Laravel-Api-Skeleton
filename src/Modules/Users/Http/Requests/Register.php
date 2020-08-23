@@ -25,7 +25,7 @@ class Register extends FormRequest
     {
         return [
             'name'     => 'nullable|string',
-            'email'    => 'required|email|unique:users,email,'.$this->get('id'),
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6'
         ];
     }

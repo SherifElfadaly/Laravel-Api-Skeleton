@@ -30,8 +30,8 @@ class RoleService extends BaseService
         $role = false;
         \DB::transaction(function () use ($roleId, $permissionIds, &$role) {
             $role = $this->repo->find($roleId);
-            $this->repo->detachPermissions($roleId);
-            $this->repo->attachPermissions($roleId, $permissionIds);
+            $this->repo->detachPermissions($role);
+            $this->repo->attachPermissions($role, $permissionIds);
         });
 
         return $role;

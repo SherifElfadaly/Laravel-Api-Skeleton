@@ -26,7 +26,7 @@ class OauthClientService extends BaseService
      */
     public function revoke($clientId)
     {
-        \DB::transaction(function () use ($data) {
+        \DB::transaction(function () use ($clientId) {
             $client = $this->repo->find($clientId);
             $this->repo->revokeClientTokens($client);
             $this->repo->save(['id'=> $clientId, 'revoked' => true]);

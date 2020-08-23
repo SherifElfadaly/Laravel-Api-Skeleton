@@ -49,6 +49,10 @@ RUN docker-php-ext-configure gd \
     --with-xpm \
     --with-webp
 
+RUN cd /usr/src/php/ext/gd && make
+RUN cp /usr/src/php/ext/gd/modules/gd.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/gd.so
+RUN docker-php-ext-install -j$(nproc) gd
+
 RUN docker-php-source extract && \
     pecl install redis && \
     docker-php-ext-enable redis && \

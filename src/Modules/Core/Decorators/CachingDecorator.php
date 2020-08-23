@@ -8,7 +8,7 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 class CachingDecorator
 {
     /**
-     * @var string
+     * @var String
      */
     public $service;
 
@@ -16,21 +16,6 @@ class CachingDecorator
      * @var Cache
      */
     protected $cache;
-
-    /**
-     * @var string
-     */
-    public $modelKey;
-
-    /**
-     * @var string
-     */
-    public $model;
-
-    /**
-     * @var string
-     */
-    public $modelClass;
 
     /**
      * @var mixed
@@ -45,7 +30,7 @@ class CachingDecorator
     /**
      * Init new object.
      *
-     * @param  string $service
+     * @param  Object $service
      * @param  Cache  $cache
      *
      * @return  void
@@ -54,8 +39,6 @@ class CachingDecorator
     {
         $this->service    = $service;
         $this->cache      = $cache;
-        $this->model      = $this->service->repo->model;
-        $this->modelClass = get_class($this->model);
         $serviceClass     = explode('\\', get_class($this->service));
         $serviceName      = end($serviceClass);
         $this->cacheTag   = lcfirst(substr($serviceName, 0, strpos($serviceName, 'Service')));

@@ -25,7 +25,7 @@ class StoreUser extends FormRequest
     {
         return [
             'name'     => 'nullable|string',
-            'email'    => 'required|email|unique:users,email,'.$this->get('id'),
+            'email'    => 'required|email|unique:users,email,' . $this->route('id'),
             'password' => 'nullable|min:6'
         ];
     }

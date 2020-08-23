@@ -132,8 +132,8 @@ class UserService extends BaseService
         $user = false;
         \DB::transaction(function () use ($userId, $roleIds, &$user) {
             $user = $this->repo->find($userId);
-            $this->repo->detachPermissions($userId);
-            $this->repo->attachPermissions($userId, $roleIds);
+            $this->repo->detachRoles($user);
+            $this->repo->attachRoles($user, $roleIds);
         });
 
         return $user;

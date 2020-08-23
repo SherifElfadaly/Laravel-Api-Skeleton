@@ -41,7 +41,7 @@ trait Translatable
         }
 
         if (! $primaryLocale || ! is_object($values) || ! property_exists($values, $primaryLocale)) {
-            return $values ? isset($values->$fallbackLocale) ? $values->$fallbackLocale : $values : '';
+            return $values ? (isset($values->$fallbackLocale) ? $values->$fallbackLocale : $values) : '';
         }
 
         return $primaryLocale == 'all' ? $values : $values->$primaryLocale;

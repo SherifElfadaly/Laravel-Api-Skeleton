@@ -21,7 +21,11 @@ class Core implements BaseFactoryInterface
         foreach (\Module::all() as $module) {
             $nameSpace = 'App\\Modules\\' . $module['basename'] ;
             $model = ucfirst(\Str::singular($name));
-            $class = $nameSpace . '\\Repositories\\' . $model . 'Repository';
+            if(count($arguments) == 1 && $arguments[0]) {
+                $class = $nameSpace . '\\Services\\' . $model . 'Service';
+            } else {
+                $class = $nameSpace . '\\Repositories\\' . $model . 'Repository';
+            }
 
             if (class_exists($class)) {
                 return \App::make($class);

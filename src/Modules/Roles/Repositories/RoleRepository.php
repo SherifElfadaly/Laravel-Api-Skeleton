@@ -26,7 +26,7 @@ class RoleRepository extends BaseRepository
      */
     public function detachPermissions($role)
     {
-        $role = ! is_int($role) ? $role : $this->find($role);
+        $role = ! filter_var($role, FILTER_VALIDATE_INT) ? $role : $this->find($role);
         $role->permissions()->detach();
     }
 
@@ -39,7 +39,7 @@ class RoleRepository extends BaseRepository
      */
     public function attachPermissions($role, $permissionIds)
     {
-        $role = ! is_int($role) ? $role : $this->find($role);
+        $role = ! filter_var($role, FILTER_VALIDATE_INT) ? $role : $this->find($role);
         $role->permissions()->attach($permissionIds);
     }
 }

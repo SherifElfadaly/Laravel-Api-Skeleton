@@ -44,29 +44,4 @@ class PushNotificationDeviceService extends BaseService
 
         return $this->repo->save($data);
     }
-
-    /**
-     * Generate the given message data.
-     *
-     * @param  string $title
-     * @param  string $message
-     * @param  array  $data
-     * @return void
-     */
-    public function generateMessageData($title, $message, $data = [])
-    {
-        $optionBuilder       = new OptionsBuilder();
-        $notificationBuilder = new PayloadNotificationBuilder($title);
-        $dataBuilder         = new PayloadDataBuilder();
-
-        $optionBuilder->setTimeToLive(60 * 20);
-        $notificationBuilder->setBody($message);
-        $dataBuilder->addData($data);
-
-        $options             = $optionBuilder->build();
-        $notification        = $notificationBuilder->build();
-        $data                = $dataBuilder->build();
-
-        return compact('options', 'notification', 'data');
-    }
 }

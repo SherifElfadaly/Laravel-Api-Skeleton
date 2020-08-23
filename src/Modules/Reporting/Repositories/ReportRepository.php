@@ -29,7 +29,7 @@ class ReportRepository extends BaseRepository
      */
     public function renderReport($report, $conditions = [], $perPage = 0)
     {
-        $report = ! is_int($report) ? $report : $this->find($report);
+        $report = ! filter_var($report, FILTER_VALIDATE_INT) ? $report : $this->find($report);
         /**
          * Fetch data from the report based on the given conditions.
          */

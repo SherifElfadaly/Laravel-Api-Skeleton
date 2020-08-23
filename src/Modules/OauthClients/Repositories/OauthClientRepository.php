@@ -26,7 +26,7 @@ class OauthClientRepository extends BaseRepository
      */
     public function revokeClientTokens($client)
     {
-        $client = is_int($client) ? $client : $this->find($client);
+        $client = ! filter_var($client, FILTER_VALIDATE_INT) ? $client : $this->find($client);
         $client->tokens()->update(['revoked' => true]);
     }
 

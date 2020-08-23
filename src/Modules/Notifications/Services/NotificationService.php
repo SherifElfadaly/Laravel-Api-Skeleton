@@ -66,12 +66,13 @@ class NotificationService extends BaseService
      *
      * @param  collection $users
      * @param  string     $notification
-     * @param  object     $notificationData
+     * @param  Variadic   $notificationData
      * @return void
      */
-    public function notify($users, $notification, $notificationData = false)
+    public function notify($users, $notification, ...$notificationData)
     {
+        $users = is_array($users) ? $this->userRepo->findBy(['id' => ['op' => 'in', 'val' => $users]]) : $users;
         $notification = 'App\Modules\Notifications\Notifications\\'.$notification;
-        \Notification::send($users, new $notification($notificationData));
+        \Notification::send($users, new $notification(...$notificationData));
     }
 }

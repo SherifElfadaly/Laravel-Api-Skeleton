@@ -27,7 +27,7 @@ class UserRepository extends BaseRepository
      */
     public function detachRoles($user)
     {
-        $user = ! is_int($user) ? $user : $this->find($user);
+        $user = ! filter_var($user, FILTER_VALIDATE_INT) ? $user : $this->find($user);
         $user->roles()->detach();
     }
 
@@ -40,7 +40,7 @@ class UserRepository extends BaseRepository
      */
     public function attachRoles($user, $roleIds)
     {
-        $user = ! is_int($user) ? $user : $this->find($user);
+        $user = ! filter_var($user, FILTER_VALIDATE_INT) ? $user : $this->find($user);
         $user->roles()->attach($roleIds);
     }
 
@@ -53,7 +53,7 @@ class UserRepository extends BaseRepository
      */
     public function countRoles($user, $roles)
     {
-        $user = ! is_int($user) ? $user : $this->find($user);
+        $user = ! filter_var($user, FILTER_VALIDATE_INT) ? $user : $this->find($user);
         return $user->roles()->whereIn('name', $roles)->count();
     }
 }

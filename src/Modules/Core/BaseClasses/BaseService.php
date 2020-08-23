@@ -201,9 +201,9 @@ abstract class BaseService implements BaseServiceInterface
         $filters = [];
         $translatable = $this->repo->model->translatable ?? [];
         foreach ($conditions as $key => $value) {
-            if ($value && (in_array($key, $this->repo->model->fillable ?? []) || method_exists($this->repo->model, $key) || in_array($key, ['or', 'and']))) {
+            if ((in_array($key, $this->repo->model->fillable ?? []) || method_exists($this->repo->model, $key) || in_array($key, ['or', 'and'])) && $key !== 'trashed') {
                 $key = in_array($key, $translatable) ? $key . '->' . (\Session::get('locale') == 'all' ? 'en' : \Session::get('locale')) : $key;
-                if (filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null && strpos($key, '_id') === false) {
+                if (filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null && strpos($key, '_id') === false && ! is_null($value)) {
                     $filters[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                 } elseif (! is_array($value) && strpos($key, '_id')) {
                     $filters[$key] = [
@@ -212,7 +212,7 @@ abstract class BaseService implements BaseServiceInterface
                     ];
                 } elseif (is_array($value)) {
                     $filters[$key] = $value;
-                } else {
+                } elseif($value) {
                     $key = 'LOWER(' . $key . ')';
                     $value = strtolower($value);
                     $filters[$key] = [

@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
         /**
          * Create Default roles.
          */
-        $role = Role::updateOrInsert([
+        Role::updateOrInsert([
             'name' => 'Admin',
         ],[
             'created_at' => \DB::raw('NOW()'),

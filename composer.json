@@ -25,7 +25,8 @@
         "laravel/passport": "^8.4",
         "caffeinated/modules": "^6.2",
         "predis/predis": "^1.1",
-        "php" : "~7.0|~7.4"
+        "php" : "~7.0|~7.4",
+        "pusher/pusher-php-server": "~4.0"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*",
