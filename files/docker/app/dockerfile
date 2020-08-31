@@ -69,7 +69,7 @@ RUN touch /var/log/cron.log
 RUN chmod 0644 /etc/cron.d/crons
 
 # register laravel scheduler
-COPY app/crons crons
+COPY app/crons /etc/cron.d/crons
 
 # start server, clear cach, run migrations and restart queue
 CMD php-fpm -D && \

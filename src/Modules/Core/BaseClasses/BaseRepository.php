@@ -94,6 +94,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function save(array $data)
     {
+        $local = \Session::get('locale');
         \Session::put('locale', 'all');
         $model      = false;
         $relations  = [];
@@ -104,6 +105,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
             $relations = $this->prepareRelations($data, $model);
             $model     = $this->saveModel($model, $relations);
         });
+        \Session::put('locale', $local);
         
         if (count($relations)) {
             $model->load(...array_keys($relations));

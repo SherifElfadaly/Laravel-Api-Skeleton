@@ -64,6 +64,7 @@ class MakeModuleCommand extends Command
         'Services'            => 'Services',
         'Routes'              => 'Routes',
         'Errors'              => 'Errors',
+        'Resources'           => 'Resources',
     ];
 
     /**
