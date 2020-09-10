@@ -4,7 +4,6 @@ namespace App\Modules\DummyModule\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
 use App\Modules\DummyModule\Services\DummyService;
-use App\Modules\DummyModule\Http\Requests\StoreDummy;
 
 class DummyController extends BaseApiController
 {

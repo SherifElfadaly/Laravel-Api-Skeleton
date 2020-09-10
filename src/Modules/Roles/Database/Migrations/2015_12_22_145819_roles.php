@@ -13,14 +13,14 @@ class Roles extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            increments('id');
+            $table->increments('id');
             $table->string('name', 100)->unique();
             $table->softDeletes();
             $table->timestamps();
         });
         
         Schema::create('role_user', function (Blueprint $table) {
-            increments('id');
+            $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('role_id');
             $table->softDeletes();

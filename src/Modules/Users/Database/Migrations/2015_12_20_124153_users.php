@@ -13,7 +13,7 @@ class Users extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            increments('id');
+            $table->increments('id');
             $table->string('profile_picture', 150)->nullable();
             $table->string('name', 100)->nullable();
             $table->string('email')->unique();

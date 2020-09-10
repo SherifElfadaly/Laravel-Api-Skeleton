@@ -13,7 +13,7 @@ class Permissions extends Migration
     public function up()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            increments('id');
+            $table->increments('id');
             $table->string('name', 100);
             $table->string('model', 100);
             $table->softDeletes();
@@ -21,7 +21,7 @@ class Permissions extends Migration
             $table->unique(array('name', 'model'));
         });
         Schema::create('permission_role', function (Blueprint $table) {
-            increments('id');
+            $table->increments('id');
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('permission_id');
             $table->softDeletes();
