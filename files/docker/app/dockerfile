@@ -78,13 +78,14 @@ CMD php-fpm -D && \
     sudo php artisan clear-compiled && \
     sudo php artisan view:clear && \
     sudo php artisan queue:restart && \
+    sudo php artisan optimize && \
     sudo php artisan module:optimize && \
     sudo php artisan module:migrate && \
+    sudo php artisan module:seed roles && \
     sudo php artisan module:seed && \
     sudo php artisan storage:link && \
     sudo php artisan module:passport:install && \
     sudo php artisan module:optimize && \
-    sudo php artisan optimize && \
     sudo php artisan doc:generate && \
     sudo chown -R www-data:www-data /var/www/html && \ 
     sudo find /var/www/html -type f -exec chmod 664 {} \; && \ 

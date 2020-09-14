@@ -16,29 +16,6 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         /**
-         * Create Default roles.
-         */
-        Role::updateOrInsert([
-            'name' => 'Admin',
-        ],[
-            'created_at' => \DB::raw('NOW()'),
-            'updated_at' => \DB::raw('NOW()')
-        ]);
-
-        /**
-         * Create Default user.
-         */
-        AclUser::updateOrInsert([
-            'email' => 'admin@user.com',
-        ],[
-            'name'       => 'Admin',
-            'password'   => \Hash::make('123456'),
-            'confirmed'  => 1,
-            'created_at' => \DB::raw('NOW()'),
-            'updated_at' => \DB::raw('NOW()')
-        ]);
-
-        /**
          * Insert the permissions related to users table.
          */
         \DB::table('permissions')->insert(

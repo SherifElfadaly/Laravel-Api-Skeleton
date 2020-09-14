@@ -32,6 +32,7 @@ php artisan module:migrate
 
 run database seeds
 ``` bash
+php artisan module:seed roles
 php artisan module:seed
 ```
 

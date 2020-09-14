@@ -110,7 +110,7 @@ class UserController extends BaseApiController
      */
     public function register(Register $request)
     {
-        return new $this->modelResource($this->service->register($request->get('name'), $request->get('email'), $request->get('password')));
+        return new $this->modelResource($this->service->register($request->validated()));
     }
 
     /**

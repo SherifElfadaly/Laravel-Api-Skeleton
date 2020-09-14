@@ -14,11 +14,34 @@ class RolesTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {        
+    {      
+        /**
+         * Create Default roles.
+         */
+        Role::updateOrInsert([
+            'name' => RoleEnum::ADMIN,
+        ],[
+            'created_at' => \DB::raw('NOW()'),
+            'updated_at' => \DB::raw('NOW()')
+        ]);
+  
+        /**
+         * Create Default user.
+         */
+        AclUser::updateOrInsert([
+            'email' => 'admin@user.com',
+        ],[
+            'name'       => 'Admin',
+            'password'   => \Hash::make('123456'),
+            'confirmed'  => 1,
+            'created_at' => \DB::raw('NOW()'),
+            'updated_at' => \DB::raw('NOW()')
+        ]);
+
         /**
          * Assign default users to admin roles.
          */
-        $adminRoleId = Role::where('name', 'Admin')->select('id')->first()->id;;
+        $adminRoleId = Role::where('name', RoleEnum::ADMIN)->select('id')->first()->id;;
         $adminUserId = AclUser::where('email', 'admin@user.com')->select('id')->first()->id;
         \DB::table('role_user')->updateOrInsert([
             'user_id' => $adminUserId,

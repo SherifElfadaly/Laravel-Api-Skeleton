@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'disable_confirm_email' => env('DISABLE_CONFIRM_EMAIL', false),
+    'disable_confirm_email' => env('DISABLE_CONFIRM_EMAIL', true),
 
     /*
     |--------------------------------------------------------------------------

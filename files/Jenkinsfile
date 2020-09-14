@@ -5,7 +5,7 @@ pipeline {
             steps {
                 sh 'sudo mkdir -p /var/www/docker/skeleton'
                 sh 'sudo rm -rf /var/www/docker/skeleton/app /var/www/docker/skeleton/config /var/www/docker/skeleton/resources /var/www/docker/skeleton/.env'
-                sh 'sudo cp /var/www/configs/skeleton/.env ../skeleton/'
+                sh 'sudo cp /var/www/configs/skeleton/.env ../skeleton/.env'
                 sh 'sudo cp -rf ../skeleton /var/www/docker/'
                 sh 'sudo docker image prune -f'
                 sh 'sudo docker-compose -f /var/www/docker/skeleton/docker/docker-compose.yml build'

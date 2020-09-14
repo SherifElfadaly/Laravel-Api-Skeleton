@@ -181,24 +181,23 @@ class UserService extends BaseService
 
         return $this->login($user['email'], config('user.social_pass'));
     }
-    
     /**
      * Handle the registration request.
      *
-     * @param  string  $name
-     * @param  string  $email
-     * @param  string  $password
+     * @param  array   $data
      * @param  boolean $skipConfirmEmail
-     * @return array
+     * @param  integer $roleId
+     * @return object
      */
-    public function register($name, $email, $password, $skipConfirmEmail = false)
+    public function register($data, $skipConfirmEmail = false, $roleId = false)
     {
-        $user = $this->repo->save([
-            'name'      => $name,
-            'email'     => $email,
-            'password'  => $password,
-            'confirmed' => $skipConfirmEmail
-        ]);
+        $data['confirmed'] = $skipConfirmEmail;
+
+        if($roleId){
+            $data ['roles'] = [['id' => $roleId]];
+        }
+
+        $user = $this->repo->save($data);
 
         if (! $skipConfirmEmail && ! config('user.disable_confirm_email')) {
             $this->sendConfirmationEmail($user->email);
