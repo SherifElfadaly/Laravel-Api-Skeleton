@@ -52,7 +52,7 @@ class OauthClientService extends BaseService
      */
     public function accessTokenExpiredOrRevoked($accessToken)
     {
-        return $this->oauthClientRepository->accessTokenExpiredOrRevoked($accessToken);
+        return $this->repo->accessTokenExpiredOrRevoked($accessToken);
     }
 
     /**
@@ -64,6 +64,6 @@ class OauthClientService extends BaseService
      */
     public function revokeAccessToken($accessToken)
     {
-        return $this->oauthClientRepository->revokeAccessToken($accessToken);
+        return $this->repo->revokeAccessToken($accessToken);
     }
 }

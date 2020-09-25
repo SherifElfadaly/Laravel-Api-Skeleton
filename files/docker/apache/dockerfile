@@ -13,4 +13,4 @@ COPY apache/laravel-ssl.conf /usr/local/apache2/conf/extra/laravel-ssl.conf
 COPY apache/httpd.conf /usr/local/apache2/conf/httpd.conf
 
 # generate certificates
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert.key -out /etc/ssl/certs/ssl-cert.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=$APP_DOMAIN"
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert.key -out /etc/ssl/certs/ssl-cert.pem -subj "/C=EG/ST=CA/Cairo/O=Security/CN=domain.com"

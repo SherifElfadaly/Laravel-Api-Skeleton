@@ -85,6 +85,7 @@ CMD php-fpm -D && \
     sudo php artisan module:seed && \
     sudo php artisan storage:link && \
     sudo php artisan module:passport:install && \
+    sudo php artisan optimize && \
     sudo php artisan module:optimize && \
     sudo php artisan doc:generate && \
     sudo chown -R www-data:www-data /var/www/html && \ 

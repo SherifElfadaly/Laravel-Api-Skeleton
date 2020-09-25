@@ -3,8 +3,6 @@
 namespace App\Modules\Users\Database\Seeds;
 
 use Illuminate\Database\Seeder;
-use App\Modules\Users\AclUser;
-use App\Modules\Roles\Role;
 
 class UsersTableSeeder extends Seeder
 {

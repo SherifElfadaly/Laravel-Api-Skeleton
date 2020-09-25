@@ -225,6 +225,6 @@ class UserController extends BaseApiController
      */
     public function saveProfile(SaveProfile $request)
     {
-        return new $this->modelResource($this->service->saveProfile($request->get('name'), $request->get('email'), $request->get('profile_picture')));
+        return new $this->modelResource($this->service->saveProfile($request->validated()));
     }
 }

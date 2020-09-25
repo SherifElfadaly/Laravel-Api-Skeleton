@@ -339,20 +339,13 @@ class UserService extends BaseService
     /**
      * Save the given data to the logged in user.
      *
-     * @param  string $name
-     * @param  string $email
-     * @param  string $profilePicture
+     * @param  array $data
      * @return void
      */
-    public function saveProfile($name, $email, $profilePicture = false)
+    public function saveProfile($data)
     {
         $data['id'] = \Auth::id();
-        return $this->repo->save([
-            'id'             => \Auth::id(),
-            'name'           => $name,
-            'email'          => $email,
-            'profilePicture' => $profilePicture,
-        ]);
+        return $this->repo->save($data);
     }
 
     /**
