@@ -80,9 +80,9 @@ CMD php-fpm -D && \
     sudo php artisan queue:restart && \
     sudo php artisan optimize && \
     sudo php artisan module:optimize && \
-    sudo php artisan module:migrate && \
-    sudo php artisan module:seed roles && \
-    sudo php artisan module:seed && \
+    sudo php artisan module:migrate --force && \
+    sudo php artisan module:seed roles --force && \
+    sudo php artisan module:seed --force && \
     sudo php artisan storage:link && \
     sudo php artisan module:passport:install && \
     sudo php artisan optimize && \

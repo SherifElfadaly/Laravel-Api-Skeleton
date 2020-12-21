@@ -23,8 +23,9 @@ class StoreRole extends FormRequest
      */
     public function rules()
     {
+        $requiredOrNullable = request()->isMethod('PATCH') ? 'nullable' : 'required' . '';
         return [
-            'name' => 'required|string|max:100|unique:roles,name,' . $this->route('id')
+            'name' => $requiredOrNullable . '|string|max:100|unique:roles,name,' . $this->route('id')
         ];
     }
 }

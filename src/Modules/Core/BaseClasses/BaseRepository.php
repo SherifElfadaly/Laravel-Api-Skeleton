@@ -80,10 +80,27 @@ abstract class BaseRepository implements BaseRepositoryInterface
      * @param  array   $conditions array of conditions
      * @return collection
      */
-    public function count($conditions)
+    public function count($conditions = false)
+    {
+        if($conditions) {
+            $conditions = $this->constructConditions($conditions, $this->model);
+            return $this->model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->count();
+        }
+        
+        return $this->model->count();
+    }
+
+    /**
+     * Pluck column based on the given condition from storage.
+     *
+     * @param  array   $conditions array of conditions
+     * @param  string   $column
+     * @return collection
+     */
+    public function pluck($conditions, $column)
     {
         $conditions = $this->constructConditions($conditions, $this->model);
-        return $this->model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->count();
+        return $this->model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->pluck($column);
     }
     
     /**
@@ -112,6 +129,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
         }
 
         return $model;
+    }
+    
+    /**
+     * Insert the given model/models to the storage.
+     *
+     * @param  array $data
+     * @return mixed
+     */
+    public function insert(array $data)
+    {
+        return $this->model->insert($data);
     }
 
     /**

@@ -176,6 +176,7 @@ class GenerateDocCommand extends Command
      */
     protected function getPostData(&$route, $reflectionMethod, $module, $modelName)
     {
+        request()->setMethod($route['method']);
         $parameters = $reflectionMethod->getParameters();
         $className = optional(optional(\Arr::get($parameters, 0))->getType())->getName();
         if ($className) {

@@ -23,9 +23,10 @@ class StoreUser extends FormRequest
      */
     public function rules()
     {
+        $requiredOrNullable = request()->isMethod('PATCH') ? 'nullable' : 'required' . '';
         return [
             'name'     => 'nullable|string',
-            'email'    => 'required|email|unique:users,email,' . $this->route('id'),
+            'email'    => $requiredOrNullable . '|email|unique:users,email,' . $this->route('id'),
             'password' => 'nullable|min:6'
         ];
     }

@@ -23,10 +23,11 @@ class StoreOauthClient extends FormRequest
      */
     public function rules()
     {
+        $requiredOrNullable = request()->isMethod('PATCH') ? 'nullable' : 'required' . '';
         return [
-            'name'     => 'required|max:255',
-            'redirect' => 'required|url',
-            'user_id'  => 'required|exists:users,id',
+            'name'     => $requiredOrNullable . '|max:255',
+            'redirect' => $requiredOrNullable . '|url',
+            'user_id'  => $requiredOrNullable . '|exists:users,id',
             'revoked'  => 'boolean'
         ];
     }

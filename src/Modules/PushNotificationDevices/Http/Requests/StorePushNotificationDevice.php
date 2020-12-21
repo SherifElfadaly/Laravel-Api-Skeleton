@@ -23,9 +23,10 @@ class StorePushNotificationDevice extends FormRequest
      */
     public function rules()
     {
+        $requiredOrNullable = request()->isMethod('PATCH') ? 'nullable' : 'required' . '';
         return [
-            'device_token' => 'required|string|max:255',
-            'user_id'      => 'required|exists:users,id'
+            'device_token' => $requiredOrNullable . '|string|max:255',
+            'user_id'      => $requiredOrNullable . '|exists:users,id'
         ];
     }
 }

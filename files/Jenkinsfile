@@ -16,15 +16,18 @@ pipeline {
                 sh 'sudo docker-compose -f /var/www/docker/skeleton/docker/docker-compose.yml up -d'
                 sh 'sudo docker exec skeleton php artisan clear-compiled'
                 sh 'sudo docker exec skeleton php artisan view:clear'
-                sh 'sudo docker exec skeleton php artisan queue:restart'
+                sh 'sudo docker exec skeleton php artisan cache:clear'
+                sh 'sudo docker exec skeleton php artisan config:clear'
                 sh 'sudo docker exec skeleton php artisan module:optimize'
-                sh 'sudo docker exec skeleton php artisan module:migrate'
-                sh 'sudo docker exec skeleton php artisan module:seed'
+                sh 'sudo docker exec skeleton php artisan module:migrate --force'
+                sh 'sudo docker exec skeleton php artisan module:seed roles --force'
+                sh 'sudo docker exec skeleton php artisan module:seed --force'
                 sh 'sudo docker exec skeleton php artisan storage:link'
                 sh 'sudo docker exec skeleton php artisan module:passport:install'
                 sh 'sudo docker exec skeleton php artisan module:optimize'
                 sh 'sudo docker exec skeleton php artisan optimize'
                 sh 'sudo docker exec skeleton php artisan doc:generate'
+                sh 'sudo docker exec skeleton php artisan queue:restart'
             }
         }
     }
