@@ -2,7 +2,7 @@
 
 namespace App\Modules\Users;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 use App\Modules\Notifications\Notification;
