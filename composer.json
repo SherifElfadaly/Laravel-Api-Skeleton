@@ -19,14 +19,14 @@
     "require": {
         "intervention/image": "^2.5",
         "benwilkins/laravel-fcm-notification": "^4.0",
-        "phpdocumentor/reflection-docblock": "^5.1",
-        "jackiedo/dotenv-editor": "^1.1",
-        "laravel/socialite": "^5.1.3",
-        "laravel/passport": "^8.4",
+        "phpdocumentor/reflection-docblock": "^5.2",
+        "jackiedo/dotenv-editor": "^1.2",
+        "laravel/socialite": "^5.1",
+        "laravel/passport": "^9.4",
         "caffeinated/modules": "^6.2",
         "predis/predis": "^1.1",
         "php" : "~7.0|~7.4",
-        "pusher/pusher-php-server": "~4.0"
+        "pusher/pusher-php-server": "~4.1"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*",
