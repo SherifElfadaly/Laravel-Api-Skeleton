@@ -21,7 +21,7 @@
         "benwilkins/laravel-fcm-notification": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.1",
         "jackiedo/dotenv-editor": "^1.1",
-        "laravel/socialite": "^4.3",
+        "laravel/socialite": "^5.1.3",
         "laravel/passport": "^8.4",
         "caffeinated/modules": "^6.2",
         "predis/predis": "^1.1",
