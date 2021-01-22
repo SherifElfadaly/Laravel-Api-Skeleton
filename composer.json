@@ -23,7 +23,7 @@
         "jackiedo/dotenv-editor": "^1.2",
         "laravel/socialite": "^5.1",
         "laravel/passport": "^10.1",
-        "caffeinated/modules": "^6.2",
+        "api-skeleton/modules": "^6.2",
         "predis/predis": "^1.1",
         "php": "^7.2|^8.0",
         "pusher/pusher-php-server": "~4.1"
