@@ -17,7 +17,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'DummyModuleSlug');
 
         $this->loadMigrationsFrom(module_path('DummyModuleSlug', 'Database/Migrations', 'app'));
-        $this->loadFactoriesFrom(module_path('DummyModuleSlug', 'Database/Factories', 'app'));
         if (!$this->app->configurationIsCached()) {
             $this->loadConfigsFrom(module_path('DummyModuleSlug', 'Config', 'app'));
         }

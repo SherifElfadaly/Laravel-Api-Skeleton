@@ -5,6 +5,7 @@ namespace App\Modules\Core\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use App\Modules\Reporting\Services\ReportService;
+use Illuminate\Support\Facades\App;
 
 class GenerateDocCommand extends Command
 {
@@ -263,7 +264,10 @@ class GenerateDocCommand extends Command
             }
             
             $modelClass = get_class($repo->model);
-            $model      = factory($modelClass)->make();
+            $nameSpaceArr = explode('\\', $modelClass);
+            array_pop($nameSpaceArr);
+            $factory = implode('\\', $nameSpaceArr) . '\\Database\Factories\\' . ucfirst($modelName) . 'Factory';
+            $model = App::make($factory)->make();
 
             $property = $reflectionClass->getProperty('modelResource');
             $property->setAccessible(true);

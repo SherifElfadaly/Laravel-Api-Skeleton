@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOauthAccessTokensTable extends Migration
+class CreateOauthClientsTable extends Migration
 {
     /**
      * The database schema.
@@ -24,21 +24,33 @@ class CreateOauthAccessTokensTable extends Migration
     }
 
     /**
+     * Get the migration connection name.
+     *
+     * @return string|null
+     */
+    public function getConnection()
+    {
+        return config('passport.storage.database.connection');
+    }
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        $this->schema->create('oauth_access_tokens', function (Blueprint $table) {
-            $table->string('id', 100)->primary();
+        $this->schema->create('oauth_clients', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->unsignedBigInteger('client_id');
-            $table->string('name')->nullable();
-            $table->text('scopes')->nullable();
+            $table->string('name');
+            $table->string('secret', 100)->nullable();
+            $table->string('provider')->nullable();
+            $table->text('redirect');
+            $table->boolean('personal_access_client');
+            $table->boolean('password_client');
             $table->boolean('revoked');
             $table->timestamps();
-            $table->dateTime('expires_at')->nullable();
         });
     }
 
@@ -49,16 +61,6 @@ class CreateOauthAccessTokensTable extends Migration
      */
     public function down()
     {
-        $this->schema->dropIfExists('oauth_access_tokens');
-    }
-
-    /**
-     * Get the migration connection name.
-     *
-     * @return string|null
-     */
-    public function getConnection()
-    {
-        return config('passport.storage.database.connection');
+        $this->schema->dropIfExists('oauth_clients');
     }
 }

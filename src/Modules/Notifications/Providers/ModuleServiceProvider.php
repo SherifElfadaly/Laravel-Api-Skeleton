@@ -17,7 +17,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'notifications');
 
         $this->loadMigrationsFrom(module_path('notifications', 'Database/Migrations', 'app'));
-        $this->loadFactoriesFrom(module_path('notifications', 'Database/Factories', 'app'));
         if (!$this->app->configurationIsCached()) {
             $this->loadConfigsFrom(module_path('notifications', 'Config', 'app'));
         }

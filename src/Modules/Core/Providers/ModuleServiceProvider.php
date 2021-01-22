@@ -17,7 +17,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'core');
 
         $this->loadMigrationsFrom(module_path('core', 'Database/Migrations', 'app'));
-        $this->loadFactoriesFrom(module_path('core', 'Database/Factories', 'app'));
         if (!$this->app->configurationIsCached()) {
             $this->loadConfigsFrom(module_path('core', 'Config', 'app'));
         }

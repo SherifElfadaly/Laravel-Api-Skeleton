@@ -17,7 +17,6 @@ class ModuleServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../Resources/Views', 'oauth-clients');
 
         $this->loadMigrationsFrom(module_path('oauth-clients', 'Database/Migrations', 'app'));
-        $this->loadFactoriesFrom(module_path('oauth-clients', 'Database/Factories', 'app'));
         if (!$this->app->configurationIsCached()) {
             $this->loadConfigsFrom(module_path('oauth-clients', 'Config', 'app'));
         }

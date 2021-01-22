@@ -5,6 +5,7 @@ namespace App\Modules\Core;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Modules\Core\ModelObservers\SettingsObserver;
+use App\Modules\Core\Traits\Translatable;
 
 class Setting extends Model
 {

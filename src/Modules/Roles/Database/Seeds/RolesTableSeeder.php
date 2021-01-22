@@ -2,6 +2,7 @@
 
 namespace App\Modules\Roles\Database\Seeds;
 
+use App\Modules\Roles\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use App\Modules\Roles\Role;
 use App\Modules\Users\AclUser;
@@ -20,9 +21,6 @@ class RolesTableSeeder extends Seeder
          */
         Role::updateOrInsert([
             'name' => RoleEnum::ADMIN,
-        ],[
-            'created_at' => \DB::raw('NOW()'),
-            'updated_at' => \DB::raw('NOW()')
         ]);
   
         /**
@@ -32,10 +30,8 @@ class RolesTableSeeder extends Seeder
             'email' => 'admin@user.com',
         ],[
             'name'       => 'Admin',
-            'password'   => \Hash::make('123456'),
-            'confirmed'  => 1,
-            'created_at' => \DB::raw('NOW()'),
-            'updated_at' => \DB::raw('NOW()')
+            'password'   => '123456',
+            'confirmed'  => 1
         ]);
 
         /**
