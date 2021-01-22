@@ -9,12 +9,14 @@ use App\Modules\Core\ModelObservers\SettingsObserver;
 class Setting extends Model
 {
 
-    use SoftDeletes;
+    use SoftDeletes, Translatable;
     protected $table = 'settings';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden = ['deleted_at'];
     protected $guarded = ['id', 'key'];
     public $fillable = ['name', 'value'];
+    public $translatable = ['value'];
+    public $casts = ['value' => 'json'];
     
     public function newCollection(array $models = [])
     {

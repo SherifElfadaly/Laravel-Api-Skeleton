@@ -28,7 +28,7 @@ class RolesTableSeeder extends Seeder
         /**
          * Create Default user.
          */
-        AclUser::updateOrInsert([
+        AclUser::firstOrCreate([
             'email' => 'admin@user.com',
         ],[
             'name'       => 'Admin',

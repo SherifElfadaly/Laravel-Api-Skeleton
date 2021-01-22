@@ -3,6 +3,7 @@
 namespace App\Modules\Core\BaseClasses;
 
 use App\Modules\Core\Interfaces\BaseServiceInterface;
+use Illuminate\Support\Facades\Session;
 
 abstract class BaseService implements BaseServiceInterface
 {
@@ -37,7 +38,7 @@ abstract class BaseService implements BaseServiceInterface
     {
         $translatable = $this->repo->model->translatable ?? [];
         $filters = $this->constructFilters($conditions);
-        $sortBy = in_array($sortBy, $translatable) ? $sortBy . '->' . \Session::get('locale') : $sortBy;
+        $sortBy = in_array($sortBy, $translatable) ? $sortBy . '->' . Session::get('locale') : $sortBy;
 
         if ($trashed) {
             return $this->deleted(['and' => $filters], $perPage ?? 15, $sortBy ?? 'created_at', $desc ?? true);
@@ -202,17 +203,44 @@ abstract class BaseService implements BaseServiceInterface
         $translatable = $this->repo->model->translatable ?? [];
         foreach ($conditions as $key => $value) {
             if ((in_array($key, $this->repo->model->fillable ?? []) || method_exists($this->repo->model, $key) || in_array($key, ['or', 'and'])) && $key !== 'trashed') {
-                $key = in_array($key, $translatable) ? $key . '->' . (\Session::get('locale') == 'all' ? 'en' : \Session::get('locale')) : $key;
+                /**
+                 * Prepare key based on the the requested lang if it was translatable.
+                 */
+                $key = in_array($key, $translatable) ? $key . '->' . (Session::get('locale') == 'all' ? 'en' : Session::get('locale')) : $key;
+
+                /**
+                 * Convert 0/1 or true/false to boolean in case of not foreign key.
+                 */
                 if (filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null && strpos($key, '_id') === false && ! is_null($value)) {
                     $filters[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-                } elseif (! is_array($value) && strpos($key, '_id')) {
+
+                /**
+                 * Use in operator in case of foreign and comma seperated values.
+                 */
+                } elseif (! is_array($value) && strpos($key, '_id') && $value) {
                     $filters[$key] = [
                         'op' => 'in',
                         'val' => explode(',', $value)
                     ];
+
+                /**
+                 * Use null operator in case of 0 value and foreign.
+                 */
+                } elseif (strpos($key, '_id') && $value == 0) {
+                    $filters[$key] = [
+                        'op' => 'null'
+                    ];
+
+                /**
+                 * Consider values as a sub conditions if it is array.
+                 */
                 } elseif (is_array($value)) {
                     $filters[$key] = $value;
-                } elseif($value) {
+
+                /**
+                 * Default string filteration.
+                 */
+                } elseif ($value) {
                     $key = 'LOWER(' . $key . ')';
                     $value = strtolower($value);
                     $filters[$key] = [

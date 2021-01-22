@@ -59,9 +59,12 @@ RUN docker-php-source extract && \
     docker-php-source delete
 
 # composer
+# RUN curl -sS https://getcomposer.org/installer | php && \
+#     mv composer.phar /usr/local/bin/composer && \
+#     composer global require hirak/prestissimo --no-plugins --no-scripts
+
 RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer && \
-    composer global require hirak/prestissimo --no-plugins --no-scripts
+    mv composer.phar /usr/local/bin/composer
 
 # configure cron
 RUN touch /etc/cron.d/crons

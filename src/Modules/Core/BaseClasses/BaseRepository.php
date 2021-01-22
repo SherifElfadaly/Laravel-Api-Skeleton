@@ -367,7 +367,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                                     /**
                                      * Prevent the sub relations or attributes not in the fillable.
                                      */
-                                    if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false) {
+                                    if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false && class_basename($model->$key()) !== 'BelongsToMany') {
                                         $relationModel->$attr = $val;
                                     } elseif (gettype($val) !== 'object' && gettype($val) !== 'array' && $attr !== 'id') {
                                         $extra[$attr] = $val;
@@ -466,6 +466,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                          * attache these ids to the model.
                          */
                         case 'BelongsToMany':
+                        case 'MorphToMany':
                             $extra = $val->extra;
                             unset($val->extra);
                             $val->save();
@@ -488,6 +489,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                      * the ids array to the model.
                      */
                     case 'BelongsToMany':
+                    case 'MorphToMany':
                         $model->$key()->detach();
                         $model->$key()->attach($ids);
                         break;
@@ -577,10 +579,15 @@ abstract class BaseRepository implements BaseRepositoryInterface
                 } elseif (strtolower($operator) == 'has') {
                     $sql              = $model->withTrashed()->withoutGlobalScopes()->has($key)->toSql();
                     $bindings         = $model->withTrashed()->withoutGlobalScopes()->has($key)->getBindings();
-                    $conditions       = $this->constructConditions($value, $model->$key()->getRelated());
-                    $conditionString .= substr(substr($sql, strpos($sql, 'exists')), 0, -1).' and '.$conditions['conditionString'].') {op} ';
-                    $conditionValues  = array_merge($conditionValues, $bindings);
-                    $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
+                    if($value) {
+                        $conditions       = $this->constructConditions($value, $model->$key()->getRelated());
+                        $conditionString .= substr(substr($sql, strpos($sql, 'exists')), 0, -1).' and '.$conditions['conditionString'].') {op} ';
+                        $conditionValues  = array_merge($conditionValues, $bindings);
+                        $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
+                    } else {
+                        $conditionString .= substr(substr($sql, strpos($sql, 'exists')), 0, -1).') {op} ';
+                        $conditionValues  = array_merge($conditionValues, $bindings);
+                    }
                 } else {
                     $conditionString  .= $key.' '.$operator.' ? {op} ';
                     $conditionValues[] = $value;
