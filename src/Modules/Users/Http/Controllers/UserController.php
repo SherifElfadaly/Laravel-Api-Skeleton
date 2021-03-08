@@ -174,6 +174,17 @@ class UserController extends BaseApiController
     }
 
     /**
+     * Render reset password page.
+     *
+     * @param string $resetToken
+     * @return \Illuminate\Http\Response
+     */
+    public function resetPasswordPage($resetToken)
+    {
+        return view('users::reset_password', ['reset_token' => $resetToken]);
+    }
+
+    /**
      * Change the logged in user password.
      *
      * @param ChangePassword $request
@@ -193,6 +204,17 @@ class UserController extends BaseApiController
     public function confirmEmail(ConfirmEmail $request)
     {
         return new GeneralResource($this->service->confirmEmail($request->only('confirmation_code')));
+    }
+
+    /**
+     * Render confirm email page using the confirmation code.
+     *
+     * @param string $confirmationToken
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmEmailPage($confirmationToken)
+    {
+        return view('users::confirm_email', ['confirmation_token' => $confirmationToken]);
     }
 
     /**

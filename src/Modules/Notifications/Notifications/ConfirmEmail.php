@@ -40,10 +40,12 @@ class ConfirmEmail extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $url = config('user.confrim_email_url') ? config('user.confrim_email_url').'/'.$notifiable->confirmation_code : route('confirm_email_page', $notifiable->confirmation_code);
+        
         return (new MailMessage)
             ->subject('Email verification')
             ->line('Email verification')
             ->line('To validate your email click on the button below')
-            ->action('Verify your email', config('user.confrim_email_url').'/'.$notifiable->confirmation_code);
+            ->action('Verify your email', $url);
     }
 }

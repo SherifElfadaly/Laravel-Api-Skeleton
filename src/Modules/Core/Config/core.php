@@ -68,11 +68,11 @@ return [
                 'deleted'
             ],
             'clear' => [
-                'save'             => ['oauthClient'],
-                'delete'           => ['oauthClient'],
-                'restore'          => ['oauthClient'],
-                'revoke'           => ['oauthClient'],
-                'ubRevoke'         => ['oauthClient'],
+                'save' => ['oauthClient'],
+                'delete' => ['oauthClient'],
+                'restore' => ['oauthClient'],
+                'revoke' => ['oauthClient'],
+                'ubRevoke' => ['oauthClient'],
                 'regenerateSecret' => ['oauthClient'],
             ],
         ],
@@ -87,7 +87,7 @@ return [
                 'deleted'
             ],
             'clear' => [
-                'save'     => ['setting'],
+                'save' => ['setting'],
                 'saveMany' => ['setting'],
             ]
         ]

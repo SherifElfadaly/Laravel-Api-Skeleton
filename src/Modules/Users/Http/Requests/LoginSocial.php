@@ -26,7 +26,7 @@ class LoginSocial extends FormRequest
         return [
             'auth_code'    => 'required_without:access_token',
             'access_token' => 'required_without:auth_code',
-            'type'         => 'required|in:facebook,google'
+            'type'         => 'required|in:facebook,google,apple'
         ];
     }
 }

@@ -27,10 +27,10 @@ class RolesTableSeeder extends Seeder
          * Create Default user.
          */
         AclUser::firstOrCreate([
-            'email' => 'admin@user.com',
+            'email' => config('role.admin_email'),
         ],[
             'name'       => 'Admin',
-            'password'   => '123456',
+            'password'   => config('role.admin_password'),
             'confirmed'  => 1
         ]);
 

@@ -20,6 +20,7 @@ class ApiSkeletonServiceProvider extends ServiceProvider
             __DIR__.'/../files/Handler.php'                  => app_path('Exceptions/Handler.php'),
             __DIR__.'/../files/AuthServiceProvider.php'      => app_path('Providers/AuthServiceProvider.php'),
             __DIR__.'/../files/BroadcastServiceProvider.php' => app_path('Providers/BroadcastServiceProvider.php'),
+            __DIR__.'/../files/EventServiceProvider.php'     => app_path('Providers/EventServiceProvider.php'),
             __DIR__.'/../files/Kernel.php'                   => app_path('Console/Kernel.php'),
             __DIR__.'/../files/HttpKernel.php'               => app_path('Http/Kernel.php'),
             __DIR__.'/../files/channels.php'                 => base_path('routes/channels.php'),

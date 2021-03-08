@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Modules\Core\Facades\Errors;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Arr;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,26 +52,45 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        $errors = $this->getErrorHandlers();
+
         if ($request->wantsJson()) {
-            if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
-                \Errors::unAuthorized();
-            }
-            if ($exception instanceof \Illuminate\Database\QueryException) {
-                \Errors::dbQueryError();
-            } elseif ($exception instanceof \predis\connection\connectionexception) {
-                \Errors::redisNotRunning();
-            } elseif ($exception instanceof \GuzzleHttp\Exception\ClientException) {
-                \Errors::connectionError();
-            } elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
-                $errors = $exception-> getStatusCode() === 404 ? 'not found' : $exception-> getMessage();
-                return \Response::json(['errors' => [$errors]], $exception-> getStatusCode());
-            } elseif ($exception instanceof \Illuminate\Validation\ValidationException) {
-                return \Response::json(['errors' => $exception-> errors()], 422);
-            } elseif (! $exception instanceof \Symfony\Component\ErrorHandler\Error\FatalError) {
-                return parent::render($request, $exception);
-            }
+            $exceptionClass = get_class($exception);
+            return Arr::has($errors, $exceptionClass) ? $errors[$exceptionClass]($request, $exception) : parent::render($request, $exception);
         }
-        
+
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Return handler for defined error types
+     *
+     * @return  array
+     */
+    protected function getErrorHandlers()
+    {
+        return [
+            \Illuminate\Auth\AuthenticationException::class => function ($request, $exception) {
+                Errors::unAuthorized();
+            },
+            \Illuminate\Database\QueryException::class => function ($request, $exception) {
+                Errors::dbQueryError();
+            },
+            \predis\connection\connectionexception::class => function ($request, $exception) {
+                Errors::redisNotRunning();
+            },
+            \RedisException::class => function ($request, $exception) {
+                Errors::redisNotRunning();
+            },
+            \GuzzleHttp\Exception\ClientException::class => function ($request, $exception) {
+                Errors::connectionError();
+            },
+            \Symfony\Component\HttpKernel\Exception\HttpException::class => function ($request, $exception) {
+                return response()->json(['errors' => [$exception->getStatusCode() === 404 ? 'not found' : $exception->getMessage()]], $exception->getStatusCode());
+            },
+            \Illuminate\Validation\ValidationException::class => function ($request, $exception) {
+                response()->json(['errors' => $exception->errors()], 422);
+            }
+        ];
     }
 }

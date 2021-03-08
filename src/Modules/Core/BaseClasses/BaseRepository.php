@@ -427,6 +427,23 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function saveModel($model, $relations)
     {
+        /**
+         * Sort relations.
+         */
+        $belongsTo = [];
+        $hasOne = [];
+        $array = [];
+        foreach ($relations as $key => $value) {
+            if (class_basename($model->$key()) === 'BelongsTo') {
+                $belongsTo[$key] = $value;
+            } elseif (class_basename($model->$key()) === 'HasOne') {
+                $hasOne[$key] = $value;
+            } else {
+                $array[$key] = $value;
+            }
+        };
+
+        $relations = array_merge($belongsTo, $hasOne, $array);
 
         /**
          * Loop through the relations array.

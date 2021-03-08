@@ -59,7 +59,7 @@ class CheckPermissions
         if (! in_array($permission, $skipLoginCheck)) {
             $this->authMiddleware->handle($request, function ($request) use ($modelName, $skipPermissionCheck, $permission) {
                 $user             = $this->auth->user();
-                $isPasswordClient = $user->token()->client->password_client;
+                $isPasswordClient = $user->token() ? $user->token()->client->password_client : false;
     
                 if ($user->blocked) {
                     \Errors::userIsBlocked();

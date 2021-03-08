@@ -22,7 +22,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'profile_picture' => 'http://lorempixel.com/400/200/',
+            'profile_picture' => 'https://picsum.photos/200/300',
             'name'            => $this->faker->name(),
             'email'           => $this->faker->safeEmail(),
             'password'        => 123456,

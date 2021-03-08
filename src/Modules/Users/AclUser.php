@@ -17,7 +17,7 @@ class AclUser extends User
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden = ['password', 'remember_token', 'deleted_at'];
     protected $guarded = ['id'];
-    public $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone', 'blocked', 'confirmed'];
+    public $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone', 'blocked', 'confirmed', 'confirmation_code'];
 
     /**
      * Encrypt the password attribute before
