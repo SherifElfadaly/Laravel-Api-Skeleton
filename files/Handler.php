@@ -89,7 +89,7 @@ class Handler extends ExceptionHandler
                 return response()->json(['errors' => [$exception->getStatusCode() === 404 ? 'not found' : $exception->getMessage()]], $exception->getStatusCode());
             },
             \Illuminate\Validation\ValidationException::class => function ($request, $exception) {
-                response()->json(['errors' => $exception->errors()], 422);
+                return response()->json(['errors' => $exception->errors()], 422);
             }
         ];
     }

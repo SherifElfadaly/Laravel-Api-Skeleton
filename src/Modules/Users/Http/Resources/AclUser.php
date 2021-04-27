@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Modules\Roles\Http\Resources\Role as RoleResource;
 use App\Modules\OauthClients\Http\Resources\OauthClient as OauthClientResource;
 use App\Modules\Notifications\Http\Resources\Notification as NotificationResource;
+use App\Modules\Permissions\Http\Resources\Permission as PermissionResource;
 
 class AclUser extends JsonResource
 {
@@ -30,6 +31,9 @@ class AclUser extends JsonResource
             'readNotifications' => NotificationResource::collection($this->whenLoaded('readNotifications')),
             'unreadNotifications' => NotificationResource::collection($this->whenLoaded('unreadNotifications')),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
+            'permissions' => $this->when($this->permissions, function () {
+                return PermissionResource::collection($this->permissions);
+            }),
             'oauthClients' => OauthClientResource::collection($this->whenLoaded('oauthClients')),
             'locale' => $this->locale,
             'timezone' => $this->timezone,

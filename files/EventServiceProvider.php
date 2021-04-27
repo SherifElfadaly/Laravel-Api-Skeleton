@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Modules\Core\Listeners\AppleExtendSocialite;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -20,7 +18,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-            AppleExtendSocialite::class,
+            'SocialiteProviders\\Apple\\AppleExtendSocialite@handle',
         ],
     ];
 

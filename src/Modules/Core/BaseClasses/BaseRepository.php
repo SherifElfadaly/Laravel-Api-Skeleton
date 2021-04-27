@@ -91,6 +91,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
+     * Return max value for the given column.
+     *
+     * @param  column
+     * @return integer
+     */
+    public function max($column)
+    {
+        return $this->model->max($column);
+    }
+
+    /**
      * Pluck column based on the given condition from storage.
      *
      * @param  array   $conditions array of conditions
@@ -101,6 +112,19 @@ abstract class BaseRepository implements BaseRepositoryInterface
     {
         $conditions = $this->constructConditions($conditions, $this->model);
         return $this->model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->pluck($column);
+    }
+
+    /**
+     * Update the given data based on the given conditions.
+     *
+     * @param  array   $conditions array of conditions
+     * @param  array   $data
+     * @return collection
+     */
+    public function update($conditions, $data)
+    {
+        $conditions = $this->constructConditions($conditions, $this->model);
+        return $this->model->whereRaw($conditions['conditionString'], $conditions['conditionValues'])->update($data);
     }
     
     /**
@@ -453,7 +477,24 @@ abstract class BaseRepository implements BaseRepositoryInterface
              * If the relation is marked for delete then delete it.
              */
             if ($value == 'delete' && $model->$key()->count()) {
-                $model->$key()->delete();
+                switch (class_basename($model->$key())) {
+                    /**
+                     * If the relation is one to many then delete all
+                     * relations who's id isn't in the ids array.
+                     */
+                    case 'HasMany':
+                        $model->$key()->delete();
+                        break;
+
+                    /**
+                     * If the relation is many to many then
+                     * detach the previous data and attach
+                     * the ids array to the model.
+                     */
+                    case 'BelongsToMany':
+                        $model->$key()->detach();
+                        break;
+                }
             } elseif (gettype($value) == 'array') {
                 /**
                  * Save the model.
@@ -605,6 +646,13 @@ abstract class BaseRepository implements BaseRepositoryInterface
                         $conditionString .= substr(substr($sql, strpos($sql, 'exists')), 0, -1).') {op} ';
                         $conditionValues  = array_merge($conditionValues, $bindings);
                     }
+                } elseif ($operator == 'doesntHave') {
+                    $sql              = $model->withTrashed()->withoutGlobalScopes()->whereDoesntHave($key)->toSql();
+                    $bindings         = $model->withTrashed()->withoutGlobalScopes()->whereDoesntHave($key)->getBindings();
+                    $conditions       = $this->constructConditions($value, $model->$key()->getRelated());
+                    $conditionString .= substr(substr($sql, strpos($sql, 'not exists')), 0, -1).' and '.$conditions['conditionString'].') {op} ';
+                    $conditionValues  = array_merge($conditionValues, $bindings);
+                    $conditionValues  = array_merge($conditionValues, $conditions['conditionValues']);
                 } else {
                     $conditionString  .= $key.' '.$operator.' ? {op} ';
                     $conditionValues[] = $value;

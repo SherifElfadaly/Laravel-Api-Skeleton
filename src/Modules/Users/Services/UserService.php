@@ -68,7 +68,7 @@ class UserService extends BaseService
         $user        = $this->repo->find(\Auth::id(), $relations);
         foreach ($user->roles as $role) {
             $role->permissions->each(function ($permission) use (&$permissions) {
-                $permissions[$permission->repo][$permission->id] = $permission->name;
+                $permissions[] = $permission;
             });
         }
         $user->permissions = $permissions;
@@ -175,7 +175,7 @@ class UserService extends BaseService
             \Errors::noSocialEmail();
         }
 
-        if (! $this->repo->first(['email' => $user['email']])) {
+        if (! $this->repo->first(['email' => $user['email']]) && ! $this->repo->deleted(['email' => $user['email']])->count()) {
             $this->register(Arr::get($user, 'name'), $user['email'], '', true);
         }
 

@@ -30,6 +30,8 @@ pipeline {
                 sh 'sudo docker exec skeleton php artisan optimize'
                 sh 'sudo docker exec skeleton php artisan doc:generate'
                 sh 'sudo docker exec skeleton php artisan queue:restart'
+                sh 'sudo docker exec track_egy_docker find /var/www/html -type f -exec chmod 664 {} \\;'
+                sh 'sudo docker exec track_egy_docker find /var/www/html -type d -exec chmod 775 {} \\;'
             }
         }
     }
