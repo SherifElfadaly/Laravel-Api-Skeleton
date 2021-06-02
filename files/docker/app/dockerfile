@@ -91,19 +91,4 @@ RUN chmod 0644 /etc/cron.d/crons
 COPY app/crons /etc/cron.d/crons
 
 # start server, clear cach, run migrations and restart queue
-CMD composer update nothing --prefer-dist --lock && \
-    composer install --prefer-dist --optimize-autoloader && \
-    sudo php artisan clear-compiled && \
-    sudo php artisan view:clear && \
-    sudo php artisan cache:clear && \
-    sudo php artisan config:clear && \
-    sudo php artisan module:optimize && \
-    sudo php artisan module:migrate --force && \
-    sudo php artisan module:seed roles --force && \
-    sudo php artisan module:seed --force && \
-    sudo php artisan optimize && \
-    sudo php artisan storage:link && \
-    sudo php artisan module:passport:install && \
-    sudo php artisan doc:generate && \
-    sudo php artisan queue:restart && \
-    sudo supervisord -c /etc/supervisor/conf.d/supervisord.conf
+CMD sudo supervisord -c /etc/supervisor/conf.d/supervisord.conf
