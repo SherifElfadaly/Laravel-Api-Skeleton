@@ -37,7 +37,7 @@ class BaseEnum
     }
 
     /**
-     * Get constant value for the given key.
+     * Get constant key for the given value.
      *
      * @return  mixed
      */

@@ -15,17 +15,18 @@
         "role": "Developer"
     }],
     "require": {
-        "intervention/image": "^2.5",
-        "benwilkins/laravel-fcm-notification": "^4.0",
-        "phpdocumentor/reflection-docblock": "^5.2",
-        "jackiedo/dotenv-editor": "^1.2",
-        "laravel/socialite": "^5.1",
-        "laravel/passport": "^10.1",
+        "intervention/image": "^2.*",
+        "benwilkins/laravel-fcm-notification": "^4.*",
+        "phpdocumentor/reflection-docblock": "^5.*",
+        "jackiedo/dotenv-editor": "^1.*",
+        "laravel/socialite": "^5.*",
+        "laravel/passport": "^10.*",
         "api-skeleton/modules": "^6.2",
-        "predis/predis": "^1.1",
+        "predis/predis": "^1.*",
         "php": "^7.2|^8.0",
-        "pusher/pusher-php-server": "~4.1",
-        "socialiteproviders/apple": "^4.1"
+        "pusher/pusher-php-server": "~4.*",
+        "socialiteproviders/apple": "^4.*",
+        "laravel/octane": "^1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",

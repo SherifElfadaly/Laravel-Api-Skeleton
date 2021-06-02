@@ -1,9 +1,10 @@
-FROM php:7.4-fpm
+FROM php:8.0
 
 WORKDIR /var/www/html/
 
 # development packages
 RUN apt-get update && apt-get install -y \
+    supervisor \
     git \
     zip \
     curl \
@@ -22,13 +23,17 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     g++ \
     cron \
-    nano
+    nano \
+    openssl \
+    libssl-dev
 
-# add php configurations
+# add php c
 COPY app/php.ini /usr/local/etc/php/conf.d
 COPY app/laravel.ini /usr/local/etc/php/conf.d
 COPY app/opcache.ini /usr/local/etc/php/conf.d
-COPY app/xlaravel.pool.conf /usr/local/etc/php-fpm.d
+
+# add supervisor supervisor
+COPY app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN docker-php-ext-install \
     bz2 \
@@ -40,7 +45,8 @@ RUN docker-php-ext-install \
     mbstring \
     pdo_mysql \
     zip \
-    gd
+    gd \
+    pcntl
 
 RUN docker-php-ext-configure gd \
     --enable-gd \
@@ -50,13 +56,23 @@ RUN docker-php-ext-configure gd \
     --with-webp
 
 RUN cd /usr/src/php/ext/gd && make
-RUN cp /usr/src/php/ext/gd/modules/gd.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/gd.so
 RUN docker-php-ext-install -j$(nproc) gd
 
 RUN docker-php-source extract && \
     pecl install redis && \
     docker-php-ext-enable redis && \
     docker-php-source delete
+
+# installing swoole
+RUN cd /tmp && git clone https://github.com/swoole/swoole-src.git && \
+    cd swoole-src && \
+    git checkout v4.6.4 && \
+    phpize  && \
+    ./configure --enable-openssl && \
+    make && make install
+
+RUN touch /usr/local/etc/php/conf.d/swoole.ini && \
+    echo 'extension=swoole.so' > /usr/local/etc/php/conf.d/swoole.ini
 
 # composer
 # RUN curl -sS https://getcomposer.org/installer | php && \
@@ -75,23 +91,19 @@ RUN chmod 0644 /etc/cron.d/crons
 COPY app/crons /etc/cron.d/crons
 
 # start server, clear cach, run migrations and restart queue
-CMD php-fpm -D && \
-    composer update nothing --prefer-dist --lock && \
+CMD composer update nothing --prefer-dist --lock && \
     composer install --prefer-dist --optimize-autoloader && \
     sudo php artisan clear-compiled && \
     sudo php artisan view:clear && \
-    sudo php artisan queue:restart && \
-    sudo php artisan optimize && \
+    sudo php artisan cache:clear && \
+    sudo php artisan config:clear && \
     sudo php artisan module:optimize && \
     sudo php artisan module:migrate --force && \
     sudo php artisan module:seed roles --force && \
     sudo php artisan module:seed --force && \
+    sudo php artisan optimize && \
     sudo php artisan storage:link && \
     sudo php artisan module:passport:install && \
-    sudo php artisan optimize && \
-    sudo php artisan module:optimize && \
     sudo php artisan doc:generate && \
-    sudo chown -R www-data:www-data /var/www/html && \ 
-    sudo find /var/www/html -type f -exec chmod 664 {} \; && \ 
-    sudo find /var/www/html -type d -exec chmod 775 {} \; && \
-    sudo php artisan queue:work redis --sleep=3 --tries=3
+    sudo php artisan queue:restart && \
+    sudo supervisord -c /etc/supervisor/conf.d/supervisord.conf

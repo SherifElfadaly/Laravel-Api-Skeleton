@@ -39,22 +39,8 @@ services:
         - 'skeleton_redis'
       networks:
         - backend
-      restart: always
-      
-    skeleton_apache:
-      container_name: 'skeleton_apache'
-      volumes:
-        - ../:/var/www/html/
-        - ../.env:/var/www/html/.env
-      build:
-        context: './'
-        dockerfile: './apache/dockerfile'
-      depends_on:
-        - skeleton_app
-      networks:
-        - backend
       ports:
-        - "${APACHE_EXTERNAL_PORT}:${APACHE_PORT}"
+        - "${APP_EXTERNAL_PORT}:${APP_PORT}"
       restart: always
 
 networks:
