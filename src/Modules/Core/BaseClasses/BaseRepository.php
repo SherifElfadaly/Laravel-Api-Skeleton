@@ -630,6 +630,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
                     $conditionValues  = array_merge($conditionValues, $value);
                     $inBindingsString = rtrim(str_repeat('?,', count($value)), ',');
                     $conditionString .= $key.' in ('.rtrim($inBindingsString, ',').') {op} ';
+                } elseif (strtolower($operator) == 'not in') {
+                    $conditionValues  = array_merge($conditionValues, $value);
+                    $inBindingsString = rtrim(str_repeat('?,', count($value)), ',');
+                    $conditionString .= $key.' not in ('.rtrim($inBindingsString, ',').') {op} ';
                 } elseif (strtolower($operator) == 'null') {
                     $conditionString .= $key.' is null {op} ';
                 } elseif (strtolower($operator) == 'not null') {

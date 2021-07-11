@@ -86,7 +86,7 @@ class Handler extends ExceptionHandler
                 Errors::connectionError();
             },
             \Symfony\Component\HttpKernel\Exception\HttpException::class => function ($request, $exception) {
-                return response()->json(['errors' => [$exception->getStatusCode() === 404 ? 'not found' : $exception->getMessage()]], $exception->getStatusCode());
+                return response()->json(['errors' => [$exception->getStatusCode() === 404 ? ($exception->getMessage() ?: 'not found') : $exception->getMessage()]], $exception->getStatusCode());
             },
             \Illuminate\Validation\ValidationException::class => function ($request, $exception) {
                 return response()->json(['errors' => $exception->errors()], 422);

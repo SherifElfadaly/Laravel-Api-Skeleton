@@ -4,17 +4,24 @@ namespace App\Modules\Notifications\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Notifications\Repositories\NotificationRepository;
+use App\Modules\Users\Repositories\UserRepository;
 
 class NotificationService extends BaseService
 {
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
+
     /**
      * Init new object.
      *
      * @param   NotificationRepository $repo
      * @return  void
      */
-    public function __construct(NotificationRepository $repo)
+    public function __construct(NotificationRepository $repo, UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
         parent::__construct($repo);
     }
 
@@ -71,7 +78,7 @@ class NotificationService extends BaseService
      */
     public function notify($users, $notification, ...$notificationData)
     {
-        $users = is_array($users) ? $this->userRepo->findBy(['id' => ['op' => 'in', 'val' => $users]]) : $users;
+        $users = is_array($users) ? $this->userRepository->findBy(['id' => ['op' => 'in', 'val' => $users]]) : $users;
         $notification = 'App\Modules\Notifications\Notifications\\'.$notification;
         \Notification::send($users, new $notification(...$notificationData));
     }
