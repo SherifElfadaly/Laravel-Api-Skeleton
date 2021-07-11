@@ -72,7 +72,7 @@ return [
                 'delete' => ['oauthClient'],
                 'restore' => ['oauthClient'],
                 'revoke' => ['oauthClient'],
-                'ubRevoke' => ['oauthClient'],
+                'unRevoke' => ['oauthClient'],
                 'regenerateSecret' => ['oauthClient'],
             ],
         ],
