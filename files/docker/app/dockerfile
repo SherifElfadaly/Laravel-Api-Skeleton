@@ -28,12 +28,12 @@ RUN apt-get update && apt-get install -y \
     libssl-dev
 
 # add php c
-COPY app/php.ini /usr/local/etc/php/conf.d
-COPY app/laravel.ini /usr/local/etc/php/conf.d
-COPY app/opcache.ini /usr/local/etc/php/conf.d
+COPY docker/app/php.ini /usr/local/etc/php/conf.d
+COPY docker/app/laravel.ini /usr/local/etc/php/conf.d
+COPY docker/app/opcache.ini /usr/local/etc/php/conf.d
 
 # add supervisor supervisor
-COPY app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN docker-php-ext-install \
     bz2 \
@@ -88,7 +88,13 @@ RUN touch /var/log/cron.log
 RUN chmod 0644 /etc/cron.d/crons
 
 # register laravel scheduler
-COPY app/crons /etc/cron.d/crons
+COPY docker/app/crons /etc/cron.d/crons
+
+COPY composer.json .
+COPY composer.lock .
+COPY . .
+RUN php -d memory_limit=-1 /usr/local/bin/composer update nothing --prefer-dist --lock
+RUN php -d memory_limit=-1 /usr/local/bin/composer install --prefer-dist --optimize-autoloader
 
 # start server, clear cach, run migrations and restart queue
 CMD sudo supervisord -c /etc/supervisor/conf.d/supervisord.conf

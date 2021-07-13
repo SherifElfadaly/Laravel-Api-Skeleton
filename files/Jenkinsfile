@@ -14,8 +14,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'sudo docker-compose -f /var/www/docker/skeleton/docker/docker-compose.yml up -d'
-                sh 'sudo docker exec skeleton php -d memory_limit=-1 /usr/local/bin/composer update nothing --prefer-dist --lock'
-                sh 'sudo docker exec skeleton php -d memory_limit=-1 /usr/local/bin/composer install --prefer-dist --optimize-autoloader'
                 sh 'sudo docker exec skeleton php artisan clear-compiled'
                 sh 'sudo docker exec skeleton php artisan view:clear'
                 sh 'sudo docker exec skeleton php artisan cache:clear'

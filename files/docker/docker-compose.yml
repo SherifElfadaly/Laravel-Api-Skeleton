@@ -31,9 +31,10 @@ services:
       volumes:
         - ../:/var/www/html/
         - ../.env:/var/www/html/.env
+        - /var/www/html/vendor
       build:
-        context: './'
-        dockerfile: './app/dockerfile'
+        context: '../'
+        dockerfile: './docker/app/dockerfile'
       depends_on:
         - 'skeleton_mysql'
         - 'skeleton_redis'
