@@ -4,6 +4,7 @@ namespace App\Modules\OauthClients\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\OauthClients\Repositories\OauthClientRepository;
+use Illuminate\Contracts\Session\Session;
 
 class OauthClientService extends BaseService
 {
@@ -11,11 +12,12 @@ class OauthClientService extends BaseService
      * Init new object.
      *
      * @param   OauthClientRepository $repo
+     * @param   Session $session
      * @return  void
      */
-    public function __construct(OauthClientRepository $repo)
+    public function __construct(OauthClientRepository $repo, Session $session)
     {
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Modules\Core\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Core\Repositories\SettingRepository;
+use Illuminate\Contracts\Session\Session;
 
 class SettingService extends BaseService
 {
@@ -11,11 +12,12 @@ class SettingService extends BaseService
      * Init new object.
      *
      * @param   SettingRepository $repo
+     * @param   Session $session
      * @return  void
      */
-    public function __construct(SettingRepository $repo)
+    public function __construct(SettingRepository $repo, Session $session)
     {
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**

@@ -2,46 +2,62 @@
 
 namespace App\Modules\Core\Decorators;
 
+use App\Modules\Core\BaseClasses\Contracts\BaseServiceInterface;
+use Illuminate\Cache\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Cache\Repository as Cache;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Request;
 
 class CachingDecorator
 {
     /**
-     * @var String
+     * @var BaseServiceInterface
      */
-    public $service;
+    protected $service;
 
     /**
-     * @var Cache
+     * @var Repository
      */
     protected $cache;
 
     /**
      * @var mixed
      */
-    public $cacheConfig;
+    protected $cacheConfig;
 
     /**
      * @var string
      */
-    public $cacheTag;
+    protected $cacheTag;
 
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var Session
+     */
+    protected $session;
+    
     /**
      * Init new object.
      *
-     * @param  Object $service
+     * @param  BaseServiceInterface $service
      * @param  Cache  $cache
      *
      * @return  void
      */
-    public function __construct($service, Cache $cache)
+    public function __construct(BaseServiceInterface $service, Repository $cache, Request $request, Session $session)
     {
-        $this->service    = $service;
-        $this->cache      = $cache;
-        $serviceClass     = explode('\\', get_class($this->service));
-        $serviceName      = end($serviceClass);
-        $this->cacheTag   = lcfirst(substr($serviceName, 0, strpos($serviceName, 'Service')));
+        $this->service = $service;
+        $this->cache = $cache;
+        $this->request = $request;
+        $this->session = $session;
+        $serviceClass = explode('\\', get_class($this->service));
+        $serviceName = end($serviceClass);
+        $this->cacheTag = lcfirst(substr($serviceName, 0, strpos($serviceName, 'Service')));
     }
 
     /**
@@ -57,8 +73,8 @@ class CachingDecorator
         $this->setCacheConfig($name);
 
         if ($this->cacheConfig && $this->cacheConfig == 'cache') {
-            $page     = \Request::get('page') !== null ? \Request::get('page') : '1';
-            $cacheKey = $name . $page . \Session::get('locale') . serialize($arguments);
+            $page     = $this->request->get('page') !== null ? $this->request->get('page') : '1';
+            $cacheKey = $name.$page.$this->session->get('locale').serialize($arguments);
             return $this->cache->tags([$this->cacheTag])->rememberForever($cacheKey, function () use ($arguments, $name) {
                 return call_user_func_array([$this->service, $name], $arguments);
             });

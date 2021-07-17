@@ -5,6 +5,7 @@ namespace App\Modules\Reporting\Services;
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Reporting\Repositories\ReportRepository;
 use App\Modules\Users\Services\UserService;
+use Illuminate\Contracts\Session\Session;
 
 class ReportService extends BaseService
 {
@@ -19,10 +20,10 @@ class ReportService extends BaseService
      * @param   ReportRepository $repo
      * @return  void
      */
-    public function __construct(ReportRepository $repo, UserService $userService)
+    public function __construct(ReportRepository $repo, UserService $userService, Session $session)
     {
         $this->userService = $userService;
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**

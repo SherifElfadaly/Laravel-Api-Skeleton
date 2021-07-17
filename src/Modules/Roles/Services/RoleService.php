@@ -4,6 +4,7 @@ namespace App\Modules\Roles\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Roles\Repositories\RoleRepository;
+use Illuminate\Contracts\Session\Session;
 
 class RoleService extends BaseService
 {
@@ -11,11 +12,12 @@ class RoleService extends BaseService
      * Init new object.
      *
      * @param   RoleRepository $repo
+     * @param   Session $session
      * @return  void
      */
-    public function __construct(RoleRepository $repo)
+    public function __construct(RoleRepository $repo, Session $session)
     {
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**

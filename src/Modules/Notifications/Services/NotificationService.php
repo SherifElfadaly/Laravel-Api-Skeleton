@@ -5,6 +5,7 @@ namespace App\Modules\Notifications\Services;
 use App\Modules\Core\BaseClasses\BaseService;
 use App\Modules\Notifications\Repositories\NotificationRepository;
 use App\Modules\Users\Repositories\UserRepository;
+use Illuminate\Contracts\Session\Session;
 
 class NotificationService extends BaseService
 {
@@ -17,12 +18,13 @@ class NotificationService extends BaseService
      * Init new object.
      *
      * @param   NotificationRepository $repo
+     * @param   Session $session
      * @return  void
      */
-    public function __construct(NotificationRepository $repo, UserRepository $userRepository)
+    public function __construct(NotificationRepository $repo, UserRepository $userRepository, Session $session)
     {
         $this->userRepository = $userRepository;
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**

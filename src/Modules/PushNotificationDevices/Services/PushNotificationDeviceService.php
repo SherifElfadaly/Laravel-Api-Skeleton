@@ -3,10 +3,8 @@
 namespace App\Modules\PushNotificationDevices\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
 use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepository;
+use Illuminate\Contracts\Session\Session;
 
 class PushNotificationDeviceService extends BaseService
 {
@@ -14,11 +12,12 @@ class PushNotificationDeviceService extends BaseService
      * Init new object.
      *
      * @param   PushNotificationDeviceRepository $repo
+     * @param   Session $session
      * @return  void
      */
-    public function __construct(PushNotificationDeviceRepository $repo)
+    public function __construct(PushNotificationDeviceRepository $repo, Session $session)
     {
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Modules\Permissions\Services\PermissionService;
 use App\Modules\OauthClients\Services\OauthClientService;
 use App\Modules\Notifications\Services\NotificationService;
 use App\Modules\Users\Proxy\LoginProxy;
+use Illuminate\Contracts\Session\Session;
 
 class UserService extends BaseService
 {
@@ -40,6 +41,7 @@ class UserService extends BaseService
      * @param   LoginProxy           $loginProxy
      * @param   NotificationService  $notificationService
      * @param   OauthClientService   $oauthClientService
+     * @param   Session $session
      * @return  void
      */
     public function __construct(
@@ -47,13 +49,14 @@ class UserService extends BaseService
         PermissionService $permissionService,
         LoginProxy $loginProxy,
         NotificationService $notificationService,
-        OauthClientService $oauthClientService
+        OauthClientService $oauthClientService,
+        Session $session
     ) {
         $this->permissionService   = $permissionService;
         $this->loginProxy          = $loginProxy;
         $this->notificationService = $notificationService;
         $this->oauthClientService  = $oauthClientService;
-        parent::__construct($repo);
+        parent::__construct($repo, $session);
     }
 
     /**
@@ -148,11 +151,11 @@ class UserService extends BaseService
      */
     public function login($email, $password)
     {
-        if (! $user = $this->repo->first(['email' => $email])) {
+        if (!$user = $this->repo->first(['email' => $email])) {
             \Errors::loginFailed();
         } elseif ($user->blocked) {
             \Errors::userIsBlocked();
-        } elseif (! config('user.disable_confirm_email') && ! $user->confirmed) {
+        } elseif (!config('user.disable_confirm_email') && !$user->confirmed) {
             \Errors::emailNotConfirmed();
         }
 
@@ -171,11 +174,11 @@ class UserService extends BaseService
         $accessToken = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
         $user        = \Socialite::driver($type)->userFromToken($accessToken)->user;
 
-        if (! Arr::has($user, 'email')) {
+        if (!Arr::has($user, 'email')) {
             \Errors::noSocialEmail();
         }
 
-        if (! $this->repo->first(['email' => $user['email']]) && ! $this->repo->deleted(['email' => $user['email']])->count()) {
+        if (!$this->repo->first(['email' => $user['email']]) && !$this->repo->deleted(['email' => $user['email']])->count()) {
             $this->register(Arr::get($user, 'name'), $user['email'], '', true);
         }
 
@@ -193,19 +196,19 @@ class UserService extends BaseService
     {
         $data['confirmed'] = $skipConfirmEmail;
 
-        if($roleId){
-            $data ['roles'] = [['id' => $roleId]];
+        if ($roleId) {
+            $data['roles'] = [['id' => $roleId]];
         }
 
         $user = $this->repo->save($data);
 
-        if (! $skipConfirmEmail && ! config('user.disable_confirm_email')) {
+        if (!$skipConfirmEmail && !config('user.disable_confirm_email')) {
             $this->sendConfirmationEmail($user->email);
         }
 
         return $user;
     }
-    
+
     /**
      * Block the user.
      *
@@ -217,7 +220,7 @@ class UserService extends BaseService
         if (\Auth::id() == $userId) {
             \Errors::noPermissions();
         }
-        
+
         return $this->repo->save(['id' => $userId, 'blocked' => 1]);
     }
 
@@ -240,7 +243,7 @@ class UserService extends BaseService
      */
     public function sendReset($email)
     {
-        if (! $user = $this->repo->first(['email' => $email])) {
+        if (!$user = $this->repo->first(['email' => $email])) {
             \Errors::notFound('email');
         }
 
@@ -297,7 +300,7 @@ class UserService extends BaseService
     public function changePassword($password, $oldPassword)
     {
         $user = \Auth::user();
-        if (! \Hash::check($oldPassword, $user->password)) {
+        if (!\Hash::check($oldPassword, $user->password)) {
             \Errors::invalidOldPassword();
         }
 
@@ -312,7 +315,7 @@ class UserService extends BaseService
      */
     public function confirmEmail($confirmationCode)
     {
-        if (! $user = $this->repo->first(['confirmation_code' => $confirmationCode])) {
+        if (!$user = $this->repo->first(['confirmation_code' => $confirmationCode])) {
             \Errors::invalidConfirmationCode();
         }
 

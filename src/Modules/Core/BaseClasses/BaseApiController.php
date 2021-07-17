@@ -3,9 +3,13 @@
 namespace App\Modules\Core\BaseClasses;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Core\BaseClasses\Contracts\BaseServiceInterface;
 use App\Modules\Core\Decorators\CachingDecorator;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use Illuminate\Cache\Repository;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\App;
 
 class BaseApiController extends Controller
 {
@@ -38,12 +42,12 @@ class BaseApiController extends Controller
     /**
      * Init new object.
      *
-     * @param   mixed      $service
+     * @param   BaseServiceInterface $service
      * @return  void
      */
-    public function __construct($service)
+    public function __construct(BaseServiceInterface $service)
     {
-        $this->service = new CachingDecorator($service, \App::make('Illuminate\Contracts\Cache\Repository'));
+        $this->service = new CachingDecorator($service, App::make(Repository::class), App::make(Request::class), App::make(Session::class));
     }
 
     /**
@@ -54,7 +58,7 @@ class BaseApiController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->modelResource::collection($this->service->list($request->relations, $request->query(), $request->query('perPage'), $request->query('sortBy'), $request->query('desc'), $request->query('trashed')));
+        return $this->modelResource::collection($this->service->list($request->relations, $request->query(), $request->query('perPage', 15), $request->query('sortBy', 'created_at'), $request->query('desc', false), $request->query('trashed', false)));
     }
 
     /**
@@ -76,7 +80,7 @@ class BaseApiController extends Controller
      */
     public function store()
     {
-        $data = \App::make($this->storeFormRequest)->validated();
+        $data = App::make($this->storeFormRequest)->validated();
         return new $this->modelResource($this->service->save($data));
     }
 
@@ -88,7 +92,7 @@ class BaseApiController extends Controller
      */
     public function update($id)
     {
-        $data = \App::make($this->storeFormRequest)->validated();
+        $data = App::make($this->storeFormRequest)->validated();
         $data['id'] = $id;
         return new $this->modelResource($this->service->save($data));
     }
