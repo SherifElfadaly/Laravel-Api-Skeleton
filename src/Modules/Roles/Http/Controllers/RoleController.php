@@ -3,10 +3,8 @@
 namespace App\Modules\Roles\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Roles\Services\RoleService;
 use App\Modules\Roles\Http\Requests\AssignPermissions;
-use App\Modules\Roles\Http\Requests\InsertRole;
-use App\Modules\Roles\Http\Requests\UpdateRole;
+use App\Modules\Roles\Services\RoleServiceInterface;
 
 class RoleController extends BaseApiController
 {
@@ -27,10 +25,10 @@ class RoleController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   RoleService $service
+     * @param   RoleServiceInterface $service
      * @return  void
      */
-    public function __construct(RoleService $service)
+    public function __construct(RoleServiceInterface $service)
     {
         parent::__construct($service);
     }

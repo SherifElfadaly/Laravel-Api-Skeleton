@@ -5,7 +5,7 @@ namespace App\Modules\Roles\Repositories;
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Roles\Role;
 
-class RoleRepository extends BaseRepository
+class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {
     /**
      * Init new object.
@@ -22,12 +22,14 @@ class RoleRepository extends BaseRepository
      * Detach all permissions from the given role.
      *
      * @param  mixed $role
-     * @return object
+     * @return bool
      */
-    public function detachPermissions($role)
+    public function detachPermissions(mixed $role): bool
     {
         $role = ! filter_var($role, FILTER_VALIDATE_INT) ? $role : $this->find($role);
         $role->permissions()->detach();
+
+        return true;
     }
 
     /**
@@ -35,11 +37,13 @@ class RoleRepository extends BaseRepository
      *
      * @param  mixed $role
      * @param  array $permissionIds
-     * @return object
+     * @return bool
      */
-    public function attachPermissions($role, $permissionIds)
+    public function attachPermissions(mixed $role, array $permissionIds): bool
     {
         $role = ! filter_var($role, FILTER_VALIDATE_INT) ? $role : $this->find($role);
         $role->permissions()->attach($permissionIds);
+
+        return true;
     }
 }

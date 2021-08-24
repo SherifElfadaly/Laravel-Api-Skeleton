@@ -17,7 +17,7 @@ class AclUser extends User
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $hidden = ['password', 'remember_token', 'deleted_at'];
     protected $guarded = ['id'];
-    public $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone', 'blocked', 'confirmed', 'confirmation_code'];
+    public $fillable = ['profile_picture', 'name', 'email', 'password', 'locale', 'timezone', 'blocked', 'confirmed'];
 
     /**
      * Encrypt the password attribute before
@@ -62,10 +62,6 @@ class AclUser extends User
     public function oauthClients()
     {
         return $this->hasMany(OauthClient::class, 'user_id');
-    }
-
-    public function setProfilePictureAttribute($value) {
-        $this->attributes['profile_picture'] = \Media::uploadImageBas64($value, 'users/profile_pictures');
     }
 
     /**

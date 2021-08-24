@@ -3,8 +3,8 @@
 namespace App\Modules\OauthClients\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\OauthClients\Services\OauthClientService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use App\Modules\OauthClients\Services\OauthClientServiceInterface;
 
 class OauthClientController extends BaseApiController
 {
@@ -25,10 +25,10 @@ class OauthClientController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   OauthClientService $service
+     * @param   OauthClientServiceInterface $service
      * @return  void
      */
-    public function __construct(OauthClientService $service)
+    public function __construct(OauthClientServiceInterface $service)
     {
         parent::__construct($service);
     }

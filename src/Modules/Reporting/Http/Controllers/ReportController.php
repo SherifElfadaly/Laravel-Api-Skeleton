@@ -4,8 +4,8 @@ namespace App\Modules\Reporting\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Reporting\Services\ReportService;
 use App\Modules\Reporting\Http\Resources\View as ViewResource;
+use App\Modules\Reporting\Services\ReportServiceInterface;
 
 class ReportController extends BaseApiController
 {
@@ -26,10 +26,10 @@ class ReportController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   ReportService $service
+     * @param   ReportServiceInterface $service
      * @return  void
      */
-    public function __construct(ReportService $service)
+    public function __construct(ReportServiceInterface $service)
     {
         parent::__construct($service);
     }
@@ -38,7 +38,7 @@ class ReportController extends BaseApiController
      * Render the given servicert name with the given conditions.
      *
      * @param Request $request
-     * @param  string $reportName Name of the requested servicert
+     * @param string  $reportName Name of the requested servicert
      * @return \Illuminate\Http\Response
      */
     public function getReport(Request $request, $reportName)

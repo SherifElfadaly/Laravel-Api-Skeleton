@@ -45,6 +45,30 @@ return [
             'index' => [],
             'show' => [],
         ],
+        'projectType' => [
+            'index' => [],
+            'show' => [],
+        ],
+        'spaceType' => [
+            'index' => [],
+            'show' => [],
+        ],
+        'section' => [
+            'index' => ['styles'],
+            'show' => ['styles'],
+        ],
+        'style' => [
+            'index' => [],
+            'show' => [],
+        ],
+        'request' => [
+            'index' => [],
+            'show' => ['sections'],
+        ],
+        'fileManager' => [
+            'index' => [],
+            'show' => [],
+        ],
     ],
 
     /*
@@ -72,7 +96,7 @@ return [
                 'delete' => ['oauthClient'],
                 'restore' => ['oauthClient'],
                 'revoke' => ['oauthClient'],
-                'unRevoke' => ['oauthClient'],
+                'ubRevoke' => ['oauthClient'],
                 'regenerateSecret' => ['oauthClient'],
             ],
         ],
@@ -90,6 +114,70 @@ return [
                 'save' => ['setting'],
                 'saveMany' => ['setting'],
             ]
-        ]
+        ],
+        'projectType' => [
+            'cache' => [
+                'list',
+                'find',
+                'findBy',
+                'paginate',
+                'paginateBy',
+                'first',
+                'deleted'
+            ],
+            'clear' => [
+                'save' => ['projectType'],
+                'delete' => ['projectType'],
+                'restore' => ['projectType']
+            ],
+        ],
+        'spaceType' => [
+            'cache' => [
+                'list',
+                'find',
+                'findBy',
+                'paginate',
+                'paginateBy',
+                'first',
+                'deleted'
+            ],
+            'clear' => [
+                'save' => ['spaceType', 'section'],
+                'delete' => ['spaceType', 'section'],
+                'restore' => ['spaceType', 'section']
+            ],
+        ],
+        'section' => [
+            'cache' => [
+                'list',
+                'find',
+                'findBy',
+                'paginate',
+                'paginateBy',
+                'first',
+                'deleted'
+            ],
+            'clear' => [
+                'save' => ['section', 'spaceType', 'style'],
+                'delete' => ['section', 'spaceType', 'style'],
+                'restore' => ['section', 'spaceType', 'style']
+            ],
+        ],
+        'style' => [
+            'cache' => [
+                'list',
+                'find',
+                'findBy',
+                'paginate',
+                'paginateBy',
+                'first',
+                'deleted'
+            ],
+            'clear' => [
+                'save' => ['style', 'section'],
+                'delete' => ['style', 'section'],
+                'restore' => ['style', 'section']
+            ],
+        ],
     ]
 ];

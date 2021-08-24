@@ -5,7 +5,7 @@ namespace App\Modules\Permissions\Repositories;
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Permissions\Permission;
 
-class PermissionRepository extends BaseRepository
+class PermissionRepository extends BaseRepository implements PermissionRepositoryInterface
 {
     /**
      * Init new object.

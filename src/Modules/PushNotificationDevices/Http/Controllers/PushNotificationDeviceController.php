@@ -3,8 +3,8 @@
 namespace App\Modules\PushNotificationDevices\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\PushNotificationDevices\Services\PushNotificationDeviceService;
 use App\Modules\PushNotificationDevices\Http\Requests\RegisterDevice;
+use App\Modules\PushNotificationDevices\Services\PushNotificationDeviceServiceInterface;
 
 class PushNotificationDeviceController extends BaseApiController
 {
@@ -32,10 +32,10 @@ class PushNotificationDeviceController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   PushNotificationDeviceService $service
+     * @param   PushNotificationDeviceServiceInterface $service
      * @return  void
      */
-    public function __construct(PushNotificationDeviceService $service)
+    public function __construct(PushNotificationDeviceServiceInterface $service)
     {
         parent::__construct($service);
     }

@@ -3,7 +3,7 @@
 namespace App\Modules\DummyModule\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\DummyModule\Services\DummyService;
+use App\Modules\DummyModule\Services\DummyServiceInterface;
 
 class DummyController extends BaseApiController
 {
@@ -38,10 +38,10 @@ class DummyController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   DummyService $service
+     * @param   DummyServiceInterface $service
      * @return  void
      */
-    public function __construct(DummyService $service)
+    public function __construct(DummyServiceInterface $service)
     {
         parent::__construct($service);
     }

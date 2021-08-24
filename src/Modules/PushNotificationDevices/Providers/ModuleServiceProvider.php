@@ -2,6 +2,10 @@
 
 namespace App\Modules\PushNotificationDevices\Providers;
 
+use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepository;
+use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepositoryInterface;
+use App\Modules\PushNotificationDevices\Services\PushNotificationDeviceService;
+use App\Modules\PushNotificationDevices\Services\PushNotificationDeviceServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(PushNotificationDeviceServiceInterface::class, PushNotificationDeviceService::class);
+        $this->app->bind(PushNotificationDeviceRepositoryInterface::class, PushNotificationDeviceRepository::class);
     }
 }

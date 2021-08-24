@@ -5,7 +5,7 @@ namespace App\Modules\Core\Repositories;
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Core\Setting;
 
-class SettingRepository extends BaseRepository
+class SettingRepository extends BaseRepository implements SettingRepositoryInterface
 {
     /**
      * Init new object.

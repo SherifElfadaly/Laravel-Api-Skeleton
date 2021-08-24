@@ -2,6 +2,10 @@
 
 namespace App\Modules\DummyModule\Providers;
 
+use App\Modules\DummyModule\Repositories\DummyRepository;
+use App\Modules\DummyModule\Repositories\DummyRepositoryInterface;
+use App\Modules\DummyModule\Services\DummyService;
+use App\Modules\DummyModule\Services\DummyServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(DummyServiceInterface::class, DummyService::class);
+        $this->app->bind(DummyRepositoryInterface::class, DummyRepository::class);
     }
 }

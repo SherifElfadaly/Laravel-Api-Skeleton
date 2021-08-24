@@ -11,6 +11,7 @@ interface BaseServiceInterface
   /**
    * Fetch records with relations based on the given params.
    *
+   * @param   string $local
    * @param   array  $relations
    * @param   array  $conditions
    * @param   int    $perPage
@@ -19,7 +20,7 @@ interface BaseServiceInterface
    * @param   bool   $trashed
    * @return LengthAwarePaginator
    */
-    public function list(array $relations = [], array $conditions = [], int $perPage = 15, string $sortBy = 'created_at', bool $desc = true, bool $trashed = false): LengthAwarePaginator;
+    public function list(string $local, array $relations = [], array $conditions = [], int $perPage = 15, string $sortBy = 'created_at', bool $desc = true, bool $trashed = false): LengthAwarePaginator;
 
   /**
    * Fetch all records with relations from the storage.

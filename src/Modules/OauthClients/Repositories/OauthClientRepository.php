@@ -4,8 +4,9 @@ namespace App\Modules\OauthClients\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\OauthClients\OauthClient;
+use Illuminate\Support\Facades\DB;
 
-class OauthClientRepository extends BaseRepository
+class OauthClientRepository extends BaseRepository implements OauthClientRepositoryInterface
 {
     /**
      * Init new object.
@@ -22,24 +23,26 @@ class OauthClientRepository extends BaseRepository
      * Revoke the given client tokens.
      *
      * @param  mixed  $client
-     * @return void
+     * @return bool
      */
-    public function revokeClientTokens($client)
+    public function revokeClientTokens($client): bool
     {
         $client = ! filter_var($client, FILTER_VALIDATE_INT) ? $client : $this->find($client);
         $client->tokens()->update(['revoked' => true]);
+
+        return true;
     }
 
     /**
      * Ensure access token hasn't expired or revoked.
      *
      * @param  string $accessToken
-     * @return boolean
+     * @return bool
      */
-    public function accessTokenExpiredOrRevoked($accessToken)
+    public function accessTokenExpiredOrRevoked(string $accessToken): bool
     {
         $accessTokenId = json_decode($accessToken, true)['id'];
-        $accessToken   = \DB::table('oauth_access_tokens')
+        $accessToken   = DB::table('oauth_access_tokens')
                 ->where('id', $accessTokenId)
                 ->first();
         
@@ -55,16 +58,18 @@ class OauthClientRepository extends BaseRepository
      * associated refresh tokens.
      *
      * @param  oject $accessToken
-     * @return void
+     * @return bool
      */
-    public function revokeAccessToken($accessToken)
+    public function revokeAccessToken(object $accessToken): bool
     {
-        \DB::table('oauth_refresh_tokens')
+        DB::table('oauth_refresh_tokens')
             ->where('access_token_id', $accessToken->id)
             ->update([
                 'revoked' => true
             ]);
 
         $accessToken->revoke();
+
+        return true;
     }
 }

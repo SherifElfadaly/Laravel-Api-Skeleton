@@ -3,17 +3,17 @@
 namespace App\Modules\DummyModule\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\DummyModule\Repositories\DummyRepository;
+use App\Modules\DummyModule\Repositories\DummyRepositoryInterface;
 
-class DummyService extends BaseService
+class DummyService extends BaseService implements DummyServiceInterface
 {
     /**
      * Init new object.
      *
-     * @param   DummyRepository $repo
+     * @param   DummyRepositoryInterface $repo
      * @return  void
      */
-    public function __construct(DummyRepository $repo)
+    public function __construct(DummyRepositoryInterface $repo)
     {
         parent::__construct($repo);
     }

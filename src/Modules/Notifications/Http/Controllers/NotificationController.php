@@ -4,8 +4,8 @@ namespace App\Modules\Notifications\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Notifications\Services\NotificationService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use App\Modules\Notifications\Services\NotificationServiceInterface;
 
 class NotificationController extends BaseApiController
 {
@@ -26,10 +26,10 @@ class NotificationController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   NotificationService $service
+     * @param   NotificationServiceInterface $service
      * @return  void
      */
-    public function __construct(NotificationService $service)
+    public function __construct(NotificationServiceInterface $service)
     {
         parent::__construct($service);
     }

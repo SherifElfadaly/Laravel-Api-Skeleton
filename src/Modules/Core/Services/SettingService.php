@@ -3,21 +3,20 @@
 namespace App\Modules\Core\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\Core\Repositories\SettingRepository;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\Core\Repositories\SettingRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
-class SettingService extends BaseService
+class SettingService extends BaseService implements SettingServiceInterface
 {
     /**
      * Init new object.
      *
-     * @param   SettingRepository $repo
-     * @param   Session $session
+     * @param   SettingRepositoryInterface $repo
      * @return  void
      */
-    public function __construct(SettingRepository $repo, Session $session)
+    public function __construct(SettingRepositoryInterface $repo)
     {
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
@@ -26,9 +25,9 @@ class SettingService extends BaseService
      * @param  array   $data
      * @return void
      */
-    public function saveMany(array $data)
+    public function saveMany(array $data): void
     {
-        \DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data) {
             foreach ($data as $value) {
                 $this->repo->save($value);
             }

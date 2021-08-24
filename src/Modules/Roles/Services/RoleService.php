@@ -3,21 +3,21 @@
 namespace App\Modules\Roles\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\Roles\Repositories\RoleRepository;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\Roles\Repositories\RoleRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class RoleService extends BaseService
+class RoleService extends BaseService implements RoleServiceInterface
 {
     /**
      * Init new object.
      *
-     * @param   RoleRepository $repo
-     * @param   Session $session
+     * @param   RoleRepositoryInterface $repo
      * @return  void
      */
-    public function __construct(RoleRepository $repo, Session $session)
+    public function __construct(RoleRepositoryInterface $repo)
     {
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
@@ -25,12 +25,12 @@ class RoleService extends BaseService
      *
      * @param  integer $roleId
      * @param  array   $permissionIds
-     * @return object
+     * @return Model
      */
-    public function assignPermissions($roleId, $permissionIds)
+    public function assignPermissions(int $roleId, array $permissionIds): Model
     {
-        $role = false;
-        \DB::transaction(function () use ($roleId, $permissionIds, &$role) {
+        $role = new Model();
+        DB::transaction(function () use ($roleId, $permissionIds, &$role) {
             $role = $this->repo->find($roleId);
             $this->repo->detachPermissions($role);
             $this->repo->attachPermissions($role, $permissionIds);

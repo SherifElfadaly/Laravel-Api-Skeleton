@@ -2,6 +2,10 @@
 
 namespace App\Modules\Reporting\Providers;
 
+use App\Modules\Reporting\Repositories\ReportRepository;
+use App\Modules\Reporting\Repositories\ReportRepositoryInterface;
+use App\Modules\Reporting\Services\ReportService;
+use App\Modules\Reporting\Services\ReportServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(ReportServiceInterface::class, ReportService::class);
+        $this->app->bind(ReportRepositoryInterface::class, ReportRepository::class);
     }
 }

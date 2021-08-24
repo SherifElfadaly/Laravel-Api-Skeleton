@@ -3,10 +3,9 @@
 namespace App\Modules\Users\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
-use Illuminate\Support\Arr;
 use App\Modules\Users\AclUser;
 
-class UserRepository extends BaseRepository
+class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
     /**
      * Init new object.
@@ -23,12 +22,14 @@ class UserRepository extends BaseRepository
      * Detach all roles from the given user.
      *
      * @param  mixed $user
-     * @return object
+     * @return bool
      */
-    public function detachRoles($user)
+    public function detachRoles(mixed $user): bool
     {
         $user = ! filter_var($user, FILTER_VALIDATE_INT) ? $user : $this->find($user);
         $user->roles()->detach();
+
+        return true;
     }
 
     /**
@@ -36,22 +37,24 @@ class UserRepository extends BaseRepository
      *
      * @param  mixed $user
      * @param  array $roleIds
-     * @return object
+     * @return bool
      */
-    public function attachRoles($user, $roleIds)
+    public function attachRoles(mixed $user, array $roleIds): bool
     {
         $user = ! filter_var($user, FILTER_VALIDATE_INT) ? $user : $this->find($user);
         $user->roles()->attach($roleIds);
+
+        return true;
     }
 
     /**
      * Count the given user the given roles.
      *
-     * @param  mixed    $user
-     * @param  string[] $roles
-     * @return boolean
+     * @param  mixed $user
+     * @param  array $roles
+     * @return int
      */
-    public function countRoles($user, $roles)
+    public function countRoles(mixed $user, array $roles): int
     {
         $user = ! filter_var($user, FILTER_VALIDATE_INT) ? $user : $this->find($user);
         return $user->roles()->whereIn('name', $roles)->count();

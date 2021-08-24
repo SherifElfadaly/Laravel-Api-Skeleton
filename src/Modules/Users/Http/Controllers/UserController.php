@@ -4,7 +4,6 @@ namespace App\Modules\Users\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Users\Services\UserService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use App\Modules\Users\Http\Requests\AssignRoles;
 use App\Modules\Users\Http\Requests\ChangePassword;
@@ -17,6 +16,7 @@ use App\Modules\Users\Http\Requests\ResetPassword;
 use App\Modules\Users\Http\Requests\SaveProfile;
 use App\Modules\Users\Http\Requests\SendReset;
 use App\Modules\Users\Http\Requests\ConfirmEmail;
+use App\Modules\Users\Services\UserServiceInterface;
 
 class UserController extends BaseApiController
 {
@@ -51,10 +51,10 @@ class UserController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   UserService $service
+     * @param   UserServiceInterface $service
      * @return  void
      */
-    public function __construct(UserService $service)
+    public function __construct(UserServiceInterface $service)
     {
         parent::__construct($service);
     }
@@ -174,17 +174,6 @@ class UserController extends BaseApiController
     }
 
     /**
-     * Render reset password page.
-     *
-     * @param string $resetToken
-     * @return \Illuminate\Http\Response
-     */
-    public function resetPasswordPage($resetToken)
-    {
-        return view('users::reset_password', ['reset_token' => $resetToken]);
-    }
-
-    /**
      * Change the logged in user password.
      *
      * @param ChangePassword $request
@@ -204,17 +193,6 @@ class UserController extends BaseApiController
     public function confirmEmail(ConfirmEmail $request)
     {
         return new GeneralResource($this->service->confirmEmail($request->only('confirmation_code')));
-    }
-
-    /**
-     * Render confirm email page using the confirmation code.
-     *
-     * @param string $confirmationToken
-     * @return \Illuminate\Http\Response
-     */
-    public function confirmEmailPage($confirmationToken)
-    {
-        return view('users::confirm_email', ['confirmation_token' => $confirmationToken]);
     }
 
     /**

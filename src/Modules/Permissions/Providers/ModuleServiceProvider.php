@@ -2,6 +2,10 @@
 
 namespace App\Modules\Permissions\Providers;
 
+use App\Modules\Permissions\Repositories\PermissionRepository;
+use App\Modules\Permissions\Repositories\PermissionRepositoryInterface;
+use App\Modules\Permissions\Services\PermissionService;
+use App\Modules\Permissions\Services\PermissionServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
+        $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
     }
 }

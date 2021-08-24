@@ -2,6 +2,10 @@
 
 namespace App\Modules\Core\Providers;
 
+use App\Modules\Core\Repositories\SettingRepository;
+use App\Modules\Core\Repositories\SettingRepositoryInterface;
+use App\Modules\Core\Services\SettingService;
+use App\Modules\Core\Services\SettingServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,26 +34,26 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         //Bind Core Facade to the Service Container
-        $this->app->singleton('Core', function () {
+        $this->app->bind('Core', function () {
             return new \App\Modules\Core\Core;
         });
 
         //Bind Errors Facade to the Service Container
-        $this->app->singleton('Errors', function () {
+        $this->app->bind('Errors', function () {
             return new \App\Modules\Core\Errors\Errors;
         });
 
-        //Bind Media Facade to the Service Container
-        $this->app->singleton('Media', function () {
-            return new \App\Modules\Core\Utl\Media;
-        });
-
         //Bind ApiConsumer Facade to the Service Container
-        $this->app->singleton('ApiConsumer', function () {
-            $app = app();
+        $this->app->bind('ApiConsumer', function ($app) {
             return new \App\Modules\Core\Utl\ApiConsumer($app, $app['request'], $app['router']);
         });
         
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(SettingServiceInterface::class, SettingService::class);
+        $this->app->bind(SettingRepositoryInterface::class, SettingRepository::class);
     }
 }

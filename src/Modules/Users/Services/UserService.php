@@ -3,18 +3,24 @@
 namespace App\Modules\Users\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
+use App\Modules\Core\Facades\Errors;
 use Illuminate\Support\Arr;
-use App\Modules\Users\Repositories\UserRepository;
-use App\Modules\Permissions\Services\PermissionService;
-use App\Modules\OauthClients\Services\OauthClientService;
-use App\Modules\Notifications\Services\NotificationService;
+use App\Modules\Notifications\Services\NotificationServiceInterface;
+use App\Modules\OauthClients\Services\OauthClientServiceInterface;
+use App\Modules\Permissions\Services\PermissionServiceInterface;
 use App\Modules\Users\Proxy\LoginProxy;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\Users\Repositories\UserRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Laravel\Socialite\Facades\Socialite;
 
-class UserService extends BaseService
+class UserService extends BaseService implements UserServiceInterface
 {
     /**
-     * @var PermissionService
+     * @var PermissionServiceInterface
      */
     protected $permissionService;
 
@@ -24,51 +30,49 @@ class UserService extends BaseService
     protected $loginProxy;
 
     /**
-     * @var NotificationService
+     * @var NotificationServiceInterface
      */
     protected $notificationService;
 
     /**
-     * @var OauthClientService
+     * @var OauthClientServiceInterface
      */
     protected $oauthClientService;
 
     /**
      * Init new object.
      *
-     * @param   UserRepository       $repo
-     * @param   PermissionService    $permissionService
-     * @param   LoginProxy           $loginProxy
-     * @param   NotificationService  $notificationService
-     * @param   OauthClientService   $oauthClientService
-     * @param   Session $session
+     * @param   UserRepositoryInterface $repo
+     * @param   PermissionServiceInterface $permissionService
+     * @param   LoginProxy $loginProxy
+     * @param   NotificationServiceInterface $notificationService
+     * @param   OauthClientServiceInterface $oauthClientService
      * @return  void
      */
     public function __construct(
-        UserRepository $repo,
-        PermissionService $permissionService,
+        UserRepositoryInterface $repo,
+        PermissionServiceInterface $permissionService,
         LoginProxy $loginProxy,
-        NotificationService $notificationService,
-        OauthClientService $oauthClientService,
-        Session $session
+        NotificationServiceInterface $notificationService,
+        OauthClientServiceInterface $oauthClientService
     ) {
         $this->permissionService   = $permissionService;
         $this->loginProxy          = $loginProxy;
         $this->notificationService = $notificationService;
         $this->oauthClientService  = $oauthClientService;
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
      * Return the logged in user account.
      *
      * @param  array   $relations
-     * @return boolean
+     * @return Model
      */
-    public function account($relations = ['roles.permissions'])
+    public function account(array $relations = ['roles.permissions']): Model
     {
         $permissions = [];
-        $user        = $this->repo->find(\Auth::id(), $relations);
+        $user        = $this->repo->find(Auth::id(), $relations);
         foreach ($user->roles as $role) {
             $role->permissions->each(function ($permission) use (&$permissions) {
                 $permissions[] = $permission;
@@ -85,10 +89,10 @@ class UserService extends BaseService
      *
      * @param  string $permissionName
      * @param  string $model
-     * @param  mixed  $userId
-     * @return boolean
+     * @param  int    $userId
+     * @return bool
      */
-    public function can($permissionName, $model, $userId = false)
+    public function can(string $permissionName, string $model, int $userId = 0): bool
     {
         $permission = $this->permissionService->first([
             'and' => [
@@ -100,7 +104,7 @@ class UserService extends BaseService
                         'users' => [
                             'op' => 'has',
                             'val' => [
-                                'users.id' => $userId ?: \Auth::id()
+                                'users.id' => $userId ?: Auth::id()
                             ]
                         ]
                     ]
@@ -114,26 +118,26 @@ class UserService extends BaseService
     /**
      * Check if the logged in or the given user has the given role.
      *
-     * @param  string[] $roles
-     * @param  mixed    $user
-     * @return boolean
+     * @param  array $roles
+     * @param  int   $user
+     * @return bool
      */
-    public function hasRoles($roles, $user = false)
+    public function hasRoles(array $roles, int $user = 0): bool
     {
-        return $this->repo->countRoles($user ?: \Auth::id(), $roles) ? true : false;
+        return $this->repo->countRoles($user ?: Auth::id(), $roles) ? true : false;
     }
 
     /**
      * Assign the given role ids to the given user.
      *
-     * @param  integer $userId
-     * @param  array   $roleIds
-     * @return object
+     * @param  int   $userId
+     * @param  array $roleIds
+     * @return Model
      */
-    public function assignRoles($userId, $roleIds)
+    public function assignRoles(int $userId, array $roleIds): Model
     {
-        $user = false;
-        \DB::transaction(function () use ($userId, $roleIds, &$user) {
+        $user = new Model();
+        DB::transaction(function () use ($userId, $roleIds, &$user) {
             $user = $this->repo->find($userId);
             $this->repo->detachRoles($user);
             $this->repo->attachRoles($user, $roleIds);
@@ -147,16 +151,16 @@ class UserService extends BaseService
      *
      * @param  string  $email
      * @param  string  $password
-     * @return object
+     * @return array
      */
-    public function login($email, $password)
+    public function login(string $email, string $password): array
     {
         if (!$user = $this->repo->first(['email' => $email])) {
-            \Errors::loginFailed();
+            Errors::loginFailed();
         } elseif ($user->blocked) {
-            \Errors::userIsBlocked();
+            Errors::userIsBlocked();
         } elseif (!config('user.disable_confirm_email') && !$user->confirmed) {
-            \Errors::emailNotConfirmed();
+            Errors::emailNotConfirmed();
         }
 
         return ['user' => $user, 'tokens' => $this->loginProxy->login($user->email, $password)];
@@ -167,32 +171,34 @@ class UserService extends BaseService
      *
      * @param  string $authCode
      * @param  string $accessToken
+     * @param  string $type
      * @return array
      */
-    public function loginSocial($authCode, $accessToken, $type)
+    public function loginSocial(string $authCode, string $accessToken, string $type): array
     {
-        $accessToken = $authCode ? Arr::get(\Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
-        $user        = \Socialite::driver($type)->userFromToken($accessToken)->user;
+        $accessToken = $authCode ? Arr::get(Socialite::driver($type)->getAccessTokenResponse($authCode), 'access_token') : $accessToken;
+        $user        = Socialite::driver($type)->userFromToken($accessToken)->user;
 
         if (!Arr::has($user, 'email')) {
-            \Errors::noSocialEmail();
+            Errors::noSocialEmail();
         }
 
-        if (!$this->repo->first(['email' => $user['email']]) && !$this->repo->deleted(['email' => $user['email']])->count()) {
+        if (!$this->repo->first(['email' => $user['email']]) && !$this->repo->deleted(['email' => $user['email']])->total()) {
             $this->register(Arr::get($user, 'name'), $user['email'], '', true);
         }
 
         return $this->login($user['email'], config('user.social_pass'));
     }
+
     /**
      * Handle the registration request.
      *
-     * @param  array   $data
-     * @param  boolean $skipConfirmEmail
-     * @param  integer $roleId
-     * @return object
+     * @param  array $data
+     * @param  bool  $skipConfirmEmail
+     * @param  int   $roleId
+     * @return Model
      */
-    public function register($data, $skipConfirmEmail = false, $roleId = false)
+    public function register(array $data, bool $skipConfirmEmail = false, int $roleId = 0): Model
     {
         $data['confirmed'] = $skipConfirmEmail;
 
@@ -212,13 +218,13 @@ class UserService extends BaseService
     /**
      * Block the user.
      *
-     * @param  integer $userId
-     * @return object
+     * @param  int $userId
+     * @return Model
      */
-    public function block($userId)
+    public function block(int $userId): Model
     {
-        if (\Auth::id() == $userId) {
-            \Errors::noPermissions();
+        if (Auth::id() == $userId) {
+            Errors::noPermissions();
         }
 
         return $this->repo->save(['id' => $userId, 'blocked' => 1]);
@@ -227,10 +233,10 @@ class UserService extends BaseService
     /**
      * Unblock the user.
      *
-     * @param  integer $userId
-     * @return object
+     * @param  int $userId
+     * @return Model
      */
-    public function unblock($userId)
+    public function unblock(int $userId): Model
     {
         return $this->repo->save(['id' => $userId, 'blocked' => 0]);
     }
@@ -239,16 +245,18 @@ class UserService extends BaseService
      * Send a reset link to the given user.
      *
      * @param  string  $email
-     * @return void
+     * @return bool
      */
-    public function sendReset($email)
+    public function sendReset(string $email): bool
     {
         if (!$user = $this->repo->first(['email' => $email])) {
-            \Errors::notFound('email');
+            Errors::notFound('email');
         }
 
-        $token = \Password::createToken($user);
+        $token = Password::createToken($user);
         $this->notificationService->notify($user, 'ResetPassword', $token);
+
+        return true;
     }
 
     /**
@@ -258,11 +266,11 @@ class UserService extends BaseService
      * @param   string  $password
      * @param   string  $passwordConfirmation
      * @param   string  $token
-     * @return string|void
+     * @return string
      */
-    public function resetPassword($email, $password, $passwordConfirmation, $token)
+    public function resetPassword(string $email, string $password, string $passwordConfirmation, string $token): string
     {
-        $response = \Password::reset([
+        $response = Password::reset([
             'email'                 => $email,
             'password'              => $password,
             'password_confirmation' => $passwordConfirmation,
@@ -272,20 +280,16 @@ class UserService extends BaseService
         });
 
         switch ($response) {
-            case \Password::PASSWORD_RESET:
+            case Password::PASSWORD_RESET:
                 return 'success';
                 break;
 
-            case \Password::INVALID_TOKEN:
-                \Errors::invalidResetToken();
+            case Password::INVALID_TOKEN:
+                Errors::invalidResetToken();
                 break;
 
-            case \Password::INVALID_PASSWORD:
-                \Errors::invalidResetPassword();
-                break;
-
-            case \Password::INVALID_USER:
-                \Errors::notFound('user');
+            case Password::INVALID_USER:
+                Errors::notFound('user');
                 break;
         }
     }
@@ -295,70 +299,77 @@ class UserService extends BaseService
      *
      * @param  string  $password
      * @param  string  $oldPassword
-     * @return void
+     * @return bool
      */
-    public function changePassword($password, $oldPassword)
+    public function changePassword(string $password, string $oldPassword): bool
     {
-        $user = \Auth::user();
-        if (!\Hash::check($oldPassword, $user->password)) {
-            \Errors::invalidOldPassword();
+        $user = Auth::user();
+        if (!Hash::check($oldPassword, $user->password)) {
+            Errors::invalidOldPassword();
         }
 
         $this->repo->save(['id' => $user->id, 'password' => $password]);
+
+        return true;
     }
 
     /**
      * Confirm email using the confirmation code.
      *
      * @param  string $confirmationCode
-     * @return void
+     * @return bool
      */
-    public function confirmEmail($confirmationCode)
+    public function confirmEmail(string $confirmationCode): bool
     {
         if (!$user = $this->repo->first(['confirmation_code' => $confirmationCode])) {
-            \Errors::invalidConfirmationCode();
+            Errors::invalidConfirmationCode();
         }
 
         $this->repo->save(['id' => $user->id, 'confirmed' => 1, 'confirmation_code' => null]);
+
+        return true;
     }
 
     /**
      * Send the confirmation mail.
      *
      * @param  string $email
-     * @return void
+     * @return bool
      */
-    public function sendConfirmationEmail($email)
+    public function sendConfirmationEmail(string $email): bool
     {
         $user = $this->repo->first(['email' => $email]);
         if ($user->confirmed) {
-            \Errors::emailAlreadyConfirmed();
+            Errors::emailAlreadyConfirmed();
         }
 
         $this->repo->save(['id' => $user->id, 'confirmation_code' => sha1(microtime())]);
         $this->notificationService->notify($user, 'ConfirmEmail');
+
+        return true;
     }
 
     /**
      * Save the given data to the logged in user.
      *
      * @param  array $data
-     * @return void
+     * @return Model
      */
-    public function saveProfile($data)
+    public function saveProfile(array $data): Model
     {
-        $data['id'] = \Auth::id();
+        $data['id'] = Auth::id();
         return $this->repo->save($data);
     }
 
     /**
      * Logs out the user, revoke access token and refresh token.
      *
-     * @return void
+     * @return bool
      */
-    public function logout()
+    public function logout(): bool
     {
-        $this->oauthClientService->revokeAccessToken(\Auth::user()->token());
+        $this->oauthClientService->revokeAccessToken(Auth::user()->token());
+        return true;
     }
 
     /**
@@ -367,7 +378,7 @@ class UserService extends BaseService
      * @param  string $refreshToken
      * @return array
      */
-    public function refreshToken($refreshToken)
+    public function refreshToken(string $refreshToken): array
     {
         return $this->loginProxy->refreshToken($refreshToken);
     }

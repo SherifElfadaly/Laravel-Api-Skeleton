@@ -5,7 +5,7 @@ namespace App\Modules\DummyModule\Repositories;
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\DummyModule\DummyModel;
 
-class DummyRepository extends BaseRepository
+class DummyRepository extends BaseRepository implements DummyRepositoryInterface
 {
     /**
      * Init new object.

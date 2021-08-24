@@ -3,56 +3,56 @@
 namespace App\Modules\OauthClients\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\OauthClients\Repositories\OauthClientRepository;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\OauthClients\Repositories\OauthClientRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class OauthClientService extends BaseService
+class OauthClientService extends BaseService implements OauthClientServiceInterface
 {
     /**
      * Init new object.
      *
-     * @param   OauthClientRepository $repo
-     * @param   Session $session
+     * @param   OauthClientRepositoryInterface $repo
      * @return  void
      */
-    public function __construct(OauthClientRepository $repo, Session $session)
+    public function __construct(OauthClientRepositoryInterface $repo)
     {
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
      * Revoke the given client.
      *
-     * @param  integer  $clientId
-     * @return void
+     * @param  int  $clientId
+     * @return Model
      */
-    public function revoke($clientId)
+    public function revoke(int $clientId): Model
     {
-        \DB::transaction(function () use ($clientId) {
+        return DB::transaction(function () use ($clientId) {
             $client = $this->repo->find($clientId);
             $this->repo->revokeClientTokens($client);
-            $this->repo->save(['id'=> $clientId, 'revoked' => true]);
+            return $this->repo->save(['id'=> $clientId, 'revoked' => true]);
         });
     }
 
     /**
      * UnRevoke the given client.
      *
-     * @param  integer  $clientId
-     * @return void
+     * @param  int  $clientId
+     * @return Model
      */
-    public function unRevoke($clientId)
+    public function unRevoke(int $clientId): Model
     {
-        $this->repo->save(['id'=> $clientId, 'revoked' => false]);
+        return $this->repo->save(['id'=> $clientId, 'revoked' => false]);
     }
 
     /**
      * Ensure access token hasn't expired or revoked.
      *
      * @param  string $accessToken
-     * @return boolean
+     * @return bool
      */
-    public function accessTokenExpiredOrRevoked($accessToken)
+    public function accessTokenExpiredOrRevoked(string $accessToken): bool
     {
         return $this->repo->accessTokenExpiredOrRevoked($accessToken);
     }
@@ -62,9 +62,9 @@ class OauthClientService extends BaseService
      * associated refresh tokens.
      *
      * @param  oject $accessToken
-     * @return void
+     * @return bool
      */
-    public function revokeAccessToken($accessToken)
+    public function revokeAccessToken(object $accessToken): bool
     {
         return $this->repo->revokeAccessToken($accessToken);
     }

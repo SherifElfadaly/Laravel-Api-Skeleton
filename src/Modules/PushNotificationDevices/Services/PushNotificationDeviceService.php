@@ -3,33 +3,33 @@
 namespace App\Modules\PushNotificationDevices\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepository;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\PushNotificationDevices\Repositories\PushNotificationDeviceRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
-class PushNotificationDeviceService extends BaseService
+class PushNotificationDeviceService extends BaseService implements PushNotificationDeviceServiceInterface
 {
     /**
      * Init new object.
      *
-     * @param   PushNotificationDeviceRepository $repo
-     * @param   Session $session
+     * @param   PushNotificationDeviceRepositoryInterface $repo
      * @return  void
      */
-    public function __construct(PushNotificationDeviceRepository $repo, Session $session)
+    public function __construct(PushNotificationDeviceRepositoryInterface $repo)
     {
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
      * Register the given device to the logged in user.
      *
      * @param  array $data
-     * @return void
+     * @return Model
      */
-    public function registerDevice($data)
+    public function registerDevice(array $data): Model
     {
-        $data['access_token'] = \Auth::user()->token();
-        $data['user_id']      = \Auth::id();
+        $data['access_token'] = Auth::user()->token();
+        $data['user_id']      = Auth::id();
         $device               = $this->repo->first([
             'and' => [
                 'device_token' => $data['device_token'],

@@ -2,6 +2,10 @@
 
 namespace App\Modules\Users\Providers;
 
+use App\Modules\Users\Repositories\UserRepository;
+use App\Modules\Users\Repositories\UserRepositoryInterface;
+use App\Modules\Users\Services\UserService;
+use App\Modules\Users\Services\UserServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 }

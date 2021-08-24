@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace App\Modules\Core\BaseClasses;
 
 use ReflectionClass;
 
@@ -27,17 +27,6 @@ class BaseEnum
     }
 
     /**
-     * Get constant value for the given key.
-     *
-     * @param string $key
-     * @return  array
-     */
-    public static function value($key)
-    {
-        return collect(self::all())->get($key);
-    }
-
-    /**
      * Get all constants keys as an array.
      *
      * @return  array
@@ -50,12 +39,11 @@ class BaseEnum
     /**
      * Get constant key for the given value.
      *
-     * @param string $value
      * @return  mixed
      */
-    public static function key($value)
+    public static function key($type)
     {
-        return collect(self::all())->search($value);
+        return collect(self::all())->search($type);
     }
 
     /**
@@ -66,7 +54,7 @@ class BaseEnum
     public static function toString()
     {
         $stringArr = [];
-        collect(self::all())->each(function($item, $key) use (&$stringArr) {
+        collect(self::all())->each(function ($item, $key) use (&$stringArr) {
             $stringArr[] = $key . ': ' . $item;
         });
 

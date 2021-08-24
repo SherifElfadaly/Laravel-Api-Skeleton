@@ -3,37 +3,37 @@
 namespace App\Modules\Notifications\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\Notifications\Repositories\NotificationRepository;
-use App\Modules\Users\Repositories\UserRepository;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\Notifications\Repositories\NotificationRepositoryInterface;
+use App\Modules\Users\Repositories\UserRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Notification;
 
-class NotificationService extends BaseService
+class NotificationService extends BaseService implements NotificationServiceInterface
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     protected $userRepository;
 
     /**
      * Init new object.
      *
-     * @param   NotificationRepository $repo
-     * @param   Session $session
+     * @param   NotificationServiceInterface $repo
      * @return  void
      */
-    public function __construct(NotificationRepository $repo, UserRepository $userRepository, Session $session)
+    public function __construct(NotificationRepositoryInterface $repo, UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
      * Retrieve all notifications of the logged in user.
      *
-     * @param  integer $perPage
-     * @return Collection
+     * @param  int $perPage
+     * @return LengthAwarePaginator
      */
-    public function my($perPage)
+    public function my(int $perPage): LengthAwarePaginator
     {
         return $this->repo->my($perPage);
     }
@@ -41,10 +41,10 @@ class NotificationService extends BaseService
     /**
      * Retrieve unread notifications of the logged in user.
      *
-     * @param  integer $perPage
-     * @return Collection
+     * @param  int $perPage
+     * @return LengthAwarePaginator
      */
-    public function unread($perPage)
+    public function unread(int $perPage): LengthAwarePaginator
     {
         return $this->repo->unread($perPage);
     }
@@ -52,10 +52,10 @@ class NotificationService extends BaseService
     /**
      * Mark the notification as read.
      *
-     * @param  integer  $id
-     * @return object
+     * @param  int  $id
+     * @return bool
      */
-    public function markAsRead($id)
+    public function markAsRead(int $id): bool
     {
         return $this->repo->markAsRead($id);
     }
@@ -63,9 +63,9 @@ class NotificationService extends BaseService
     /**
      * Mark all notifications as read.
      *
-     * @return void
+     * @return bool
      */
-    public function markAllAsRead()
+    public function markAllAsRead(): bool
     {
         return $this->repo->markAllAsRead();
     }
@@ -73,15 +73,17 @@ class NotificationService extends BaseService
     /**
      * Notify th given user with the given notification.
      *
-     * @param  collection $users
-     * @param  string     $notification
-     * @param  Variadic   $notificationData
+     * @param  mixed    $users
+     * @param  string   $notification
+     * @param  Variadic $notificationData
      * @return void
      */
-    public function notify($users, $notification, ...$notificationData)
+    public function notify(mixed $users, string $notification, ...$notificationData): bool
     {
         $users = is_array($users) ? $this->userRepository->findBy(['id' => ['op' => 'in', 'val' => $users]]) : $users;
         $notification = 'App\Modules\Notifications\Notifications\\'.$notification;
-        \Notification::send($users, new $notification(...$notificationData));
+        Notification::send($users, new $notification(...$notificationData));
+
+        return true;
     }
 }

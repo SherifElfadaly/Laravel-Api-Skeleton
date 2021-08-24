@@ -2,6 +2,10 @@
 
 namespace App\Modules\OauthClients\Providers;
 
+use App\Modules\OauthClients\Repositories\OauthClientRepository;
+use App\Modules\OauthClients\Repositories\OauthClientRepositoryInterface;
+use App\Modules\OauthClients\Services\OauthClientService;
+use App\Modules\OauthClients\Services\OauthClientServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(OauthClientServiceInterface::class, OauthClientService::class);
+        $this->app->bind(OauthClientRepositoryInterface::class, OauthClientRepository::class);
     }
 }

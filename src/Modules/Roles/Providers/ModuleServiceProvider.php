@@ -2,6 +2,10 @@
 
 namespace App\Modules\Roles\Providers;
 
+use App\Modules\Roles\Repositories\RoleRepository;
+use App\Modules\Roles\Repositories\RoleRepositoryInterface;
+use App\Modules\Roles\Services\RoleService;
+use App\Modules\Roles\Services\RoleServiceInterface;
 use Caffeinated\Modules\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -30,5 +34,11 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        /**
+         * Bind interfaces to implmentations.
+         */
+        $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
     }
 }

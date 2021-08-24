@@ -188,8 +188,8 @@ class MakeModuleCommand extends Command
 
     protected function replacePlaceholders($contents)
     {
-        $modelName = \Str::camel($this->container['slug']);
-        $modelNameSingular = \Str::singular($modelName);
+        $modelName = Str::camel($this->container['slug']);
+        $modelNameSingular = Str::singular($modelName);
 
         $find = [
             'DummyFactory',
@@ -201,7 +201,9 @@ class MakeModuleCommand extends Command
             'DummyTableSeeder',
             'DummyController',
             'DummyService',
+            'DummyServiceInterface',
             'DummyRepository',
+            'DummyRepositoryInterface',
             'DummyErrors',
             'StoreDummy',
             'DummyResource',
@@ -220,12 +222,14 @@ class MakeModuleCommand extends Command
             ucfirst($modelName) . 'TableSeeder',
             ucfirst($modelNameSingular) . 'Controller',
             ucfirst($modelNameSingular) . 'Service',
+            ucfirst($modelNameSingular) . 'ServiceInterface',
             ucfirst($modelNameSingular) . 'Repository',
+            ucfirst($modelNameSingular) . 'RepositoryInterface',
             ucfirst($modelName) . 'Errors',
             'Store' . ucfirst($modelNameSingular),
             ucfirst($modelNameSingular),
             ucfirst($modelNameSingular) . 'Observer',
-            \Str::snake($modelName),
+            Str::snake($modelName),
             $modelName,
         ];
 
@@ -246,8 +250,8 @@ class MakeModuleCommand extends Command
     protected function generateMigration()
     {
         $modelName = $this->container['slug'];
-        $migrationName = \Str::camel($modelName);
-        $migrationName = \Str::snake($migrationName);
+        $migrationName = Str::camel($modelName);
+        $migrationName = Str::snake($migrationName);
         return $this->callSilent('make:module:migration', ['slug' => $modelName, 'name' => 'create_' . $migrationName . '_table']);
     }
 }

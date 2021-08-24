@@ -5,7 +5,6 @@ namespace App\Modules\Core\BaseClasses;
 use App\Modules\Core\BaseClasses\Contracts\BaseRepositoryInterface;
 use App\Modules\Core\BaseClasses\Contracts\BaseServiceInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,26 +16,20 @@ abstract class BaseService implements BaseServiceInterface
     public $repo;
 
     /**
-     * @var Session
-     */
-    public $session;
-
-    /**
      * Init new object.
      *
      * @param   BaseRepositoryInterface $repo
-     * @param   Session $session
      * @return  void
      */
-    public function __construct(BaseRepositoryInterface $repo, Session $session)
+    public function __construct(BaseRepositoryInterface $repo)
     {
         $this->repo = $repo;
-        $this->session = $session;
     }
 
     /**
      * Fetch records with relations based on the given params.
      *
+     * @param   string $local
      * @param   array  $relations
      * @param   array  $conditions
      * @param   int    $perPage
@@ -45,11 +38,11 @@ abstract class BaseService implements BaseServiceInterface
      * @param   bool   $trashed
      * @return LengthAwarePaginator
      */
-    public function list(array $relations = [], array $conditions = [], int $perPage = 15, string $sortBy = 'created_at', bool $desc = true, bool $trashed = false): LengthAwarePaginator
+    public function list(string $local, array $relations = [], array $conditions = [], int $perPage = 15, string $sortBy = 'created_at', bool $desc = true, bool $trashed = false): LengthAwarePaginator
     {
         $translatable = $this->repo->model->translatable ?? [];
-        $filters = $this->constructFilters($conditions);
-        $sortBy = in_array($sortBy, $translatable) ? $sortBy . '->' . $this->session->get('locale') : $sortBy;
+        $filters = $this->constructFilters($conditions, $local);
+        $sortBy = in_array($sortBy, $translatable) ? $sortBy . '->' . $local : $sortBy;
 
         if ($trashed) {
             return $this->deleted(['and' => $filters], $perPage ?? 15, $sortBy ?? 'created_at', $desc ?? true);
@@ -116,7 +109,9 @@ abstract class BaseService implements BaseServiceInterface
      */
     public function save(array $data): Model
     {
-        return $this->repo->save($data);
+        $model = $this->repo->save($data);
+
+        return $model;
     }
 
     /**
@@ -206,9 +201,10 @@ abstract class BaseService implements BaseServiceInterface
      * Prepare filters for repo.
      *
      * @param  array $conditions
+     * @param  string $local
      * @return array
      */
-    protected function constructFilters(array $conditions): array
+    protected function constructFilters(array $conditions, string $local): array
     {
         $filters = [];
         $translatable = $this->repo->model->translatable ?? [];
@@ -217,7 +213,7 @@ abstract class BaseService implements BaseServiceInterface
                 /**
                  * Prepare key based on the the requested lang if it was translatable.
                  */
-                $key = in_array($key, $translatable) ? $key . '->' . ($this->session->get('locale') == 'all' ? 'en' : $this->session->get('locale')) : $key;
+                $key = in_array($key, $translatable) ? $key . '->' . $local : $key;
 
                 /**
                  * Convert 0/1 or true/false to boolean in case of not foreign key.

@@ -3,27 +3,28 @@
 namespace App\Modules\Reporting\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\Reporting\Repositories\ReportRepository;
-use App\Modules\Users\Services\UserService;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\Core\Facades\Errors;
+use App\Modules\Reporting\Repositories\ReportRepositoryInterface;
+use App\Modules\Users\Services\UserServiceInterface;
 
-class ReportService extends BaseService
+class ReportService extends BaseService implements ReportServiceInterface
 {
     /**
-     * @var UserService
+     * @var UserServiceInterface
      */
     protected $userService;
 
     /**
      * Init new object.
      *
-     * @param   ReportRepository $repo
+     * @param   ReportRepositoryInterface $repo
+     * @param   UserServiceInterface $userService
      * @return  void
      */
-    public function __construct(ReportRepository $repo, UserService $userService, Session $session)
+    public function __construct(ReportRepositoryInterface $repo, UserServiceInterface $userService)
     {
         $this->userService = $userService;
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 
     /**
@@ -33,10 +34,10 @@ class ReportService extends BaseService
      * @param  string  $reportName
      * @param  array   $conditions
      * @param  integer $perPage
-     * @param  boolean $skipPermission
-     * @return object
+     * @param  bool    $skipPermission
+     * @return mixed
      */
-    public function getReport($reportName, $conditions = [], $perPage = 0, $skipPermission = false)
+    public function getReport(string $reportName, array $conditions = [], int $perPage = 0, bool $skipPermission = false): mixed
     {
         /**
          * Fetch the report from db.
@@ -47,9 +48,9 @@ class ReportService extends BaseService
          * Check report existance and permission.
          */
         if (! $report) {
-            \Errors::notFound('report');
+            Errors::notFound('report');
         } elseif (! $skipPermission && ! $this->userService->can($report->view_name, 'report')) {
-            \Errors::noPermissions();
+            Errors::noPermissions();
         }
 
         return $this->repo->renderReport($report, $conditions, $perPage);

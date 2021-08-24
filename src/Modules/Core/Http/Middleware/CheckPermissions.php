@@ -2,6 +2,7 @@
 
 namespace App\Modules\Core\Http\Middleware;
 
+use App\Modules\Core\Facades\Errors;
 use Closure;
 use Illuminate\Routing\Router as Route;
 use Illuminate\Auth\AuthManager as Auth;
@@ -62,13 +63,13 @@ class CheckPermissions
                 $isPasswordClient = $user->token() ? $user->token()->client->password_client : false;
     
                 if ($user->blocked) {
-                    \Errors::userIsBlocked();
+                    Errors::userIsBlocked();
                 }
     
                 if ($isPasswordClient && (in_array($permission, $skipPermissionCheck) || $this->userService->can($permission, $modelName))) {
                 } elseif (! $isPasswordClient && $user->tokenCan($modelName.'-'.$permission)) {
                 } else {
-                    \Errors::noPermissions();
+                    Errors::noPermissions();
                 }
             });
         }

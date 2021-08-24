@@ -3,7 +3,7 @@
 namespace App\Modules\Permissions\Http\Controllers;
 
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Permissions\Services\PermissionService;
+use App\Modules\Permissions\Services\PermissionServiceInterface;
 
 class PermissionController extends BaseApiController
 {
@@ -17,10 +17,10 @@ class PermissionController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   PermissionService $service
+     * @param   PermissionServiceInterface $service
      * @return  void
      */
-    public function __construct(PermissionService $service)
+    public function __construct(PermissionServiceInterface $service)
     {
         parent::__construct($service);
     }

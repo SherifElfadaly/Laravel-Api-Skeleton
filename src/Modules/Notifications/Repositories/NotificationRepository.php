@@ -4,8 +4,10 @@ namespace App\Modules\Notifications\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Notifications\Notification;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
-class NotificationRepository extends BaseRepository
+class NotificationRepository extends BaseRepository implements NotificationRepositoryInterface
 {
     /**
      * Init new object.
@@ -21,45 +23,49 @@ class NotificationRepository extends BaseRepository
     /**
      * Retrieve all notifications of the logged in user.
      *
-     * @param  integer $perPage
-     * @return Collection
+     * @param  int $perPage
+     * @return LengthAwarePaginator
      */
-    public function my($perPage)
+    public function my(int $perPage): LengthAwarePaginator
     {
-        return \Auth::user()->notifications()->paginate($perPage);
+        return Auth::user()->notifications()->paginate($perPage);
     }
 
     /**
      * Retrieve unread notifications of the logged in user.
      *
-     * @param  integer $perPage
-     * @return Collection
+     * @param  int $perPage
+     * @return LengthAwarePaginator
      */
-    public function unread($perPage)
+    public function unread(int $perPage): LengthAwarePaginator
     {
-        return \Auth::user()->unreadNotifications()->paginate($perPage);
+        return Auth::user()->unreadNotifications()->paginate($perPage);
     }
 
     /**
      * Mark the notification as read.
      *
-     * @param  integer  $id
-     * @return object
+     * @param  int  $id
+     * @return bool
      */
-    public function markAsRead($id)
+    public function markAsRead(int $id): bool
     {
-        if ($notification = \Auth::user()->unreadNotifications()->where('id', $id)->first()) {
+        if ($notification = Auth::user()->unreadNotifications()->where('id', $id)->first()) {
             $notification->markAsRead();
         }
+
+        return true;
     }
 
     /**
      * Mark all notifications as read.
      *
-     * @return void
+     * @return bool
      */
-    public function markAllAsRead()
+    public function markAllAsRead(): bool
     {
-        \Auth::user()->unreadNotifications()->update(['read_at' => now()]);
+        Auth::user()->unreadNotifications()->update(['read_at' => now()]);
+
+        return true;
     }
 }

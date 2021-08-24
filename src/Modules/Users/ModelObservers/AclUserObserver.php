@@ -2,6 +2,8 @@
 
 namespace App\Modules\Users\ModelObservers;
 
+use App\Modules\Core\Facades\Core;
+
 /**
  * Handling of model events,
  */
@@ -11,7 +13,7 @@ class AclUserObserver
     public function saving($model)
     {
         if ($model->isDirty('profile_picture')) {
-            \Media::deleteImage($model->getOriginal('profile_picture'));
+            Core::fileManager()->delete($model->getOriginal('profile_picture'), 'path');
         }
     }
 

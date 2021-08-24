@@ -8,8 +8,8 @@ use App\Modules\Core\Decorators\CachingDecorator;
 use Illuminate\Http\Request;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
 use Illuminate\Cache\Repository;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class BaseApiController extends Controller
 {
@@ -21,7 +21,7 @@ class BaseApiController extends Controller
     protected $relations;
 
     /**
-     * @var object
+     * @var BaseServiceInterface
      */
     protected $service;
 
@@ -47,7 +47,7 @@ class BaseApiController extends Controller
      */
     public function __construct(BaseServiceInterface $service)
     {
-        $this->service = new CachingDecorator($service, App::make(Repository::class), App::make(Request::class), App::make(Session::class));
+        $this->service = new CachingDecorator($service, App::make(Repository::class), App::make(Request::class), App::make(\Illuminate\Contracts\Session\Session::class));
     }
 
     /**
@@ -58,7 +58,8 @@ class BaseApiController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->modelResource::collection($this->service->list($request->relations, $request->query(), $request->query('perPage', 15), $request->query('sortBy', 'created_at'), $request->query('desc', false), $request->query('trashed', false)));
+        $local = Session::get('locale') == 'all' ? 'en' : Session::get('locale');
+        return $this->modelResource::collection($this->service->list($local, $request->relations, $request->query(), $request->query('perPage', 15), $request->query('sortBy', 'created_at'), $request->query('desc', false), $request->query('trashed', false)));
     }
 
     /**
@@ -81,6 +82,8 @@ class BaseApiController extends Controller
     public function store()
     {
         $data = App::make($this->storeFormRequest)->validated();
+        Session::put('locale', 'all');
+
         return new $this->modelResource($this->service->save($data));
     }
 

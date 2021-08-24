@@ -4,8 +4,8 @@ namespace App\Modules\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Modules\Core\BaseClasses\BaseApiController;
-use App\Modules\Core\Services\SettingService;
 use App\Modules\Core\Http\Resources\General as GeneralResource;
+use App\Modules\Core\Services\SettingServiceInterface;
 
 class SettingController extends BaseApiController
 {
@@ -26,10 +26,10 @@ class SettingController extends BaseApiController
     /**
      * Init new object.
      *
-     * @param   SettingService $service
+     * @param   SettingServiceInterface $service
      * @return  void
      */
-    public function __construct(SettingService $service)
+    public function __construct(SettingServiceInterface $service)
     {
         parent::__construct($service);
     }

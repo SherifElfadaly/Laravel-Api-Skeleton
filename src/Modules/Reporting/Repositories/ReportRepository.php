@@ -4,8 +4,9 @@ namespace App\Modules\Reporting\Repositories;
 
 use App\Modules\Core\BaseClasses\BaseRepository;
 use App\Modules\Reporting\Report;
+use Illuminate\Support\Facades\DB;
 
-class ReportRepository extends BaseRepository
+class ReportRepository extends BaseRepository implements ReportRepositoryInterface
 {
     /**
      * Init new object.
@@ -22,18 +23,18 @@ class ReportRepository extends BaseRepository
      * Render the given report db view based on the given
      * condition.
      *
-     * @param  mixed   $report
-     * @param  array   $conditions
-     * @param  integer $perPage
-     * @return object
+     * @param  mixed $report
+     * @param  array $conditions
+     * @param  int   $perPage
+     * @return mixed
      */
-    public function renderReport($report, $conditions = [], $perPage = 0)
+    public function renderReport(mixed $report, array $conditions = [], int $perPage = 0): mixed
     {
         $report = ! filter_var($report, FILTER_VALIDATE_INT) ? $report : $this->find($report);
         /**
          * Fetch data from the report based on the given conditions.
          */
-        $report = \DB::table($report->view_name);
+        $report = DB::table($report->view_name);
         unset($conditions['page']);
         if (count($conditions)) {
             $conditions = $this->constructConditions($conditions, $this->model);

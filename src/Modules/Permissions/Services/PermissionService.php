@@ -3,20 +3,18 @@
 namespace App\Modules\Permissions\Services;
 
 use App\Modules\Core\BaseClasses\BaseService;
-use App\Modules\Permissions\Repositories\PermissionRepository;
-use Illuminate\Contracts\Session\Session;
+use App\Modules\Permissions\Repositories\PermissionRepositoryInterface;
 
-class PermissionService extends BaseService
+class PermissionService extends BaseService implements PermissionServiceInterface
 {
     /**
      * Init new object.
      *
-     * @param   PermissionRepository $repo
-     * @param   Session $session
+     * @param   PermissionRepositoryInterface $repo
      * @return  void
      */
-    public function __construct(PermissionRepository $repo, Session $session)
+    public function __construct(PermissionRepositoryInterface $repo)
     {
-        parent::__construct($repo, $session);
+        parent::__construct($repo);
     }
 }

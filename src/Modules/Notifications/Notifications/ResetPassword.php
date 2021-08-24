@@ -42,11 +42,10 @@ class ResetPassword extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = config('user.confrim_email_url') ? config('user.reset_password_url').'/'.$this->token : route('reset_password_page', $this->token);
         return (new MailMessage)
             ->subject('Reset passowrd')
             ->line('Reset passowrd')
             ->line('To reset your password click on the button below')
-            ->action('Reset password', $url);
+            ->action('Reset password', config('user.reset_password_url').'/'.$this->token);
     }
 }
