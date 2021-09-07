@@ -117,14 +117,16 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function save(array $data): Model
     {
-        $model      = new Model();
-        $relations  = [];
+        $model     = new Model();
+        $relations = [];
 
         DB::transaction(function () use (&$model, &$relations, $data) {
 
-            $model     = $this->prepareModel($data);
-            $relations = $this->prepareRelations($data, $model);
-            $model     = $this->saveModel($model, $relations);
+            $model = $this->prepareModel($data);
+            $model->save();
+
+            $relations = $this->prepareManyToManyRelations($data, $model);
+            $this->saveManyToManyRelation($model, $relations);
         });
 
         if (count($relations)) {
@@ -223,10 +225,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     public function deleted(array $conditions, int $perPage = 15, string $sortBy = 'created_at', bool $desc = true, array $columns = ['*']): LengthAwarePaginator
     {
-        unset($conditions['page']);
-        unset($conditions['perPage']);
-        unset($conditions['sortBy']);
-        unset($conditions['sort']);
+        unset($conditions['page'], $conditions['perPage'], $conditions['sortBy'], $conditions['sort']);
         $conditions = $this->constructConditions($conditions, $this->model);
         $sort       = $desc ? 'desc' : 'asc';
         $model      = $this->model->onlyTrashed();
@@ -266,28 +265,14 @@ abstract class BaseRepository implements BaseRepositoryInterface
     protected function prepareModel(array $data): Model
     {
         $modelClass = $this->model;
-
-        /**
-         * If the id is present in the data then select the model for updating,
-         * else create new model.
-         *
-         * @var object
-         */
         $model = Arr::has($data, 'id') ? $modelClass->lockForUpdate()->find($data['id']) : new $modelClass;
+
         if (!$model) {
             Errors::notFound(class_basename($modelClass) . ' with id : ' . $data['id']);
         }
 
-        /**
-         * Construct the model object with the given data,
-         * and if there is a relation add it to relations array,
-         * then save the model.
-         */
         foreach ($data as $key => $value) {
             if (array_search($key, $model->getFillable(), true) !== false) {
-                /**
-                 * If the attribute isn't a relation and prevent attributes not in the fillable.
-                 */
                 $model->$key = $value;
             }
         }
@@ -296,127 +281,32 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Prepare related models based on the given data for the given model.
+     * Prepare many to many relation if found.
      *
      * @param   array $data
      * @param   Model $model
      *
      * @return  array
      */
-    protected function prepareRelations(array $data, Model $model): array
+    protected function prepareManyToManyRelations(array $data, Model $model): array
     {
-        /**
-         * Init the relation array
-         *
-         * @var array
-         */
         $relations = [];
-
-        /**
-         * Construct the model object with the given data,
-         * and if there is a relation add it to relations array,
-         * then save the model.
-         */
-        foreach ($data as $key => $value) {
-            /**
-             * If the attribute is a relation.
-             */
+        foreach ($data as $key => $relatedModels) {
             $relation = Str::camel($key);
-            if (method_exists($model, $relation) && Core::$relation()) {
-                /**
-                 * Check if the relation is a collection.
-                 */
-                if (class_basename($model->$relation) == 'Collection') {
+            if (method_exists($model, $relation) &&
+                Core::$relation() &&
+                in_array(class_basename($model->$key()), ['MorphToMany', 'BelongsToMany'])
+            ) {
+                if (!$relatedModels || !count($relatedModels)) {
                     /**
-                     * If the relation has no value then marke the relation data
-                     * related to the model to be deleted.
+                     * Mark the relation to be deleted.
                      */
-                    if (!$value || !count($value)) {
-                        $relations[$relation] = 'delete';
-                    }
+                    $relations[$relation] = 'delete';
                 }
-                if (is_array($value)) {
-                    /**
-                     * Loop through the relation data.
-                     */
-                    foreach ($value as $attr => $val) {
-                        /**
-                         * Get the relation model.
-                         */
-                        $relationBaseModel = Core::$relation()->model;
 
-                        /**
-                         * Check if the relation is a collection.
-                         */
-                        if (class_basename($model->$relation) == 'Collection') {
-                            if (!is_array($val)) {
-                                $relationModel = $relationBaseModel->lockForUpdate()->find($val);
-                            } else {
-                                /**
-                                 * If the id is present in the data then select the relation model for updating,
-                                 * else create new model.
-                                 */
-                                $relationModel = Arr::has($val, 'id') ? $relationBaseModel->lockForUpdate()->find($val['id']) : new $relationBaseModel;
-                            }
-
-                            /**
-                             * If model doesn't exists.
-                             */
-                            if (!$relationModel) {
-                                Errors::notFound(class_basename($relationBaseModel) . ' with id : ' . $val['id']);
-                            }
-
-                            if (is_array($val)) {
-                                /**
-                                 * Loop through the relation attributes.
-                                 */
-                                foreach ($val as $attr => $val) {
-                                    /**
-                                     * Prevent the sub relations or attributes not in the fillable.
-                                     */
-                                    if (gettype($val) !== 'object' && gettype($val) !== 'array' && array_search($attr, $relationModel->getFillable(), true) !== false && class_basename($model->$key()) !== 'BelongsToMany') {
-                                        $relationModel->$attr = $val;
-                                    } elseif (gettype($val) !== 'object' && gettype($val) !== 'array' && $attr !== 'id') {
-                                        $extra[$attr] = $val;
-                                    }
-                                }
-                            }
-
-                            if (isset($extra)) {
-                                $relationModel->extra = $extra;
-                            }
-                            $relations[$relation][] = $relationModel;
-                        } else {
-                            /**
-                             * Prevent the sub relations.
-                             */
-                            if (gettype($val) !== 'object' && gettype($val) !== 'array') {
-                                /**
-                                 * If the id is present in the data then select the relation model for updating,
-                                 * else create new model.
-                                 */
-                                $relationModel = Arr::has($value, 'id') ? $relationBaseModel->lockForUpdate()->find($value['id']) : new $relationBaseModel;
-
-                                /**
-                                 * If model doesn't exists.
-                                 */
-                                if (!$relationModel) {
-                                    Errors::notFound(class_basename($relationBaseModel) . ' with id : ' . $value['id']);
-                                }
-
-                                foreach ($value as $relationAttribute => $relationValue) {
-                                    /**
-                                     * Prevent attributes not in the fillable.
-                                     */
-                                    if (array_search($relationAttribute, $relationModel->getFillable(), true) !== false) {
-                                        $relationModel->$relationAttribute = $relationValue;
-                                    }
-                                }
-
-                                $relations[$relation] = $relationModel;
-                            }
-                        }
-                    }
+                foreach ($relatedModels as $relatedModel) {
+                    $relationBaseModel = Core::$relation()->model;
+                    $relations[$relation][] = $this->prepareRelatedModel($relatedModel, $relationBaseModel);
                 }
             }
         }
@@ -425,130 +315,72 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Save the model with related models.
+     * Prepare related models with extra values for pivot if found.
+     *
+     * @param   mixed  $relatedModelData
+     * @param   Model  $relationBaseModel
+     *
+     * @return  Model
+     */
+    protected function prepareRelatedModel(mixed $relatedModelData, Model $relationBaseModel): Model
+    {
+        if (!is_array($relatedModelData)) { // if the relation is integer id
+            $relatedModel = $relationBaseModel->lockForUpdate()->find($relatedModelData);
+        } else {
+            $relatedModel = Arr::has($relatedModelData, 'id') ? $relationBaseModel->lockForUpdate()->find($relatedModelData['id']) : new $relationBaseModel;
+        }
+
+        if (!$relatedModel) {
+            Errors::notFound(class_basename($relationBaseModel) . ' with id : ' . $relatedModelData['id']);
+        }
+
+        if (is_array($relatedModelData)) {
+            foreach ($relatedModelData as $attr => $val) {
+                if (array_search($attr, $relatedModel->getFillable(), true) === false &&
+                    gettype($val) !== 'object' &&
+                    gettype($val) !== 'array' &&
+                    $attr !== 'id'
+                ) {
+                    $extra[$attr] = $val;
+                }
+            }
+        }
+
+        if (isset($extra)) {
+            $relatedModel->extra = $extra;
+        }
+
+        return $relatedModel;
+    }
+
+    /**
+     * Save the given model many to many relations.
      *
      * @param   Model $model
      * @param   array $relations
      *
-     * @return  Model
+     * @return  void
      */
-    protected function saveModel(Model $model, array $relations): Model
+    protected function saveManyToManyRelation(Model $model, array $relations)
     {
-
-        /**
-         * Loop through the relations array.
-         */
         foreach ($relations as $key => $value) {
             /**
              * If the relation is marked for delete then delete it.
              */
             if ($value == 'delete' && $model->$key()->count()) {
-                switch (class_basename($model->$key())) {
-                        /**
-                     * If the relation is one to many then delete all
-                     * relations who's id isn't in the ids array.
-                     */
-                    case 'HasMany':
-                        $model->$key()->delete();
-                        break;
-
-                        /**
-                         * If the relation is many to many then
-                         * detach the previous data and attach
-                         * the ids array to the model.
-                         */
-                    case 'BelongsToMany':
-                        $model->$key()->detach();
-                        break;
-                }
-            } elseif (gettype($value) == 'array') {
-                /**
-                 * Save the model.
-                 */
-                $model->save();
-                $ids = [];
-
-                /**
-                 * Loop through the relations.
-                 */
-                foreach ($value as $val) {
-                    switch (class_basename($model->$key())) {
-                            /**
-                         * If the relation is one to many then update it's foreign key with
-                         * the model id and save it then add its id to ids array to delete all
-                         * relations who's id isn't in the ids array.
-                         */
-                        case 'HasMany':
-                            $foreignKeyName       = $model->$key()->getForeignKeyName();
-                            $val->$foreignKeyName = $model->id;
-                            $val->save();
-                            $ids[] = $val->id;
-                            break;
-
-                            /**
-                             * If the relation is many to many then add it's id to the ids array to
-                             * attache these ids to the model.
-                             */
-                        case 'BelongsToMany':
-                        case 'MorphToMany':
-                            $extra = $val->extra;
-                            unset($val->extra);
-                            $val->save();
-                            $ids[$val->id] = $extra ?? [];
-                            break;
-                    }
-                }
-                switch (class_basename($model->$key())) {
-                        /**
-                     * If the relation is one to many then delete all
-                     * relations who's id isn't in the ids array.
-                     */
-                    case 'HasMany':
-                        $model->$key()->whereNotIn('id', $ids)->delete();
-                        break;
-
-                        /**
-                         * If the relation is many to many then
-                         * detach the previous data and attach
-                         * the ids array to the model.
-                         */
-                    case 'BelongsToMany':
-                    case 'MorphToMany':
-                        $model->$key()->detach();
-                        $model->$key()->attach($ids);
-                        break;
-                }
+                $model->$key()->detach();
             } else {
-                switch (class_basename($model->$key())) {
-                        /**
-                     * If the relation is one to one.
-                     */
-                    case 'HasOne':
-                        /**
-                         * Save the model.
-                         */
-                        $model->save();
-                        $foreignKeyName         = $model->$key()->getForeignKeyName();
-                        $value->$foreignKeyName = $model->id;
-                        $value->save();
-                        break;
-                    case 'BelongsTo':
-                        /**
-                         * Save the model.
-                         */
-                        $value->save();
-                        $model->$key()->associate($value);
-                        break;
+                $ids = [];
+                foreach ($value as $val) {
+                    $extra = $val->extra;
+                    $ids[$val->id] = $extra ?? [];
+                    unset($val->extra);
                 }
+
+                $model->$key()->detach();
+                $model->$key()->attach($ids);
             }
         }
-
-        /**
-         * Save the model.
-         */
-        $model->save();
-
-        return $model;
     }
 
     /**
