@@ -16,7 +16,7 @@
     }],
     "require": {
         "intervention/image": "^2.5",
-        "benwilkins/laravel-fcm-notification": "^4.0",
+        "benwilkins/laravel-fcm-notification": "dev-master",
         "phpdocumentor/reflection-docblock": "^5.2",
         "jackiedo/dotenv-editor": "^1.2",
         "laravel/socialite": "^5.2",
